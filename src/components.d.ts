@@ -12,58 +12,78 @@ import '@stencil/core';
 
 export namespace Components {
 
-  interface MyComponent {
+  interface LikeButton {
     /**
-    * The first name
+    * Unique identifier for likeable resource
     */
-    'first': string;
+    'id': string;
     /**
-    * The last name
+    * Boolean indicating whether likeable resource has been liked
     */
-    'last': string;
+    'isLiked': boolean;
     /**
-    * The middle name
+    * Cache key for localStorage
     */
-    'middle': string;
+    'key': string;
+    /**
+    * Label for "like" state
+    */
+    'likeLabel': string;
+    /**
+    * Label for "unlike" state
+    */
+    'unlikeLabel': string;
   }
-  interface MyComponentAttributes extends StencilHTMLAttributes {
+  interface LikeButtonAttributes extends StencilHTMLAttributes {
     /**
-    * The first name
+    * Unique identifier for likeable resource
     */
-    'first'?: string;
+    'id'?: string;
     /**
-    * The last name
+    * Boolean indicating whether likeable resource has been liked
     */
-    'last'?: string;
+    'isLiked'?: boolean;
     /**
-    * The middle name
+    * Cache key for localStorage
     */
-    'middle'?: string;
+    'key'?: string;
+    /**
+    * Label for "like" state
+    */
+    'likeLabel'?: string;
+    /**
+    * Event emitter for "on complete" of like toggle
+    */
+    'onLikeCompleted'?: (event: CustomEvent) => void;
+    /**
+    * Label for "unlike" state
+    */
+    'unlikeLabel'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'MyComponent': Components.MyComponent;
+    'LikeButton': Components.LikeButton;
   }
 
   interface StencilIntrinsicElements {
-    'my-component': Components.MyComponentAttributes;
+    'like-button': Components.LikeButtonAttributes;
   }
 
 
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  interface HTMLLikeButtonElement extends Components.LikeButton, HTMLStencilElement {}
+  var HTMLLikeButtonElement: {
+    prototype: HTMLLikeButtonElement;
+    new (): HTMLLikeButtonElement;
   };
 
   interface HTMLElementTagNameMap {
-    'my-component': HTMLMyComponentElement
+    'like-button': HTMLLikeButtonElement
   }
 
   interface ElementTagNameMap {
-    'my-component': HTMLMyComponentElement;
+    'like-button': HTMLLikeButtonElement;
   }
 
 

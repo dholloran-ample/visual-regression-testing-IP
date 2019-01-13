@@ -1,16 +1,16 @@
 {
-  "name": "crds-like-button",
+  "name": "crds-components",
   "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "description": "Custom Elements for Crossroads Church",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
-  "unpkg": "dist/ionic.js",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/"
   ],
   "scripts": {
+    "clean": "rimraf dist www",
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
@@ -18,7 +18,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@stencil/core": "~0.16.2"
+    "@stencil/core": "~0.16.2",
+    "rimraf": "^2.6.3"
   },
   "license": "MIT"
 }
