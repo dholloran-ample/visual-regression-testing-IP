@@ -1,4 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State } from "@stencil/core";
+import dig from "object-dig";
+import axios from "axios";
 
 @Component({
   tag: "like-button",
@@ -26,7 +28,7 @@ export class LikeButton {
   /**
    * Total number of likes
    */
-  @Prop({ mutable: true }) count: number = 0;
+  @Prop({ mutable: true }) count: number;
 
   /**
    * Boolean indicating whether likeable resource has been liked
@@ -58,7 +60,22 @@ export class LikeButton {
    */
   componentWillLoad() {
     this.isLiked = this.likes().includes(this.id);
-    if (this.isLiked) this.count++;
+    this.getCount();
+  }
+
+  getCount() {
+    let api =
+      "https://cdn.contentful.com/spaces/y3a9myzsdjan/environments/int/entries";
+    axios
+      .get(`${api}/${this.id}`, {
+        params: {
+          access_token:
+            "f8a7a66b9bb572e7ba4e793799ee41f80ade56794476e1dcfc374631f505735c"
+        }
+      })
+      .then(success => {
+        this.count = dig(success, "data", "fields", "interaction_count");
+      });
   }
 
   /**
@@ -82,14 +99,14 @@ export class LikeButton {
   toggle(e) {
     this.log("toggle()");
     e.preventDefault();
+    this.isLiked = !this.isLiked;
     if (this.isLiked) {
-      this.remove();
-      this.count--;
-    } else {
       this.add();
       this.count++;
+    } else {
+      this.remove();
+      this.count--;
     }
-    this.isLiked = !this.isLiked;
   }
 
   /**
@@ -122,6 +139,13 @@ export class LikeButton {
     this.log("save()");
     localStorage.setItem(this.key, JSON.stringify(arr));
     this.likeCompleted.emit(this.id);
+    axios.post(
+      "https://8k97vbzbrk.execute-api.us-east-1.amazonaws.com/int/content-interactions",
+      {
+        entry_id: this.id,
+        action: this.isLiked ? "add" : "subtract"
+      }
+    );
   }
 
   log(ns, msg = "") {
