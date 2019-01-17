@@ -1,0 +1,54 @@
+a {
+  font-family: sans-serif;
+  display: block;
+  color: #979797;
+  text-decoration: none;
+  > * {
+    vertical-align: middle;
+  }
+  &.on {
+    > span {
+      > svg {
+        fill: #c05c04;
+      }
+    }
+  }
+  &.on,
+  &:hover {
+    > span {
+      &.heart {
+        display: inline-block;
+      }
+      &.heart-o {
+        display: none;
+      }
+    }
+  }
+  &:hover {
+    > span {
+      background: #c05c04;
+      > svg {
+        fill: white;
+      }
+    }
+  }
+  span {
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    svg {
+      margin: 9px;
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+    &.heart {
+      display: none;
+    }
+    &.heart-o {
+      display: inline-block;
+    }
+  }
+}

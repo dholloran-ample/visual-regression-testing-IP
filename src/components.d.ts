@@ -14,6 +14,10 @@ export namespace Components {
 
   interface LikeButton {
     /**
+    * Total number of likes
+    */
+    'count': number;
+    /**
     * Unique identifier for likeable resource
     */
     'id': string;
@@ -35,6 +39,10 @@ export namespace Components {
     'unlikeLabel': string;
   }
   interface LikeButtonAttributes extends StencilHTMLAttributes {
+    /**
+    * Total number of likes
+    */
+    'count'?: number;
     /**
     * Unique identifier for likeable resource
     */
