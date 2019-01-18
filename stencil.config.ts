@@ -1,5 +1,6 @@
 import { Config } from "@stencil/core";
 import { sass } from "@stencil/sass";
+import { env } from "@alepop/stencil-env";
 import builtins from "rollup-plugin-node-builtins";
 import globals from "rollup-plugin-node-globals";
 
@@ -16,5 +17,10 @@ export const config: Config = {
   nodeResolve: {
     browser: true
   },
-  plugins: [sass(), builtins(), globals()]
+  plugins: [
+    env(), //
+    sass(),
+    builtins(),
+    globals()
+  ]
 };

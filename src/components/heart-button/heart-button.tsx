@@ -1,13 +1,13 @@
-import { Component, Event, EventEmitter, Prop, State } from "@stencil/core";
+import { Component, Prop, State } from "@stencil/core";
 import dig from "object-dig";
 import axios from "axios";
 
 @Component({
-  tag: "like-button",
-  styleUrl: "like-button.scss",
+  tag: "heart-button",
+  styleUrl: "heart-button.scss",
   shadow: true
 })
-export class LikeButton {
+export class HeartButton {
   /**
    * Print log messages?
    */
@@ -16,7 +16,7 @@ export class LikeButton {
   /**
    * Cache key for localStorage
    */
-  @Prop() key: string = "crds-likes";
+  @Prop() key: string = "crds-hearts";
 
   /**
    * Unique identifier for likeable resource
@@ -24,7 +24,7 @@ export class LikeButton {
   @Prop() id: string;
 
   /**
-   * Total number of likes
+   * Total number of hearts
    */
   @Prop({ mutable: true }) count: number;
 
@@ -32,11 +32,6 @@ export class LikeButton {
    * Boolean indicating whether likeable resource has been liked
    */
   @Prop({ mutable: true }) isLiked: boolean;
-
-  /**
-   * Event emitter for "on complete" of like toggle
-   */
-  @Event() likeCompleted: EventEmitter;
 
   /**
    * Emphemeral array object for managing updates to localStorage
@@ -56,7 +51,7 @@ export class LikeButton {
       process.env.CONTENTFUL_SPACE_ID
     }/environments/${process.env.CONTENTFUL_ENV}/entries`;
 
-    axios
+    return axios
       .get(`${api}/${this.id}`, {
         params: {
           access_token: process.env.CONTENTFUL_ACCESS_TOKEN
@@ -121,7 +116,6 @@ export class LikeButton {
   save(arr) {
     this.log("save()");
     localStorage.setItem(this.key, JSON.stringify(arr));
-    this.likeCompleted.emit(this.id);
     axios.post(
       `${process.env.CRDS_INTERACTIONS_ENDPOINT}/content-interactions`,
       {

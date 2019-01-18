@@ -12,9 +12,9 @@ import '@stencil/core';
 
 export namespace Components {
 
-  interface LikeButton {
+  interface HeartButton {
     /**
-    * Total number of likes
+    * Total number of hearts
     */
     'count': number;
     /**
@@ -30,9 +30,9 @@ export namespace Components {
     */
     'key': string;
   }
-  interface LikeButtonAttributes extends StencilHTMLAttributes {
+  interface HeartButtonAttributes extends StencilHTMLAttributes {
     /**
-    * Total number of likes
+    * Total number of hearts
     */
     'count'?: number;
     /**
@@ -47,35 +47,31 @@ export namespace Components {
     * Cache key for localStorage
     */
     'key'?: string;
-    /**
-    * Event emitter for "on complete" of like toggle
-    */
-    'onLikeCompleted'?: (event: CustomEvent) => void;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'LikeButton': Components.LikeButton;
+    'HeartButton': Components.HeartButton;
   }
 
   interface StencilIntrinsicElements {
-    'like-button': Components.LikeButtonAttributes;
+    'heart-button': Components.HeartButtonAttributes;
   }
 
 
-  interface HTMLLikeButtonElement extends Components.LikeButton, HTMLStencilElement {}
-  var HTMLLikeButtonElement: {
-    prototype: HTMLLikeButtonElement;
-    new (): HTMLLikeButtonElement;
+  interface HTMLHeartButtonElement extends Components.HeartButton, HTMLStencilElement {}
+  var HTMLHeartButtonElement: {
+    prototype: HTMLHeartButtonElement;
+    new (): HTMLHeartButtonElement;
   };
 
   interface HTMLElementTagNameMap {
-    'like-button': HTMLLikeButtonElement
+    'heart-button': HTMLHeartButtonElement
   }
 
   interface ElementTagNameMap {
-    'like-button': HTMLLikeButtonElement;
+    'heart-button': HTMLHeartButtonElement;
   }
 
 
