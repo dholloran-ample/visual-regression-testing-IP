@@ -29,14 +29,6 @@ export namespace Components {
     * Cache key for localStorage
     */
     'key': string;
-    /**
-    * Label for "like" state
-    */
-    'likeLabel': string;
-    /**
-    * Label for "unlike" state
-    */
-    'unlikeLabel': string;
   }
   interface LikeButtonAttributes extends StencilHTMLAttributes {
     /**
@@ -56,17 +48,9 @@ export namespace Components {
     */
     'key'?: string;
     /**
-    * Label for "like" state
-    */
-    'likeLabel'?: string;
-    /**
     * Event emitter for "on complete" of like toggle
     */
     'onLikeCompleted'?: (event: CustomEvent) => void;
-    /**
-    * Label for "unlike" state
-    */
-    'unlikeLabel'?: string;
   }
 }
 
