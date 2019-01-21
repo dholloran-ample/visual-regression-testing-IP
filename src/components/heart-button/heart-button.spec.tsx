@@ -1,8 +1,15 @@
 import { HeartButton } from "./heart-button";
 
-describe("heart button", () => {
+describe("<heart-button>", () => {
   beforeEach(() => {
+    this.getCountFn = HeartButton.prototype.getCount = jest.fn();
+    this.getCountFn.mockResolvedValue(123);
     this.btn = new HeartButton();
+    this.btn.componentWillLoad();
+  });
+
+  it("should initialize total", () => {
+    expect(this.getCountFn).toHaveBeenCalledTimes(1);
   });
 
   it("should set the key property", () => {
@@ -17,10 +24,8 @@ describe("heart button", () => {
     expect(this.btn.likes()).toEqual([]);
   });
 
-  it("should return count", () => {
-    this.btn.getCount().then(() => {
-      expect(this.btn.count).toBe(0);
-    });
+  it("should initialize count", () => {
+    expect(this.btn.count).toBe(123);
   });
 
   it("abbreviate count for large numbers", () => {
@@ -32,5 +37,9 @@ describe("heart button", () => {
     expect(this.btn.abbrevCount()).toBe("2K");
     this.btn.count = 12745;
     expect(this.btn.abbrevCount()).toBe("12.75K");
+  });
+
+  it("should handle empty count values gracefully", () => {
+    expect(this.btn.abbrevCount()).toBe("123");
   });
 });

@@ -1,6 +1,7 @@
 [build]
   command = '''
     bash env.sh &&
+    npm run test &&
     npm run build &&
     mv dist www
   '''

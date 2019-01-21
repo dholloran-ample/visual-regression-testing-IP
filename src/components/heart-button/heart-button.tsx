@@ -43,7 +43,9 @@ export class HeartButton {
    */
   componentWillLoad() {
     this.isLiked = this.likes().includes(this.id);
-    this.getCount();
+    this.getCount().then(result => {
+      this.count = result;
+    });
   }
 
   /**
@@ -61,7 +63,7 @@ export class HeartButton {
         }
       })
       .then(success => {
-        this.count = dig(success, "data", "fields", "interaction_count") || 0;
+        return dig(success, "data", "fields", "interaction_count") || 0;
       });
   }
 
@@ -74,7 +76,7 @@ export class HeartButton {
       let n = Math.round(float * 4) / 4;
       return `${n}K`;
     } else {
-      return this.count.toString();
+      return (this.count || 0).toString();
     }
   }
 
