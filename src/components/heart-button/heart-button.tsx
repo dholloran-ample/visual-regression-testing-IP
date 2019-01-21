@@ -11,37 +11,37 @@ export class HeartButton {
   /**
    * Print log messages?
    */
-  debug: boolean = false;
+  private debug: boolean = false;
 
   /**
    * Cache key for localStorage
    */
-  @Prop() key: string = "crds-hearts";
+  @Prop() private key: string = "crds-hearts";
 
   /**
    * Unique identifier for likeable resource
    */
-  @Prop() id: string;
+  @Prop() private id: string;
 
   /**
    * Total number of hearts
    */
-  @Prop({ mutable: true }) count: number;
+  @Prop({ mutable: true }) private count: number;
 
   /**
    * Boolean indicating whether likeable resource has been liked
    */
-  @Prop({ mutable: true }) isLiked: boolean;
+  @Prop({ mutable: true }) private isLiked: boolean;
 
   /**
    * Emphemeral array object for managing updates to localStorage
    */
-  @State() _likes: String[] = [];
+  @State() private _likes: String[] = [];
 
   /**
    * Fires before render...
    */
-  componentWillLoad() {
+  public componentWillLoad() {
     this.isLiked = this.likes().includes(this.id);
     this.getCount().then(result => {
       this.count = result;
@@ -51,7 +51,7 @@ export class HeartButton {
   /**
    * Returns total number of likes from Contentful
    */
-  getCount() {
+  private getCount() {
     let api = `https://cdn.contentful.com/spaces/${
       process.env.CONTENTFUL_SPACE_ID
     }/environments/${process.env.CONTENTFUL_ENV}/entries`;
@@ -70,7 +70,7 @@ export class HeartButton {
   /**
    * Return count value, abbreviated for large numbers
    */
-  abbrevCount() {
+  private abbrevCount() {
     if (this.count > 1000) {
       let float = this.count / 1000;
       let n = Math.round(float * 4) / 4;
@@ -83,7 +83,7 @@ export class HeartButton {
   /**
    * Returns array of all liked ids from localStorage
    */
-  likes() {
+  private likes() {
     const ids = localStorage.getItem(this.key);
     return ids ? JSON.parse(ids) : [];
   }
@@ -92,7 +92,7 @@ export class HeartButton {
    * Handle storage addition/removal of likeable resource ID
    * @param e Event
    */
-  toggle(e) {
+  private toggle(e) {
     this.log("toggle()");
     e.preventDefault();
     this.isLiked = !this.isLiked;
@@ -108,7 +108,7 @@ export class HeartButton {
   /**
    * Removes current ID from localStorage
    */
-  remove() {
+  private remove() {
     this.log("removeFromStore()");
     this._likes = this.likes().filter(id => {
       if (id.toString() !== this.id) {
@@ -121,7 +121,7 @@ export class HeartButton {
   /**
    * Add current ID to localStorage
    */
-  add() {
+  private add() {
     this._likes = this.likes();
     this._likes.push(this.id);
     this.save(this._likes);
@@ -131,7 +131,7 @@ export class HeartButton {
    * Persist array of IDs to localStorage
    * @param arr Array of likeable resource IDs
    */
-  save(arr) {
+  private save(arr) {
     this.log("save()");
     localStorage.setItem(this.key, JSON.stringify(arr));
     axios.post(
@@ -148,7 +148,7 @@ export class HeartButton {
    * @param ns String
    * @param msg String (optional)
    */
-  log(ns, msg = "") {
+  private log(ns, msg = "") {
     if (this.debug) {
       console.log(ns, msg);
     }
@@ -157,7 +157,7 @@ export class HeartButton {
   /**
    * HTML
    */
-  render() {
+  public render() {
     let heart =
       '<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="heart"><path d="M222.944078,39.3395243 C232.469215,47.3270078 239.075354,57.1577642 242.762502,68.8317796 C246.449652,80.505795 246.987363,92.2566154 244.37563,104.084241 C241.763898,115.911866 236.156363,126.126627 227.553015,134.728537 L138.600552,226.891836 C135.527926,229.963948 131.994414,231.5 128,231.5 C124.005586,231.5 120.472074,229.963948 117.399448,226.891836 L28.4469857,135.189353 C19.8436364,126.280238 14.2361025,115.911866 11.6243699,104.084241 C9.01263721,92.2566154 9.55034867,80.505795 13.2374974,68.8317796 C16.924646,57.1577642 23.5307851,47.3270078 33.0559215,39.3395243 C41.3520061,32.2736738 50.7235066,27.8191121 61.1704302,25.9758461 C71.6173538,24.1325802 81.9106415,24.90061 92.0503004,28.2799285 C102.189959,31.6592471 111.100566,37.3426551 118.782129,45.3301387 L128,54.5464684 L137.217871,45.3301387 C144.899434,37.3426551 153.810041,31.6592471 163.9497,28.2799285 C174.089359,24.90061 184.382646,24.1325802 194.82957,25.9758461 C205.276493,27.8191121 214.647994,32.2736738 222.944078,39.3395243 Z" id="Path"></path></g></svg>';
     let heart_o =
