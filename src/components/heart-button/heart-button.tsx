@@ -46,6 +46,9 @@ export class HeartButton {
     this.getCount();
   }
 
+  /**
+   * Returns total number of likes from Contentful
+   */
   getCount() {
     let api = `https://cdn.contentful.com/spaces/${
       process.env.CONTENTFUL_SPACE_ID
@@ -58,8 +61,21 @@ export class HeartButton {
         }
       })
       .then(success => {
-        this.count = dig(success, "data", "fields", "interaction_count");
+        this.count = dig(success, "data", "fields", "interaction_count") || 0;
       });
+  }
+
+  /**
+   * Return count value, abbreviated for large numbers
+   */
+  abbrevCount() {
+    if (this.count > 1000) {
+      let float = this.count / 1000;
+      let n = Math.round(float * 4) / 4;
+      return `${n}K`;
+    } else {
+      return this.count.toString();
+    }
   }
 
   /**
@@ -152,7 +168,8 @@ export class HeartButton {
         class={this.isLiked ? "on" : "off"}
       >
         <span innerHTML={heart} class="icon heart" />
-        <span innerHTML={heart_o} class="icon heart-o" /> {this.count}
+        <span innerHTML={heart_o} class="icon heart-o" />
+        <span class="count">{this.abbrevCount()}</span>
       </a>
     );
   }
