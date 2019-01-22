@@ -51,7 +51,7 @@ export class HeartButton {
   /**
    * Returns total number of likes from Contentful
    */
-  private getCount() {
+  public getCount() {
     let api = `https://cdn.contentful.com/spaces/${
       process.env.CONTENTFUL_SPACE_ID
     }/environments/${process.env.CONTENTFUL_ENV}/entries`;

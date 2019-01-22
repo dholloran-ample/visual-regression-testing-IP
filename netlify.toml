@@ -3,5 +3,7 @@
     bash env.sh &&
     npm run test &&
     npm run build &&
-    mv dist www
+    npm run storybook:build &&
+    mv www/build storybook-static &&
+    mv dist storybook-static
   '''
