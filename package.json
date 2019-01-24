@@ -17,7 +17,8 @@
     "storybook:watch": "run-p start storybook",
     "storybook:build": "build-storybook",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "deploy": "echo 'deploy'"
   },
   "dependencies": {},
   "devDependencies": {
@@ -42,7 +43,8 @@
     "puppeteer": "1.8.0",
     "rimraf": "^2.6.3",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.4.0"
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-replace": "^2.1.0"
   },
   "license": "MIT"
 }
