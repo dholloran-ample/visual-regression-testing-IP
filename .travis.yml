@@ -1,4 +1,4 @@
 language: node_js
 node_js:
   - "node"
-script: bash env.sh && npm run test
+script: bash env.sh && npm run test && bash deploy.sh
