@@ -2,11 +2,22 @@
 
 # crds-components
 
-This project contains custom web components, developed for Crossroads' Church. This project was created on top of StencilJS and aims to follow that framework's standards and best-practices.
+This project contains custom web components developed for Crossroads' Church. See [StencilJS](https://stenciljs.com/) for information on the framework.
 
 The following components are made available via this library. Please see the README file for each, for more information on usage, available props, etc.
 
 - [`<heart-button />`](https://github.com/crdschurch/crds-components/tree/master/src/components/heart-button)
+
+## Environments
+
+You need to export following variables when building or running the project...
+
+| Variable                     | Description                                   |
+| ---------------------------- | --------------------------------------------- |
+| `CONTENTFUL_ACCESS_TOKEN`    | Access token for the Contentful Delivery API  |
+| `CONTENTFUL_SPACE_ID`        | Contentful Space ID                           |
+| `CONTENTFUL_ENV`             | Contentful environment (defaults to `master`) |
+| `CRDS_INTERACTIONS_ENDPOINT` | Service endpoint                              |
 
 ## License
 

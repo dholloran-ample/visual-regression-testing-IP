@@ -52,14 +52,12 @@ export class HeartButton {
    * Returns total number of likes from Contentful
    */
   public getCount() {
-    let api = `https://cdn.contentful.com/spaces/${
-      process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV}/entries`;
+    let api = `https://cdn.contentful.com/spaces/${this.space_id()}/environments/${this.env()}/entries`;
 
     return axios
       .get(`${api}/${this.id}`, {
         params: {
-          access_token: process.env.CONTENTFUL_ACCESS_TOKEN
+          access_token: this.token()
         }
       })
       .then(success => {
@@ -134,13 +132,10 @@ export class HeartButton {
   private save(arr) {
     this.log("save()");
     localStorage.setItem(this.key, JSON.stringify(arr));
-    axios.post(
-      `${process.env.CRDS_INTERACTIONS_ENDPOINT}/content-interactions`,
-      {
-        entry_id: this.id,
-        action: this.isLiked ? "add" : "subtract"
-      }
-    );
+    axios.post(`${this.endpoint()}/content-interactions`, {
+      entry_id: this.id,
+      action: this.isLiked ? "add" : "subtract"
+    });
   }
 
   /**
@@ -151,6 +146,48 @@ export class HeartButton {
   private log(ns, msg = "") {
     if (this.debug) {
       console.log(ns, msg);
+    }
+  }
+
+  /**
+   * Returns space_id
+   */
+  private space_id() {
+    return this.getMeta("cfl:space_id") || process.env.CONTENTFUL_SPACE_ID;
+  }
+
+  /**
+   * Returns environment
+   */
+  private env() {
+    return this.getMeta("cfl:env") || process.env.CONTENTFUL_ENV || "master";
+  }
+
+  /**
+   * Returns delivery token
+   */
+  private token() {
+    return this.getMeta("cfl:token") || process.env.CONTENTFUL_ACCESS_TOKEN;
+  }
+
+  /**
+   * Returns service endpoint
+   */
+  private endpoint() {
+    return (
+      this.getMeta("crds:interactions-endpoint") ||
+      process.env.CRDS_INTERACTIONS_ENDPOINT
+    );
+  }
+
+  /**
+   * Returns content metatag who's property matches "prop"
+   * @param prop Value of metatags prop attribute
+   */
+  private getMeta(prop) {
+    let el = document.querySelector(`meta[property*="${prop}"]`);
+    if (el) {
+      return el.getAttribute("content");
     }
   }
 
