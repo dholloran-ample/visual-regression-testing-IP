@@ -1,4 +1,11 @@
 language: node_js
 node_js:
-  - "node"
-script: bash env.sh && npm run test && bash deploy.sh
+  - node
+script: bash env.sh && npm run test
+deploy:
+  provider: npm
+  api_key:
+    secure: qXfzmVrr4dE8BAvMhMOTIKIyIGJztivAl/XR6t49rYhhDl7hpGS4vWmQStsf+8PEYgSwma3dFcZSLapN5aY7itKqtHcl/Jak5WiycAWlQMACqG/huDNYl4HfCiuOldtDnIgz3xs2O8tYk6JvPIauaycsKNDjwTWMJsekphoC9OtRwu4s4o0S2KtmRXCwd3K3zTQD1XSCFhvU8M4kbrYVOSbk1ee+dzem13j5kQsh02qe4Y3gig5oph8CA6g0QC0LRQ422jeb5TYUkH+lfx/MAfruR2MyaPWcT//J2fsHfKrEQdHZt2iepxNzI4emSkRRFtJQvAB3eIO4IfL0Lc+kYBLS9hlpJin4RNTEnhYzRsPXX1NJmjikLtMDgWpCA//vrugvcuByK8d73osW8qsdTiohvTZR7iqvxgxcODpwH7CaPEX+awam7arzYAVpPaa53sqGzFYa6CN9JN4KHX14e6NnQgMNPnfj/hV9VCLNBSMZQH47D7l4L2z0ORp7R6sLWe60i/gRNHkqNCqXrdEAZ1PxzqSKEFG2K5ba37BZTkNBkpJJ6xCCbh7G8kqAkUywm5ifl2xOqGsFaFYTF6eBdgZGXx8FUX1pAX5wYt/SO4o9BYWkpBT9pZaaAYePTObVZctbpTrpKpW7UpeR6kvXiEuAWt5NIed7XmDUW8W0V1k=
+  on:
+    tags: true
+    repo: crdschurch/crds-components
