@@ -73,6 +73,8 @@ export class HeartButton {
       let float = this.count / 1000;
       let n = Math.round(float * 4) / 4;
       return `${n}K`;
+    } else if (this.count < 0) {
+      return "0";
     } else {
       return (this.count || 0).toString();
     }
@@ -122,7 +124,11 @@ export class HeartButton {
   private add() {
     this._likes = this.likes();
     this._likes.push(this.id);
-    this.save(this._likes);
+    this.save(this.removeDuplicates(this._likes));
+  }
+
+  public removeDuplicates(arr) {
+    return Array.from(new Set(arr));
   }
 
   /**
