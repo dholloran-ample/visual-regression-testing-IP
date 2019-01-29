@@ -1,5 +1,5 @@
 {
-  "name": "@crds_npm/crds-components",
+  "name": "crds-components",
   "version": "0.0.1",
   "description": "Custom Elements for Crossroads Church",
   "module": "dist/esm/index.js",
