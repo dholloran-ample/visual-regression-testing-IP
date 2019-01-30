@@ -73,8 +73,6 @@ export class HeartButton {
       let float = this.count / 1000;
       let n = Math.round(float * 4) / 4;
       return `${n}K`;
-    } else if (this.count < 0) {
-      return "0";
     } else {
       return (this.count || 0).toString();
     }
@@ -101,7 +99,9 @@ export class HeartButton {
       this.count++;
     } else {
       this.remove();
-      this.count--;
+      if (this.count > 0) {
+        this.count--;
+      }
     }
   }
 
