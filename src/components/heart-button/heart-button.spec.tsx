@@ -37,8 +37,6 @@ describe("<heart-button>", () => {
     expect(this.btn.abbrevCount()).toBe("2K");
     this.btn.count = 12745;
     expect(this.btn.abbrevCount()).toBe("12.75K");
-    this.btn.count = -5;
-    expect(this.btn.abbrevCount()).toBe("0");
   });
 
   it("should handle empty count values gracefully", () => {
