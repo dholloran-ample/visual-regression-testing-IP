@@ -1,12 +1,26 @@
+@mixin heart-display {
+  &.heart {
+    display: inline-block;
+  }
+
+  &.heart-o {
+    display: none;
+  }
+}
+
+// --------------------------------------------------------
+
 a {
   font-family: sans-serif;
   display: block;
   color: #979797;
   font-size: 80%;
   text-decoration: none;
+
   > * {
     vertical-align: middle;
   }
+
   &.on {
     > span.heart,
     > span.heart-o {
@@ -15,31 +29,34 @@ a {
       }
     }
   }
-  &.on,
-  &:hover {
+
+  &.on {
     > span.heart,
     > span.heart-o {
-      &.heart {
-        display: inline-block;
-      }
-      &.heart-o {
-        display: none;
+      @include heart-display;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    &:hover {
+      > span.heart,
+      > span.heart-o {
+        background: #c05c04;
+
+        > svg {
+          fill: white;
+        }
+
+        @include heart-display;
       }
     }
   }
-  &:hover {
-    > span.heart,
-    > span.heart-o {
-      background: #c05c04;
-      > svg {
-        fill: white;
-      }
-    }
-  }
+
   span {
     &.count {
       padding-left: 0.5rem;
     }
+
     &.heart,
     &.heart-o {
       display: inline-block;
@@ -47,6 +64,7 @@ a {
       border-radius: 50%;
       width: 42px;
       height: 42px;
+
       svg {
         margin: 9px;
         width: 24px;
@@ -54,9 +72,11 @@ a {
         fill: currentColor;
       }
     }
+
     &.heart {
       display: none;
     }
+
     &.heart-o {
       display: inline-block;
     }
