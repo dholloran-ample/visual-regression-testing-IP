@@ -24,30 +24,10 @@ a {
   &.on {
     > span.heart,
     > span.heart-o {
+      @include heart-display;
+
       > svg {
         fill: #c05c04;
-      }
-    }
-  }
-
-  &.on {
-    > span.heart,
-    > span.heart-o {
-      @include heart-display;
-    }
-  }
-
-  @media (min-width: 1200px) {
-    &:hover {
-      > span.heart,
-      > span.heart-o {
-        background: #c05c04;
-
-        > svg {
-          fill: white;
-        }
-
-        @include heart-display;
       }
     }
   }
