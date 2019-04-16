@@ -2,6 +2,8 @@ import { Component, Prop, State } from "@stencil/core";
 import dig from "object-dig";
 import axios from "axios";
 import Logger from "../../shared/logger";
+import Config from "../../shared/config";
+import Utils from "../../shared/utils";
 
 @Component({
   tag: "heart-button",
@@ -18,6 +20,11 @@ export class HeartButton {
    * Logger instance
    */
   private console: Logger;
+
+  /**
+   * Contentful config
+   */
+  private config: Config;
 
   /**
    * Cache key for localStorage
@@ -49,6 +56,7 @@ export class HeartButton {
    */
   public componentWillLoad() {
     this.console = new Logger(this.debug);
+    this.config = new Config();
     this.isLiked = this.likes().includes(this.id);
     this.getCount().then(result => {
       this.count = result;
@@ -59,12 +67,11 @@ export class HeartButton {
    * Returns total number of likes from Contentful
    */
   public getCount() {
-    let api = `https://cdn.contentful.com/spaces/${this.space_id()}/environments/${this.env()}/entries`;
-
+    let url = `${this.config.endpoint()}/entries/${this.id}`;
     return axios
-      .get(`${api}/${this.id}`, {
+      .get(url, {
         params: {
-          access_token: this.token()
+          access_token: this.config.token()
         }
       })
       .then(success => {
@@ -152,45 +159,13 @@ export class HeartButton {
   }
 
   /**
-   * Returns space_id
-   */
-  private space_id() {
-    return this.getMeta("cfl:space_id") || process.env.CONTENTFUL_SPACE_ID;
-  }
-
-  /**
-   * Returns environment
-   */
-  private env() {
-    return this.getMeta("cfl:env") || process.env.CONTENTFUL_ENV || "master";
-  }
-
-  /**
-   * Returns delivery token
-   */
-  private token() {
-    return this.getMeta("cfl:token") || process.env.CONTENTFUL_ACCESS_TOKEN;
-  }
-
-  /**
    * Returns service endpoint
    */
   private endpoint() {
     return (
-      this.getMeta("crds:interactions-endpoint") ||
+      Utils.getMeta("crds:interactions-endpoint") ||
       process.env.CRDS_INTERACTIONS_ENDPOINT
     );
-  }
-
-  /**
-   * Returns content metatag who's property matches "prop"
-   * @param prop Value of metatags prop attribute
-   */
-  private getMeta(prop) {
-    let el = document.querySelector(`meta[property*="${prop}"]`);
-    if (el) {
-      return el.getAttribute("content");
-    }
   }
 
   /**
