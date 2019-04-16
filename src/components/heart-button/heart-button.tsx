@@ -1,6 +1,7 @@
 import { Component, Prop, State } from "@stencil/core";
 import dig from "object-dig";
 import axios from "axios";
+import Logger from "../../shared/logger";
 
 @Component({
   tag: "heart-button",
@@ -12,6 +13,11 @@ export class HeartButton {
    * Print log messages?
    */
   private debug: boolean = false;
+
+  /**
+   * Logger instance
+   */
+  private console: Logger;
 
   /**
    * Cache key for localStorage
@@ -42,6 +48,7 @@ export class HeartButton {
    * Fires before render...
    */
   public componentWillLoad() {
+    this.console = new Logger(this.debug);
     this.isLiked = this.likes().includes(this.id);
     this.getCount().then(result => {
       this.count = result;
@@ -91,7 +98,7 @@ export class HeartButton {
    * @param e Event
    */
   private toggle(e) {
-    this.log("toggle()");
+    this.console.log("toggle()");
     e.preventDefault();
     this.isLiked = !this.isLiked;
     if (this.isLiked) {
@@ -109,7 +116,7 @@ export class HeartButton {
    * Removes current ID from localStorage
    */
   private remove() {
-    this.log("removeFromStore()");
+    this.console.log("removeFromStore()");
     this._likes = this.likes().filter(id => {
       if (id.toString() !== this.id) {
         return id;
@@ -136,23 +143,12 @@ export class HeartButton {
    * @param arr Array of likeable resource IDs
    */
   private save(arr) {
-    this.log("save()");
+    this.console.log("save()");
     localStorage.setItem(this.key, JSON.stringify(arr));
     axios.post(`${this.endpoint()}/content-interactions`, {
       entry_id: this.id,
       action: this.isLiked ? "add" : "subtract"
     });
-  }
-
-  /**
-   * Log a message to the console if debug=true
-   * @param ns String
-   * @param msg String (optional)
-   */
-  private log(ns, msg = "") {
-    if (this.debug) {
-      console.log(ns, msg);
-    }
   }
 
   /**
