@@ -48,15 +48,20 @@ export namespace Components {
     */
     'key'?: string;
   }
+
+  interface SharedHeader {}
+  interface SharedHeaderAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
     'HeartButton': Components.HeartButton;
+    'SharedHeader': Components.SharedHeader;
   }
 
   interface StencilIntrinsicElements {
     'heart-button': Components.HeartButtonAttributes;
+    'shared-header': Components.SharedHeaderAttributes;
   }
 
 
@@ -66,12 +71,20 @@ declare global {
     new (): HTMLHeartButtonElement;
   };
 
+  interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
+  var HTMLSharedHeaderElement: {
+    prototype: HTMLSharedHeaderElement;
+    new (): HTMLSharedHeaderElement;
+  };
+
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
+    'shared-header': HTMLSharedHeaderElement
   }
 
   interface ElementTagNameMap {
     'heart-button': HTMLHeartButtonElement;
+    'shared-header': HTMLSharedHeaderElement;
   }
 
 
