@@ -49,18 +49,40 @@ export namespace Components {
     'key'?: string;
   }
 
-  interface SharedHeader {}
-  interface SharedHeaderAttributes extends StencilHTMLAttributes {}
+  interface CrdsHeader {
+    'href': string;
+  }
+  interface CrdsHeaderAttributes extends StencilHTMLAttributes {
+    'href'?: string;
+  }
+
+  interface CrdsLink {
+    'href': string;
+  }
+  interface CrdsLinkAttributes extends StencilHTMLAttributes {
+    'href'?: string;
+  }
+
+  interface SharedHeader {
+    'src': string;
+  }
+  interface SharedHeaderAttributes extends StencilHTMLAttributes {
+    'src'?: string;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'HeartButton': Components.HeartButton;
+    'CrdsHeader': Components.CrdsHeader;
+    'CrdsLink': Components.CrdsLink;
     'SharedHeader': Components.SharedHeader;
   }
 
   interface StencilIntrinsicElements {
     'heart-button': Components.HeartButtonAttributes;
+    'crds-header': Components.CrdsHeaderAttributes;
+    'crds-link': Components.CrdsLinkAttributes;
     'shared-header': Components.SharedHeaderAttributes;
   }
 
@@ -71,6 +93,18 @@ declare global {
     new (): HTMLHeartButtonElement;
   };
 
+  interface HTMLCrdsHeaderElement extends Components.CrdsHeader, HTMLStencilElement {}
+  var HTMLCrdsHeaderElement: {
+    prototype: HTMLCrdsHeaderElement;
+    new (): HTMLCrdsHeaderElement;
+  };
+
+  interface HTMLCrdsLinkElement extends Components.CrdsLink, HTMLStencilElement {}
+  var HTMLCrdsLinkElement: {
+    prototype: HTMLCrdsLinkElement;
+    new (): HTMLCrdsLinkElement;
+  };
+
   interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
   var HTMLSharedHeaderElement: {
     prototype: HTMLSharedHeaderElement;
@@ -79,11 +113,15 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
+    'crds-header': HTMLCrdsHeaderElement
+    'crds-link': HTMLCrdsLinkElement
     'shared-header': HTMLSharedHeaderElement
   }
 
   interface ElementTagNameMap {
     'heart-button': HTMLHeartButtonElement;
+    'crds-header': HTMLCrdsHeaderElement;
+    'crds-link': HTMLCrdsLinkElement;
     'shared-header': HTMLSharedHeaderElement;
   }
 

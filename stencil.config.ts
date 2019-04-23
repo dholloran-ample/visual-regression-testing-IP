@@ -35,5 +35,6 @@ export const config: Config = {
         process.env.CRDS_INTERACTIONS_ENDPOINT
       )
     })
-  ]
+  ],
+  copy: [{ src: "data" }]
 };
