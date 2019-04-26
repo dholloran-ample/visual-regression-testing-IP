@@ -19,8 +19,13 @@ export const config: Config = {
     browser: true
   },
   plugins: [
-    env(), //
-    sass(),
+    env(),
+    sass({
+      injectGlobalPaths: [
+        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss',
+        'node_modules/crds-styles/assets/stylesheets/_variables.scss',
+      ],
+    }),
     builtins(),
     globals(),
     replace({
