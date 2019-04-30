@@ -64,9 +64,11 @@ export namespace Components {
   }
 
   interface SharedHeader {
+    'isShowing': boolean;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
+    'isShowing'?: boolean;
     'src'?: string;
   }
 }

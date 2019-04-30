@@ -3,6 +3,7 @@ import dig from 'object-dig';
 import axios from 'axios';
 import Logger from '../../shared/logger';
 import Config from '../../shared/config';
+import Fragment from 'stencil-fragment';
 
 @Component({
   tag: 'shared-header',
@@ -60,6 +61,24 @@ export class SharedHeader {
     return children.map(child => <crds-link href={dig(child, 'path')}>{dig(child, 'title')}</crds-link>);
   }
 
+  @Prop({ mutable: true }) private isShowing: boolean;
+
+  private toggle(e) {
+    this.console.log('toggle()');
+    e.preventDefault();
+
+    this.isShowing = !this.isShowing;
+    if (this.isShowing) {
+      // this.add();
+      // this.count++;
+    } else {
+      // this.remove();
+      // if (this.count > 0) {
+      //   this.count--;
+      // }
+    }
+  }
+
   /**
    * HTML
    */
@@ -76,21 +95,105 @@ export class SharedHeader {
       '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="usd-circle" class="svg-inline--fa fa-usd-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 464c-119.1 0-216-96.9-216-216S128.9 40 248 40s216 96.9 216 216-96.9 216-216 216zm40.3-221.3l-72-20.2c-12.1-3.4-20.6-14.4-20.6-26.7 0-15.3 12.8-27.8 28.5-27.8h45c11.2 0 21.9 3.6 30.6 10.1 3.2 2.4 7.6 2 10.4-.8l11.3-11.5c3.4-3.4 3-9-.8-12-14.6-11.6-32.6-17.9-51.6-17.9H264v-40c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v40h-7.8c-33.3 0-60.5 26.8-60.5 59.8 0 26.6 18.1 50.2 43.9 57.5l72 20.2c12.1 3.4 20.6 14.4 20.6 26.7 0 15.3-12.8 27.8-28.5 27.8h-45c-11.2 0-21.9-3.6-30.6-10.1-3.2-2.4-7.6-2-10.4.8l-11.3 11.5c-3.4 3.4-3 9 .8 12 14.6 11.6 32.6 17.9 51.6 17.9h5.2v40c0 4.4 3.6 8 8 8h16c4.4 0 8-3.6 8-8v-40h7.8c33.3 0 60.5-26.8 60.5-59.8-.1-26.6-18.1-50.2-44-57.5z"></path></svg>';
 
     this.console.log('render()');
+
     return (
-      <header>
-        {/* <div>{this.renderSections(this.links)}</div> */}
-        <div class="global-actions">
-          <a href="" class="menu" innerHTML={menu} />
-          <a href="" class="search" innerHTML={search} />
-        </div>
+      <Fragment>
+        <header>
+          <div>
+            {/* <div>{this.renderSections(this.links)}</div> */}
+            <div class="global-actions">
+              <a href="" class="menu" innerHTML={menu} />
+              <a href="" class="search" innerHTML={search} />
+            </div>
 
-        <a href="" class="logo" innerHTML={logo} />
+            <a href="" class="logo" innerHTML={logo} />
 
-        <div class="user-actions">
-          <a href="" class="donate" innerHTML={usd} />
-          <a href="" class="account" innerHTML={account} />
-        </div>
-      </header>
+            <div class="user-actions">
+              <a href="" class="donate" innerHTML={usd} />
+              <a href="" class="account" innerHTML={account} />
+            </div>
+          </div>
+        </header>
+        <nav>
+          <div>
+            <div class="navigation">
+              <ul>
+                <li>
+                  <a
+                    onClick={e => this.toggle(e)}
+                    class={this.isShowing ? 'nav-grouping is-active' : 'nav-grouping is-active'}
+                  >
+                    <h2>Watch, Listen Read</h2>
+                    <p>Videos, music, articles and podcasts</p>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={e => this.toggle(e)}
+                    class={this.isShowing ? 'nav-grouping is-active' : 'nav-grouping is-active'}
+                  >
+                    <h2>Find Community</h2>
+                    <p>Groups, camps, serve locally and globally, kids</p>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={e => this.toggle(e)}
+                    class={'nav-grouping ' + (this.isShowing ? 'is-active' : 'is-not-active')}
+                  >
+                    <h2>Come Visit</h2>
+                    <p>Locations (in person and online)</p>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={e => this.toggle(e)}
+                    class={this.isShowing ? 'nav-grouping is-active' : 'nav-grouping is-active'}
+                  >
+                    <h2>Get Support</h2>
+                    <p>Counselors, prayer, life events, contact</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="subnavigation">
+              <div class="ctas">
+                <h3>Happening at Crossroads</h3>
+
+                <div class="cta">
+                  <div class="cta-image">
+                    <img src="https://via.placeholder.com/300x225.png?text=placeholder" />
+                  </div>
+                  <div class="cta-content">
+                    <h4>Undivided</h4>
+                    <p>A journey on race, relationship, and reconciliation.</p>
+                  </div>
+                </div>
+
+                <div class="cta">
+                  <div class="cta-image">
+                    <img src="https://via.placeholder.com/300x225.png?text=placeholder" />
+                  </div>
+                  <div class="cta-content">
+                    <h4>Wash the Sheets, Skip the Advice</h4>
+                    <p>Kim Botto</p>
+                  </div>
+                </div>
+
+                <div class="cta">
+                  <div class="cta-image">
+                    <img src="https://via.placeholder.com/300x225.png?text=placeholder" />
+                  </div>
+                  <div class="cta-content">
+                    <h4>LEAD A GO LOCAL PROJECT</h4>
+                    <p>Sign up before Monday, March 4</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </Fragment>
     );
   }
 }
