@@ -1,0 +1,51 @@
+header {
+  background-color: $cr-cyan;
+  padding: 0 15px;
+  position: relative;
+
+  > div {
+    @include container();
+
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.global-actions,
+.user-actions {
+  display: flex;
+
+  a {
+    &:first-of-type {
+      margin-right: 18px;
+    }
+  }
+}
+
+.logo {
+  padding: 7px;
+
+  svg {
+    fill: $cr-white;
+    height: 29px;
+    width: 111px;
+  }
+}
+
+.account,
+.donate,
+.menu,
+.search {
+  $size: 22px;
+
+  display: block;
+  height: $size;
+  padding: 12px 0;
+  width: $size;
+
+  svg {
+    fill: $cr-white;
+    height: $size;
+    width: $size;
+  }
+}

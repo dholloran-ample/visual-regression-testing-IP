@@ -1,50 +1,8 @@
-@mixin container {
-  margin: 0 auto;
-  max-width: $container-large-desktop;
-}
-
-@mixin reset-list {
-  padding-left: 0;
-
-  li {
-    list-style: none;
-  }
-}
-
-@mixin nav-is-active {
-  background-color: $cr-cyan;
-
-  &::after {
-    $size: 64px;
-
-    border-color: transparent transparent transparent $cr-cyan;
-    border-style: solid;
-    border-width: $size 0 $size 50px;
-    content: '';
-    display: inline-block;
-    height: 0;
-    position: absolute;
-    right: -50px;
-    top: -1px;
-    width: 0;
-  }
-}
-
-header {
-  background-color: $cr-cyan;
-  padding: 0 15px;
-  position: relative;
-
-  > div {
-    @include container();
-
-    display: flex;
-    justify-content: space-between;
-  }
-}
+$top-padding: 50px;
 
 nav {
-  background: url('./assets/images/register-bg@2x.jpg') no-repeat;
+  background: url('./assets/images/register-bg-mobile@2x.jpg') no-repeat;
+  background-size: cover;
   color: $cr-white;
   font-family: $base-font-face;
   height: 100vh;
@@ -52,60 +10,47 @@ nav {
   position: fixed;
   width: 100%;
 
+  @media (min-width: $screen-md) {
+    background-image: url('./assets/images/register-bg@2x.jpg');
+  }
+
+  &.subnavigation-is-showing {
+    // background: linear-gradient(181.27deg, rgba(0, 0, 0, 0) 0%, #000 100%);
+    // background-image: url('./assets/images/media-landing-bg@2x.jpg');
+  }
+
   > div {
-    @include container();
+    @include container;
 
-    @media (min-width: $screen-sm) {
+    @media (min-width: $screen-md) {
       display: flex;
-      justify-content: space-between;
     }
   }
+}
 
-  .subnavigation {
-    margin: 0 15px;
+.subnavigation {
+  margin: 0 15px;
+  padding-top: 70px;
 
-    @media (min-width: $screen-sm) {
-      width: 50%;
-    }
-
-    h3 {
-      color: #fff;
-      font-size: 11px;
-      opacity: .5;
-      text-transform: uppercase;
-    }
+  @media (min-width: $screen-md) {
+    width: 50%;
   }
 
-  .navigation {
-    position: relative;
+  // stylelint-disable a11y/font-size-is-readable
+  h3 {
+    color: #fff;
+    font-size: 11px;
+    opacity: .5;
+    text-transform: uppercase;
+  }
+}
 
-    @media (min-width: $screen-sm) {
-      margin-right: 2.7%;
-      width: 47.3%;
-    }
+.navigation {
+  position: relative;
 
-    &::before {
-      background-color: #d8d8d8;
-      bottom: 0;
-      content: '';
-      height: 2px;
-      left: 20px;
-      margin: 0 auto;
-      opacity: .2;
-      position: absolute;
-      width: calc(100vw - 40px);
-
-      @media (min-width: $screen-sm) {
-        background: linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(255, 255, 255, 0) 100%
-          );
-        height: 50vh;
-        left: 82%;
-        width: 2px;
-      }
-    }
+  @media (min-width: $screen-md) {
+    margin-right: 1.2%;
+    width: 50%;
   }
 
   ul {
@@ -114,143 +59,39 @@ nav {
     margin-top: 0;
     padding: 30px 0 20px;
 
-    @media (min-width: $screen-sm) {
-      padding: 50px 20px 0;
+    @media (min-width: $screen-md) {
+      padding: $top-padding 20px 0;
+      position: relative;
+      z-index: 1;
     }
   }
 
   li {
     width: 100%;
   }
-}
 
-// stylelint-disable a11y/no-display-none
-// .subnavigation {
-//   display: none;
-//   position: absolute;
-//   right: 0;
-// }
+  &::after {
+    background-color: #d8d8d8;
+    bottom: 0;
+    content: '';
+    height: 2px;
+    left: 20px;
+    margin: 0 auto;
+    opacity: .2;
+    position: absolute;
+    width: calc(100vw - 40px);
 
-.global-actions,
-.user-actions {
-  display: flex;
-
-  a {
-    &:first-of-type {
-      margin-right: 18px;
+    @media (min-width: $screen-md) {
+      background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 0) 100%
+        );
+      height: 100%;
+      left: auto;
+      right: 55px;
+      top: $top-padding;
+      width: 2px;
     }
-  }
-}
-
-.logo {
-  padding: 7px;
-
-  svg {
-    fill: $cr-white;
-    height: 29px;
-    width: 111px;
-  }
-}
-
-.account,
-.donate,
-.menu,
-.search {
-  $size: 22px;
-
-  display: block;
-  height: $size;
-  padding: 12px 0;
-  width: $size;
-
-  svg {
-    fill: $cr-white;
-    height: $size;
-    width: $size;
-  }
-}
-
-.nav-grouping {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  padding: 15px 20px;
-
-  @media (min-width: $screen-sm) {
-    height: 96px;
-    margin-bottom: 0;
-    position: relative;
-    width: 86%;
-  }
-
-  &:hover {
-    @media (min-width: $screen-sm) {
-      @include nav-is-active;
-    }
-  }
-
-  &.is-active {
-    @media (min-width: $screen-sm) {
-      @include nav-is-active;
-    }
-  }
-
-  h2 {
-    @include font-family-condensed-extra;
-
-    display: flex;
-    font-size: 48px;
-    justify-content: space-between;
-    line-height: .6;
-    margin: 0;
-    position: relative;
-    text-transform: uppercase;
-
-    &::after {
-      @media (max-width: $screen-sm) {
-        $height: 22px;
-        $width: 12px;
-
-        background-image: url('/assets/images/chevron-right-light.svg');
-        background-size: $width $height;
-        content: '';
-        display: flex;
-        height: $height;
-        position: absolute;
-        right: 0;
-        top: 20%;
-        width: $width;
-      }
-    }
-  }
-
-  p {
-    font-size: 14px;
-    margin: 12px 0 0;
-    opacity: .7;
-  }
-}
-
-.cta {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-
-  &-image {
-    margin-right: 20px;
-    width: 30%;
-  }
-
-  &-content {
-    width: 70%;
-
-    h4,
-    p {
-      margin: 0;
-    }
-  }
-
-  img {
-    max-width: 100%;
   }
 }

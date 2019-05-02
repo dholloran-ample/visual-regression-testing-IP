@@ -1,0 +1,84 @@
+@mixin nav-is-active {
+  background-color: $cr-cyan;
+
+  &::after {
+    $size: 64px;
+
+    border-color: transparent transparent transparent $cr-cyan;
+    border-style: solid;
+    border-width: $size 0 $size 50px;
+    content: '';
+    display: inline-block;
+    height: 0;
+    position: absolute;
+    right: -50px;
+    top: -1px;
+    width: 0;
+  }
+}
+
+nav-section {
+  a {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 15px 20px;
+
+    @media (min-width: $screen-md) {
+      height: 96px;
+      justify-content: center;
+      margin-bottom: 0;
+      position: relative;
+      width: 86%;
+    }
+
+    &:hover {
+      @media (min-width: $screen-md) {
+        @include nav-is-active;
+      }
+    }
+
+    &.is-active {
+      @media (min-width: $screen-md) {
+        @include nav-is-active;
+      }
+    }
+
+    h2 {
+      @include font-family-condensed-extra;
+
+      display: flex;
+      font-size: 48px;
+      justify-content: space-between;
+      line-height: .6;
+      margin: 0;
+      position: relative;
+      text-transform: uppercase;
+
+      &::after {
+        @media (max-width: $screen-md) {
+          $height: 22px;
+          $width: 12px;
+
+          background-image: url('/assets/images/chevron-right-light.svg');
+          background-size: $width $height;
+          content: '';
+          display: flex;
+          height: $height;
+          position: absolute;
+          right: 0;
+          top: 20%;
+          width: $width;
+        }
+      }
+    }
+
+    // stylelint-disable a11y/font-size-is-readable
+    p {
+      font-size: 14px;
+      margin: 12px 0 0;
+      opacity: .7;
+    }
+  }
+}

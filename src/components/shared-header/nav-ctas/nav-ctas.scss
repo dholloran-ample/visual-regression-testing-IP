@@ -1,0 +1,54 @@
+// stylelint-disable a11y/font-size-is-readable
+h3 {
+  font-size: 11px;
+  opacity: .5;
+  text-transform: uppercase;
+}
+
+.ctas {
+  @include font-family-base;
+
+  padding: 70px 20px 0;
+}
+
+.cta {
+  background-color: rgba(21, 21, 21, .8);
+  display: flex;
+  flex-basis: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  &-image {
+    margin-right: 20px;
+    width: 100px;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+
+    h4 {
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    h4,
+    p {
+      margin: 0;
+    }
+
+    p {
+      color: #979797;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 18px;
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

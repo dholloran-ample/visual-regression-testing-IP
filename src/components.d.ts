@@ -63,11 +63,53 @@ export namespace Components {
     'href'?: string;
   }
 
+  interface NavBar {
+    'href': string;
+  }
+  interface NavBarAttributes extends StencilHTMLAttributes {
+    'href'?: string;
+  }
+
+  interface NavCtas {
+    'href': string;
+  }
+  interface NavCtasAttributes extends StencilHTMLAttributes {
+    'href'?: string;
+  }
+
+  interface NavSectionSubnav {
+    'active': string;
+    'id': string;
+  }
+  interface NavSectionSubnavAttributes extends StencilHTMLAttributes {
+    'active'?: string;
+    'id'?: string;
+  }
+
+  interface NavSection {
+    'activeSection': any;
+    'id': string;
+    'isActive': boolean;
+    'parent': any;
+  }
+  interface NavSectionAttributes extends StencilHTMLAttributes {
+    'activeSection'?: any;
+    'id'?: string;
+    'isActive'?: boolean;
+    'parent'?: any;
+  }
+
   interface SharedHeader {
+    /**
+    * Returns total number of likes from Contentful
+    */
     'isShowing': boolean;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
+    /**
+    * Returns total number of likes from Contentful
+    */
     'isShowing'?: boolean;
     'src'?: string;
   }
@@ -78,6 +120,10 @@ declare global {
     'HeartButton': Components.HeartButton;
     'CrdsHeader': Components.CrdsHeader;
     'CrdsLink': Components.CrdsLink;
+    'NavBar': Components.NavBar;
+    'NavCtas': Components.NavCtas;
+    'NavSectionSubnav': Components.NavSectionSubnav;
+    'NavSection': Components.NavSection;
     'SharedHeader': Components.SharedHeader;
   }
 
@@ -85,6 +131,10 @@ declare global {
     'heart-button': Components.HeartButtonAttributes;
     'crds-header': Components.CrdsHeaderAttributes;
     'crds-link': Components.CrdsLinkAttributes;
+    'nav-bar': Components.NavBarAttributes;
+    'nav-ctas': Components.NavCtasAttributes;
+    'nav-section-subnav': Components.NavSectionSubnavAttributes;
+    'nav-section': Components.NavSectionAttributes;
     'shared-header': Components.SharedHeaderAttributes;
   }
 
@@ -107,6 +157,30 @@ declare global {
     new (): HTMLCrdsLinkElement;
   };
 
+  interface HTMLNavBarElement extends Components.NavBar, HTMLStencilElement {}
+  var HTMLNavBarElement: {
+    prototype: HTMLNavBarElement;
+    new (): HTMLNavBarElement;
+  };
+
+  interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
+  var HTMLNavCtasElement: {
+    prototype: HTMLNavCtasElement;
+    new (): HTMLNavCtasElement;
+  };
+
+  interface HTMLNavSectionSubnavElement extends Components.NavSectionSubnav, HTMLStencilElement {}
+  var HTMLNavSectionSubnavElement: {
+    prototype: HTMLNavSectionSubnavElement;
+    new (): HTMLNavSectionSubnavElement;
+  };
+
+  interface HTMLNavSectionElement extends Components.NavSection, HTMLStencilElement {}
+  var HTMLNavSectionElement: {
+    prototype: HTMLNavSectionElement;
+    new (): HTMLNavSectionElement;
+  };
+
   interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
   var HTMLSharedHeaderElement: {
     prototype: HTMLSharedHeaderElement;
@@ -117,6 +191,10 @@ declare global {
     'heart-button': HTMLHeartButtonElement
     'crds-header': HTMLCrdsHeaderElement
     'crds-link': HTMLCrdsLinkElement
+    'nav-bar': HTMLNavBarElement
+    'nav-ctas': HTMLNavCtasElement
+    'nav-section-subnav': HTMLNavSectionSubnavElement
+    'nav-section': HTMLNavSectionElement
     'shared-header': HTMLSharedHeaderElement
   }
 
@@ -124,6 +202,10 @@ declare global {
     'heart-button': HTMLHeartButtonElement;
     'crds-header': HTMLCrdsHeaderElement;
     'crds-link': HTMLCrdsLinkElement;
+    'nav-bar': HTMLNavBarElement;
+    'nav-ctas': HTMLNavCtasElement;
+    'nav-section-subnav': HTMLNavSectionSubnavElement;
+    'nav-section': HTMLNavSectionElement;
     'shared-header': HTMLSharedHeaderElement;
   }
 

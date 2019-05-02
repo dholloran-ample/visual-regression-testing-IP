@@ -1,16 +1,8 @@
-/* Table of contents:
-** 1. Font-face utility classes
-** 2. Font-size utility classes
-** 3. Typesetting
-** 4. Body content
-** 5. Links
-** 6. Address
-** 7. Blockquote
-** 8. Lists
-** 9. Misc.
-*/
+// stylelint-disable declaration-no-important
 
-/* 1. Font-face utility mixins */
+// Font-face utility mixins
+// ---------------------------------------------------------
+
 @mixin font-family-base {
   font-family: $base-font-face !important;
   font-weight: 300 !important;
@@ -42,7 +34,9 @@
   font-weight: 300 !important;
 }
 
-/* 2. Font-size utility classes */
+// Font-size utility mixins
+// --------------------------------------------------------
+
 @mixin font-size-h1 {
   font-size: $font-size-h1 !important;
 
@@ -88,5 +82,22 @@
 
   @media screen and (min-width: $screen-xs) {
     font-size: $font-size-h6 * 1.15 !important; // 22px
+  }
+}
+
+// --------------------------------------------------------
+
+@mixin container {
+  margin: 0 auto;
+  max-width: $container-large-desktop;
+}
+
+// --------------------------------------------------------
+
+@mixin reset-list {
+  padding-left: 0;
+
+  li {
+    list-style: none;
   }
 }

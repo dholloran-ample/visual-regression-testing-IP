@@ -279,7 +279,7 @@ module.exports = {
     'selector-pseudo-element-no-unknown': true,
     'selector-pseudo-element-whitelist': null,
     'selector-type-case': 'lower',
-    'selector-type-no-unknown': true,
+    'selector-type-no-unknown': null,
     'shorthand-property-no-redundant-values': true,
     'string-no-newline': true,
     'string-quotes': 'single',
