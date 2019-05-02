@@ -11,7 +11,7 @@ export class NavigationSection {
   @Prop() public id: string;
   @Prop({ mutable: true }) public activeSection: any;
   @Prop({ mutable: true }) private isActive: boolean;
-  @Prop() private onClick: any;
+  @Prop() private onActivate: any;
 
   /**
    * Print log messages?
@@ -28,7 +28,7 @@ export class NavigationSection {
   render() {
     return (
       <li>
-        <a onClick={e => this.onClick(e, this.id)} class={this.isActive ? 'is-active' : ''}>
+        <a onClick={e => this.onActivate(e, this.id)} class={this.isActive ? 'is-active' : ''}>
           <slot />
         </a>
       </li>

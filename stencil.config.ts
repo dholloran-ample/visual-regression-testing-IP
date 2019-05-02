@@ -16,7 +16,8 @@ export const config: Config = {
     }
   ],
   nodeResolve: {
-    browser: true
+    browser: true,
+    preferBuiltins: true
   },
   plugins: [
     env(),

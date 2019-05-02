@@ -4,6 +4,7 @@ import axios from 'axios';
 import Logger from '../../shared/logger';
 import Config from '../../shared/config';
 import Fragment from 'stencil-fragment';
+import Utils from '../../shared/utils';
 
 @Component({
   tag: 'shared-header',
@@ -17,7 +18,7 @@ export class SharedHeader {
   private debug: boolean = false;
   private console: Logger;
   private config: Config;
-  private links: any = [];
+  private payload: any = [];
 
   @Prop({ mutable: true }) private isShowing: boolean;
   @Prop() src: string;
@@ -29,18 +30,18 @@ export class SharedHeader {
   public componentWillLoad() {
     this.console = new Logger(this.debug);
     this.config = new Config();
-    this.getRecords();
+    this.getPayload();
   }
 
   /**
    * Returns total number of likes from Contentful
    */
-  public getRecords() {
+  private getPayload() {
     this.console.log('getRecords()');
-    this.links = dig(window, 'CRDS', 'navigation') || [];
-    if (this.links.length > 0 && this.src) {
+    this.payload = dig(window, 'CRDS', 'navigation') || [];
+    if (this.payload.length > 0 && this.src) {
       axios.get(this.src).then(success => {
-        this.links = dig(success, 'data');
+        this.payload = dig(success, 'data');
       });
     }
   }
@@ -50,9 +51,59 @@ export class SharedHeader {
    * @param e Event
    * @param id string
    */
-  public onClick(e, id) {
+  protected onClick(e, id) {
     e.preventDefault();
     this.active = id;
+  }
+
+  /**
+   * Renders all sections from payload
+   */
+  private renderSections(payload) {
+    return payload.map(section => {
+      return (
+        <nav-section id={Utils.parameterize(section.title)} onActivate={this.onClick.bind(this)}>
+          <h2>{section.title}</h2>
+          <p>{section.description}</p>
+        </nav-section>
+      );
+    });
+  }
+
+  /**
+   * Returns all subnav elements
+   * @param payload
+   */
+  private renderSubnavs(payload) {
+    const sections = payload.map(section => {
+      return (
+        <nav-section-subnav active={this.active} id={Utils.parameterize(section.title)}>
+          {this.renderChildren(section)}
+        </nav-section-subnav>
+      );
+    });
+    return <div class="subnavigation">{sections}</div>;
+  }
+
+  /**
+   * Returns header or unordered list
+   * @param section
+   */
+  private renderChildren(section) {
+    return section.children.map(child => {
+      if (typeof child == 'string') {
+        return <h4>{child}</h4>;
+      } else {
+        const listItems = child.map(link => {
+          return (
+            <li>
+              <a href={link.href}>{link.title}</a>
+            </li>
+          );
+        });
+        return <ul>{listItems}</ul>;
+      }
+    });
   }
 
   /**
@@ -62,100 +113,12 @@ export class SharedHeader {
     return (
       <Fragment>
         <nav-bar />
-        <nav class={this.active === undefined ? '' : `section-${this.active}`}>
+        <nav class={this.active === undefined ? '' : `section--${this.active}`}>
           <div>
-            {/* <div>{this.renderSections(this.links)}</div> */}
             <div class="navigation">
-              <ul>
-                <nav-section id="media" onClick={this.onClick.bind(this)}>
-                  <h2>Watch, Listen Read</h2>
-                  <p>Videos, music, articles and podcasts</p>
-                </nav-section>
-
-                <nav-section id="community" onClick={this.onClick.bind(this)}>
-                  <h2>Find Community</h2>
-                  <p>Groups, camps, serve locally and globally, kids</p>
-                </nav-section>
-
-                <nav-section id="contact" onClick={this.onClick.bind(this)}>
-                  <h2>Come Visit</h2>
-                  <p>Locations (in person and online)</p>
-                </nav-section>
-
-                <nav-section id="support" onClick={this.onClick.bind(this)}>
-                  <h2>Get Support</h2>
-                  <p>Counselors, prayer, life events, contact</p>
-                </nav-section>
-              </ul>
+              <ul>{this.renderSections(this.payload)}</ul>
             </div>
-
-            <div class="subnavigation">
-              <nav-section-subnav active={this.active} id="media">
-                {/* <a href="" class="back">
-                  back
-                </a>
-                <h2>Watch, Listen Read</h2> */}
-
-                <a href="" class="all">
-                  All Media
-                </a>
-
-                <h4>Types</h4>
-                <ul>
-                  <li>
-                    <a href="">articles</a>
-                  </li>
-                  <li>
-                    <a href="">Music</a>
-                  </li>
-                  <li>
-                    <a href="">podcasts</a>
-                  </li>
-                  <li>
-                    <a href="">series</a>
-                  </li>
-                  <li>
-                    <a href="">videos</a>
-                  </li>
-                </ul>
-
-                <h4>Topics</h4>
-                <ul>
-                  <li>
-                    <a href="">Culture</a>
-                  </li>
-                  <li>
-                    <a href="">Self</a>
-                  </li>
-                  <li>
-                    <a href="">work</a>
-                  </li>
-                  <li>
-                    <a href="">money</a>
-                  </li>
-                  <li>
-                    <a href="">relationships</a>
-                  </li>
-                </ul>
-
-                <h4>Collections</h4>
-                <ul>
-                  <li>
-                    <a href="">community stories</a>
-                  </li>
-                </ul>
-              </nav-section-subnav>
-              <nav-section-subnav active={this.active} id="community">
-                2
-              </nav-section-subnav>
-              <nav-section-subnav active={this.active} id="contact">
-                3
-              </nav-section-subnav>
-              <nav-section-subnav active={this.active} id="support">
-                4
-              </nav-section-subnav>
-            </div>
-
+            <div class="subnavigation">{this.renderSubnavs(this.payload)}</div>
             <nav-ctas />
           </div>
         </nav>

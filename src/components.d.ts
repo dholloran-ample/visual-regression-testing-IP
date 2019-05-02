@@ -90,13 +90,13 @@ export namespace Components {
     'activeSection': any;
     'id': string;
     'isActive': boolean;
-    'onClick': any;
+    'onActivate': any;
   }
   interface NavSectionAttributes extends StencilHTMLAttributes {
     'activeSection'?: any;
     'id'?: string;
     'isActive'?: boolean;
-    'onClick'?: any;
+    'onActivate'?: any;
   }
 
   interface SharedHeader {
