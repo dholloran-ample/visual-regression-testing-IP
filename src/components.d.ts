@@ -49,20 +49,6 @@ export namespace Components {
     'key'?: string;
   }
 
-  interface CrdsHeader {
-    'href': string;
-  }
-  interface CrdsHeaderAttributes extends StencilHTMLAttributes {
-    'href'?: string;
-  }
-
-  interface CrdsLink {
-    'href': string;
-  }
-  interface CrdsLinkAttributes extends StencilHTMLAttributes {
-    'href'?: string;
-  }
-
   interface NavBar {
     'href': string;
   }
@@ -90,26 +76,20 @@ export namespace Components {
     'activeSection': any;
     'id': string;
     'isActive': boolean;
-    'parent': any;
+    'onActivate': any;
   }
   interface NavSectionAttributes extends StencilHTMLAttributes {
     'activeSection'?: any;
     'id'?: string;
     'isActive'?: boolean;
-    'parent'?: any;
+    'onActivate'?: any;
   }
 
   interface SharedHeader {
-    /**
-    * Returns total number of likes from Contentful
-    */
     'isShowing': boolean;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
-    /**
-    * Returns total number of likes from Contentful
-    */
     'isShowing'?: boolean;
     'src'?: string;
   }
@@ -118,8 +98,6 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'HeartButton': Components.HeartButton;
-    'CrdsHeader': Components.CrdsHeader;
-    'CrdsLink': Components.CrdsLink;
     'NavBar': Components.NavBar;
     'NavCtas': Components.NavCtas;
     'NavSectionSubnav': Components.NavSectionSubnav;
@@ -129,8 +107,6 @@ declare global {
 
   interface StencilIntrinsicElements {
     'heart-button': Components.HeartButtonAttributes;
-    'crds-header': Components.CrdsHeaderAttributes;
-    'crds-link': Components.CrdsLinkAttributes;
     'nav-bar': Components.NavBarAttributes;
     'nav-ctas': Components.NavCtasAttributes;
     'nav-section-subnav': Components.NavSectionSubnavAttributes;
@@ -143,18 +119,6 @@ declare global {
   var HTMLHeartButtonElement: {
     prototype: HTMLHeartButtonElement;
     new (): HTMLHeartButtonElement;
-  };
-
-  interface HTMLCrdsHeaderElement extends Components.CrdsHeader, HTMLStencilElement {}
-  var HTMLCrdsHeaderElement: {
-    prototype: HTMLCrdsHeaderElement;
-    new (): HTMLCrdsHeaderElement;
-  };
-
-  interface HTMLCrdsLinkElement extends Components.CrdsLink, HTMLStencilElement {}
-  var HTMLCrdsLinkElement: {
-    prototype: HTMLCrdsLinkElement;
-    new (): HTMLCrdsLinkElement;
   };
 
   interface HTMLNavBarElement extends Components.NavBar, HTMLStencilElement {}
@@ -189,8 +153,6 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
-    'crds-header': HTMLCrdsHeaderElement
-    'crds-link': HTMLCrdsLinkElement
     'nav-bar': HTMLNavBarElement
     'nav-ctas': HTMLNavCtasElement
     'nav-section-subnav': HTMLNavSectionSubnavElement
@@ -200,8 +162,6 @@ declare global {
 
   interface ElementTagNameMap {
     'heart-button': HTMLHeartButtonElement;
-    'crds-header': HTMLCrdsHeaderElement;
-    'crds-link': HTMLCrdsLinkElement;
     'nav-bar': HTMLNavBarElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;

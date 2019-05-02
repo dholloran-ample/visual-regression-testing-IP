@@ -4,48 +4,54 @@
     "description": "Videos, music, articles and podcasts",
     "background": "//crds-media.imgix.net/...",
     "children": [
-      {
-        "title": "All Media",
-        "path": "/media"
-      },
+      [
+        {
+          "title": "All Media",
+          "path": "/media"
+        }
+      ],
       "Types",
-      {
-        "title": "Articles",
-        "path": "/media/articles"
-      },
-      {
-        "title": "Music",
-        "path": "/media/music"
-      },
-      {
-        "title": "Podcasts",
-        "path": "/media/podcasts"
-      },
-      {
-        "title": "Series",
-        "path": "/media/series"
-      },
-      {
-        "title": "Videos",
-        "path": "/media/videos"
-      },
+      [
+        {
+          "title": "Articles",
+          "path": "/media/articles"
+        },
+        {
+          "title": "Music",
+          "path": "/media/music"
+        },
+        {
+          "title": "Podcasts",
+          "path": "/media/podcasts"
+        },
+        {
+          "title": "Series",
+          "path": "/media/series"
+        },
+        {
+          "title": "Videos",
+          "path": "/media/videos"
+        }
+      ],
       "Topics",
-      {
-        "title": "Culture",
-        "path": "/media/topics/culture"
-      },
-      {
-        "title": "Self",
-        "path": "/media/topics/self"
-      },
-      {
-        "title": "Work",
-        "path": "/media/topics/work"
-      },
-      {
-        "title": "Money",
-        "path": "/media/topics/money"
-      }
+      [
+        {
+          "title": "Culture",
+          "path": "/media/topics/culture"
+        },
+        {
+          "title": "Self",
+          "path": "/media/topics/self"
+        },
+        {
+          "title": "Work",
+          "path": "/media/topics/work"
+        },
+        {
+          "title": "Money",
+          "path": "/media/topics/money"
+        }
+      ]
     ]
   },
   {
@@ -54,53 +60,61 @@
     "background": "//crds-media.imgix.net/...",
     "children": [
       "Connect",
-      {
-        "title": "Groups",
-        "path": "#"
-      },
-      {
-        "title": "See who is nearby",
-        "path": "#"
-      },
+      [
+        {
+          "title": "Groups",
+          "path": "#"
+        },
+        {
+          "title": "See who is nearby",
+          "path": "#"
+        }
+      ],
       "Camps",
-      {
-        "title": "Man Camp",
-        "path": "#"
-      },
-      {
-        "title": "Woman Camp",
-        "path": "#"
-      },
-      {
-        "title": "Couples Camp",
-        "path": "#"
-      },
+      [
+        {
+          "title": "Man Camp",
+          "path": "#"
+        },
+        {
+          "title": "Woman Camp",
+          "path": "#"
+        },
+        {
+          "title": "Couples Camp",
+          "path": "#"
+        }
+      ],
       "Serve",
-      {
-        "title": "Go",
-        "path": "#"
-      },
-      {
-        "title": "Reachout",
-        "path": "#"
-      },
-      {
-        "title": "Community Care",
-        "path": "#"
-      },
-      {
-        "title": "All service opportunities",
-        "path": "#"
-      },
+      [
+        {
+          "title": "Go",
+          "path": "#"
+        },
+        {
+          "title": "Reachout",
+          "path": "#"
+        },
+        {
+          "title": "Community Care",
+          "path": "#"
+        },
+        {
+          "title": "All service opportunities",
+          "path": "#"
+        }
+      ],
       "Kids",
-      {
-        "title": "Kids' Club",
-        "path": "#"
-      },
-      {
-        "title": "Students 6-12th",
-        "path": "#"
-      }
+      [
+        {
+          "title": "Kids' Club",
+          "path": "#"
+        },
+        {
+          "title": "Students 6-12th",
+          "path": "#"
+        }
+      ]
     ]
   },
   {
@@ -108,32 +122,36 @@
     "description": "Locations, (in person and online)",
     "background": "//crds-media.imgix.net/...",
     "children": [
-      { "title": "All Locations", "path": "#" },
-      { "title": "Crossroads Anywhere", "path": "#" },
+      [{ "title": "All Locations", "path": "#" }, { "title": "Crossroads Anywhere", "path": "#" }],
       "Cincinnati Area",
-      { "title": "East Side", "path": "#" },
-      { "title": "Florence", "path": "#" },
-      { "title": "Mason", "path": "#" },
-      { "title": "Oakley", "path": "#" },
-      { "title": "Oxford", "path": "#" },
-      { "title": "Uptown", "path": "#" },
-      { "title": "West Side", "path": "#" },
+      [
+        { "title": "East Side", "path": "#" },
+        { "title": "Florence", "path": "#" },
+        { "title": "Mason", "path": "#" },
+        { "title": "Oakley", "path": "#" },
+        { "title": "Oxford", "path": "#" },
+        { "title": "Uptown", "path": "#" },
+        { "title": "West Side", "path": "#" }
+      ],
       "Central Kentucky Area",
-      { "title": "Lexington", "path": "#" },
-      { "title": "Downtown Lexington", "path": "#" },
-      { "title": "Georgetown", "path": "#" },
-      { "title": "Dayton", "path": "#" },
+      [
+        { "title": "Lexington", "path": "#" },
+        { "title": "Downtown Lexington", "path": "#" },
+        { "title": "Georgetown", "path": "#" },
+        { "title": "Dayton", "path": "#" }
+      ],
       "More in Ohio",
-      { "title": "Columbus", "path": "#" },
-      { "title": "Dayton", "path": "#" },
+      [{ "title": "Columbus", "path": "#" }, { "title": "Dayton", "path": "#" }],
       "Correctional Institutions",
-      { "title": "Blackburn Correctional Complex", "path": "#" },
-      { "title": "Dayton Correctional Institution", "path": "#" },
-      { "title": "Lebanon Correctional Institution", "path": "#" },
-      { "title": "London Correctional Institution", "path": "#" },
-      { "title": "Marion Correctional Institution", "path": "#" },
-      { "title": "Ohio Reformatory for Women", "path": "#" },
-      { "title": "Warren Correctional Institution", "path": "#" }
+      [
+        { "title": "Blackburn Correctional Complex", "path": "#" },
+        { "title": "Dayton Correctional Institution", "path": "#" },
+        { "title": "Lebanon Correctional Institution", "path": "#" },
+        { "title": "London Correctional Institution", "path": "#" },
+        { "title": "Marion Correctional Institution", "path": "#" },
+        { "title": "Ohio Reformatory for Women", "path": "#" },
+        { "title": "Warren Correctional Institution", "path": "#" }
+      ]
     ]
   },
   {
@@ -142,17 +160,16 @@
     "background": "//crds-media.imgix.net/...",
     "children": [
       "Personal Care",
-      { "title": "Counselors", "path": "#" },
-      { "title": "Prayer", "path": "#" },
+      [{ "title": "Counselors", "path": "#" }, { "title": "Prayer", "path": "#" }],
       "Life Events",
-      { "title": "Baptism", "path": "#" },
-      { "title": "Weddings", "path": "#" },
-      { "title": "Funerals", "path": "#" },
+      [{ "title": "Baptism", "path": "#" }, { "title": "Weddings", "path": "#" }, { "title": "Funerals", "path": "#" }],
       "Contact",
-      { "title": "Staff Contacts", "path": "#" },
-      { "title": "Ask a Question", "path": "#" },
-      { "title": "Request Prayer", "path": "#" },
-      { "title": "Jobs", "path": "#" }
+      [
+        { "title": "Staff Contacts", "path": "#" },
+        { "title": "Ask a Question", "path": "#" },
+        { "title": "Request Prayer", "path": "#" },
+        { "title": "Jobs", "path": "#" }
+      ]
     ]
   }
 ]
