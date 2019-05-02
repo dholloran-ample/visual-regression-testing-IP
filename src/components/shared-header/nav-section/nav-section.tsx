@@ -12,7 +12,6 @@ export class NavigationSection {
   @Prop({ mutable: true }) public activeSection: any;
   @Prop({ mutable: true }) private isActive: boolean;
   @Prop() private onClick: any;
-  @Prop() private parent: any;
 
   /**
    * Print log messages?
@@ -26,31 +25,10 @@ export class NavigationSection {
     this.config = new Config();
   }
 
-  private activate(e) {
-    this.console.log('activate()');
-    e.preventDefault();
-
-    this.parent.navSectionSubnav(this.id);
-
-    this.onClick(e);
-
-    // this.activeSection = this.id;
-    this.isActive = !this.isActive;
-    if (this.isActive) {
-      // this.add();
-      // this.count++;
-    } else {
-      // this.remove();
-      // if (this.count > 0) {
-      //   this.count--;
-      // }
-    }
-  }
-
   render() {
     return (
       <li>
-        <a onClick={e => this.activate(e)} class={this.isActive ? 'is-active' : ''}>
+        <a onClick={e => this.onClick(e, this.id)} class={this.isActive ? 'is-active' : ''}>
           <slot />
         </a>
       </li>

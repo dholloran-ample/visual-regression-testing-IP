@@ -29,46 +29,30 @@ export class SharedHeader {
   public componentWillLoad() {
     this.console = new Logger(this.debug);
     this.config = new Config();
-    // this.getRecords();
+    this.getRecords();
   }
 
   /**
    * Returns total number of likes from Contentful
    */
-  // public getRecords() {
-  //   this.console.log('getRecords()');
-  //   this.links = dig(window, 'CRDS', 'navigation') || [];
-
-  //   if (this.links.length > 0 && this.src) {
-  //     axios.get(this.src).then(success => {
-  //       this.links = dig(success, 'data');
-  //     });
-  //   }
-  // }
-
-  // public renderSections(nav-sections) {
-  //   const items = [];
-  //   for (const i in nav-sections) {
-  //     items.push(
-  //       <div>
-  //         <crds-header>{nav-sections[i].title}</crds-header>
-  //         {this.renderLinks(nav-sections[i].children)}
-  //       </div>
-  //     );
-  //   }
-  //   return items;
-  // }
-
-  // public renderLinks(children) {
-  //   return children.map(child => <crds-link href={dig(child, 'path')}>{dig(child, 'title')}</crds-link>);
-  // }
-
-  public navSectionSubnav(id) {
-    this.active = id;
+  public getRecords() {
+    this.console.log('getRecords()');
+    this.links = dig(window, 'CRDS', 'navigation') || [];
+    if (this.links.length > 0 && this.src) {
+      axios.get(this.src).then(success => {
+        this.links = dig(success, 'data');
+      });
+    }
   }
 
-  public onClick(e) {
-    this.active = e.target.parentElement.parentElement.id;
+  /**
+   * Section onClick event handler
+   * @param e Event
+   * @param id string
+   */
+  public onClick(e, id) {
+    e.preventDefault();
+    this.active = id;
   }
 
   /**
@@ -78,27 +62,27 @@ export class SharedHeader {
     return (
       <Fragment>
         <nav-bar />
-        <nav class={'subnavigation-is-showing ' + (this.active === undefined ? '' : this.active)}>
+        <nav class={this.active === undefined ? '' : `section-${this.active}`}>
           <div>
             {/* <div>{this.renderSections(this.links)}</div> */}
             <div class="navigation">
               <ul>
-                <nav-section id="media" parent={this} onClick={this.onClick}>
+                <nav-section id="media" onClick={this.onClick.bind(this)}>
                   <h2>Watch, Listen Read</h2>
                   <p>Videos, music, articles and podcasts</p>
                 </nav-section>
 
-                <nav-section id="community" parent={this} onClick={this.onClick}>
+                <nav-section id="community" onClick={this.onClick.bind(this)}>
                   <h2>Find Community</h2>
                   <p>Groups, camps, serve locally and globally, kids</p>
                 </nav-section>
 
-                <nav-section id="contact" parent={this} onClick={this.onClick}>
+                <nav-section id="contact" onClick={this.onClick.bind(this)}>
                   <h2>Come Visit</h2>
                   <p>Locations (in person and online)</p>
                 </nav-section>
 
-                <nav-section id="support" parent={this} onClick={this.onClick}>
+                <nav-section id="support" onClick={this.onClick.bind(this)}>
                   <h2>Get Support</h2>
                   <p>Counselors, prayer, life events, contact</p>
                 </nav-section>
