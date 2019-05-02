@@ -1,4 +1,6 @@
-export default class Logger {
+export class Logger {
+  private debug;
+
   /**
    * @param output Boolean
    */
@@ -10,7 +12,7 @@ export default class Logger {
    * @param ns String
    * @param msg String (optional)
    */
-  log(ns, msg = "") {
+  log(ns, msg = '') {
     if (this.debug) {
       console.log(ns, msg);
     }

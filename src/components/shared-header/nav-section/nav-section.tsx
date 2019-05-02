@@ -1,6 +1,6 @@
 import { Component, Prop } from '@stencil/core';
-import Logger from '../../../shared/logger';
-import Config from '../../../shared/config';
+import { Logger } from '../../../shared/logger';
+import { Config } from '../../../shared/config';
 
 @Component({
   tag: 'nav-section',

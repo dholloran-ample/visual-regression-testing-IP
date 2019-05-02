@@ -1,10 +1,10 @@
 import { Component, Prop, State } from '@stencil/core';
+import Fragment from 'stencil-fragment';
 import dig from 'object-dig';
 import axios from 'axios';
-import Logger from '../../shared/logger';
-import Config from '../../shared/config';
-import Fragment from 'stencil-fragment';
-import Utils from '../../shared/utils';
+import { Logger } from '../../shared/logger';
+import { Config } from '../../shared/config';
+import { Utils } from '../../shared/utils';
 
 @Component({
   tag: 'shared-header',

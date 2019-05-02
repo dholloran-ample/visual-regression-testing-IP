@@ -1,6 +1,6 @@
 import { debug } from 'util';
 
-export default class Utils {
+export class Utils {
   /**
    * Returns content metatag who's property matches "prop"
    * @param prop Value of metatags prop attribute
