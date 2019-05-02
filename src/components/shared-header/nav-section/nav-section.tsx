@@ -11,6 +11,7 @@ export class NavigationSection {
   @Prop() public id: string;
   @Prop({ mutable: true }) public activeSection: any;
   @Prop({ mutable: true }) private isActive: boolean;
+  @Prop() private onClick: any;
   @Prop() private parent: any;
 
   /**
@@ -31,8 +32,9 @@ export class NavigationSection {
 
     this.parent.navSectionSubnav(this.id);
 
-    // this.activeSection = this.id;
+    this.onClick(e);
 
+    // this.activeSection = this.id;
     this.isActive = !this.isActive;
     if (this.isActive) {
       // this.add();

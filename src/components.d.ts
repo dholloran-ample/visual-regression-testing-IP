@@ -90,26 +90,22 @@ export namespace Components {
     'activeSection': any;
     'id': string;
     'isActive': boolean;
+    'onClick': any;
     'parent': any;
   }
   interface NavSectionAttributes extends StencilHTMLAttributes {
     'activeSection'?: any;
     'id'?: string;
     'isActive'?: boolean;
+    'onClick'?: any;
     'parent'?: any;
   }
 
   interface SharedHeader {
-    /**
-    * Returns total number of likes from Contentful
-    */
     'isShowing': boolean;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
-    /**
-    * Returns total number of likes from Contentful
-    */
     'isShowing'?: boolean;
     'src'?: string;
   }

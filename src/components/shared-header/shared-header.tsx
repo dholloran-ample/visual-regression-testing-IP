@@ -19,6 +19,7 @@ export class SharedHeader {
   private config: Config;
   private links: any = [];
 
+  @Prop({ mutable: true }) private isShowing: boolean;
   @Prop() src: string;
   @State() active: string;
 
@@ -62,10 +63,12 @@ export class SharedHeader {
   //   return children.map(child => <crds-link href={dig(child, 'path')}>{dig(child, 'title')}</crds-link>);
   // }
 
-  @Prop({ mutable: true }) private isShowing: boolean;
-
   public navSectionSubnav(id) {
     this.active = id;
+  }
+
+  public onClick(e) {
+    this.active = e.target.parentElement.parentElement.id;
   }
 
   /**
@@ -75,27 +78,27 @@ export class SharedHeader {
     return (
       <Fragment>
         <nav-bar />
-        <nav class="subnavigation-is-showing">
+        <nav class={'subnavigation-is-showing ' + (this.active === undefined ? '' : this.active)}>
           <div>
             {/* <div>{this.renderSections(this.links)}</div> */}
             <div class="navigation">
               <ul>
-                <nav-section id="media" parent={this}>
+                <nav-section id="media" parent={this} onClick={this.onClick}>
                   <h2>Watch, Listen Read</h2>
                   <p>Videos, music, articles and podcasts</p>
                 </nav-section>
 
-                <nav-section id="community" parent={this}>
+                <nav-section id="community" parent={this} onClick={this.onClick}>
                   <h2>Find Community</h2>
                   <p>Groups, camps, serve locally and globally, kids</p>
                 </nav-section>
 
-                <nav-section id="contact" parent={this}>
+                <nav-section id="contact" parent={this} onClick={this.onClick}>
                   <h2>Come Visit</h2>
                   <p>Locations (in person and online)</p>
                 </nav-section>
 
-                <nav-section id="support" parent={this}>
+                <nav-section id="support" parent={this} onClick={this.onClick}>
                   <h2>Get Support</h2>
                   <p>Counselors, prayer, life events, contact</p>
                 </nav-section>
