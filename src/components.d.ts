@@ -50,26 +50,34 @@ export namespace Components {
   }
 
   interface NavBar {
+    'clickHandler': Function;
     'href': string;
+    'navIsShowing': boolean;
   }
   interface NavBarAttributes extends StencilHTMLAttributes {
+    'clickHandler'?: Function;
     'href'?: string;
+    'navIsShowing'?: boolean;
   }
 
   interface NavCtas {
+    'active': string;
     'href': string;
   }
   interface NavCtasAttributes extends StencilHTMLAttributes {
+    'active'?: string;
     'href'?: string;
   }
 
   interface NavSectionSubnav {
     'active': string;
     'id': string;
+    'onBack': Function;
   }
   interface NavSectionSubnavAttributes extends StencilHTMLAttributes {
     'active'?: string;
     'id'?: string;
+    'onBack'?: Function;
   }
 
   interface NavSection {
@@ -86,12 +94,19 @@ export namespace Components {
   }
 
   interface SharedHeader {
-    'isShowing': boolean;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
-    'isShowing'?: boolean;
     'src'?: string;
+  }
+
+  interface SnailTrail {
+    'hidden': boolean;
+    'href': string;
+  }
+  interface SnailTrailAttributes extends StencilHTMLAttributes {
+    'hidden'?: boolean;
+    'href'?: string;
   }
 }
 
@@ -103,6 +118,7 @@ declare global {
     'NavSectionSubnav': Components.NavSectionSubnav;
     'NavSection': Components.NavSection;
     'SharedHeader': Components.SharedHeader;
+    'SnailTrail': Components.SnailTrail;
   }
 
   interface StencilIntrinsicElements {
@@ -112,6 +128,7 @@ declare global {
     'nav-section-subnav': Components.NavSectionSubnavAttributes;
     'nav-section': Components.NavSectionAttributes;
     'shared-header': Components.SharedHeaderAttributes;
+    'snail-trail': Components.SnailTrailAttributes;
   }
 
 
@@ -151,6 +168,12 @@ declare global {
     new (): HTMLSharedHeaderElement;
   };
 
+  interface HTMLSnailTrailElement extends Components.SnailTrail, HTMLStencilElement {}
+  var HTMLSnailTrailElement: {
+    prototype: HTMLSnailTrailElement;
+    new (): HTMLSnailTrailElement;
+  };
+
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
     'nav-bar': HTMLNavBarElement
@@ -158,6 +181,7 @@ declare global {
     'nav-section-subnav': HTMLNavSectionSubnavElement
     'nav-section': HTMLNavSectionElement
     'shared-header': HTMLSharedHeaderElement
+    'snail-trail': HTMLSnailTrailElement
   }
 
   interface ElementTagNameMap {
@@ -167,6 +191,7 @@ declare global {
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'nav-section': HTMLNavSectionElement;
     'shared-header': HTMLSharedHeaderElement;
+    'snail-trail': HTMLSnailTrailElement;
   }
 
 

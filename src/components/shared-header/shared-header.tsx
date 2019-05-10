@@ -20,9 +20,10 @@ export class SharedHeader {
   private config: Config;
   private payload: any = [];
 
-  @Prop({ mutable: true }) private isShowing: boolean;
   @Prop() src: string;
+
   @State() active: string;
+  @State() isShowing: boolean = false;
 
   /**
    * Fires before render...
@@ -61,8 +62,9 @@ export class SharedHeader {
    */
   private renderSections(payload) {
     return payload.map(section => {
+      const id = Utils.parameterize(section.title);
       return (
-        <nav-section id={Utils.parameterize(section.title)} onActivate={this.onClick.bind(this)}>
+        <nav-section id={id} onActivate={this.onClick.bind(this)} isActive={this.active == id}>
           <h2>{section.title}</h2>
           <p>{section.description}</p>
         </nav-section>
@@ -70,6 +72,10 @@ export class SharedHeader {
     });
   }
 
+  handleBackClick(event) {
+    event.preventDefault();
+    this.active = null;
+  }
   /**
    * Returns all subnav elements
    * @param payload
@@ -77,7 +83,11 @@ export class SharedHeader {
   private renderSubnavs(payload) {
     const sections = payload.map(section => {
       return (
-        <nav-section-subnav active={this.active} id={Utils.parameterize(section.title)}>
+        <nav-section-subnav
+          onBack={this.handleBackClick.bind(this)}
+          active={this.active}
+          id={Utils.parameterize(section.title)}
+        >
           {this.renderChildren(section)}
         </nav-section-subnav>
       );
@@ -106,21 +116,34 @@ export class SharedHeader {
     });
   }
 
+  toggleMenu(event) {
+    event.preventDefault();
+    this.isShowing = !this.isShowing;
+    return true;
+  }
+
+  navClasses() {
+    let classes = [];
+    if (this.isShowing) classes.push('is-showing');
+    if (this.active) classes.push(`section--${this.active}`);
+    return classes.join(' ');
+  }
+
   /**
    * HTML
    */
   public render() {
     return (
       <Fragment>
-        <nav-bar />
-        <nav class={this.active === undefined ? '' : `section--${this.active}`}>
+        <nav-bar navIsShowing={this.isShowing} clickHandler={this.toggleMenu.bind(this)} />
+        <nav class={this.navClasses()}>
           <div class="gradient" />
           <div class="content">
             <div class="navigation">
               <ul>{this.renderSections(this.payload)}</ul>
             </div>
             {this.renderSubnavs(this.payload)}
-            <nav-ctas />
+            <nav-ctas active={this.active} />
           </div>
         </nav>
       </Fragment>

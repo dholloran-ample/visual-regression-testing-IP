@@ -8,6 +8,7 @@ import { Component, Prop } from '@stencil/core';
 export class NavSectionSubnav {
   @Prop({ mutable: true }) private active: string;
   @Prop() private id: string;
+  @Prop() onBack: Function;
 
   render() {
     let chevronLeftLight =
@@ -15,7 +16,7 @@ export class NavSectionSubnav {
 
     return (
       <div class={this.active == this.id ? '' : ' hidden'}>
-        <a href="" class="back">
+        <a href="" class="back" onClick={event => this.onBack(event)}>
           <span innerHTML={chevronLeftLight} />
           Back
         </a>
