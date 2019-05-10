@@ -2,7 +2,7 @@
   background-color: $cr-cyan;
 
   &::after {
-    $size: 64px;
+    $size: 63px;
 
     border-color: transparent transparent transparent $cr-cyan;
     border-style: solid;
@@ -12,10 +12,12 @@
     height: 0;
     position: absolute;
     right: -50px;
-    top: -1px;
+    top: 0;
     width: 0;
   }
 }
+
+// ---------------------------------------------------------
 
 nav-section {
   a {

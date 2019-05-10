@@ -1,39 +1,43 @@
 $top-padding: 50px;
+$screen-md-portrait: 768px;
+$nav-bar-height: 47px;
 
-nav {
-  background: url('./assets/images/register-bg-mobile@2x.jpg') no-repeat;
-  background-size: cover;
-  color: $cr-white;
-  font-family: $base-font-face;
-  height: 100vh;
-  overflow-y: scroll;
-  position: fixed;
-  width: 100%;
+// ---------------------------------------------------------
 
-  @media (min-width: $screen-md) {
-    background-image: url('./assets/images/register-bg@2x.jpg');
-  }
+$nav-section-background-images: (
+  default
+  'https://crds-media.imgix.net/7B6MoNNiWMZOtdusfRpipl/ee5ee1e4bab8efcc56f84bf477da6469/nav-section-default-mobile.jpg'
+  'https://crds-media.imgix.net/1OTqm9FjFl6wtjCXAkA04V/bbe0eb060b034cd12c8620de520aa557/nav-section-default.jpg'
+  212.17deg,
+  come-visit
+  'https://crds-media.imgix.net/7tP5INZjs0NUsWUlUDRpKv/1cdbe5e8beb3169f2e7ba284e4785d82/nav-section-locations-mobile.jpg'
+  'https://crds-media.imgix.net/49tv3Wjdt28dPnim7TbR89/ef433202b082549ddfaa54b9cde5115f/nav-section-locations.jpg'
+  191.96deg,
+  find-community
+  'https://crds-media.imgix.net/67LrfkAcGom2zu23JncnA0/36ec65f58c27e4beccb2662792651f41/nav-section-community-mobile.jpg'
+  'https://crds-media.imgix.net/zEx1Ajg3dIlh5SpvzQ1qI/5d98841bd0664c2ae6c2cef112a7074c/nav-section-community.jpg'
+  212.17deg,
+  get-support
+  'https://crds-media.imgix.net/Cx02UnQr9sbVzjpXIcuqY/aad1e94297799b0817ba00884a2f7f2c/nav-section-support-mobile.jpg'
+  'https://crds-media.imgix.net/7i7YFUv6uY8MpwztZwIZE0/ed22995c91264a5c476d8e02c87e64dc/nav-section-support.jpg'
+  191.96deg,
+  watch-listen-read
+  'https://crds-media.imgix.net/5lMvnR6A9cavGG4aS0zzO8/247b6b738f33e4401b62ad53512919d8/nav-section-media-mobile.jpg'
+  'https://crds-media.imgix.net/59liSAMGW8dBCeUza5NUvj/6fe91fa808518e7a8997e6ba57103f95/nav-section-media.jpg'
+  212.17deg
+);
 
-  &.subnavigation-is-showing {
-    // background: linear-gradient(181.27deg, rgba(0, 0, 0, 0) 0%, #000 100%);
-    // background-image: url('./assets/images/media-landing-bg@2x.jpg');
-  }
-
-  > div {
-    @include container;
-
-    @media (min-width: $screen-md) {
-      display: flex;
-    }
-  }
-}
+// ---------------------------------------------------------
 
 .subnavigation {
-  margin: 0 15px;
-  padding-top: 70px;
+  @media (max-width: $screen-md) {
+    left: 100vw;
+    position: absolute;
+    top: 0;
+  }
 
   @media (min-width: $screen-md) {
-    width: 50%;
+    padding-top: $nav-bar-height;
   }
 
   // stylelint-disable a11y/font-size-is-readable
@@ -45,8 +49,161 @@ nav {
   }
 }
 
+// ---------------------------------------------------------
+
+nav {
+  background-color: $cr-black;
+  background-position-y: $nav-bar-height;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: $cr-white;
+  font-family: $base-font-face;
+  height: 100%;
+  overflow-x: hidden;
+  padding-top: $nav-bar-height;
+  position: relative;
+  transform: translateX(0);
+  width: 100vw;
+
+  @media (min-width: $screen-md-portrait) {
+    height: 100vh;
+  }
+
+  @media (min-width: $screen-md) {
+    background-size: 100%;
+  }
+
+  @each $background-image, $mobile-url, $desktop-url,
+    $gradient-degree in $nav-section-background-images {
+    @if $background-image == 'default' {
+      background-image: url('#{$mobile-url}?auto=format%2Ccompress');
+
+      @media (min-width: $screen-md) {
+        background-image: url('#{$desktop-url}?auto=format%2Ccompress');
+      }
+
+      .gradient {
+        &::after {
+          background: linear-gradient(#{$gradient-degree}, rgba(0, 0, 0, .1) 0%, #000 100%);
+        }
+      }
+    }
+
+    @else {
+      &.section--#{$background-image} {
+        background-image: url('#{$mobile-url}');
+
+        @media (min-width: $screen-md) {
+          background-image: url('#{$desktop-url}');
+        }
+
+        .gradient {
+          &::after {
+            background: linear-gradient(#{$gradient-degree}, rgba(0, 0, 0, .1) 0%, #000 100%);
+          }
+        }
+      }
+    }
+  }
+
+  .gradient {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 54%,
+        rgba(0, 0, 0, 0) 81%,
+        rgba(0, 0, 0, 1) 100%,
+        rgba(0, 0, 0, .9) 100%
+      );
+    left: 0;
+    padding-top: (8 / 5) * 100%;
+    position: absolute;
+    top: $nav-bar-height;
+    width: 100%;
+    z-index: 1;
+
+    @media (max-width: $screen-md) {
+      bottom: -$nav-bar-height;
+    }
+
+    @media (min-width: $screen-md) {
+      padding-top: (3 / 8) * 100%;
+    }
+
+    &::after {
+      bottom: 0;
+      content: '';
+      left: 0;
+      padding-top: (8 / 5) * 100%;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 2;
+
+      @media (min-width: $screen-md) {
+        bottom: unset;
+        padding-top: (3 / 8) * 100%;
+      }
+    }
+  }
+
+  .content {
+    padding-bottom: 30px;
+    position: relative;
+    width: 200vw;
+    z-index: 3;
+
+    @include container;
+
+    @media (min-width: $screen-md) {
+      display: flex;
+      padding-bottom: 0;
+    }
+  }
+
+  &.section--come-visit,
+  &.section--find-community,
+  &.section--get-support,
+  &.section--watch-listen-read {
+    .content {
+      @media (max-width: $screen-md) {
+        transform: translateX(-100vw);
+        transition: transform .2s linear;
+      }
+    }
+
+    .ctas {
+      @media (min-width: $screen-md) {
+        display: none;
+      }
+    }
+
+    .subnavigation {
+      @media (min-width: $screen-md) {
+        width: 100%;
+      }
+
+      @media (min-width: $screen-md) {
+        width: calc(50% - 40px);
+      }
+    }
+  }
+
+  &.section--come-visit {
+    .gradient {
+      height: 100vh;
+
+      &::after {
+        height: 100vh;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------
+
 .navigation {
   position: relative;
+  width: 100vw;
 
   @media (min-width: $screen-md) {
     margin-right: 1.2%;
@@ -56,7 +213,7 @@ nav {
   ul {
     @include reset-list();
 
-    margin-top: 0;
+    margin: 0;
     padding: 30px 0 20px;
 
     @media (min-width: $screen-md) {
@@ -89,7 +246,7 @@ nav {
         );
       height: 100%;
       left: auto;
-      right: 55px;
+      right: 56px;
       top: $top-padding;
       width: 2px;
     }

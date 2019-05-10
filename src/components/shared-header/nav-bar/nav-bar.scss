@@ -1,13 +1,15 @@
 header {
   background-color: $cr-cyan;
-  padding: 0 15px;
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  z-index: 1;
 
   > div {
     @include container();
 
     display: flex;
     justify-content: space-between;
+    padding: 0 15px;
   }
 }
 

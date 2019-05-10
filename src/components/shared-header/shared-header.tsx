@@ -114,11 +114,12 @@ export class SharedHeader {
       <Fragment>
         <nav-bar />
         <nav class={this.active === undefined ? '' : `section--${this.active}`}>
-          <div>
+          <div class="gradient" />
+          <div class="content">
             <div class="navigation">
               <ul>{this.renderSections(this.payload)}</ul>
             </div>
-            <div class="subnavigation">{this.renderSubnavs(this.payload)}</div>
+            {this.renderSubnavs(this.payload)}
             <nav-ctas />
           </div>
         </nav>

@@ -6,6 +6,10 @@
 nav-section-subnav {
   @include font-family-base;
 
+  div {
+    padding: 30px 20px 20px;
+  }
+
   a {
     color: $cr-white;
     display: inline-block;
@@ -16,6 +20,12 @@ nav-section-subnav {
 
     &.all {
       margin-bottom: 30px;
+    }
+  }
+
+  h2 {
+    @media (min-width: $screen-md) {
+      display: none;
     }
   }
 
@@ -31,5 +41,33 @@ nav-section-subnav {
     @include reset-list;
 
     margin-top: 0;
+  }
+
+  .back {
+    $height: 13px;
+    $width: 7px;
+
+    font-size: 14px;
+    position: relative;
+
+    @media (min-width: $screen-md) {
+      display: none;
+    }
+
+    span {
+      display: inline-block;
+      height: $height;
+      margin-right: 8px;
+      padding: 12px 0;
+      position: relative;
+      top: 1px;
+      width: $width;
+    }
+
+    svg {
+      fill: $cr-white;
+      height: $height;
+      width: $width;
+    }
   }
 }

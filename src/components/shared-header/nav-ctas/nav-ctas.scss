@@ -1,36 +1,53 @@
 // stylelint-disable a11y/font-size-is-readable
-h3 {
-  font-size: 11px;
-  opacity: .5;
-  text-transform: uppercase;
-}
 
 .ctas {
   @include font-family-base;
 
-  padding: 70px 20px 0;
+  padding: 40px 20px 0;
+
+  @media (max-width: $screen-md) {
+    width: calc(100vw - 40px); // view width - (left and right padding)
+  }
+
+  @media (min-width: $screen-md) {
+    padding: 70px 0 0;
+  }
+
+  h3 {
+    font-size: 11px;
+    margin-top: 0;
+    opacity: .5;
+    text-transform: uppercase;
+  }
 }
+
+// ---------------------------------------------------------
 
 .cta {
   background-color: rgba(21, 21, 21, .8);
   display: flex;
-  flex-basis: 100%;
-  justify-content: space-between;
   margin-bottom: 10px;
 
   &-image {
-    margin-right: 20px;
-    width: 100px;
+    $height: 75px;
+
+    height: $height;
+
+    img {
+      height: $height;
+      width: 100px;
+    }
   }
 
   &-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0 20px;
     width: 100%;
 
     h4 {
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 600;
       text-transform: uppercase;
     }
@@ -42,13 +59,9 @@ h3 {
 
     p {
       color: #979797;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 300;
       line-height: 18px;
     }
-  }
-
-  img {
-    max-width: 100%;
   }
 }

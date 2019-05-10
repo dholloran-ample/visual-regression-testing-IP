@@ -9,7 +9,7 @@ export class NavCtas {
   @Prop() href: string;
   render() {
     return (
-      <div class="ctas hidden">
+      <div class="ctas">
         <h3>Happening at Crossroads</h3>
 
         <div class="cta">
