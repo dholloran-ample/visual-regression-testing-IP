@@ -1,0 +1,76 @@
+// stylelint-disable a11y/font-size-is-readable
+nav {
+  @include font-family-base;
+
+  background-color: $cr-white;
+  font-size: 14px;
+  padding-left: 20px;
+  position: relative;
+
+  @media (min-width: $container-large-desktop) {
+    padding-left: 0;
+  }
+
+  > div {
+    display: flex;
+
+    @include container;
+  }
+}
+
+span {
+  color: $cr-gray-dark;
+  display: inline-block;
+  font-weight: 600;
+  padding: 11px 0;
+  text-transform: capitalize;
+
+  &::after {
+    border-right: 1px solid #d8d8d8;
+    content: '';
+    height: 100%;
+    margin-left: 15px;
+    width: 1px;
+  }
+}
+
+ul {
+  @include reset-list;
+
+  align-items: center;
+  display: flex;
+  margin-bottom: 0;
+  margin-top: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+li {
+  display: inline-block;
+  flex: none;
+  text-transform: capitalize;
+}
+
+a {
+  color: $cr-gray-dark;
+  display: block;
+  font-weight: 300;
+  padding: 11px 15px;
+  position: relative;
+  text-decoration: none;
+
+  &.is-active,
+  &:hover {
+    &::after {
+      background-color: #0095d9;
+      bottom: 0;
+      content: '';
+      display: inline-block;
+      height: 2px;
+      left: 15px;
+      position: absolute;
+      width: calc(100% - 30px);
+    }
+  }
+}

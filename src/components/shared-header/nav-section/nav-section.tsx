@@ -10,7 +10,7 @@ import { Config } from '../../../shared/config';
 export class NavigationSection {
   @Prop() public id: string;
   @Prop({ mutable: true }) public activeSection: any;
-  @Prop({ mutable: true }) private isActive: boolean;
+  @Prop() isActive: boolean = false;
   @Prop() private onActivate: any;
 
   /**

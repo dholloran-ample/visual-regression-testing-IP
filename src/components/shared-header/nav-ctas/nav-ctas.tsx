@@ -3,11 +3,15 @@ import { Component, Prop } from '@stencil/core';
 @Component({
   tag: 'nav-ctas',
   styleUrl: 'nav-ctas.scss',
-  shadow: false
+  shadow: true
 })
 export class NavCtas {
   @Prop() href: string;
+  @Prop() active: string;
+
   render() {
+    if (this.active) return null;
+
     return (
       <div class="ctas">
         <h3>Happening at Crossroads</h3>

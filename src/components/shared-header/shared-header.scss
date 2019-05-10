@@ -57,13 +57,20 @@ nav {
   background-repeat: no-repeat;
   background-size: cover;
   color: $cr-white;
+  display: none;
   font-family: $base-font-face;
   height: 100%;
   overflow-x: hidden;
+  overflow-y: scroll;
   padding-top: $nav-bar-height;
-  position: relative;
+  position: fixed;
+  top: 0;
   transform: translateX(0);
   width: 100vw;
+
+  &.is-showing {
+    display: block;
+  }
 
   @media (min-width: $screen-md-portrait) {
     height: 100vh;
@@ -153,6 +160,11 @@ nav {
     z-index: 3;
 
     @include container;
+
+    @media (max-width: $screen-md) {
+      transform: translateX(0);
+      transition: transform .2s linear;
+    }
 
     @media (min-width: $screen-md) {
       display: flex;
