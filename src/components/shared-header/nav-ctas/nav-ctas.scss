@@ -27,6 +27,7 @@
   background-color: rgba(21, 21, 21, .8);
   display: flex;
   margin-bottom: 10px;
+  text-decoration: none;
 
   &-image {
     $height: 75px;
@@ -47,6 +48,7 @@
     width: 100%;
 
     h4 {
+      color: $cr-white;
       font-size: 14px;
       font-weight: 600;
       text-transform: uppercase;
@@ -58,10 +60,19 @@
     }
 
     p {
-      color: #979797;
+      color: $cr-gray-light;
       font-size: 12px;
       font-weight: 300;
       line-height: 18px;
     }
   }
+}
+
+// ---------------------------------------------------------
+
+.more-updates {
+  color: $cr-cyan;
+  font-size: 12px;
+  text-decoration: none;
+  text-transform: capitalize;
 }

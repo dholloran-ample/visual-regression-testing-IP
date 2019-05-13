@@ -52,3 +52,35 @@ header {
     width: $size;
   }
 }
+
+.close {
+  $size: 26px;
+
+  display: block;
+  height: $size;
+  padding: 9px 0;
+  width: $size;
+
+  svg {
+    fill: $cr-white;
+    height: $size;
+    width: $size;
+  }
+}
+
+.menu-container {
+  .close {
+    display: none;
+    margin-right: -4px;
+  }
+
+  &.nav-is-showing {
+    .menu {
+      display: none;
+    }
+
+    .close {
+      display: block;
+    }
+  }
+}

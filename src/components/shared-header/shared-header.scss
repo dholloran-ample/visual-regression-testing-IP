@@ -129,7 +129,7 @@ nav {
     z-index: 1;
 
     @media (max-width: $screen-md) {
-      bottom: -$nav-bar-height;
+      bottom: -$nav-bar-height * 2;
     }
 
     @media (min-width: $screen-md) {
@@ -154,7 +154,6 @@ nav {
   }
 
   .content {
-    padding-bottom: 30px;
     position: relative;
     width: 200vw;
     z-index: 3;
@@ -262,5 +261,39 @@ nav {
       top: $top-padding;
       width: 2px;
     }
+  }
+}
+
+.close {
+  $circle-size: 64px;
+  $position: 22px;
+
+  background-color: $cr-cyan;
+  border-radius: 50%;
+  bottom: $position;
+  box-shadow: 0 5px 24px -5px rgba(0, 0, 0, .75);
+  display: none;
+  height: $circle-size;
+  left: $position;
+  position: fixed;
+  width: $circle-size;
+  z-index: 3;
+
+  &.is-showing {
+    @media (max-width: $screen-md) {
+      display: block;
+    }
+  }
+
+  svg {
+    $size: 30px;
+
+    fill: $cr-white;
+    height: $size;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: $size;
   }
 }
