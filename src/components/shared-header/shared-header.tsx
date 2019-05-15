@@ -100,7 +100,7 @@ export class SharedHeader {
    * @param section
    */
   private renderChildren(section) {
-    return section.children.map(child => {
+    const sectionChildren = section.children.map(child => {
       if (typeof child == 'string') {
         return <h4>{child}</h4>;
       } else {
@@ -111,9 +111,17 @@ export class SharedHeader {
             </li>
           );
         });
+
         return <ul>{listItems}</ul>;
       }
     });
+
+    return (
+      <Fragment>
+        <h2>{section.title}</h2>
+        {sectionChildren}
+      </Fragment>
+    );
   }
 
   toggleMenu(event) {
@@ -146,7 +154,6 @@ export class SharedHeader {
       <Fragment>
         <nav-bar navIsShowing={this.isShowing} clickHandler={this.toggleMenu.bind(this)} />
         <nav class={this.navClasses()}>
-          <div class="gradient" />
           <div class="content">
             <div class="navigation">
               <ul>{this.renderSections(this.payload)}</ul>

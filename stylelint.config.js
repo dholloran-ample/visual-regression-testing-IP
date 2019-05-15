@@ -30,11 +30,11 @@ module.exports = {
     'a11y/no-spread-text': null,
     'a11y/no-text-align-justify': true,
     'a11y/selector-pseudo-class-focus': null,
-    'aditayvm/at-rule-no-children': [
-      {
-        ignore: ['each', 'for', 'if', 'mixin']
-      }
-    ],
+    // 'aditayvm/at-rule-no-children': [
+    //   {
+    //     ignore: ['each', 'for', 'if', 'mixin']
+    //   }
+    // ],
     'at-rule-blacklist': null,
     'at-rule-empty-line-before': [
       'always',

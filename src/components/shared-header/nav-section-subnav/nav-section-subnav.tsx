@@ -20,8 +20,6 @@ export class NavSectionSubnav {
           <span innerHTML={chevronLeftLight} />
           Back
         </a>
-
-        <h2>FPO COME VISIT</h2>
         <slot />
       </div>
     );
