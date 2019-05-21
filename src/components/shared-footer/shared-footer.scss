@@ -37,19 +37,23 @@ footer {
         text-align: right;
         width: 33.33333%;
 
-        a {
-          box-sizing: border-box;
-          margin-left: 0.75rem;
-          background: $color-foreground;
-          border-radius: 50%;
-          display: inline-flex;
-          justify-content: center;
-          height: 36px;
-          width: 36px;
-          padding: 10px;
+        li {
+          display: inline;
 
-          img {
-            max-width: 100%;
+          a {
+            box-sizing: border-box;
+            margin-left: 0.75rem;
+            background: $color-foreground;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            height: 36px;
+            width: 36px;
+            padding: 10px;
+
+            img {
+              max-width: 100%;
+            }
           }
         }
       }

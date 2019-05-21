@@ -138,6 +138,31 @@ export class SharedFooter {
           "path": "/churchresources/"
         }
       ]
+    },
+    {
+      "class": "social-icons",
+      "children": [
+        {
+          "title": "twitter account",
+          "path": "https://twitter.com/crdschurch/",
+          "img": "//d1tmclqz61gqwd.cloudfront.net/images/twitter.svg"
+        },
+        {
+          "title": "facebook account",
+          "path": "https://www.facebook.com/crdschurch/?_rdr=p",
+          "img": "//d1tmclqz61gqwd.cloudfront.net/images/facebook.svg"
+        },
+        {
+          "title": "youtube account",
+          "path": "https://www.youtube.com/user/crdschurch",
+          "img": "//d1tmclqz61gqwd.cloudfront.net/images/youtube.svg"
+        },
+        {
+          "title": "instagram account",
+          "path": "https://www.instagram.com/crdschurch/",
+          "img": "//d1tmclqz61gqwd.cloudfront.net/images/instagram.svg"
+        },
+      ]
     }
   ];
 
@@ -145,7 +170,11 @@ export class SharedFooter {
     if (el.path) {
       let target = ''
       if (el.path.match(/:\/\//)) { target = '_blank' }
-      return <a target={target} href={el.path}>{el.title}</a>
+      if (el.img) {
+        return <a target={target} href={el.path}><img src={el.img} alt={el.title} title={el.title} /></a>
+      } else {
+        return <a target={target} href={el.path}>{el.title}</a>
+      }
     } else {
       return el.title
     }
@@ -180,18 +209,11 @@ export class SharedFooter {
       <footer>
         <div class="container">
         {this.nav.map((column) =>
-          <div>
+          <div class={column.class}>
             <h5>{this.renderElement(column)}</h5>
             {this.renderGroups(column.children)}
           </div>
         )}
-
-          <div class="social-icons">
-            <a href="https://twitter.com/crdschurch/" target="_blank" class="text-center"><img src="//d1tmclqz61gqwd.cloudfront.net/images/twitter.svg" alt="twitter account" title="twitter account" /></a>
-            <a href="https://www.facebook.com/crdschurch/?_rdr=p" target="_blank" class="text-center"> <img src="//d1tmclqz61gqwd.cloudfront.net/images/facebook.svg" alt="facebook account" title="facebook account" /></a>
-            <a href="https://www.youtube.com/user/crdschurch" target="_blank" class="text-center"> <img src="//d1tmclqz61gqwd.cloudfront.net/images/youtube.svg" alt="youtube account" title="youtube account" /></a>
-            <a href="https://www.instagram.com/crdschurch/" target="_blank" class="text-center"> <img src="//d1tmclqz61gqwd.cloudfront.net/images/instagram.svg" alt="instagram account" title="instagram account" /></a>
-          </div>
         </div>
       </footer>
     );
