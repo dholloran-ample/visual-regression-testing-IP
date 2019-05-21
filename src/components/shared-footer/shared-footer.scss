@@ -21,6 +21,17 @@ footer {
       width: 16.66667%;
       vertical-align: top;
 
+      p {
+        margin-bottom: 0;
+        font-weight: bold;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 0;
+      }
+
       &.social-icons {
         flex: 2;
         text-align: right;
