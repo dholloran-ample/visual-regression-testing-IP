@@ -23,7 +23,8 @@ export class SharedHeader {
   @Prop() src: string;
 
   @State() active: string;
-  @State() isShowing: boolean = false;
+  @State() mainNavIsShowing: boolean = false;
+  @State() profileNavIsShowing: boolean = false;
 
   /**
    * Fires before render...
@@ -80,6 +81,9 @@ export class SharedHeader {
    * Returns all subnav elements
    * @param payload
    */
+  // TODO: refactor renderSubnavs to work with
+  // nav-section-subnav, profile nav, and give nav
+  // ------------------------------------------------------
   private renderSubnavs(payload) {
     const sections = payload.map(section => {
       return (
@@ -124,22 +128,28 @@ export class SharedHeader {
     );
   }
 
-  toggleMenu(event) {
+  toggleMenu(event, navType) {
     event.preventDefault();
-    this.isShowing = !this.isShowing;
-    return true;
+    if (navType == 'main-nav') {
+      this.mainNavIsShowing = !this.mainNavIsShowing;
+      this.profileNavIsShowing = false;
+    } else if (navType == 'profile-nav') {
+      this.profileNavIsShowing = !this.profileNavIsShowing;
+      this.mainNavIsShowing = false;
+    }
   }
 
   navClasses() {
     let classes = [];
-    if (this.isShowing) classes.push('is-showing');
+    if (this.mainNavIsShowing) classes.push('is-showing');
     if (this.active) classes.push(`section--${this.active}`);
+    if (this.profileNavIsShowing) classes = [];
     return classes.join(' ');
   }
 
   navCloseClasses() {
     let classes = ['close'];
-    if (this.isShowing && !this.active) classes.push('is-showing');
+    if (this.mainNavIsShowing && !this.active) classes.push('is-showing');
     return classes.join(' ');
   }
 
@@ -152,7 +162,11 @@ export class SharedHeader {
 
     return (
       <Fragment>
-        <nav-bar navIsShowing={this.isShowing} clickHandler={this.toggleMenu.bind(this)} />
+        <global-nav
+          mainNavIsShowing={this.mainNavIsShowing}
+          profileNavIsShowing={this.profileNavIsShowing}
+          navClickHandler={this.toggleMenu.bind(this)}
+        />
         <nav class={this.navClasses()}>
           <div class="content">
             <div class="navigation">

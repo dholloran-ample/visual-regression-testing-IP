@@ -1,0 +1,27 @@
+.profile-nav {
+  @include nav-items;
+
+  $image: 'https://crds-media.imgix.net/WgeyOtqcX4tb1uQlPCtcc/072edb0cc0185a6985b56e5ffd1c8458/nav-profile-bkg-default.jpg?auto=format%2Ccompress';
+
+  background: $cr-black url($image) no-repeat;
+  background-size: 100%;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 47px;
+  width: 100vw;
+  z-index: 2;
+
+  @media (min-width: $screen-md) {
+    height: auto;
+    left: auto;
+    margin-right: -$global-nav-padding;
+    position: absolute;
+    right: $global-nav-padding;
+    width: 375px;
+  }
+
+  @media (min-width: $container-large-desktop) {
+    margin-right: 0;
+  }
+}
