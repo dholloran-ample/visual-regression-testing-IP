@@ -1,5 +1,6 @@
 import { Component, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
+import * as footerData from '../../data/footer.json';
 
 @Component({
   tag: 'shared-footer',
@@ -9,15 +10,7 @@ import Fragment from 'stencil-fragment';
 
 export class SharedFooter {
 
-  private nav: any = [];
-
-  componentWillLoad() {
-    return fetch("./data/footer.json")
-      .then(response => response.json())
-      .then(data => {
-        this.nav = data;
-     });
-  }
+  private nav: any = footerData.default;
 
   private renderElement(el) {
     if (el.path) {
