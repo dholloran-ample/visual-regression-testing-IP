@@ -74,7 +74,8 @@ header {
 
 $has-close-button: (
   menu-container: menu,
-  profile-container: account
+  profile-container: account,
+  give-container: donate
 );
 
 @each $container, $icon in $has-close-button {

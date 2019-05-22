@@ -25,6 +25,7 @@ export class SharedHeader {
   @State() active: string;
   @State() mainNavIsShowing: boolean = false;
   @State() profileNavIsShowing: boolean = false;
+  @State() giveNavIsShowing: boolean = false;
 
   /**
    * Fires before render...
@@ -110,7 +111,7 @@ export class SharedHeader {
       } else {
         const listItems = child.map(link => {
           return (
-            <li>
+            <li class={link.top_level ? 'top-level' : null}>
               <a href={link.href || '#'}>{link.title}</a>
             </li>
           );
@@ -131,11 +132,17 @@ export class SharedHeader {
   toggleMenu(event, navType) {
     event.preventDefault();
     if (navType == 'main-nav') {
+      this.giveNavIsShowing = false;
       this.mainNavIsShowing = !this.mainNavIsShowing;
       this.profileNavIsShowing = false;
     } else if (navType == 'profile-nav') {
-      this.profileNavIsShowing = !this.profileNavIsShowing;
+      this.giveNavIsShowing = false;
       this.mainNavIsShowing = false;
+      this.profileNavIsShowing = !this.profileNavIsShowing;
+    } else if (navType == 'give-nav') {
+      this.giveNavIsShowing = !this.giveNavIsShowing;
+      this.mainNavIsShowing = false;
+      this.profileNavIsShowing = false;
     }
   }
 
@@ -143,7 +150,7 @@ export class SharedHeader {
     let classes = [];
     if (this.mainNavIsShowing) classes.push('is-showing');
     if (this.active) classes.push(`section--${this.active}`);
-    if (this.profileNavIsShowing) classes = [];
+    if (this.profileNavIsShowing || this.giveNavIsShowing) classes = [];
     return classes.join(' ');
   }
 
@@ -165,6 +172,7 @@ export class SharedHeader {
         <global-nav
           mainNavIsShowing={this.mainNavIsShowing}
           profileNavIsShowing={this.profileNavIsShowing}
+          giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
         />
         <nav class={this.navClasses()}>

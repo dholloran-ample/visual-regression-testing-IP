@@ -50,12 +50,14 @@ export namespace Components {
   }
 
   interface GlobalNav {
+    'giveNavIsShowing': boolean;
     'href': string;
     'mainNavIsShowing': boolean;
     'navClickHandler': Function;
     'profileNavIsShowing': boolean;
   }
   interface GlobalNavAttributes extends StencilHTMLAttributes {
+    'giveNavIsShowing'?: boolean;
     'href'?: string;
     'mainNavIsShowing'?: boolean;
     'navClickHandler'?: Function;
@@ -95,6 +97,13 @@ export namespace Components {
     'onActivate'?: any;
   }
 
+  interface GiveNav {
+    'giveNavIsShowing': boolean;
+  }
+  interface GiveNavAttributes extends StencilHTMLAttributes {
+    'giveNavIsShowing'?: boolean;
+  }
+
   interface ProfileNav {
     'profileNavIsShowing': boolean;
   }
@@ -126,6 +135,7 @@ declare global {
     'NavCtas': Components.NavCtas;
     'NavSectionSubnav': Components.NavSectionSubnav;
     'NavSection': Components.NavSection;
+    'GiveNav': Components.GiveNav;
     'ProfileNav': Components.ProfileNav;
     'SharedHeader': Components.SharedHeader;
     'SnailTrail': Components.SnailTrail;
@@ -137,6 +147,7 @@ declare global {
     'nav-ctas': Components.NavCtasAttributes;
     'nav-section-subnav': Components.NavSectionSubnavAttributes;
     'nav-section': Components.NavSectionAttributes;
+    'give-nav': Components.GiveNavAttributes;
     'profile-nav': Components.ProfileNavAttributes;
     'shared-header': Components.SharedHeaderAttributes;
     'snail-trail': Components.SnailTrailAttributes;
@@ -173,6 +184,12 @@ declare global {
     new (): HTMLNavSectionElement;
   };
 
+  interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
+  var HTMLGiveNavElement: {
+    prototype: HTMLGiveNavElement;
+    new (): HTMLGiveNavElement;
+  };
+
   interface HTMLProfileNavElement extends Components.ProfileNav, HTMLStencilElement {}
   var HTMLProfileNavElement: {
     prototype: HTMLProfileNavElement;
@@ -197,6 +214,7 @@ declare global {
     'nav-ctas': HTMLNavCtasElement
     'nav-section-subnav': HTMLNavSectionSubnavElement
     'nav-section': HTMLNavSectionElement
+    'give-nav': HTMLGiveNavElement
     'profile-nav': HTMLProfileNavElement
     'shared-header': HTMLSharedHeaderElement
     'snail-trail': HTMLSnailTrailElement
@@ -208,6 +226,7 @@ declare global {
     'nav-ctas': HTMLNavCtasElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'nav-section': HTMLNavSectionElement;
+    'give-nav': HTMLGiveNavElement;
     'profile-nav': HTMLProfileNavElement;
     'shared-header': HTMLSharedHeaderElement;
     'snail-trail': HTMLSnailTrailElement;

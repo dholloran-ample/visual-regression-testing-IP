@@ -16,13 +16,13 @@ export class ProfileMenu {
         <div>
           <h2>Hello Wayne</h2>
           <ul>
-            <li>
+            <li class="top-level">
               <a href="#">My account</a>
             </li>
-            <li>
+            <li class="top-level">
               <a href="#">Giving</a>
             </li>
-            <li>
+            <li class="top-level">
               <a href="#">Sign out</a>
             </li>
           </ul>

@@ -17,6 +17,7 @@ nav-section-subnav {
     $width: 7px;
 
     font-size: 14px;
+    padding-left: 0;
     position: relative;
 
     @media (min-width: $screen-md) {

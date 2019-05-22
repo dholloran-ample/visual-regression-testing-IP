@@ -7,7 +7,8 @@
       [
         {
           "title": "All Media",
-          "path": "/media"
+          "path": "/media",
+          "top_level": true
         }
       ],
       "Types",
@@ -122,7 +123,10 @@
     "description": "Locations, (in person and online)",
     "background": "//crds-media.imgix.net/...",
     "children": [
-      [{ "title": "All Locations", "path": "#" }, { "title": "Crossroads Anywhere", "path": "#" }],
+      [
+        { "title": "All Locations", "path": "#", "top_level": true },
+        { "title": "Crossroads Anywhere", "path": "#", "top_level": true }
+      ],
       "Cincinnati Area",
       [
         { "title": "East Side", "path": "#" },

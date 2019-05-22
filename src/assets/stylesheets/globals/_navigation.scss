@@ -5,11 +5,12 @@
 
   div {
     @if $nav-type == 'main-nav' {
+      margin-bottom: 30px;
       padding: 30px 20px 20px;
     }
 
     @else {
-      padding: 60px 45px;
+      padding: 45px;
     }
   }
 
@@ -18,6 +19,7 @@
     display: inline-block;
     font-size: 19px;
     margin-bottom: 10px;
+    padding-left: 10px;
     text-decoration: none;
     text-transform: capitalize;
 
@@ -27,7 +29,11 @@
   }
 
   h2 {
-    margin-top: 0;
+    @include font-family-condensed-extra;
+
+    font-size: 48px;
+    margin: 0 0 10px;
+    text-transform: uppercase;
   }
 
   // stylelint-disable a11y/font-size-is-readable
@@ -42,5 +48,13 @@
     @include reset-list;
 
     margin-top: 0;
+
+    li {
+      &.top-level {
+        a {
+          padding-left: 0;
+        }
+      }
+    }
   }
 }
