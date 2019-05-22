@@ -1,0 +1,46 @@
+@mixin nav-items($nav-type: false) {
+  @include font-family-base;
+
+  color: $cr-white;
+
+  div {
+    @if $nav-type == 'main-nav' {
+      padding: 30px 20px 20px;
+    }
+
+    @else {
+      padding: 60px 45px;
+    }
+  }
+
+  a {
+    color: $cr-white;
+    display: inline-block;
+    font-size: 19px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    text-transform: capitalize;
+
+    &.all {
+      margin-bottom: 30px;
+    }
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  // stylelint-disable a11y/font-size-is-readable
+  h4 {
+    font-size: 11px;
+    margin: 0 0 10px;
+    opacity: .5;
+    text-transform: uppercase;
+  }
+
+  ul {
+    @include reset-list;
+
+    margin-top: 0;
+  }
+}

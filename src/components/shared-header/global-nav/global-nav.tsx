@@ -2,18 +2,27 @@ import { Component, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 
 @Component({
-  tag: 'nav-bar',
-  styleUrl: 'nav-bar.scss',
+  tag: 'global-nav',
+  styleUrl: 'global-nav.scss',
   shadow: true
 })
-export class TopBar {
+export class GlobalNav {
   @Prop() href: string;
-  @Prop() clickHandler: Function;
-  @Prop() navIsShowing: boolean = false;
+  @Prop() navClickHandler: Function;
+  @Prop() mainNavIsShowing: boolean = false;
+  @Prop() profileNavIsShowing: boolean = false;
 
+  // TODO: consoliate menuClasses and profileClasses
+  // ------------------------------------------------------
   menuClasses() {
     let classes = ['menu-container'];
-    if (this.navIsShowing) classes.push('nav-is-showing');
+    if (this.mainNavIsShowing) classes.push('nav-is-showing');
+    return classes.join(' ');
+  }
+
+  profileClasses() {
+    let classes = ['profile-container'];
+    if (this.profileNavIsShowing) classes.push('nav-is-showing');
     return classes.join(' ');
   }
 
@@ -35,23 +44,30 @@ export class TopBar {
       <Fragment>
         <header>
           <div>
-            <div class="global-actions">
-              <a href="" class={this.menuClasses()} onClick={event => this.clickHandler(event)}>
-                <div class="menu" innerHTML={menu} />
-                <div class="close" innerHTML={close} />
-              </a>
+            <div class="global-nav-items">
+              <div class="global-actions">
+                <a href="" class={this.menuClasses()} onClick={event => this.navClickHandler(event, 'main-nav')}>
+                  <div class="menu" innerHTML={menu} />
+                  <div class="close" innerHTML={close} />
+                </a>
 
-              <a href="" class="search" innerHTML={search} />
+                <a href="" class="search" innerHTML={search} />
+              </div>
+
+              <a href="" class="logo" innerHTML={logo} />
+
+              <div class="user-actions">
+                <a href="" class="donate" innerHTML={usd} />
+                <a href="" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
+                  <div class="account" innerHTML={account} />
+                  <div class="close" innerHTML={close} />
+                </a>
+              </div>
             </div>
 
-            <a href="" class="logo" innerHTML={logo} />
-
-            <div class="user-actions">
-              <a href="" class="donate" innerHTML={usd} />
-              <a href="" class="account" innerHTML={account} />
-            </div>
+            <profile-nav profileNavIsShowing={this.profileNavIsShowing} />
           </div>
-          <snail-trail hidden={this.navIsShowing} />
+          <snail-trail hidden={this.mainNavIsShowing} />
         </header>
       </Fragment>
     );

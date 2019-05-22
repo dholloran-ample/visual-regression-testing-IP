@@ -8,10 +8,14 @@ header {
   > div {
     @include container();
 
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15px;
+    padding: 0 $global-nav-padding;
+    position: relative;
   }
+}
+
+.global-nav-items {
+  display: flex;
+  justify-content: space-between;
 }
 
 .global-actions,
@@ -68,19 +72,28 @@ header {
   }
 }
 
-.menu-container {
-  .close {
-    display: none;
-    margin-right: -4px;
-  }
+$has-close-button: (
+  menu-container: menu,
+  profile-container: account
+);
 
-  &.nav-is-showing {
-    .menu {
+@each $container, $icon in $has-close-button {
+  // stylelint-disable a11y/no-display-none
+
+  .#{$container} {
+    .close {
       display: none;
+      margin-right: -4px;
     }
 
-    .close {
-      display: block;
+    &.nav-is-showing {
+      .#{$icon} {
+        display: none;
+      }
+
+      .close {
+        display: block;
+      }
     }
   }
 }
