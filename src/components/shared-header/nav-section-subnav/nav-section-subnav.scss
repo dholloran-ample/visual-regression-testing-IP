@@ -1,46 +1,15 @@
-// stylelint-disable a11y/no-display-none
+// stylelint-disable a11y/no-display-none, a11y/font-size-is-readable
 .hidden {
   display: none;
 }
 
 nav-section-subnav {
-  @include font-family-base;
-
-  div {
-    padding: 30px 20px 20px;
-  }
-
-  a {
-    color: $cr-white;
-    display: inline-block;
-    font-size: 19px;
-    margin-bottom: 10px;
-    text-decoration: none;
-    text-transform: capitalize;
-
-    &.all {
-      margin-bottom: 30px;
-    }
-  }
+  @include nav-items('main-nav');
 
   h2 {
     @media (min-width: $screen-md) {
       display: none;
     }
-  }
-
-  // stylelint-disable a11y/font-size-is-readable
-  h4 {
-    font-size: 11px;
-    margin: 0 0 10px;
-    opacity: .5;
-    text-transform: uppercase;
-  }
-
-  ul {
-    @include reset-list;
-
-    margin-top: 0;
   }
 
   .back {

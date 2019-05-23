@@ -49,15 +49,17 @@ export namespace Components {
     'key'?: string;
   }
 
-  interface NavBar {
-    'clickHandler': Function;
+  interface GlobalNav {
     'href': string;
-    'navIsShowing': boolean;
+    'mainNavIsShowing': boolean;
+    'navClickHandler': Function;
+    'profileNavIsShowing': boolean;
   }
-  interface NavBarAttributes extends StencilHTMLAttributes {
-    'clickHandler'?: Function;
+  interface GlobalNavAttributes extends StencilHTMLAttributes {
     'href'?: string;
-    'navIsShowing'?: boolean;
+    'mainNavIsShowing'?: boolean;
+    'navClickHandler'?: Function;
+    'profileNavIsShowing'?: boolean;
   }
 
   interface NavCtas {
@@ -93,6 +95,13 @@ export namespace Components {
     'onActivate'?: any;
   }
 
+  interface ProfileNav {
+    'profileNavIsShowing': boolean;
+  }
+  interface ProfileNavAttributes extends StencilHTMLAttributes {
+    'profileNavIsShowing'?: boolean;
+  }
+
   interface SharedHeader {
     'src': string;
   }
@@ -113,20 +122,22 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'HeartButton': Components.HeartButton;
-    'NavBar': Components.NavBar;
+    'GlobalNav': Components.GlobalNav;
     'NavCtas': Components.NavCtas;
     'NavSectionSubnav': Components.NavSectionSubnav;
     'NavSection': Components.NavSection;
+    'ProfileNav': Components.ProfileNav;
     'SharedHeader': Components.SharedHeader;
     'SnailTrail': Components.SnailTrail;
   }
 
   interface StencilIntrinsicElements {
     'heart-button': Components.HeartButtonAttributes;
-    'nav-bar': Components.NavBarAttributes;
+    'global-nav': Components.GlobalNavAttributes;
     'nav-ctas': Components.NavCtasAttributes;
     'nav-section-subnav': Components.NavSectionSubnavAttributes;
     'nav-section': Components.NavSectionAttributes;
+    'profile-nav': Components.ProfileNavAttributes;
     'shared-header': Components.SharedHeaderAttributes;
     'snail-trail': Components.SnailTrailAttributes;
   }
@@ -138,10 +149,10 @@ declare global {
     new (): HTMLHeartButtonElement;
   };
 
-  interface HTMLNavBarElement extends Components.NavBar, HTMLStencilElement {}
-  var HTMLNavBarElement: {
-    prototype: HTMLNavBarElement;
-    new (): HTMLNavBarElement;
+  interface HTMLGlobalNavElement extends Components.GlobalNav, HTMLStencilElement {}
+  var HTMLGlobalNavElement: {
+    prototype: HTMLGlobalNavElement;
+    new (): HTMLGlobalNavElement;
   };
 
   interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
@@ -162,6 +173,12 @@ declare global {
     new (): HTMLNavSectionElement;
   };
 
+  interface HTMLProfileNavElement extends Components.ProfileNav, HTMLStencilElement {}
+  var HTMLProfileNavElement: {
+    prototype: HTMLProfileNavElement;
+    new (): HTMLProfileNavElement;
+  };
+
   interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
   var HTMLSharedHeaderElement: {
     prototype: HTMLSharedHeaderElement;
@@ -176,20 +193,22 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
-    'nav-bar': HTMLNavBarElement
+    'global-nav': HTMLGlobalNavElement
     'nav-ctas': HTMLNavCtasElement
     'nav-section-subnav': HTMLNavSectionSubnavElement
     'nav-section': HTMLNavSectionElement
+    'profile-nav': HTMLProfileNavElement
     'shared-header': HTMLSharedHeaderElement
     'snail-trail': HTMLSnailTrailElement
   }
 
   interface ElementTagNameMap {
     'heart-button': HTMLHeartButtonElement;
-    'nav-bar': HTMLNavBarElement;
+    'global-nav': HTMLGlobalNavElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'nav-section': HTMLNavSectionElement;
+    'profile-nav': HTMLProfileNavElement;
     'shared-header': HTMLSharedHeaderElement;
     'snail-trail': HTMLSnailTrailElement;
   }

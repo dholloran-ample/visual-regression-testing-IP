@@ -26,7 +26,7 @@ export const config: Config = {
         'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables',
         'node_modules/crds-styles/assets/stylesheets/variables',
         'node_modules/crds-styles/assets/stylesheets/overrides',
-        'src/assets/stylesheets/mixins'
+        'src/assets/stylesheets/globals/all'
       ]
     }),
     builtins(),
