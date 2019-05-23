@@ -11,15 +11,20 @@ footer {
 
   .container {
     @include container;
-    display: flex;
+    @media only screen and (min-width: 768px) {
+      display: flex;
+    }
 
     div {
       padding-left: $horizontal-padding;
       padding-right: $horizontal-padding;
       margin-bottom: 24px;
-      flex: 1;
-      width: 16.66667%;
       vertical-align: top;
+
+      @media only screen and (min-width: 768px) {
+        flex: 1;
+        width: 16.66667%;
+      }
 
       p {
         margin-bottom: 0;
@@ -33,9 +38,13 @@ footer {
       }
 
       &.social-icons {
-        flex: 2;
-        text-align: right;
-        width: 33.33333%;
+        padding-left: 0;
+
+        @media only screen and (min-width: 768px) {
+          flex: 2;
+          text-align: right;
+          width: 33.33333%;
+        }
 
         li {
           display: inline;
