@@ -11,8 +11,9 @@ export class GlobalNav {
   @Prop() navClickHandler: Function;
   @Prop() mainNavIsShowing: boolean = false;
   @Prop() profileNavIsShowing: boolean = false;
+  @Prop() giveNavIsShowing: boolean = false;
 
-  // TODO: consoliate menuClasses and profileClasses
+  // TODO: consoliate menuClasses, profileClasses, and  giveClasses
   // ------------------------------------------------------
   menuClasses() {
     let classes = ['menu-container'];
@@ -23,6 +24,12 @@ export class GlobalNav {
   profileClasses() {
     let classes = ['profile-container'];
     if (this.profileNavIsShowing) classes.push('nav-is-showing');
+    return classes.join(' ');
+  }
+
+  giveClasses() {
+    let classes = ['give-container'];
+    if (this.giveNavIsShowing) classes.push('nav-is-showing');
     return classes.join(' ');
   }
 
@@ -57,7 +64,11 @@ export class GlobalNav {
               <a href="" class="logo" innerHTML={logo} />
 
               <div class="user-actions">
-                <a href="" class="donate" innerHTML={usd} />
+                <a href="" class={this.giveClasses()} onClick={event => this.navClickHandler(event, 'give-nav')}>
+                  <div class="donate" innerHTML={usd} />
+                  <div class="close" innerHTML={close} />
+                </a>
+
                 <a href="" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
                   <div class="account" innerHTML={account} />
                   <div class="close" innerHTML={close} />
@@ -66,6 +77,7 @@ export class GlobalNav {
             </div>
 
             <profile-nav profileNavIsShowing={this.profileNavIsShowing} />
+            <give-nav giveNavIsShowing={this.giveNavIsShowing} />
           </div>
           <snail-trail hidden={this.mainNavIsShowing} />
         </header>
