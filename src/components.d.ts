@@ -4,140 +4,150 @@
  * It contains typing information for all components that exist in this project.
  */
 
+
 import '@stencil/core';
 
+
+
+
 export namespace Components {
+
   interface HeartButton {
     /**
-     * Total number of hearts
-     */
-    count: number;
+    * Total number of hearts
+    */
+    'count': number;
     /**
-     * Unique identifier for likeable resource
-     */
-    id: string;
+    * Unique identifier for likeable resource
+    */
+    'id': string;
     /**
-     * Boolean indicating whether likeable resource has been liked
-     */
-    isLiked: boolean;
+    * Boolean indicating whether likeable resource has been liked
+    */
+    'isLiked': boolean;
     /**
-     * Cache key for localStorage
-     */
-    key: string;
+    * Cache key for localStorage
+    */
+    'key': string;
   }
   interface HeartButtonAttributes extends StencilHTMLAttributes {
     /**
-     * Total number of hearts
-     */
-    count?: number;
+    * Total number of hearts
+    */
+    'count'?: number;
     /**
-     * Unique identifier for likeable resource
-     */
-    id?: string;
+    * Unique identifier for likeable resource
+    */
+    'id'?: string;
     /**
-     * Boolean indicating whether likeable resource has been liked
-     */
-    isLiked?: boolean;
+    * Boolean indicating whether likeable resource has been liked
+    */
+    'isLiked'?: boolean;
     /**
-     * Cache key for localStorage
-     */
-    key?: string;
+    * Cache key for localStorage
+    */
+    'key'?: string;
   }
 
+  interface SharedFooter {}
+  interface SharedFooterAttributes extends StencilHTMLAttributes {}
+
   interface GlobalNav {
-    giveNavIsShowing: boolean;
-    href: string;
-    mainNavIsShowing: boolean;
-    navClickHandler: Function;
-    profileNavIsShowing: boolean;
+    'giveNavIsShowing': boolean;
+    'href': string;
+    'mainNavIsShowing': boolean;
+    'navClickHandler': Function;
+    'profileNavIsShowing': boolean;
   }
   interface GlobalNavAttributes extends StencilHTMLAttributes {
-    giveNavIsShowing?: boolean;
-    href?: string;
-    mainNavIsShowing?: boolean;
-    navClickHandler?: Function;
-    profileNavIsShowing?: boolean;
+    'giveNavIsShowing'?: boolean;
+    'href'?: string;
+    'mainNavIsShowing'?: boolean;
+    'navClickHandler'?: Function;
+    'profileNavIsShowing'?: boolean;
   }
 
   interface NavCtas {
-    active: string;
-    href: string;
+    'active': string;
+    'href': string;
   }
   interface NavCtasAttributes extends StencilHTMLAttributes {
-    active?: string;
-    href?: string;
+    'active'?: string;
+    'href'?: string;
   }
 
   interface NavSectionSubnav {
-    active: string;
-    id: string;
-    onBack: Function;
+    'active': string;
+    'id': string;
+    'onBack': Function;
   }
   interface NavSectionSubnavAttributes extends StencilHTMLAttributes {
-    active?: string;
-    id?: string;
-    onBack?: Function;
+    'active'?: string;
+    'id'?: string;
+    'onBack'?: Function;
   }
 
   interface NavSection {
-    activeSection: any;
-    id: string;
-    isActive: boolean;
-    onActivate: any;
+    'activeSection': any;
+    'id': string;
+    'isActive': boolean;
+    'onActivate': any;
   }
   interface NavSectionAttributes extends StencilHTMLAttributes {
-    activeSection?: any;
-    id?: string;
-    isActive?: boolean;
-    onActivate?: any;
+    'activeSection'?: any;
+    'id'?: string;
+    'isActive'?: boolean;
+    'onActivate'?: any;
   }
 
   interface GiveNav {
-    giveNavIsShowing: boolean;
+    'giveNavIsShowing': boolean;
   }
   interface GiveNavAttributes extends StencilHTMLAttributes {
-    giveNavIsShowing?: boolean;
+    'giveNavIsShowing'?: boolean;
   }
 
   interface ProfileNav {
-    profileNavIsShowing: boolean;
+    'profileNavIsShowing': boolean;
   }
   interface ProfileNavAttributes extends StencilHTMLAttributes {
-    profileNavIsShowing?: boolean;
+    'profileNavIsShowing'?: boolean;
   }
 
   interface SharedHeader {
-    src: string;
+    'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
-    src?: string;
+    'src'?: string;
   }
 
   interface SnailTrail {
-    hidden: boolean;
-    href: string;
+    'hidden': boolean;
+    'href': string;
   }
   interface SnailTrailAttributes extends StencilHTMLAttributes {
-    hidden?: boolean;
-    href?: string;
+    'hidden'?: boolean;
+    'href'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    HeartButton: Components.HeartButton;
-    GlobalNav: Components.GlobalNav;
-    NavCtas: Components.NavCtas;
-    NavSectionSubnav: Components.NavSectionSubnav;
-    NavSection: Components.NavSection;
-    GiveNav: Components.GiveNav;
-    ProfileNav: Components.ProfileNav;
-    SharedHeader: Components.SharedHeader;
-    SnailTrail: Components.SnailTrail;
+    'HeartButton': Components.HeartButton;
+    'SharedFooter': Components.SharedFooter;
+    'GlobalNav': Components.GlobalNav;
+    'NavCtas': Components.NavCtas;
+    'NavSectionSubnav': Components.NavSectionSubnav;
+    'NavSection': Components.NavSection;
+    'GiveNav': Components.GiveNav;
+    'ProfileNav': Components.ProfileNav;
+    'SharedHeader': Components.SharedHeader;
+    'SnailTrail': Components.SnailTrail;
   }
 
   interface StencilIntrinsicElements {
     'heart-button': Components.HeartButtonAttributes;
+    'shared-footer': Components.SharedFooterAttributes;
     'global-nav': Components.GlobalNavAttributes;
     'nav-ctas': Components.NavCtasAttributes;
     'nav-section-subnav': Components.NavSectionSubnavAttributes;
@@ -148,10 +158,17 @@ declare global {
     'snail-trail': Components.SnailTrailAttributes;
   }
 
+
   interface HTMLHeartButtonElement extends Components.HeartButton, HTMLStencilElement {}
   var HTMLHeartButtonElement: {
     prototype: HTMLHeartButtonElement;
     new (): HTMLHeartButtonElement;
+  };
+
+  interface HTMLSharedFooterElement extends Components.SharedFooter, HTMLStencilElement {}
+  var HTMLSharedFooterElement: {
+    prototype: HTMLSharedFooterElement;
+    new (): HTMLSharedFooterElement;
   };
 
   interface HTMLGlobalNavElement extends Components.GlobalNav, HTMLStencilElement {}
@@ -203,7 +220,21 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'heart-button': HTMLHeartButtonElement
+    'shared-footer': HTMLSharedFooterElement
+    'global-nav': HTMLGlobalNavElement
+    'nav-ctas': HTMLNavCtasElement
+    'nav-section-subnav': HTMLNavSectionSubnavElement
+    'nav-section': HTMLNavSectionElement
+    'give-nav': HTMLGiveNavElement
+    'profile-nav': HTMLProfileNavElement
+    'shared-header': HTMLSharedHeaderElement
+    'snail-trail': HTMLSnailTrailElement
+  }
+
+  interface ElementTagNameMap {
     'heart-button': HTMLHeartButtonElement;
+    'shared-footer': HTMLSharedFooterElement;
     'global-nav': HTMLGlobalNavElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
@@ -214,17 +245,6 @@ declare global {
     'snail-trail': HTMLSnailTrailElement;
   }
 
-  interface ElementTagNameMap {
-    'heart-button': HTMLHeartButtonElement;
-    'global-nav': HTMLGlobalNavElement;
-    'nav-ctas': HTMLNavCtasElement;
-    'nav-section-subnav': HTMLNavSectionSubnavElement;
-    'nav-section': HTMLNavSectionElement;
-    'give-nav': HTMLGiveNavElement;
-    'profile-nav': HTMLProfileNavElement;
-    'shared-header': HTMLSharedHeaderElement;
-    'snail-trail': HTMLSnailTrailElement;
-  }
 
   export namespace JSX {
     export interface Element {}
@@ -233,4 +253,5 @@ declare global {
     }
   }
   export interface HTMLAttributes extends StencilHTMLAttributes {}
+
 }
