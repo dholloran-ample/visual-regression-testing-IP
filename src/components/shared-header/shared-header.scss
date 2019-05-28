@@ -62,9 +62,11 @@ nav {
   top: 0;
   transform: translateX(0);
   width: 100vw;
+  z-index: 1;
 
   &.is-showing {
     display: block;
+
   }
 
   @media (min-width: $screen-md-portrait) {
