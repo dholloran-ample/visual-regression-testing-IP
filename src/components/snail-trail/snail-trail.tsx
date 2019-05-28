@@ -35,7 +35,7 @@ export class TopBar {
               <a href="#">ipsum</a>
             </li>
             <li>
-              <a href="#">dolor</a>
+              <a href="#">Subscribe</a>
             </li>
           </ul>
         </div>
