@@ -45,13 +45,11 @@ header {
 .search {
   $size: 22px;
 
-  display: block;
   height: $size;
   padding: 12px 0;
   width: $size;
 
   svg {
-    fill: $cr-white;
     height: $size;
     width: $size;
   }
@@ -60,15 +58,31 @@ header {
 .close {
   $size: 26px;
 
-  display: block;
   height: $size;
   padding: 9px 0;
   width: $size;
 
   svg {
-    fill: $cr-white;
     height: $size;
     width: $size;
+  }
+}
+
+.account,
+.close,
+.donate,
+.menu,
+.search {
+  display: block;
+
+  svg {
+    fill: $cr-white;
+  }
+
+  &:hover {
+    svg {
+      fill: darken($cr-white, 20);
+    }
   }
 }
 
