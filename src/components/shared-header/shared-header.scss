@@ -28,6 +28,7 @@ $nav-section-background-images: (
 .subnavigation {
   @media (max-width: $screen-md) {
     left: 100vw;
+    padding-bottom: $close-container-height;
     position: absolute;
     top: 0;
   }
@@ -48,25 +49,22 @@ $nav-section-background-images: (
 
 nav {
   background-color: $cr-black;
-  background-position-y: $nav-bar-height;
   background-repeat: no-repeat;
   background-size: cover;
   color: $cr-white;
   display: none;
   font-family: $base-font-face;
-  height: 100%;
+  height: calc(100% - #{$nav-bar-height});
   overflow-x: hidden;
   overflow-y: scroll;
-  padding-top: $nav-bar-height;
   position: fixed;
-  top: 0;
+  top: $nav-bar-height;
   transform: translateX(0);
   width: 100vw;
   z-index: 1;
 
   &.is-showing {
     display: block;
-
   }
 
   @media (min-width: $screen-md-portrait) {
@@ -106,6 +104,7 @@ nav {
     @include container;
 
     @media (max-width: $screen-md) {
+      padding-bottom: $close-container-height;
       transform: translateX(0);
       transition: transform .2s linear;
     }
@@ -196,24 +195,33 @@ nav {
 }
 
 .close {
-  $circle-size: 64px;
-  $position: 22px;
+  $padding: 22px;
 
-  background-color: $cr-cyan;
-  border-radius: 50%;
-  bottom: $position;
-  box-shadow: 0 5px 24px -5px rgba(0, 0, 0, .75);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .9) 100%);
+  bottom: 0;
   display: none;
-  height: $circle-size;
-  left: $position;
+  height: $close-container-height;
+  padding-left: $padding;
   position: fixed;
-  width: $circle-size;
+  width: 100%;
   z-index: 3;
 
   &.is-showing {
     @media (max-width: $screen-md) {
       display: block;
     }
+  }
+
+  &-icon {
+    $circle-size: 64px;
+
+    background-color: $cr-cyan;
+    border-radius: 50%;
+    bottom: $padding;
+    box-shadow: 0 5px 24px -5px rgba(0, 0, 0, .75);
+    height: $circle-size;
+    position: absolute;
+    width: $circle-size;
   }
 
   svg {

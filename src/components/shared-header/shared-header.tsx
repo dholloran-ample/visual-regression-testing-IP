@@ -156,7 +156,7 @@ export class SharedHeader {
 
   navCloseClasses() {
     let classes = ['close'];
-    if (this.mainNavIsShowing && !this.active) classes.push('is-showing');
+    if (this.mainNavIsShowing) classes.push('is-showing');
     return classes.join(' ');
   }
 
@@ -184,7 +184,9 @@ export class SharedHeader {
             <nav-ctas active={this.active} />
           </div>
         </nav>
-        <div class={this.navCloseClasses()} innerHTML={close} />
+        <div class={this.navCloseClasses()}>
+          <div class="close-icon" innerHTML={close} />
+        </div>
       </Fragment>
     );
   }

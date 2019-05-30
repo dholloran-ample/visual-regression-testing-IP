@@ -102,12 +102,14 @@ $has-close-button: (
     }
 
     &.nav-is-showing {
-      .#{$icon} {
-        display: none;
-      }
+      @media (min-width: $screen-md) {
+        .#{$icon} {
+          display: none;
+        }
 
-      .close {
-        display: block;
+        .close {
+          display: block;
+        }
       }
     }
   }
