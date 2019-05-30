@@ -9,7 +9,8 @@
     }
 
     @else {
-      padding: 45px;
+      height: auto;
+      padding: 30px 20px;
     }
   }
 
@@ -35,8 +36,17 @@
     @include font-family-condensed-extra;
 
     font-size: 48px;
-    margin: 0 0 10px;
+    line-height: 48px;
+    margin: 0;
     text-transform: uppercase;
+
+    @if $nav-type == 'main-nav' {
+      margin-bottom: 10px;
+    }
+
+    @else {
+      margin-bottom: 20px;
+    }
   }
 
   // stylelint-disable a11y/font-size-is-readable
