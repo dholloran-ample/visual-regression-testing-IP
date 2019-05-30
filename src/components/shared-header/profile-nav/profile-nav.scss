@@ -29,8 +29,8 @@
 $imgix-url: 'https://crds-media.imgix.net/';
 
 $background-images: (
-  give: '6sNxa1MWhMOfjhAB47yTCa/fe148ae3581a60e0e076f7e6a2c5fd21/nav-give.jpg',
-  profile: 'WgeyOtqcX4tb1uQlPCtcc/072edb0cc0185a6985b56e5ffd1c8458/nav-profile-bkg-default.jpg'
+  give: '6sNxa1MWhMOfjhAB47yTCa/0acf1af4109f23abc0199b1e34abeb7a/give-bg_2x.jpg',
+  profile: 'WgeyOtqcX4tb1uQlPCtcc/cbcef0d3eacc4ea6573939ec9fee6164/account-bg_2x.jpg'
 );
 
 @each $nav-type, $image in $background-images {

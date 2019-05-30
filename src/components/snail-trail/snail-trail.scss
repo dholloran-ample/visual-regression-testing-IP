@@ -3,6 +3,7 @@ nav {
   @include font-family-base;
 
   background-color: $cr-white;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .14);
   font-size: 14px;
   padding-left: 20px;
   position: relative;
@@ -60,12 +61,6 @@ ul {
   overflow-y: hidden;
 }
 
-li {
-  display: inline-block;
-  flex: none;
-  text-transform: capitalize;
-}
-
 a {
   color: $cr-gray-dark;
   display: block;
@@ -77,7 +72,7 @@ a {
   &.is-active,
   &:hover {
     &::after {
-      background-color: #0095d9;
+      background-color: $cr-cyan;
       bottom: 0;
       content: '';
       display: inline-block;
@@ -85,6 +80,33 @@ a {
       left: 15px;
       position: absolute;
       width: calc(100% - 30px);
+    }
+  }
+}
+
+li {
+  display: inline-block;
+  flex: none;
+  text-transform: capitalize;
+
+  &:last-of-type {
+    a {
+      color: $cr-cyan;
+      position: relative;
+
+      &::before {
+        border-right: 1px solid #d8d8d8;
+        content: '';
+        display: inline-block;
+        height: calc(100% - 22px);
+        left: 0;
+        position: absolute;
+        width: 1px;
+      }
+
+      &:hover {
+        color: darken($cr-cyan, 10);
+      }
     }
   }
 }
