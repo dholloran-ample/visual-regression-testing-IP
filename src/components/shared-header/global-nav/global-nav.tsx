@@ -53,23 +53,23 @@ export class GlobalNav {
           <div>
             <div class="global-nav-items">
               <div class="global-actions">
-                <a href="" class={this.menuClasses()} onClick={event => this.navClickHandler(event, 'main-nav')}>
+                <a href="" data-automation-id="sh-menu" class={this.menuClasses()} onClick={event => this.navClickHandler(event, 'main-nav')}>
                   <div class="menu" innerHTML={menu} />
                   <div class="close" innerHTML={close} />
                 </a>
 
-                <a href="" class="search" innerHTML={search} />
+                <a href="" data-automation-id="sh-search" class="search" innerHTML={search} />
               </div>
 
-              <a href="" class="logo" innerHTML={logo} />
+              <a href="" data-automation-id="sh-logo" class="logo" innerHTML={logo} />
 
               <div class="user-actions">
-                <a href="" class={this.giveClasses()} onClick={event => this.navClickHandler(event, 'give-nav')}>
+                <a href="" data-automation-id="sh-give" class={this.giveClasses()} onClick={event => this.navClickHandler(event, 'give-nav')}>
                   <div class="donate" innerHTML={usd} />
                   <div class="close" innerHTML={close} />
                 </a>
 
-                <a href="" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
+                <a href="" data-automation-id="sh-give" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
                   <div class="account" innerHTML={account} />
                   <div class="close" innerHTML={close} />
                 </a>
