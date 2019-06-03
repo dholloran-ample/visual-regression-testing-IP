@@ -16,7 +16,7 @@ export class NavSectionSubnav {
 
     return (
       <div class={this.active == this.id ? '' : ' hidden'}>
-        <a href="" class="back" onClick={event => this.onBack(event)}>
+        <a href="" data-automation-id="sh-section-subnav" class="back" onClick={event => this.onBack(event)}>
           <span innerHTML={chevronLeftLight} />
           Back
         </a>
