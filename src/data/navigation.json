@@ -8,49 +8,59 @@
         {
           "title": "All Media",
           "path": "/media",
-          "top_level": true
+          "top_level": true,
+          "automation-id": "nav-all-media"
         }
       ],
       "Types",
       [
         {
           "title": "Articles",
-          "path": "/media/articles"
+          "path": "/media/articles",
+          "automation-id": "nav-articles"
         },
         {
           "title": "Music",
-          "path": "/media/music"
+          "path": "/media/music",
+          "automation-id": "nav-music"
         },
         {
           "title": "Podcasts",
-          "path": "/media/podcasts"
+          "path": "/media/podcasts",
+          "automation-id": "nav-podcasts"
         },
         {
           "title": "Series",
-          "path": "/media/series"
+          "path": "/media/series",
+          "automation-id": "nav-series"
         },
         {
           "title": "Videos",
-          "path": "/media/videos"
+          "path": "/media/videos",
+          "automation-id": "nav-videos"
         }
       ],
       "Topics",
       [
         {
           "title": "Culture",
-          "path": "/media/topics/culture"
+          "path": "/media/topics/culture",
+          "automation-id": "nav-culture"
         },
         {
           "title": "Self",
-          "path": "/media/topics/self"
+          "path": "/media/topics/self",
+          "automation-id": "nav-self"
         },
         {
           "title": "Work",
-          "path": "/media/topics/work"
+          "path": "/media/topics/work",
+          "automation-id": "nav-work"
         },
         {
           "title": "Money",
-          "path": "/media/topics/money"
+          "path": "/media/topics/money",
+          "automation-id": "nav-money"
         }
       ]
     ]
@@ -64,56 +74,67 @@
       [
         {
           "title": "Groups",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-connect-groups"
         },
         {
           "title": "See who is nearby",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-connect-see-who-is-nearby"
         }
       ],
       "Camps",
       [
         {
           "title": "Man Camp",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-camps-man-camp"
         },
         {
           "title": "Woman Camp",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-camps-woman-camp"
         },
         {
           "title": "Couples Camp",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-camps-couples-camp"
         }
       ],
       "Serve",
       [
         {
           "title": "Go",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-serve-go"
         },
         {
           "title": "Reachout",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-serve-reachout"
         },
         {
           "title": "Community Care",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-serve-community-care"
         },
         {
           "title": "All service opportunities",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-serve-all-service-opportunities"
         }
       ],
       "Kids",
       [
         {
           "title": "Kids' Club",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-kids-kids-club"
         },
         {
           "title": "Students 6-12th",
-          "path": "#"
+          "path": "#",
+          "automation-id": "nav-kids-students-612th"
         }
       ]
     ]
@@ -122,39 +143,123 @@
     "title": "Come Visit",
     "description": "Locations, (in person and online)",
     "background": "//crds-media.imgix.net/...",
+    "automation-id": "nav-kids-students-612",
     "children": [
       [
-        { "title": "All Locations", "path": "#", "top_level": true },
-        { "title": "Crossroads Anywhere", "path": "#", "top_level": true }
+        { "title": "All Locations", "path": "#", "top_level": true, "automation-id": "nav-all-locations" },
+        { "title": "Crossroads Anywhere", "path": "#", "top_level": true, "automation-id": "nav-crossroads-anywhere" }
       ],
       "Cincinnati Area",
       [
-        { "title": "East Side", "path": "#" },
-        { "title": "Florence", "path": "#" },
-        { "title": "Mason", "path": "#" },
-        { "title": "Oakley", "path": "#" },
-        { "title": "Oxford", "path": "#" },
-        { "title": "Uptown", "path": "#" },
-        { "title": "West Side", "path": "#" }
+        {
+          "title": "East Side",
+          "path": "#",
+          "automation-id": "nav-location-east-side"
+        },
+        {
+          "title": "Florence",
+          "path": "#",
+          "automation-id": "nav-location-east-side"
+        },
+        {
+          "title": "Mason",
+          "path": "#",
+          "automation-id": "nav-location-mason"
+        },
+        {
+          "title": "Oakley",
+          "path": "#",
+          "automation-id": "nav-location-oakely"
+        },
+        {
+          "title": "Oxford",
+          "path": "#",
+          "automation-id": "nav-location-oxford"
+        },
+        {
+          "title": "Uptown",
+          "path": "#",
+          "automation-id": "nav-location-uptown"
+        },
+        {
+          "title": "West Side",
+          "path": "#",
+          "automation-id": "nav-location-west-side"
+        }
       ],
       "Central Kentucky Area",
       [
-        { "title": "Lexington", "path": "#" },
-        { "title": "Downtown Lexington", "path": "#" },
-        { "title": "Georgetown", "path": "#" },
-        { "title": "Dayton", "path": "#" }
+        {
+          "title": "Lexington",
+          "path": "#",
+          "automation-id": "nav-location-lexington"
+        },
+        {
+          "title": "Downtown Lexington",
+          "path": "#",
+          "automation-id": "nav-location-downtown-lexington"
+        },
+        {
+          "title": "Georgetown",
+          "path": "#",
+          "automation-id": "nav-location-georgetown"
+        },
+        {
+          "title": "Dayton",
+          "path": "#",
+          "automation-id": "nav-location-dayton"
+        }
       ],
       "More in Ohio",
-      [{ "title": "Columbus", "path": "#" }, { "title": "Dayton", "path": "#" }],
+      [
+        {
+          "title": "Columbus",
+          "path": "#",
+          "automation-id": "nav-location-columbus"
+        },
+        {
+          "title": "Dayton",
+          "path": "#",
+          "automation-id": "nav-location-more-dayton"
+        }
+      ],
       "Correctional Institutions",
       [
-        { "title": "Blackburn Correctional Complex", "path": "#" },
-        { "title": "Dayton Correctional Institution", "path": "#" },
-        { "title": "Lebanon Correctional Institution", "path": "#" },
-        { "title": "London Correctional Institution", "path": "#" },
-        { "title": "Marion Correctional Institution", "path": "#" },
-        { "title": "Ohio Reformatory for Women", "path": "#" },
-        { "title": "Warren Correctional Institution", "path": "#" }
+        {
+          "title": "Blackburn Correctional Complex",
+          "path": "#",
+          "automation-id": "nav-location-blckburn-correctional-complex"
+        },
+        {
+          "title": "Dayton Correctional Institution",
+          "path": "#",
+          "automation-id": "nav-location-dayton-correctional-institution"
+        },
+        {
+          "title": "Lebanon Correctional Institution",
+          "path": "#",
+          "automation-id": "nav-location-lebanon-correctional-institution"
+        },
+        {
+          "title": "London Correctional Institution",
+          "path": "#",
+          "automation-id": "nav-location-london-correctional-institution"
+        },
+        {
+          "title": "Marion Correctional Institution",
+          "path": "#",
+          "automation-id": "nav-location-marion-correctional-institution"
+        },
+        {
+          "title": "Ohio Reformatory for Women",
+          "path": "#",
+          "automation-id": "nav-location-ohio-reformatory-for-women"
+        },
+        {
+          "title": "Warren Correctional Institution",
+          "path": "#",
+          "automation-id": "nav-location-warren-correctional-institution"
+        }
       ]
     ]
   },
@@ -164,15 +269,54 @@
     "background": "//crds-media.imgix.net/...",
     "children": [
       "Personal Care",
-      [{ "title": "Counselors", "path": "#" }, { "title": "Prayer", "path": "#" }],
+      [
+        {
+          "title": "Counselors",
+          "path": "#",
+          "automation-id": "nav-support-counselors"
+        },
+        {
+          "title": "Prayer",
+          "path": "#",
+          "automation-id": "nav-support-counselors"
+        }
+      ],
       "Life Events",
-      [{ "title": "Baptism", "path": "#" }, { "title": "Weddings", "path": "#" }, { "title": "Funerals", "path": "#" }],
+      [
+        {
+          "title": "Baptism",
+          "path": "#",
+          "automation-id": "nav-support-baptism"
+        },
+        { "title": "Weddings", "path": "#", "automation-id": "nav-support-weddings" },
+        {
+          "title": "Funerals",
+          "path": "#",
+          "automation-id": "nav-support-funerals"
+        }
+      ],
       "Contact",
       [
-        { "title": "Staff Contacts", "path": "#" },
-        { "title": "Ask a Question", "path": "#" },
-        { "title": "Request Prayer", "path": "#" },
-        { "title": "Jobs", "path": "#" }
+        {
+          "title": "Staff Contacts",
+          "path": "#",
+          "automation-id": "nav-support-staff-contacts"
+        },
+        {
+          "title": "Ask a Question",
+          "path": "#",
+          "automation-id": "nav-support-ask-a-question"
+        },
+        {
+          "title": "Request Prayer",
+          "path": "#",
+          "automation-id": "nav-support-request-prayer"
+        },
+        {
+          "title": "Jobs",
+          "path": "#",
+          "automation-id": "nav-support-jobs"
+        }
       ]
     ]
   }
