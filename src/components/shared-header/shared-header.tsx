@@ -163,7 +163,7 @@ export class SharedHeader {
 
   navCloseClasses() {
     let classes = ['close'];
-    if (this.mainNavIsShowing) classes.push('is-showing');
+    if (this.mainNavIsShowing || this.profileNavIsShowing || this.giveNavIsShowing) classes.push('is-showing');
     return classes.join(' ');
   }
 
