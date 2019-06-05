@@ -108,9 +108,13 @@ export namespace Components {
   }
 
   interface ProfileNav {
+    'currentUser': any;
+    'onSignOut': Function;
     'profileNavIsShowing': boolean;
   }
   interface ProfileNavAttributes extends StencilHTMLAttributes {
+    'currentUser'?: any;
+    'onSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }
 

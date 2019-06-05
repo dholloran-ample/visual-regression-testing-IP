@@ -33,15 +33,32 @@
   }
 }
 
-$imgix-url: 'https://crds-media.imgix.net/';
+.give-nav {
+  background-image: url('https://crds-media.imgix.net/6sNxa1MWhMOfjhAB47yTCa/0acf1af4109f23abc0199b1e34abeb7a/give-bg_2x.jpg?auto=format%2Ccompress');
+}
 
-$background-images: (
-  give: '6sNxa1MWhMOfjhAB47yTCa/0acf1af4109f23abc0199b1e34abeb7a/give-bg_2x.jpg',
-  profile: 'WgeyOtqcX4tb1uQlPCtcc/cbcef0d3eacc4ea6573939ec9fee6164/account-bg_2x.jpg'
-);
+.profile-nav {
+  &:after {
+    background-color: rgba($cr-black, 0.75);
+    content: ' ';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
 
-@each $nav-type, $image in $background-images {
-  .#{$nav-type}-nav {
-    background-image: url('#{$imgix-url}#{$image}?auto=format%2Ccompress');
+  .profile-nav-img {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(6px);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -2;
   }
 }

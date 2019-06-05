@@ -33,53 +33,61 @@ export class Auth {
   isMp: boolean;
   isOkta: boolean;
   token: any;
+  currentUser: object;
 
   constructor() {
     this.authService = new CrdsAuthenticationService(this.authConfig);
+  }
 
+  listen(callback) {
     this.authService.authenticated().subscribe(token => {
-      console.log(token);
-      if (token) {
-        this.authenticated = true;
-        this.token = token;
-        this.isMp = token.provider == CrdsAuthenticationProviders.Mp;
-        this.isOkta = token.provider == CrdsAuthenticationProviders.Okta;
+      if (!token) return (this.authenticated = false);
+      this.authenticated = true;
+      this.token = token;
+      this.isMp = token.provider == CrdsAuthenticationProviders.Mp;
+      this.isOkta = token.provider == CrdsAuthenticationProviders.Okta;
+      this.updateCurrentUser();
+      callback(this);
+    });
+  }
 
-        console.log('userId', this.getUserId());
-        console.log('userName', this.getUserName());
-        console.log('userImageUrl', this.getUserImageUrl());
-      } else {
+  signOut(callback) {
+    this.authService.signOut().subscribe(success => {
+      if (success) {
         this.authenticated = false;
+        this.updateCurrentUser();
+        callback(this);
+      } else {
+        console.log('log out failed');
       }
     });
   }
 
-  getUserId() {
+  private updateCurrentUser() {
+    if (!this.authenticated) return (this.currentUser = null);
+    return (this.currentUser = {
+      id: this.getUserId(),
+      name: this.getUserName(),
+      avatarUrl: this.getUserImageUrl()
+    });
+  }
+
+  private getUserId() {
     if (!this.authenticated) return null;
     if (this.isOkta) return this.token.id_token.claims.mpContactId;
     if (this.isMp) return Utils.getCookie('userId');
   }
 
-  getUserName() {
+  private getUserName() {
     if (!this.authenticated) return null;
     if (this.isOkta) return this.token.id_token.claims.name;
     if (this.isMp) return Utils.getCookie('username');
   }
 
-  getUserImageUrl() {
+  private getUserImageUrl() {
     if (!this.authenticated) return null;
     const userId = this.getUserId();
     if (!userId) return null;
-    return `${process.env.CRDS_USER_IMAGE_BASE_URL}${userId}`;
-  }
-
-  signOut() {
-    this.authService.signOut().subscribe(success => {
-      if (success) {
-        console.log('log out worked');
-      } else {
-        console.log('log out failed');
-      }
-    });
+    return `${process.env.CRDS_BASE_URL}/proxy/gateway/api/image/profile/${userId}`;
   }
 }

@@ -1,5 +1,7 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
+
+import { Auth } from '../../../shared/auth';
 
 @Component({
   tag: 'global-nav',
@@ -13,6 +15,28 @@ export class GlobalNav {
   @Prop() profileNavIsShowing: boolean = false;
   @Prop() giveNavIsShowing: boolean = false;
 
+  @State() authenticated: boolean = false;
+
+  private auth: Auth;
+
+  componentWillLoad() {
+    this.auth = new Auth();
+    this.auth.listen(this.authChangeCallback.bind(this));
+  }
+
+  authChangeCallback(_: any = null) {
+    this.authenticated = this.auth.authenticated;
+  }
+
+  handleSignOut(_: any = null) {
+    this.auth.signOut(this.authChangeCallback.bind(this));
+  }
+
+  handleProfileClick(event) {
+    if (!this.auth.authenticated) return true;
+    return this.navClickHandler(event, 'profile-nav');
+  }
+
   // TODO: consoliate menuClasses, profileClasses, and  giveClasses
   // ------------------------------------------------------
   menuClasses() {
@@ -23,7 +47,7 @@ export class GlobalNav {
 
   profileClasses() {
     let classes = ['profile-container'];
-    if (this.profileNavIsShowing) classes.push('nav-is-showing');
+    if (this.profileNavIsShowing && this.authenticated) classes.push('nav-is-showing');
     return classes.join(' ');
   }
 
@@ -58,7 +82,7 @@ export class GlobalNav {
                   <div class="close" innerHTML={close} />
                 </a>
 
-                <a href="" class="search" innerHTML={search} />
+                <a href="/search" class="search" innerHTML={search} />
               </div>
 
               <a href="" class="logo" innerHTML={logo} />
@@ -69,14 +93,22 @@ export class GlobalNav {
                   <div class="close" innerHTML={close} />
                 </a>
 
-                <a href="" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
+                <a
+                  href={`${process.env.CRDS_BASE_URL}/signin`}
+                  class={this.profileClasses()}
+                  onClick={event => this.handleProfileClick(event)}
+                >
                   <div class="account" innerHTML={account} />
                   <div class="close" innerHTML={close} />
                 </a>
               </div>
             </div>
 
-            <profile-nav profileNavIsShowing={this.profileNavIsShowing} />
+            <profile-nav
+              profileNavIsShowing={this.profileNavIsShowing && this.authenticated}
+              onSignOut={this.handleSignOut.bind(this)}
+              currentUser={this.auth.currentUser}
+            />
             <give-nav giveNavIsShowing={this.giveNavIsShowing} />
           </div>
           <snail-trail hidden={this.mainNavIsShowing} />
