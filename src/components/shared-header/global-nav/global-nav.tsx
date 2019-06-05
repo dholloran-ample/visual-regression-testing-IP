@@ -69,7 +69,7 @@ export class GlobalNav {
                   <div class="close" innerHTML={close} />
                 </a>
 
-                <a href="" data-automation-id="sh-give" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
+                <a href="" data-automation-id="sh-profile" class={this.profileClasses()} onClick={event => this.navClickHandler(event, 'profile-nav')}>
                   <div class="account" innerHTML={account} />
                   <div class="close" innerHTML={close} />
                 </a>
