@@ -1,4 +1,4 @@
-import { Component, Prop, State, } from '@stencil/core';
+import { Component, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import dig from 'object-dig';
 import axios from 'axios';
