@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Prop, State, } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import dig from 'object-dig';
 import axios from 'axios';
@@ -167,6 +167,18 @@ export class SharedHeader {
     return classes.join(' ');
   }
 
+  handleOuterNavClick = () => {    
+    window.onclick = (e) => {
+      const element = e.target as HTMLElement;
+      if((this.profileNavIsShowing || this.giveNavIsShowing) && element.tagName != 'SHARED-HEADER'){
+        this.closeMenus(e);
+      }
+    }
+  }
+
+  componentDidLoad(){
+    this.handleOuterNavClick()
+  }
   /**
    * HTML
    */
@@ -177,10 +189,10 @@ export class SharedHeader {
     return (
       <Fragment>
         <global-nav
-          mainNavIsShowing={this.mainNavIsShowing}
-          profileNavIsShowing={this.profileNavIsShowing}
-          giveNavIsShowing={this.giveNavIsShowing}
-          navClickHandler={this.toggleMenu.bind(this)}
+          mainNavIsShowing = {this.mainNavIsShowing}
+          profileNavIsShowing = {this.profileNavIsShowing}
+          giveNavIsShowing = {this.giveNavIsShowing}
+          navClickHandler = {this.toggleMenu.bind(this)}
         />
         <nav class={this.navClasses()}>
           <div class="content">
