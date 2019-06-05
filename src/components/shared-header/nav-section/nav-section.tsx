@@ -28,7 +28,7 @@ export class NavigationSection {
   render() {
     return (
       <li>
-        <a onClick={e => this.onActivate(e, this.id)} data-automation-id="sh-section" class={this.isActive ? 'is-active' : ''}>
+        <a onClick={e => this.onActivate(e, this.id)} data-automation-id={`sh-section-${this.id}`} class={this.isActive ? 'is-active' : ''}>
           <slot />
         </a>
       </li>
