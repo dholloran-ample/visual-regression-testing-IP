@@ -18,7 +18,11 @@ export class SharedFooter {
       if (el.path.match(/:\/\//)) { target = '_blank' }
       if (el.img) {
         return <a target={target} href={el.path}><img src={el.img} alt={el.title} title={el.title} /></a>
-      } else {
+      } 
+      else {
+        if(el["automation-id"]){
+          return <a target={target} href={el.path} data-automation-id={el["automation-id"]} >{el.title}</a>
+        }
         return <a target={target} href={el.path}>{el.title}</a>
       }
     } else {

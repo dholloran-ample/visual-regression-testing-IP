@@ -17,25 +17,25 @@ export class TopBar {
           <span>trending</span>
           <ul>
             <li>
-              <a href="#">Groups</a>
+              <a href="#" data-automation-id="sh-groups">Groups</a>
             </li>
             <li>
-              <a href="#">Camps</a>
+              <a href="#" data-automation-id="sh-camps">Camps</a>
             </li>
             <li>
-              <a href="#">recent messages</a>
+              <a href="#" data-automation-id="sh-recent-messages">recent messages</a>
             </li>
             <li>
-              <a href="#">Undivided</a>
+              <a href="#" data-automation-id="sh-undivided">Undivided</a>
             </li>
             <li>
-              <a href="#">lorem</a>
+              <a href="#" data-automation-id="sh-lorem">lorem</a>
             </li>
             <li>
-              <a href="#">ipsum</a>
+              <a href="#" data-automation-id="sh-ipsum">ipsum</a>
             </li>
             <li>
-              <a href="#">Subscribe</a>
+              <a href="#" data-automation-id="sh-subscribe">Subscribe</a>
             </li>
           </ul>
         </div>

@@ -16,7 +16,7 @@ export class NavCtas {
       <div class="ctas">
         <h3>Happening at Crossroads</h3>
 
-        <a href="#" class="cta">
+        <a href="#" data-automation-id="sh-undivided" class="cta">
           <div class="cta-image">
             <img src="https://via.placeholder.com/300x225.png?text=placeholder" />
           </div>
@@ -26,7 +26,7 @@ export class NavCtas {
           </div>
         </a>
 
-        <a href="#" class="cta">
+        <a href="#" data-automation-id="sh-sheets" class="cta">
           <div class="cta-image">
             <img src="https://via.placeholder.com/300x225.png?text=placeholder" />
           </div>
@@ -36,7 +36,7 @@ export class NavCtas {
           </div>
         </a>
 
-        <a href="#" class="cta">
+        <a href="#" data-automation-id="sh-lead" class="cta">
           <div class="cta-image">
             <img src="https://via.placeholder.com/300x225.png?text=placeholder" />
           </div>
@@ -46,7 +46,7 @@ export class NavCtas {
           </div>
         </a>
 
-        <a href="" class="more-updates">
+        <a href="" data-automation-id="sh-more-updates" class="more-updates">
           more updates
         </a>
       </div>

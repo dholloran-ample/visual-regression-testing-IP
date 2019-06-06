@@ -1,10 +1,11 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Prop, State, Listen } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import dig from 'object-dig';
 import axios from 'axios';
 import { Logger } from '../../shared/logger';
 import { Config } from '../../shared/config';
 import { Utils } from '../../shared/utils';
+import Link from '../../models/link';
 
 @Component({
   tag: 'shared-header',
@@ -112,7 +113,7 @@ export class SharedHeader {
         const listItems = child.map(link => {
           return (
             <li class={link.top_level ? 'top-level' : null}>
-              <a href={link.href || '#'}>{link.title}</a>
+              <a href={link.href || '#'} data-automation-id={link["automation-id"]} >{link.title}</a>
             </li>
           );
         });
@@ -131,6 +132,7 @@ export class SharedHeader {
 
   toggleMenu(event, navType) {
     event.preventDefault();
+    event.stopPropagation();
     if (navType == 'main-nav') {
       this.giveNavIsShowing = false;
       this.mainNavIsShowing = !this.mainNavIsShowing;
@@ -163,8 +165,13 @@ export class SharedHeader {
 
   navCloseClasses() {
     let classes = ['close'];
-    if (this.mainNavIsShowing) classes.push('is-showing');
+    if (this.mainNavIsShowing || this.profileNavIsShowing || this.giveNavIsShowing) classes.push('is-showing');
     return classes.join(' ');
+  }
+
+  @Listen('window:click')
+  handleScroll(event) {
+    return this.closeMenus(event);
   }
 
   /**
@@ -182,7 +189,7 @@ export class SharedHeader {
           giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
         />
-        <nav class={this.navClasses()}>
+        <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
               <ul>{this.renderSections(this.payload)}</ul>
