@@ -98,7 +98,16 @@ export class GlobalNav {
                   class={this.profileClasses()}
                   onClick={event => this.handleProfileClick(event)}
                 >
-                  <div class="account" innerHTML={account} />
+                  {this.authenticated ? (
+                    <div class="account">
+                      <div
+                        class="account-authenticated"
+                        style={{ backgroundImage: `url('${(this.auth.currentUser as any).avatarUrl}')` }}
+                      />
+                    </div>
+                  ) : (
+                    <div class="account" innerHTML={account} />
+                  )}
                   <div class="close" innerHTML={close} />
                 </a>
               </div>

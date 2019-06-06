@@ -53,6 +53,21 @@ header {
     height: $size;
     width: $size;
   }
+
+  .account-authenticated {
+    box-sizing: border-box;
+    height: $size;
+    width: $size;
+    border-radius: 50%;
+    border: 1.5px solid $cr-white;
+    background-size: $size;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &:hover {
+      filter: brightness(90%);
+    }
+  }
 }
 
 .close {
