@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Listen } from '@stencil/core';
 
 @Component({
   tag: 'profile-nav',
@@ -7,6 +7,11 @@ import { Component, Prop } from '@stencil/core';
 })
 export class ProfileMenu {
   @Prop() profileNavIsShowing: boolean = true;
+
+  @Listen('click')
+  handleClick(event) {
+    event.stopPropagation();
+  }
 
   render() {
     if (!this.profileNavIsShowing) return null;
