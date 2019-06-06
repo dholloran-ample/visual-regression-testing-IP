@@ -54,6 +54,7 @@ export class SharedFooter {
   }
 
   public render() {
+    if (this.data.length === 0) return null;
     return (
       <footer>
         <div class="container">{this.renderColumns()}</div>
