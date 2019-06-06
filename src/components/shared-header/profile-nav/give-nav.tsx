@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Listen } from '@stencil/core';
 
 @Component({
   tag: 'give-nav',
@@ -7,6 +7,11 @@ import { Component, Prop } from '@stencil/core';
 })
 export class GiveMenu {
   @Prop() giveNavIsShowing: boolean = true;
+
+  @Listen('click')
+  handleClick(event) {
+    event.stopPropagation();
+  }
 
   render() {
     if (!this.giveNavIsShowing) return null;

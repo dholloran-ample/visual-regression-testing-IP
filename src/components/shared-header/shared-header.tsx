@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Prop, State, Listen } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import dig from 'object-dig';
 import axios from 'axios';
@@ -132,6 +132,7 @@ export class SharedHeader {
 
   toggleMenu(event, navType) {
     event.preventDefault();
+    event.stopPropagation();
     if (navType == 'main-nav') {
       this.giveNavIsShowing = false;
       this.mainNavIsShowing = !this.mainNavIsShowing;
@@ -168,6 +169,11 @@ export class SharedHeader {
     return classes.join(' ');
   }
 
+  @Listen('window:click')
+  handleScroll(event) {
+    return this.closeMenus(event);
+  }
+
   /**
    * HTML
    */
@@ -183,7 +189,7 @@ export class SharedHeader {
           giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
         />
-        <nav class={this.navClasses()}>
+        <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
               <ul>{this.renderSections(this.payload)}</ul>
