@@ -17,37 +17,37 @@ export class ProfileMenu {
           <h2>Hello Wayne</h2>
           <ul>
             <li class="top-level">
-              <a href="#">My account</a>
+              <a href="#" data-automation-id="sh-my-accounts">My account</a>
             </li>
             <li class="top-level">
-              <a href="#">Giving</a>
+              <a href="#" data-automation-id="sh-giving">Giving</a>
             </li>
             <li class="top-level">
-              <a href="#">Sign out</a>
+              <a href="#" data-automation-id="sh-sign-out">Sign out</a>
             </li>
           </ul>
           <h4>Get involved</h4>
           <ul>
             <li>
-              <a href="#">My student’s camps</a>
+              <a href="#" data-automation-id="sh-my-students-camps">My student’s camps</a>
             </li>
             <li>
-              <a href="#">Sign up to serve</a>
+              <a href="#" data-automation-id="sh-sign-up-to-serve">Sign up to serve</a>
             </li>
             <li>
-              <a href="#">My groups</a>
+              <a href="#" data-automation-id="sh-my-groups">My groups</a>
             </li>
             <li>
-              <a href="#">My trips</a>
+              <a href="#" data-automation-id="sh-my-trips">My trips</a>
             </li>
           </ul>
           <h4>Events</h4>
           <ul>
             <li>
-              <a href="#">Event check in</a>
+              <a href="#" data-automation-id="sh-event-check-in">Event check in</a>
             </li>
             <li>
-              <a href="#">Childcare (for events)</a>
+              <a href="#" data-automation-id="sh-childcare">Childcare (for events)</a>
             </li>
           </ul>
         </div>

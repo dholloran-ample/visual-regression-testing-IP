@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Logger } from '../../shared/logger';
 import { Config } from '../../shared/config';
 import { Utils } from '../../shared/utils';
+import Link from '../../models/link';
 
 @Component({
   tag: 'shared-header',
@@ -112,7 +113,7 @@ export class SharedHeader {
         const listItems = child.map(link => {
           return (
             <li class={link.top_level ? 'top-level' : null}>
-              <a href={link.href || '#'}>{link.title}</a>
+              <a href={link.href || '#'} data-automation-id={link["automation-id"]} >{link.title}</a>
             </li>
           );
         });
