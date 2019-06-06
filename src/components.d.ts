@@ -49,8 +49,12 @@ export namespace Components {
     'key'?: string;
   }
 
-  interface SharedFooter {}
-  interface SharedFooterAttributes extends StencilHTMLAttributes {}
+  interface SharedFooter {
+    'src': string;
+  }
+  interface SharedFooterAttributes extends StencilHTMLAttributes {
+    'src'?: string;
+  }
 
   interface GlobalNav {
     'giveNavIsShowing': boolean;

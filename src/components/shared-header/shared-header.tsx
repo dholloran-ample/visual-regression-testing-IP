@@ -113,7 +113,9 @@ export class SharedHeader {
         const listItems = child.map(link => {
           return (
             <li class={link.top_level ? 'top-level' : null}>
-              <a href={link.href || '#'} data-automation-id={link["automation-id"]} >{link.title}</a>
+              <a href={link.href || '#'} data-automation-id={link['automation-id']}>
+                {link.title}
+              </a>
             </li>
           );
         });
