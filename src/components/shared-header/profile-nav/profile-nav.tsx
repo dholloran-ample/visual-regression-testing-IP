@@ -19,7 +19,7 @@ export class ProfileMenu {
 
     return (
       <div class="profile-nav">
-        <div class="profile-nav-img" style={{ backgroundImage: `url('${this.currentUser.avatarUrl}')` }} />
+        <div class="profile-nav-img" style={{ backgroundImage: `linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%),url('${this.currentUser.avatarUrl}')` }} />
         <div>
           <h2>Hello {this.currentUser.name.split(' ')[0]}</h2>
           <ul>
