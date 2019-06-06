@@ -5,7 +5,6 @@ import axios from 'axios';
 import { Logger } from '../../shared/logger';
 import { Config } from '../../shared/config';
 import { Utils } from '../../shared/utils';
-import Link from '../../models/link';
 
 @Component({
   tag: 'shared-header',
@@ -19,7 +18,7 @@ export class SharedHeader {
   private debug: boolean = false;
   private console: Logger;
   private config: Config;
-  private payload: any = [];
+  private data: any = [];
 
   @Prop() src: string;
 
@@ -34,20 +33,7 @@ export class SharedHeader {
   public componentWillLoad() {
     this.console = new Logger(this.debug);
     this.config = new Config();
-    this.getPayload();
-  }
-
-  /**
-   * Returns total number of likes from Contentful
-   */
-  private getPayload() {
-    this.console.log('getRecords()');
-    this.payload = dig(window, 'CRDS', 'navigation') || [];
-    if (this.payload.length > 0 && this.src) {
-      axios.get(this.src).then(success => {
-        this.payload = dig(success, 'data');
-      });
-    }
+    axios.get(this.src).then(response => (this.data = response.data));
   }
 
   /**
@@ -194,9 +180,9 @@ export class SharedHeader {
         <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
-              <ul>{this.renderSections(this.payload)}</ul>
+              <ul>{this.renderSections(this.data)}</ul>
             </div>
-            {this.renderSubnavs(this.payload)}
+            {this.renderSubnavs(this.data)}
             <nav-ctas active={this.active} />
           </div>
         </nav>
