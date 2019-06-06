@@ -29,6 +29,7 @@ export class SnailTrail {
   }
 
   render() {
+    if (this.data.length === 0) return null;
     return (
       <nav>
         <div>
