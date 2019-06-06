@@ -50,6 +50,7 @@ export class SharedHeader {
    * Renders all sections from payload
    */
   private renderSections(payload) {
+    if (!payload) return null;
     return payload.map(section => {
       const id = Utils.parameterize(section.title);
       return (
@@ -73,6 +74,7 @@ export class SharedHeader {
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
   private renderSubnavs(payload) {
+    if (!payload) return null;
     const sections = payload.map(section => {
       return (
         <nav-section-subnav
