@@ -1,9 +1,13 @@
 header {
   background-color: $cr-cyan;
-  position: fixed;
+  position: relative;
   top: 0;
   width: 100vw;
   z-index: 2;
+
+  @supports (position: sticky) {
+    position: sticky;
+  }
 
   > div {
     @include container();

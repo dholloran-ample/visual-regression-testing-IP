@@ -126,12 +126,10 @@ export namespace Components {
   }
 
   interface SnailTrail {
-    'hidden': boolean;
-    'href': string;
+    'src': string;
   }
   interface SnailTrailAttributes extends StencilHTMLAttributes {
-    'hidden'?: boolean;
-    'href'?: string;
+    'src'?: string;
   }
 }
 
