@@ -126,9 +126,13 @@ export namespace Components {
   }
 
   interface SnailTrail {
+    'env': string;
+    'name': string;
     'src': string;
   }
   interface SnailTrailAttributes extends StencilHTMLAttributes {
+    'env'?: string;
+    'name'?: string;
     'src'?: string;
   }
 }
