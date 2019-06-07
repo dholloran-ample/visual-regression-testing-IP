@@ -50,9 +50,11 @@ export namespace Components {
   }
 
   interface SharedFooter {
+    'env': string;
     'src': string;
   }
   interface SharedFooterAttributes extends StencilHTMLAttributes {
+    'env'?: string;
     'src'?: string;
   }
 

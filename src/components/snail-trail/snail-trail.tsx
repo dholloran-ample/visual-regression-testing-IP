@@ -14,18 +14,12 @@ export class SnailTrail {
   @State() data: Array<any> = [];
 
   componentWillLoad() {
-    this.fetchData();
+    axios.get(this.fetchUrl()).then(response => (this.data = response.data));
   }
 
   fetchUrl() {
     if (this.src) return this.src;
-    let baseUrl = process.env.SNAIL_TRAIL_BASE_URL;
-    if (baseUrl[baseUrl.length - 1] == '/') baseUrl = baseUrl.slice(0, -1);
-    return `${baseUrl}/${this.name}/${this.env}.json`;
-  }
-
-  fetchData() {
-    axios.get(this.fetchUrl()).then(response => (this.data = response.data));
+    return `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
   }
 
   listItems() {

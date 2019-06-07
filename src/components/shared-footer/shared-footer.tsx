@@ -9,11 +9,18 @@ import axios from 'axios';
 })
 export class SharedFooter {
   @Prop() src: string;
+  @Prop() env: string = 'prod';
 
   @State() data: Array<any> = [];
 
   componentWillLoad() {
-    axios.get(this.src).then(response => (this.data = response.data));
+    console.log(this.fetchUrl());
+    axios.get(this.fetchUrl()).then(response => (this.data = response.data));
+  }
+
+  fetchUrl() {
+    if (this.src) return this.src;
+    return `https://crds-data.netlify.com/shared-footer/${this.env}.json`;
   }
 
   private renderElement(el: any) {
