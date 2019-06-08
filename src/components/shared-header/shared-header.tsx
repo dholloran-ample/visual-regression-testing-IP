@@ -1,9 +1,6 @@
 import { Component, Prop, State, Listen } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import dig from 'object-dig';
 import axios from 'axios';
-import { Logger } from '../../shared/logger';
-import { Config } from '../../shared/config';
 import { Utils } from '../../shared/utils';
 
 @Component({
@@ -12,28 +9,26 @@ import { Utils } from '../../shared/utils';
   shadow: true
 })
 export class SharedHeader {
-  /**
-   * Print log messages?
-   */
-  private debug: boolean = false;
-  private console: Logger;
-  private config: Config;
-  private data: any = [];
-
   @Prop() src: string;
+  @Prop() env: string = 'prod';
 
   @State() active: string;
   @State() mainNavIsShowing: boolean = false;
   @State() profileNavIsShowing: boolean = false;
   @State() giveNavIsShowing: boolean = false;
 
+  private data: any = [];
+
   /**
    * Fires before render...
    */
   public componentWillLoad() {
-    this.console = new Logger(this.debug);
-    this.config = new Config();
-    axios.get(this.src).then(response => (this.data = response.data));
+    axios.get(this.fetchUrl()).then(response => (this.data = response.data));
+  }
+
+  fetchUrl() {
+    if (this.src) return this.src;
+    return `https://crds-data.netlify.com/shared-header/${this.env}.json`;
   }
 
   /**
@@ -182,9 +177,9 @@ export class SharedHeader {
         <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
-              <ul>{this.renderSections(this.data)}</ul>
+              <ul>{this.renderSections(this.data.content)}</ul>
             </div>
-            {this.renderSubnavs(this.data)}
+            {this.renderSubnavs(this.data.content)}
             <nav-ctas active={this.active} />
           </div>
         </nav>

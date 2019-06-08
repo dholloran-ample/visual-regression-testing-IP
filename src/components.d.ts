@@ -121,9 +121,11 @@ export namespace Components {
   }
 
   interface SharedHeader {
+    'env': string;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
+    'env'?: string;
     'src'?: string;
   }
 

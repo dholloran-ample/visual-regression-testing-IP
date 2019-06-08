@@ -14,7 +14,6 @@ export class SharedFooter {
   @State() data: Array<any> = [];
 
   componentWillLoad() {
-    console.log(this.fetchUrl());
     axios.get(this.fetchUrl()).then(response => (this.data = response.data));
   }
 
