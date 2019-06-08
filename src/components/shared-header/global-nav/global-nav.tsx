@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Component, Prop, State } from '@stencil/core';
-=======
-import { Component, Prop, Listen } from '@stencil/core';
->>>>>>> feature/US17019-front-end
 import Fragment from 'stencil-fragment';
 
 import { Auth } from '../../../shared/auth';
@@ -81,7 +77,12 @@ export class GlobalNav {
           <div>
             <div class="global-nav-items">
               <div class="global-actions">
-                <a href="" data-automation-id="sh-menu" class={this.menuClasses()} onClick={event => this.navClickHandler(event, 'main-nav')}>
+                <a
+                  href=""
+                  data-automation-id="sh-menu"
+                  class={this.menuClasses()}
+                  onClick={event => this.navClickHandler(event, 'main-nav')}
+                >
                   <div class="menu" innerHTML={menu} />
                   <div class="close" innerHTML={close} />
                 </a>
@@ -91,7 +92,12 @@ export class GlobalNav {
               <a href="" data-automation-id="sh-logo" class="logo" innerHTML={logo} />
 
               <div class="user-actions">
-                <a href="" data-automation-id="sh-give" class={this.giveClasses()} onClick={event => this.navClickHandler(event, 'give-nav')}>
+                <a
+                  href=""
+                  data-automation-id="sh-give"
+                  class={this.giveClasses()}
+                  onClick={event => this.navClickHandler(event, 'give-nav')}
+                >
                   <div class="donate" innerHTML={usd} />
                   <div class="close" innerHTML={close} />
                 </a>
