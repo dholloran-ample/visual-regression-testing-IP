@@ -49,8 +49,14 @@ export namespace Components {
     'key'?: string;
   }
 
-  interface SharedFooter {}
-  interface SharedFooterAttributes extends StencilHTMLAttributes {}
+  interface SharedFooter {
+    'env': string;
+    'src': string;
+  }
+  interface SharedFooterAttributes extends StencilHTMLAttributes {
+    'env'?: string;
+    'src'?: string;
+  }
 
   interface GlobalNav {
     'giveNavIsShowing': boolean;
@@ -119,19 +125,23 @@ export namespace Components {
   }
 
   interface SharedHeader {
+    'env': string;
     'src': string;
   }
   interface SharedHeaderAttributes extends StencilHTMLAttributes {
+    'env'?: string;
     'src'?: string;
   }
 
   interface SnailTrail {
-    'hidden': boolean;
-    'href': string;
+    'env': string;
+    'name': string;
+    'src': string;
   }
   interface SnailTrailAttributes extends StencilHTMLAttributes {
-    'hidden'?: boolean;
-    'href'?: string;
+    'env'?: string;
+    'name'?: string;
+    'src'?: string;
   }
 }
 

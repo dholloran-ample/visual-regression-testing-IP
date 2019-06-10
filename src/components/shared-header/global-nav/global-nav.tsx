@@ -130,7 +130,6 @@ export class GlobalNav {
             />
             <give-nav giveNavIsShowing={this.giveNavIsShowing} />
           </div>
-          <snail-trail hidden={this.mainNavIsShowing} />
         </header>
       </Fragment>
     );
