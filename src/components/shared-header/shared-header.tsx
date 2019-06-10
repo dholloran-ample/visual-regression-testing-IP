@@ -23,12 +23,8 @@ export class SharedHeader {
    * Fires before render...
    */
   public componentWillLoad() {
-    axios.get(this.fetchUrl()).then(response => (this.data = response.data));
-  }
-
-  fetchUrl() {
-    if (this.src) return this.src;
-    return `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    axios.get(url).then(response => (this.data = response.data));
   }
 
   /**
