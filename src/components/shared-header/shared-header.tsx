@@ -1,11 +1,7 @@
 import { Component, Prop, State, Listen } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import dig from 'object-dig';
 import axios from 'axios';
-import { Logger } from '../../shared/logger';
-import { Config } from '../../shared/config';
 import { Utils } from '../../shared/utils';
-import Link from '../../models/link';
 
 @Component({
   tag: 'shared-header',
@@ -13,41 +9,22 @@ import Link from '../../models/link';
   shadow: true
 })
 export class SharedHeader {
-  /**
-   * Print log messages?
-   */
-  private debug: boolean = false;
-  private console: Logger;
-  private config: Config;
-  private payload: any = [];
-
   @Prop() src: string;
+  @Prop() env: string = 'prod';
 
   @State() active: string;
   @State() mainNavIsShowing: boolean = false;
   @State() profileNavIsShowing: boolean = false;
   @State() giveNavIsShowing: boolean = false;
 
+  private data: any = [];
+
   /**
    * Fires before render...
    */
   public componentWillLoad() {
-    this.console = new Logger(this.debug);
-    this.config = new Config();
-    this.getPayload();
-  }
-
-  /**
-   * Returns total number of likes from Contentful
-   */
-  private getPayload() {
-    this.console.log('getRecords()');
-    this.payload = dig(window, 'CRDS', 'navigation') || [];
-    if (this.payload.length > 0 && this.src) {
-      axios.get(this.src).then(success => {
-        this.payload = dig(success, 'data');
-      });
-    }
+    const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    axios.get(url).then(response => (this.data = response.data));
   }
 
   /**
@@ -64,6 +41,7 @@ export class SharedHeader {
    * Renders all sections from payload
    */
   private renderSections(payload) {
+    if (!payload) return null;
     return payload.map(section => {
       const id = Utils.parameterize(section.title);
       return (
@@ -87,6 +65,7 @@ export class SharedHeader {
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
   private renderSubnavs(payload) {
+    if (!payload) return null;
     const sections = payload.map(section => {
       return (
         <nav-section-subnav
@@ -113,7 +92,9 @@ export class SharedHeader {
         const listItems = child.map(link => {
           return (
             <li class={link.top_level ? 'top-level' : null}>
-              <a href={link.href || '#'} data-automation-id={link["automation-id"]} >{link.title}</a>
+              <a href={link.href || '#'} data-automation-id={link['automation-id']}>
+                {link.title}
+              </a>
             </li>
           );
         });
@@ -192,9 +173,9 @@ export class SharedHeader {
         <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
-              <ul>{this.renderSections(this.payload)}</ul>
+              <ul>{this.renderSections(this.data.content)}</ul>
             </div>
-            {this.renderSubnavs(this.payload)}
+            {this.renderSubnavs(this.data.content)}
             <nav-ctas active={this.active} />
           </div>
         </nav>

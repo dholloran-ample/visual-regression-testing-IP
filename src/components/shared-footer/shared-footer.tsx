@@ -1,70 +1,65 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import footerData from '../../data/footer.json';
+import axios from 'axios';
 
 @Component({
   tag: 'shared-footer',
   styleUrl: 'shared-footer.scss',
   shadow: true
 })
-
 export class SharedFooter {
+  @Prop() src: string;
+  @Prop() env: string = 'prod';
 
-  private nav: any = footerData;
+  @State() data: Array<any> = [];
 
-  private renderElement(el) {
-    if (el.path) {
-      let target = ''
-      if (el.path.match(/:\/\//)) { target = '_blank' }
-      if (el.img) {
-        return <a target={target} href={el.path}><img src={el.img} alt={el.title} title={el.title} /></a>
-      } 
-      else {
-        if(el["automation-id"]){
-          return <a target={target} href={el.path} data-automation-id={el["automation-id"]} >{el.title}</a>
-        }
-        return <a target={target} href={el.path}>{el.title}</a>
-      }
-    } else {
-      return el.title
-    }
+  componentWillLoad() {
+    const url = this.src || `https://crds-data.netlify.com/shared-footer/${this.env}.json`;
+    axios.get(url).then(response => (this.data = response.data));
+  }
+
+  private renderElement(el: any) {
+    if (!el.path) return el.title;
+    let attrs = {
+      target: el.path.match(/:\/\//) ? '_blank' : '',
+      href: el.path
+    };
+    if (el['automation-id']) attrs['data-automation-id'] = el['automation-id'];
+    return <a {...attrs}>{el.img ? <img src={el.img} alt={el.title} title={el.title} /> : el.title}</a>;
   }
 
   private renderGroups(groups) {
-    let hasChildren = false
     const groupMarkup = groups.map(group => {
-      if (group.children) {
-        hasChildren = true
-        return (
-          <fragment>
-            <p>{group.title}</p>
-            <ul>
-              {group.children.map(el => <li>{this.renderElement(el)}</li>)}
-            </ul>
-          </fragment>
-        )
-      } else {
-        return <li>{this.renderElement(group)}</li>
-      }
+      if (!group.children) return <li>{this.renderElement(group)}</li>;
+      return (
+        <Fragment>
+          <p>{group.title}</p>
+          <ul>
+            {group.children.map(el => (
+              <li>{this.renderElement(el)}</li>
+            ))}
+          </ul>
+        </Fragment>
+      );
     });
-    if (hasChildren) {
-      return groupMarkup
-    } else {
-      return <ul>{groupMarkup}</ul>
-    }
+    const Tag = groups.filter(g => g.children).length > 0 ? 'Fragment' : 'ul';
+    return <Tag>{groupMarkup}</Tag>;
+  }
+
+  private renderColumns() {
+    return this.data.map(column => (
+      <div class={column.class}>
+        <h5>{this.renderElement(column)}</h5>
+        {this.renderGroups(column.children)}
+      </div>
+    ));
   }
 
   public render() {
+    if (this.data.length === 0) return null;
     return (
       <footer>
-        <div class="container">
-        {this.nav.map((column) =>
-          <div class={column.class}>
-            <h5>{this.renderElement(column)}</h5>
-            {this.renderGroups(column.children)}
-          </div>
-        )}
-        </div>
+        <div class="container">{this.renderColumns()}</div>
       </footer>
     );
   }
