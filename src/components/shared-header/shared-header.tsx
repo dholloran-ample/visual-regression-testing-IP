@@ -127,6 +127,7 @@ export class SharedHeader {
       this.mainNavIsShowing = false;
       this.profileNavIsShowing = false;
     }
+    return (document.body.style.overflow = 'hidden');
   }
 
   closeMenus(event) {
@@ -152,7 +153,7 @@ export class SharedHeader {
 
   @Listen('window:click')
   handleScroll(event) {
-    return this.closeMenus(event);
+    return (document.body.style.overflow = 'scroll'), this.closeMenus(event);
   }
 
   /**
