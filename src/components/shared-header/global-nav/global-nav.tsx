@@ -1,12 +1,37 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Listen } from '@stencil/core';
+import Fragment from 'stencil-fragment';
 
 @Component({
-  tag: 'nav-bar',
-  styleUrl: 'nav-bar.scss',
+  tag: 'global-nav',
+  styleUrl: 'global-nav.scss',
   shadow: true
 })
-export class TopBar {
+export class GlobalNav {
   @Prop() href: string;
+  @Prop() navClickHandler: Function;
+  @Prop() mainNavIsShowing: boolean = false;
+  @Prop() profileNavIsShowing: boolean = false;
+  @Prop() giveNavIsShowing: boolean = false;
+
+  // TODO: consoliate menuClasses, profileClasses, and  giveClasses
+  // ------------------------------------------------------
+  menuClasses() {
+    let classes = ['menu-container'];
+    if (this.mainNavIsShowing) classes.push('nav-is-showing');
+    return classes.join(' ');
+  }
+
+  profileClasses() {
+    let classes = ['profile-container'];
+    if (this.profileNavIsShowing) classes.push('nav-is-showing');
+    return classes.join(' ');
+  }
+
+  giveClasses() {
+    let classes = ['give-container'];
+    if (this.giveNavIsShowing) classes.push('nav-is-showing');
+    return classes.join(' ');
+  }
 
   render() {
     let logo =
@@ -19,23 +44,58 @@ export class TopBar {
       '<svg id="account-thin" width="256" height="256" viewBox="0 0 256 256"><g><path d="M128,10 C62.8145161,10 10,62.8145161 10,128 C10,193.185484 62.8145161,246 128,246 C193.185484,246 246,193.185484 246,128 C246,62.8145161 193.185484,10 128,10 Z M188.903226,210.6 C171.821774,223.208871 150.791129,230.774194 128,230.774194 C105.208871,230.774194 84.1782258,223.208871 67.0967742,210.6 L67.0967742,204.129032 C67.0967742,187.333065 80.7524194,173.677419 97.5483871,173.677419 C102.829839,173.677419 110.633065,179.101613 128,179.101613 C145.414516,179.101613 153.122581,173.677419 158.451613,173.677419 C175.247581,173.677419 188.903226,187.333065 188.903226,204.129032 L188.903226,210.6 Z M203.462903,197.515323 C200.227419,175.437903 181.433065,158.451613 158.451613,158.451613 C148.697581,158.451613 143.987097,163.875806 128,163.875806 C112.012903,163.875806 107.35,158.451613 97.5483871,158.451613 C74.5669355,158.451613 55.7725806,175.437903 52.5370968,197.515323 C35.6459677,179.196774 25.2258065,154.835484 25.2258065,128 C25.2258065,71.3314516 71.3314516,25.2258065 128,25.2258065 C184.668548,25.2258065 230.774194,71.3314516 230.774194,128 C230.774194,154.835484 220.354032,179.196774 203.462903,197.515323 Z M128,63.2903226 C104.875806,63.2903226 86.1290323,82.0370968 86.1290323,105.16129 C86.1290323,128.285484 104.875806,147.032258 128,147.032258 C151.124194,147.032258 169.870968,128.285484 169.870968,105.16129 C169.870968,82.0370968 151.124194,63.2903226 128,63.2903226 Z M128,131.806452 C113.297581,131.806452 101.354839,119.86371 101.354839,105.16129 C101.354839,90.458871 113.297581,78.516129 128,78.516129 C142.702419,78.516129 154.645161,90.458871 154.645161,105.16129 C154.645161,119.86371 142.702419,131.806452 128,131.806452 Z"/></g></svg>';
     let usd =
       '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="usd-circle" class="svg-inline--fa fa-usd-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 464c-119.1 0-216-96.9-216-216S128.9 40 248 40s216 96.9 216 216-96.9 216-216 216zm40.3-221.3l-72-20.2c-12.1-3.4-20.6-14.4-20.6-26.7 0-15.3 12.8-27.8 28.5-27.8h45c11.2 0 21.9 3.6 30.6 10.1 3.2 2.4 7.6 2 10.4-.8l11.3-11.5c3.4-3.4 3-9-.8-12-14.6-11.6-32.6-17.9-51.6-17.9H264v-40c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v40h-7.8c-33.3 0-60.5 26.8-60.5 59.8 0 26.6 18.1 50.2 43.9 57.5l72 20.2c12.1 3.4 20.6 14.4 20.6 26.7 0 15.3-12.8 27.8-28.5 27.8h-45c-11.2 0-21.9-3.6-30.6-10.1-3.2-2.4-7.6-2-10.4.8l-11.3 11.5c-3.4 3.4-3 9 .8 12 14.6 11.6 32.6 17.9 51.6 17.9h5.2v40c0 4.4 3.6 8 8 8h16c4.4 0 8-3.6 8-8v-40h7.8c33.3 0 60.5-26.8 60.5-59.8-.1-26.6-18.1-50.2-44-57.5z"></path></svg>';
+    let close =
+      '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="times" class="svg-inline--fa fa-times fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"></path></svg>';
 
     return (
-      <header>
-        <div>
-          <div class="global-actions">
-            <a href="" class="menu" innerHTML={menu} />
-            <a href="" class="search" innerHTML={search} />
-          </div>
+      <Fragment>
+        <header>
+          <div>
+            <div class="global-nav-items">
+              <div class="global-actions">
+                <a
+                  href=""
+                  data-automation-id="sh-menu"
+                  class={this.menuClasses()}
+                  onClick={event => this.navClickHandler(event, 'main-nav')}
+                >
+                  <div class="menu" innerHTML={menu} />
+                  <div class="close" innerHTML={close} />
+                </a>
 
-          <a href="" class="logo" innerHTML={logo} />
+                <a href="" data-automation-id="sh-search" class="search" innerHTML={search} />
+              </div>
 
-          <div class="user-actions">
-            <a href="" class="donate" innerHTML={usd} />
-            <a href="" class="account" innerHTML={account} />
+              <a href="" data-automation-id="sh-logo" class="logo" innerHTML={logo} />
+
+              <div class="user-actions">
+                <a
+                  href=""
+                  data-automation-id="sh-give"
+                  class={this.giveClasses()}
+                  onClick={event => this.navClickHandler(event, 'give-nav')}
+                >
+                  <div class="donate" innerHTML={usd} />
+                  <div class="close" innerHTML={close} />
+                </a>
+
+                <a
+                  href=""
+                  data-automation-id="sh-profile"
+                  class={this.profileClasses()}
+                  onClick={event => this.navClickHandler(event, 'profile-nav')}
+                >
+                  <div class="account" innerHTML={account} />
+                  <div class="close" innerHTML={close} />
+                </a>
+              </div>
+            </div>
+
+            <profile-nav profileNavIsShowing={this.profileNavIsShowing} />
+            <give-nav giveNavIsShowing={this.giveNavIsShowing} />
           </div>
-        </div>
-      </header>
+        </header>
+      </Fragment>
     );
   }
 }

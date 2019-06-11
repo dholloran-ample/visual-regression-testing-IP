@@ -16,7 +16,8 @@ export const config: Config = {
     }
   ],
   nodeResolve: {
-    browser: true
+    browser: true,
+    preferBuiltins: true
   },
   plugins: [
     env(),
@@ -25,7 +26,7 @@ export const config: Config = {
         'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables',
         'node_modules/crds-styles/assets/stylesheets/variables',
         'node_modules/crds-styles/assets/stylesheets/overrides',
-        'src/assets/stylesheets/mixins'
+        'src/assets/stylesheets/globals/all'
       ]
     }),
     builtins(),
@@ -36,6 +37,5 @@ export const config: Config = {
       'process.env.CONTENTFUL_ENV': JSON.stringify(process.env.CONTENTFUL_ENV),
       'process.env.CRDS_INTERACTIONS_ENDPOINT': JSON.stringify(process.env.CRDS_INTERACTIONS_ENDPOINT)
     })
-  ],
-  copy: [{ src: 'data' }]
+  ]
 };

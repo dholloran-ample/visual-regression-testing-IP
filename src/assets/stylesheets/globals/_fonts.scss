@@ -1,6 +1,4 @@
-// stylelint-disable declaration-no-important
-
-// Font-face utility mixins
+// Font-family utility mixins
 // ---------------------------------------------------------
 
 @mixin font-family-base {
@@ -82,22 +80,5 @@
 
   @media screen and (min-width: $screen-xs) {
     font-size: $font-size-h6 * 1.15 !important; // 22px
-  }
-}
-
-// --------------------------------------------------------
-
-@mixin container {
-  margin: 0 auto;
-  max-width: $container-large-desktop;
-}
-
-// --------------------------------------------------------
-
-@mixin reset-list {
-  padding-left: 0;
-
-  li {
-    list-style: none;
   }
 }

@@ -1,35 +1,43 @@
-// stylelint-disable a11y/no-display-none
+// stylelint-disable a11y/no-display-none, a11y/font-size-is-readable
 .hidden {
   display: none;
 }
 
 nav-section-subnav {
-  @include font-family-base;
+  @include nav-items('main-nav');
 
-  a {
-    color: $cr-white;
-    display: inline-block;
-    font-size: 19px;
-    margin-bottom: 10px;
-    text-decoration: none;
-    text-transform: capitalize;
-
-    &.all {
-      margin-bottom: 30px;
+  h2 {
+    @media (min-width: $screen-md) {
+      display: none;
     }
   }
 
-  // stylelint-disable a11y/font-size-is-readable
-  h4 {
-    font-size: 11px;
-    margin: 0 0 10px;
-    opacity: .5;
-    text-transform: uppercase;
-  }
+  .back {
+    $height: 13px;
+    $width: 7px;
 
-  ul {
-    @include reset-list;
+    font-size: 14px;
+    padding-left: 0;
+    position: relative;
 
-    margin-top: 0;
+    @media (min-width: $screen-md) {
+      display: none;
+    }
+
+    span {
+      display: inline-block;
+      height: $height;
+      margin-right: 8px;
+      padding: 12px 0;
+      position: relative;
+      top: 1px;
+      width: $width;
+    }
+
+    svg {
+      fill: $cr-white;
+      height: $height;
+      width: $width;
+    }
   }
 }

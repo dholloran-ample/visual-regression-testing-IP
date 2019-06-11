@@ -30,11 +30,11 @@ module.exports = {
     'a11y/no-spread-text': null,
     'a11y/no-text-align-justify': true,
     'a11y/selector-pseudo-class-focus': null,
-    'aditayvm/at-rule-no-children': [
-      {
-        ignore: ['each', 'for', 'if', 'mixin']
-      }
-    ],
+    // 'aditayvm/at-rule-no-children': [
+    //   {
+    //     ignore: ['each', 'for', 'if', 'mixin']
+    //   }
+    // ],
     'at-rule-blacklist': null,
     'at-rule-empty-line-before': [
       'always',
@@ -167,7 +167,7 @@ module.exports = {
       }
     ],
     'max-nesting-depth': [
-      3,
+      5,
       {
         ignoreAtRules: ['media']
       }
@@ -239,7 +239,7 @@ module.exports = {
     'selector-attribute-operator-space-before': 'never',
     'selector-attribute-operator-whitelist': null,
     'selector-attribute-quotes': 'always',
-    'selector-class-pattern': namingPattern,
+    // 'selector-class-pattern': namingPattern,
     'selector-combinator-blacklist': null,
     'selector-combinator-space-after': 'always',
     'selector-combinator-space-before': 'always',

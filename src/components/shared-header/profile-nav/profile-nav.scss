@@ -1,0 +1,47 @@
+.give-nav,
+.profile-nav {
+  @include nav-items;
+
+  background-color: $cr-black;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: 100%;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  top: 47px;
+  width: 100vw;
+  z-index: 2;
+
+  @media (min-width: $screen-md) {
+    height: auto;
+    left: auto;
+    margin-right: -$global-nav-padding;
+    position: absolute;
+    right: $global-nav-padding;
+    width: 375px;
+  }
+
+  @media (min-width: $container-large-desktop) {
+    margin-right: 0;
+  }
+
+  ul {
+    &:last-of-type {
+      padding-bottom: 30px;
+    }
+  }
+}
+
+$imgix-url: 'https://crds-media.imgix.net/';
+
+$background-images: (
+  give: '6sNxa1MWhMOfjhAB47yTCa/0acf1af4109f23abc0199b1e34abeb7a/give-bg_2x.jpg',
+  profile: 'WgeyOtqcX4tb1uQlPCtcc/cbcef0d3eacc4ea6573939ec9fee6164/account-bg_2x.jpg'
+);
+
+@each $nav-type, $image in $background-images {
+  .#{$nav-type}-nav {
+    background-image: url('#{$imgix-url}#{$image}?auto=format%2Ccompress');
+  }
+}
