@@ -2,20 +2,70 @@
 <html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+
     <!--
       <meta property="cfl:space_id" content="...">
       <meta property="cfl:env" content="master">
       <meta property="cfl:token" content="...">
       <meta property="crds:interactions-endpoint" content="...">
     -->
-    <title>Stencil Component Starter</title>
+
+    <title>Crossroads Component Library</title>
+
+    <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.2.3.min.css" />
+
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+
+    <script src=https://use.typekit.net/ccb3vpa.js></script>
+    <script>
+      try {
+        Typekit.load({ async: true });
+      } catch (e) {}
+    </script>
+
     <script src="/build/crds-components.js"></script>
   </head>
   <body>
-    <heart-button id="4D9pCED9eM0GOQCOKyY0mS" />
+
+    <div class="shared-header-skeleton" style="min-height: 49px; background-color: #0095d9">
+      <shared-header></shared-header>
+    </div>
+
+    <div class="snail-trail" style="min-height: 43px; background-color: white">
+      <snail-trail name="trending"></snail-trail>
+    </div>
+
+    <div class="jumbotron jumbotron-xl" style="background-image: url('//crds-cms-uploads.imgix.net/content/images/streaming-anywhere-hero-off.jpg?auto=format,compress&amp;w=100&amp;fit=crop');">
+      <p class="small-heading text-uppercase">I am a small intro heading</p>
+      <h1 class="title">the main heading</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Repudiandae quos reiciendis vitae eum.
+      </p>
+      <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
+    </div>
+
+    <div class="container soft-sides push-ends">
+      <p class="lead text-center push-bottom">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+        ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
+        tempor in cursus vel, consectetur ut lorem. Phasellus tristique mauris a
+        arcu malesuada lacinia. Praesent sodales ultrices tincidunt. Curabitur
+        sollicitudin varius turpis, ac cursus ex euismod quis. Curabitur a
+        lacinia nisi, ac molestie mi. Phasellus malesuada, risus non ornare
+        lacinia, nibh mi posuere lorem, vitae dignissim tellus nibh nec leo.
+      </p>
+
+      <!--heart-button id="4D9pCED9eM0GOQCOKyY0mS"></heart-button-->
+    </div>
+
+    <div class="shared-footer-skeleton" style="min-height: 626px; background-color: #e7e7e7">
+      <shared-footer></shared-footer>
+    </div>
   </body>
 </html>
