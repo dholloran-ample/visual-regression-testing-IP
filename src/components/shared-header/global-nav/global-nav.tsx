@@ -1,4 +1,4 @@
-import { Component, Prop, Listen } from '@stencil/core';
+import { Component, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 
 @Component({
@@ -12,6 +12,7 @@ export class GlobalNav {
   @Prop() mainNavIsShowing: boolean = false;
   @Prop() profileNavIsShowing: boolean = false;
   @Prop() giveNavIsShowing: boolean = false;
+  @Prop() giveData: JSON;
 
   // TODO: consoliate menuClasses, profileClasses, and  giveClasses
   // ------------------------------------------------------
@@ -92,7 +93,7 @@ export class GlobalNav {
             </div>
 
             <profile-nav profileNavIsShowing={this.profileNavIsShowing} />
-            <give-nav giveNavIsShowing={this.giveNavIsShowing} />
+            <give-nav data={this.giveData} giveNavIsShowing={this.giveNavIsShowing} />
           </div>
         </header>
       </Fragment>
