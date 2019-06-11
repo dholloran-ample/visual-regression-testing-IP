@@ -8,35 +8,38 @@ import {
 import { Utils } from './utils';
 
 export class Auth {
-  oktaConfig: CrdsOktaConfig = {
-    clientId: process.env.OKTA_CLIENT_ID,
-    issuer: process.env.OKTA_ISSUER,
-    tokenManager: {
-      storage: 'cookie'
-    }
-  };
-
-  mpConfig: CrdsMpConfig = {
-    accessTokenCookie: process.env.MP_ACCESS_TOKEN_COOKIE,
-    refreshTokenCookie: process.env.MP_REFRESH_TOKEN_COOKIE
-  };
-
-  authConfig: CrdsAuthConfig = {
-    oktaConfig: this.oktaConfig,
-    mpConfig: this.mpConfig,
-    logging: true,
-    providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp]
-  };
-
   authenticated: boolean = false;
   authService: CrdsAuthenticationService;
+  config: any;
+  currentUser: object;
   isMp: boolean;
   isOkta: boolean;
   token: any;
-  currentUser: object;
 
-  constructor() {
-    this.authService = new CrdsAuthenticationService(this.authConfig);
+  subdomainMap = {
+    prod: 'www'
+  };
+
+  constructor(config) {
+    this.config = config;
+    const oktaConfig: CrdsOktaConfig = {
+      clientId: config.okta_client_id,
+      issuer: config.okta_issuer,
+      tokenManager: {
+        storage: 'cookie'
+      }
+    };
+    const mpConfig: CrdsMpConfig = {
+      accessTokenCookie: config.mp_access_token_cookie,
+      refreshTokenCookie: config.mp_refresh_token_cookie
+    };
+    const authConfig: CrdsAuthConfig = {
+      oktaConfig: oktaConfig,
+      mpConfig: mpConfig,
+      logging: true,
+      providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp]
+    };
+    this.authService = new CrdsAuthenticationService(authConfig);
   }
 
   listen(callback) {
@@ -88,6 +91,7 @@ export class Auth {
     if (!this.authenticated) return null;
     const userId = this.getUserId();
     if (!userId) return null;
-    return `${process.env.CRDS_BASE_URL}/proxy/gateway/api/image/profile/${userId}`;
+    const subdomain = this.subdomainMap[this.config.env] || this.config.env;
+    return `https://${subdomain}.crossroads.net/proxy/gateway/api/image/profile/${userId}`;
   }
 }

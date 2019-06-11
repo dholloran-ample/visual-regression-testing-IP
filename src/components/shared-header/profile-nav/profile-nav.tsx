@@ -6,9 +6,10 @@ import { Component, Prop, Listen } from '@stencil/core';
   shadow: true
 })
 export class ProfileMenu {
-  @Prop() profileNavIsShowing: boolean = true;
-  @Prop() onSignOut: Function;
+  @Prop() config: any;
   @Prop() currentUser: any;
+  @Prop() onSignOut: Function;
+  @Prop() profileNavIsShowing: boolean = true;
 
   envUrl(path) {
     return `${process.env.CRDS_BASE_URL}${path}`;
