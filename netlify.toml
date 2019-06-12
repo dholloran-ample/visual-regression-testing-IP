@@ -6,6 +6,5 @@
     npm run storybook:build &&
     cp -R www storybook-static/demo &&
     mv www/build storybook-static &&
-    mv www/data storybook-static &&
     mv dist storybook-static
   '''
