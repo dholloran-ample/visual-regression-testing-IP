@@ -16,57 +16,35 @@ export class GiveMenu {
   }
 
   renderSections = payload => {
-    return payload.map(section => {
-      return (
-        <div>
-          {section.title && <h4>{section.title}</h4>}
-          <ul>
-            {section.children.map(el => {
-              return (
-                <li class={el['top_level'] ? 'top-level' : ''}>
-                  <a href={el.path} automation-id={el['automation-id']} /> el.title{' '}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      );
-    });
+    return (
+      <div>
+        <h2> {payload.title} </h2>
+        {payload.children.map(child => {
+          return (
+            <div style={{ padding: '0' }}>
+              {typeof child[0] == 'string' && <h4>{child[0]}</h4>}
+              <ul>
+                {child.map(el => {
+                  if (typeof el != 'string')
+                    return (
+                      <li class={el['top_level'] ? 'top-level' : ''}>
+                        <a href={el.path} automation-id={el['automation-id']} /> {el.title}
+                      </li>
+                    );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   render() {
     if (!this.giveNavIsShowing) return null;
-
     return (
-      <div class="give-nav">
-        <div>
-          <h2>Give</h2>
-          <ul>
-            <li class="top-level">
-              <a href="#" data-automation-id="sh-give-now">
-                Give now
-              </a>
-            </li>
-            <li class="top-level">
-              <a href="#" data-automation-id="sh-my-giving">
-                My giving
-              </a>
-            </li>
-          </ul>
-          <h4>About giving</h4>
-          <ul>
-            <li>
-              <a href="#" data-automation-id="sh-why-give">
-                Why give?
-              </a>
-            </li>
-            <li>
-              <a href="#" data-automation-id="sh-other-ways">
-                Other ways to give
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="give-nav" style={{ backgroundImage: `url(${(this.data as any).background_img})` }}>
+        {this.renderSections(this.data)}
       </div>
     );
   }
