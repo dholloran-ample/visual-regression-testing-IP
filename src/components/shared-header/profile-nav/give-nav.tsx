@@ -22,7 +22,11 @@ export class GiveMenu {
           {section.title && <h4>{section.title}</h4>}
           <ul>
             {section.children.map(el => {
-              return <li class={el['top_level'] ? 'top-level' : ''}> <a href={el.path} automation-id={el['automation-id']} ></a> el.title </li>;
+              return (
+                <li class={el['top_level'] ? 'top-level' : ''}>
+                  <a href={el.path} automation-id={el['automation-id']} /> el.title{' '}
+                </li>
+              );
             })}
           </ul>
         </div>
@@ -35,8 +39,8 @@ export class GiveMenu {
 
     return (
       <div class="give-nav">
-        <h2>Give</h2>
         <div>
+          <h2>Give</h2>
           <ul>
             <li class="top-level">
               <a href="#" data-automation-id="sh-give-now">
