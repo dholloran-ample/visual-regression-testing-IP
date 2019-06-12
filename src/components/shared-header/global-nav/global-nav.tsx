@@ -31,11 +31,11 @@ export class GlobalNav {
     this.auth.listen(this.authChangeCallback.bind(this));
   }
 
-  authChangeCallback(_: any = null) {
+  authChangeCallback() {
     this.authenticated = this.auth.authenticated;
   }
 
-  handleSignOut(_: any = null) {
+  handleSignOut() {
     this.auth.signOut(this.authChangeCallback.bind(this));
   }
 

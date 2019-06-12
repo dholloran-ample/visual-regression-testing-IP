@@ -20,7 +20,7 @@ export class Auth {
     prod: 'www'
   };
 
-  constructor(config) {
+  constructor(config: any = {}) {
     this.config = config;
     const oktaConfig: CrdsOktaConfig = {
       clientId: config.okta_client_id,
@@ -36,9 +36,10 @@ export class Auth {
     const authConfig: CrdsAuthConfig = {
       oktaConfig: oktaConfig,
       mpConfig: mpConfig,
-      logging: true,
+      logging: config.logging || false,
       providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp]
     };
+    console.log(authConfig);
     this.authService = new CrdsAuthenticationService(authConfig);
   }
 
