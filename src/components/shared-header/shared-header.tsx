@@ -17,7 +17,7 @@ export class SharedHeader {
   @State() profileNavIsShowing: boolean = false;
   @State() giveNavIsShowing: boolean = false;
 
-  private data: any = [];
+  @State() data: any = {};
 
   /**
    * Fires before render...
@@ -170,6 +170,8 @@ export class SharedHeader {
           profileNavIsShowing={this.profileNavIsShowing}
           giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
+          config={this.data.config}
+          env={this.env}
         />
         <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
