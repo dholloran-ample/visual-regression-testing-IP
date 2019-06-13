@@ -114,20 +114,32 @@ export class SharedHeader {
   toggleMenu(event, navType) {
     event.preventDefault();
     event.stopPropagation();
+
     if (navType == 'main-nav') {
       this.giveNavIsShowing = false;
       this.mainNavIsShowing = !this.mainNavIsShowing;
       this.profileNavIsShowing = false;
+      console.log(this.mainNavIsShowing);
+      if (this.mainNavIsShowing) {
+        document.body.setAttribute('style', 'overflow: hidden; position: absolute;');
+      } else {
+        document.body.setAttribute('style', 'overflow: scroll;');
+      }
     } else if (navType == 'profile-nav') {
       this.giveNavIsShowing = false;
       this.mainNavIsShowing = false;
       this.profileNavIsShowing = !this.profileNavIsShowing;
+      return this.profileNavIsShowing
+        ? document.body.setAttribute('style', 'overflow: hidden; position: absolute;')
+        : document.body.setAttribute('style', 'overflow: scroll;');
     } else if (navType == 'give-nav') {
       this.giveNavIsShowing = !this.giveNavIsShowing;
       this.mainNavIsShowing = false;
       this.profileNavIsShowing = false;
+      return this.giveNavIsShowing
+        ? document.body.setAttribute('style', 'overflow: hidden; position: absolute; width: 100vw;')
+        : document.body.setAttribute('style', 'overflow: scroll;');
     }
-    return (document.body.style.overflow = 'hidden');
   }
 
   closeMenus(event) {
@@ -135,6 +147,7 @@ export class SharedHeader {
     this.giveNavIsShowing = false;
     this.mainNavIsShowing = false;
     this.profileNavIsShowing = false;
+    return document.body.setAttribute('style', 'overflow: scroll;');
   }
 
   navClasses() {
@@ -153,7 +166,7 @@ export class SharedHeader {
 
   @Listen('window:click')
   handleScroll(event) {
-    return (document.body.style.overflow = 'scroll'), this.closeMenus(event);
+    return document.body.setAttribute('style', 'overflow: scroll;'), this.closeMenus(event);
   }
 
   /**
