@@ -9,6 +9,8 @@
 
 | Property              | Attribute                | Description | Type       | Default     |
 | --------------------- | ------------------------ | ----------- | ---------- | ----------- |
+| `config`              | --                       |             | `Object`   | `undefined` |
+| `env`                 | `env`                    |             | `string`   | `undefined` |
 | `giveNavIsShowing`    | `give-nav-is-showing`    |             | `boolean`  | `false`     |
 | `href`                | `href`                   |             | `string`   | `undefined` |
 | `mainNavIsShowing`    | `main-nav-is-showing`    |             | `boolean`  | `false`     |
