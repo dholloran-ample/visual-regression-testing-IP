@@ -34,6 +34,4 @@ export class Utils {
         .split(';')
         .shift();
   }
-
-  
 }
