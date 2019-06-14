@@ -22,17 +22,19 @@ export class GiveMenu {
         {payload.children.map(child => {
           return (
             <div style={{ padding: '0' }}>
-              {typeof child[0] == 'string' && <h4>{child[0]}</h4>}
-              <ul>
-                {child.map(el => {
-                  if (typeof el != 'string')
-                    return (
-                      <li class={el['top_level'] ? 'top-level' : ''}>
-                        <a href={el.path} automation-id={el['automation-id']} /> {el.title}
-                      </li>
-                    );
-                })}
-              </ul>
+              {typeof child == 'string' && <h4>{child}</h4>}
+              {typeof child != 'string' && (
+                <ul>
+                  {child.map(el => {
+                    if (typeof el != 'string')
+                      return (
+                        <li class={el['top_level'] ? 'top-level' : ''}>
+                          <a href={el.path} automation-id={el['automation-id']}> {el.title}</a>
+                        </li>
+                      );
+                  })}
+                </ul>
+              )}
             </div>
           );
         })}
