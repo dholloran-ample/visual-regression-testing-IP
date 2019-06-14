@@ -175,9 +175,9 @@ export class SharedHeader {
         <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
-              <ul>{this.renderSections(this.data.menu)}</ul>
+              <ul>{this.renderSections(this.data.nav)}</ul>
             </div>
-            {this.renderSubnavs(this.data.menu)}
+            {this.renderSubnavs(this.data.nav)}
             <nav-ctas active={this.active} />
           </div>
         </nav>
