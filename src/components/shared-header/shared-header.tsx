@@ -192,7 +192,7 @@ export class SharedHeader {
               <ul>{this.renderSections(this.data.content)}</ul>
             </div>
             {this.renderSubnavs(this.data.content)}
-            <nav-ctas active={this.active} />
+            <nav-ctas active={this.active} data={this.data.promos} />
           </div>
         </nav>
         <div class={this.navCloseClasses()}>

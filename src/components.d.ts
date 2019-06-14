@@ -79,10 +79,12 @@ export namespace Components {
 
   interface NavCtas {
     'active': string;
+    'data': string;
     'href': string;
   }
   interface NavCtasAttributes extends StencilHTMLAttributes {
     'active'?: string;
+    'data'?: string;
     'href'?: string;
   }
 
