@@ -64,6 +64,7 @@ export class SharedHeader {
   // TODO: refactor renderSubnavs to work with
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
+  
   private renderSubnavs(payload) {
     if (!payload) return null;
     const sections = payload.map(section => {
@@ -84,6 +85,7 @@ export class SharedHeader {
    * Returns header or unordered list
    * @param section
    */
+
   private renderChildren(section) {
     const sectionChildren = section.children.map(child => {
       if (typeof child == 'string') {

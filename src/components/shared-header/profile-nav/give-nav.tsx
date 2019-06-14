@@ -16,10 +16,15 @@ export class GiveMenu {
   }
 
   renderSections = payload => {
+    let top_level = false;
+
     return (
       <div>
         <h2> {payload.title} </h2>
         {payload.children.map(child => {
+
+          top_level = top_level || typeof child == 'string';
+
           return (
             <div style={{ padding: '0' }}>
               {typeof child == 'string' && <h4>{child}</h4>}
@@ -28,7 +33,7 @@ export class GiveMenu {
                   {child.map(el => {
                     if (typeof el != 'string')
                       return (
-                        <li class={el['top_level'] ? 'top-level' : ''}>
+                        <li class={top_level ? 'top-level' : ''}>
                           <a href={el.path} automation-id={el['automation-id']}> {el.title}</a>
                         </li>
                       );
