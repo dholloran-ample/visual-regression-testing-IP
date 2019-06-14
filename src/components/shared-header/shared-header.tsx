@@ -1,4 +1,4 @@
-import { Component, Prop, State, Listen } from '@stencil/core';
+import { Component, Prop, State, Listen, PropDidChange } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
@@ -16,12 +16,12 @@ export class SharedHeader {
   @State() mainNavIsShowing: boolean = false;
   @State() profileNavIsShowing: boolean = false;
   @State() giveNavIsShowing: boolean = false;
-
-  @State() data: any = {};
+  @State() data: any = [];
 
   /**
    * Fires before render...
    */
+  
   public componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
     axios.get(url).then(response => (this.data = response.data));
@@ -64,6 +64,7 @@ export class SharedHeader {
   // TODO: refactor renderSubnavs to work with
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
+  
   private renderSubnavs(payload) {
     if (!payload) return null;
     const sections = payload.map(section => {
@@ -84,6 +85,7 @@ export class SharedHeader {
    * Returns header or unordered list
    * @param section
    */
+
   private renderChildren(section) {
     const sectionChildren = section.children.map(child => {
       if (typeof child == 'string') {
@@ -175,7 +177,6 @@ export class SharedHeader {
   public render() {
     let close =
       '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="times" class="svg-inline--fa fa-times fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"></path></svg>';
-
     return (
       <Fragment>
         <global-nav
@@ -183,15 +184,16 @@ export class SharedHeader {
           profileNavIsShowing={this.profileNavIsShowing}
           giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
+          giveData={this.data.give}
           config={this.data.config}
           env={this.env}
         />
         <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
-              <ul>{this.renderSections(this.data.content)}</ul>
+              <ul>{this.renderSections(this.data.nav)}</ul>
             </div>
-            {this.renderSubnavs(this.data.content)}
+            {this.renderSubnavs(this.data.nav)}
             <nav-ctas active={this.active} />
           </div>
         </nav>

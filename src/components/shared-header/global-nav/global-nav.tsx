@@ -16,6 +16,7 @@ export class GlobalNav {
   @Prop() mainNavIsShowing: boolean = false;
   @Prop() navClickHandler: Function;
   @Prop() profileNavIsShowing: boolean = false;
+  @Prop() giveData: JSON;
 
   @State() authenticated: boolean = false;
 
@@ -137,7 +138,7 @@ export class GlobalNav {
               onSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
             />
-            <give-nav giveNavIsShowing={this.giveNavIsShowing} />
+            <give-nav data={this.giveData} giveNavIsShowing={this.giveNavIsShowing} />
           </div>
         </header>
       </Fragment>
