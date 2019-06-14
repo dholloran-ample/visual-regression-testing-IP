@@ -1,5 +1,3 @@
-import { debug } from 'util';
-
 export class Utils {
   /**
    * Returns content metatag who's property matches "prop"
@@ -21,5 +19,19 @@ export class Utils {
       .toLowerCase()
       .replace(/[^a-z]/g, '-')
       .replace(/-{2,}/g, '-');
+  }
+
+  /**
+   * Returns the value of a cookie after looking up by name
+   * @param {String} name
+   */
+  static getCookie(name) {
+    var value = '; ' + document.cookie;
+    var parts = value.split('; ' + name + '=');
+    if (parts.length == 2)
+      return parts
+        .pop()
+        .split(';')
+        .shift();
   }
 }

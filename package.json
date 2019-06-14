@@ -21,7 +21,9 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@crds_npm/crds-client-auth": "1.0.19"
+  },
   "devDependencies": {
     "@alepop/stencil-env": "^0.2.0",
     "@babel/core": "^7.2.2",
