@@ -61,19 +61,23 @@ export namespace Components {
   interface GlobalNav {
     'config': Object;
     'env': string;
+    'giveData': JSON;
     'giveNavIsShowing': boolean;
     'href': string;
     'mainNavIsShowing': boolean;
     'navClickHandler': Function;
+    'profileData': JSON;
     'profileNavIsShowing': boolean;
   }
   interface GlobalNavAttributes extends StencilHTMLAttributes {
     'config'?: Object;
     'env'?: string;
+    'giveData'?: JSON;
     'giveNavIsShowing'?: boolean;
     'href'?: string;
     'mainNavIsShowing'?: boolean;
     'navClickHandler'?: Function;
+    'profileData'?: JSON;
     'profileNavIsShowing'?: boolean;
   }
 
@@ -120,12 +124,14 @@ export namespace Components {
   interface ProfileNav {
     'config': any;
     'currentUser': any;
+    'data': JSON;
     'onSignOut': Function;
     'profileNavIsShowing': boolean;
   }
   interface ProfileNavAttributes extends StencilHTMLAttributes {
     'config'?: any;
     'currentUser'?: any;
+    'data'?: JSON;
     'onSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }

@@ -183,6 +183,8 @@ export class SharedHeader {
           profileNavIsShowing={this.profileNavIsShowing}
           giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
+          giveData={this.data.give}
+          profileData={this.data.profile}
           config={this.data.config}
           env={this.env}
         />

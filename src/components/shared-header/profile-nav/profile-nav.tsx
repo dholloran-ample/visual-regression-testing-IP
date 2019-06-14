@@ -10,6 +10,7 @@ export class ProfileMenu {
   @Prop() currentUser: any;
   @Prop() onSignOut: Function;
   @Prop() profileNavIsShowing: boolean = true;
+  @Prop() data: JSON;
 
   envUrl(path) {
     return `${process.env.CRDS_BASE_URL}${path}`;
@@ -20,9 +21,48 @@ export class ProfileMenu {
     event.stopPropagation();
   }
 
+  renderSections = payload => {
+    let topLevel = false;
+
+    return (
+      <div>
+        <h2> {`${payload.title} ${this.currentUser.name.split(' ')[0]}`} </h2>
+        {payload.children.map(child => {
+          topLevel = topLevel || typeof child == 'string';
+
+          return (
+            <div style={{ padding: '0' }}>
+              {typeof child == 'string' && <h4>{child}</h4>}
+              {typeof child != 'string' && (
+                <ul>
+                  {child.map(el => {
+                    if (typeof el != 'string')
+                      return (
+                        <li class={topLevel ? '' : 'top-level'}>
+                          <a
+                            href={el.path}
+                            automation-id={el['automation-id']}
+                            onClick={e => {
+                              if (el.title == 'Sign out') this.onSignOut(e);
+                            }}
+                          >
+                            {' '}
+                            {el.title}
+                          </a>
+                        </li>
+                      );
+                  })}
+                </ul>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   render() {
     if (!this.profileNavIsShowing) return null;
-
     return (
       <div class="profile-nav">
         <div
@@ -33,62 +73,7 @@ export class ProfileMenu {
             }')`
           }}
         />
-        <div>
-          <h2>Hello {this.currentUser.name.split(' ')[0]}</h2>
-          <ul>
-            <li class="top-level">
-              <a href={this.envUrl('/profile/personal')} data-automation-id="sh-my-accounts">
-                My account
-              </a>
-            </li>
-            <li class="top-level">
-              <a href={this.envUrl('/me/giving')} data-automation-id="sh-giving">
-                Giving
-              </a>
-            </li>
-            <li class="top-level">
-              <a href="javascript:void(0)" onClick={e => this.onSignOut(e)} data-automation-id="sh-sign-out">
-                Sign out
-              </a>
-            </li>
-          </ul>
-          <h4>Get involved</h4>
-          <ul>
-            <li>
-              <a data-automation-id="sh-my-students-camps" href={this.envUrl('/mycamps')}>
-                My student’s camps
-              </a>
-            </li>
-            <li>
-              <a data-automation-id="sh-sign-up-to-serve" href={this.envUrl('/serve/signup')}>
-                Sign up to serve
-              </a>
-            </li>
-            <li>
-              <a data-automation-id="sh-my-groups" href={this.envUrl('/groups/search/my')}>
-                My groups
-              </a>
-            </li>
-            <li>
-              <a data-automation-id="sh-my-trips" href={this.envUrl('/trips/mytrips')}>
-                My trips
-              </a>
-            </li>
-          </ul>
-          <h4>Events</h4>
-          <ul>
-            <li>
-              <a href={this.envUrl('/events')} data-automation-id="sh-event-check-in">
-                Event check in
-              </a>
-            </li>
-            <li>
-              <a href={this.envUrl('/childcare')} data-automation-id="sh-childcare">
-                Childcare (for events)
-              </a>
-            </li>
-          </ul>
-        </div>
+        <div>{this.renderSections(this.data)}</div>
       </div>
     );
   }
