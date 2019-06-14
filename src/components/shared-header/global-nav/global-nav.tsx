@@ -140,7 +140,7 @@ export class GlobalNav {
               currentUser={this.auth.currentUser}
               data={this.profileData}
             />
-            <give-nav giveNavIsShowing={this.giveNavIsShowing} />
+            <give-nav data={this.giveData} giveNavIsShowing={this.giveNavIsShowing} />
           </div>
         </header>
       </Fragment>

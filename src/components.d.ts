@@ -83,10 +83,12 @@ export namespace Components {
 
   interface NavCtas {
     'active': string;
+    'data': string;
     'href': string;
   }
   interface NavCtasAttributes extends StencilHTMLAttributes {
     'active'?: string;
+    'data'?: string;
     'href'?: string;
   }
 
@@ -115,9 +117,11 @@ export namespace Components {
   }
 
   interface GiveNav {
+    'data': JSON;
     'giveNavIsShowing': boolean;
   }
   interface GiveNavAttributes extends StencilHTMLAttributes {
+    'data'?: JSON;
     'giveNavIsShowing'?: boolean;
   }
 
