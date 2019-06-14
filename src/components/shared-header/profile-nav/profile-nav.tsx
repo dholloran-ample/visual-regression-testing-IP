@@ -24,9 +24,11 @@ export class ProfileMenu {
   renderSections = payload => {
     let topLevel = false;
 
+    const title = payload.title.replace('%user_name%', this.currentUser.name.split(' ')[0]);
+
     return (
       <div>
-        <h2> {`${payload.title} ${this.currentUser.name.split(' ')[0]}`} </h2>
+        <h2> {title} </h2>
         {payload.children.map(child => {
           topLevel = topLevel || typeof child == 'string';
 
@@ -63,6 +65,7 @@ export class ProfileMenu {
 
   render() {
     if (!this.profileNavIsShowing) return null;
+
     return (
       <div class="profile-nav">
         <div
