@@ -1,4 +1,5 @@
 import { Component, Prop, Listen } from '@stencil/core';
+import { Utils } from '../../../shared/utils';
 
 @Component({
   tag: 'give-nav',
@@ -7,37 +8,50 @@ import { Component, Prop, Listen } from '@stencil/core';
 })
 export class GiveMenu {
   @Prop() giveNavIsShowing: boolean = true;
+  @Prop() data: JSON;
 
   @Listen('click')
   handleClick(event) {
     event.stopPropagation();
   }
 
-  render() {
-    if (!this.giveNavIsShowing) return null;
+  renderSections = payload => {
+    let top_level = false;
 
     return (
-      <div class="give-nav">
-        <div>
-          <h2>Give</h2>
-          <ul>
-            <li class="top-level">
-              <a href="#" data-automation-id="sh-give-now">Give now</a>
-            </li>
-            <li class="top-level">
-              <a href="#" data-automation-id="sh-my-giving">My giving</a>
-            </li>
-          </ul>
-          <h4>About giving</h4>
-          <ul>
-            <li>
-              <a href="#" data-automation-id="sh-why-give">Why give?</a>
-            </li>
-            <li>
-              <a href="#" data-automation-id="sh-other-ways">Other ways to give</a>
-            </li>
-          </ul>
-        </div>
+      <div>
+        <h2> {payload.title} </h2>
+        {payload.children.map(child => {
+
+          top_level = top_level || typeof child == 'string';
+
+          return (
+            <div style={{ padding: '0' }}>
+              {typeof child == 'string' && <h4>{child}</h4>}
+              {typeof child != 'string' && (
+                <ul>
+                  {child.map(el => {
+                    if (typeof el != 'string')
+                      return (
+                        <li class={top_level ? 'top-level' : ''}>
+                          <a href={el.path} automation-id={el['automation-id']}> {el.title}</a>
+                        </li>
+                      );
+                  })}
+                </ul>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  render() {
+    if (!this.giveNavIsShowing) return null;
+    return (
+      <div class="give-nav" style={{ backgroundImage: `url(${(this.data as any).background_img})` }}>
+        {this.renderSections(this.data)}
       </div>
     );
   }
