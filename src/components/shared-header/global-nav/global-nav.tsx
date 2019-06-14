@@ -132,13 +132,13 @@ export class GlobalNav {
                 </a>
               </div>
             </div>
-           
+
             <profile-nav
               profileNavIsShowing={this.profileNavIsShowing && this.authenticated}
               onSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
             />
-             <give-nav data={this.giveData} giveNavIsShowing={this.giveNavIsShowing} />
+            <give-nav data={this.giveData} giveNavIsShowing={this.giveNavIsShowing} />
           </div>
         </header>
       </Fragment>
