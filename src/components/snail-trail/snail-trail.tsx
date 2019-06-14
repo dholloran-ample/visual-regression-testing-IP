@@ -18,6 +18,10 @@ export class SnailTrail {
     axios.get(url).then(response => (this.data = response.data));
   }
 
+  public componentDidLoad() {
+    document.querySelector('.shared-snail-trail-skeleton').className = 'snail-trail';
+  }
+
   listItems() {
     return this.data.map(item => {
       if (typeof item === 'string') return <span>{item}</span>;

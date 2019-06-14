@@ -18,6 +18,10 @@ export class SharedFooter {
     axios.get(url).then(response => (this.data = response.data));
   }
 
+  public componentDidLoad() {
+    document.querySelector('.shared-footer-skeleton').className = 'shared-footer';
+  }
+
   private renderElement(el: any) {
     if (!el.path) return el.title;
     let attrs = {

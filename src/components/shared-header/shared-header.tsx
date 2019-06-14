@@ -28,6 +28,13 @@ export class SharedHeader {
   }
 
   /**
+   * Fires after first render...
+   */
+  public componentDidLoad() {
+    document.querySelector('.shared-header-skeleton').className = 'shared-header';
+  }
+
+  /**
    * Section onClick event handler
    * @param e Event
    * @param id string
