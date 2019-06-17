@@ -11,6 +11,7 @@
 | --------------------- | ------------------------ | ----------- | ---------- | ----------- |
 | `config`              | --                       |             | `Object`   | `undefined` |
 | `env`                 | `env`                    |             | `string`   | `undefined` |
+| `giveData`            | --                       |             | `JSON`     | `undefined` |
 | `giveNavIsShowing`    | `give-nav-is-showing`    |             | `boolean`  | `false`     |
 | `href`                | `href`                   |             | `string`   | `undefined` |
 | `mainNavIsShowing`    | `main-nav-is-showing`    |             | `boolean`  | `false`     |

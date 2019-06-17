@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property           | Attribute             | Description | Type      | Default |
-| ------------------ | --------------------- | ----------- | --------- | ------- |
-| `giveNavIsShowing` | `give-nav-is-showing` |             | `boolean` | `true`  |
+| Property           | Attribute             | Description | Type      | Default     |
+| ------------------ | --------------------- | ----------- | --------- | ----------- |
+| `data`             | --                    |             | `JSON`    | `undefined` |
+| `giveNavIsShowing` | `give-nav-is-showing` |             | `boolean` | `true`      |
 
 
 ----------------------------------------------
