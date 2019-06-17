@@ -21,16 +21,13 @@ export class SharedHeader {
   /**
    * Fires before render...
    */
-  
+
   public componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
     axios.get(url).then(response => (this.data = response.data));
   }
 
-  /**
-   * Fires after first render...
-   */
-  public componentDidLoad() {
+  componentDidRender() {
     document.querySelector('.shared-header-skeleton').className = 'shared-header';
   }
 
@@ -71,7 +68,7 @@ export class SharedHeader {
   // TODO: refactor renderSubnavs to work with
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
-  
+
   private renderSubnavs(payload) {
     if (!payload) return null;
     const sections = payload.map(section => {

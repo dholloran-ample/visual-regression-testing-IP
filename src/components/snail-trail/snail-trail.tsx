@@ -18,7 +18,7 @@ export class SnailTrail {
     axios.get(url).then(response => (this.data = response.data));
   }
 
-  public componentDidLoad() {
+  componentDidRender() {
     document.querySelector('.shared-snail-trail-skeleton').className = 'snail-trail';
   }
 
