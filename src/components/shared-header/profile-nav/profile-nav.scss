@@ -50,11 +50,11 @@
   }
 
   .profile-nav-img {
+    box-sizing: border-box;
     background-position:top;
     background-repeat: no-repeat;
     background-size: contain;
     filter: blur(2px);
-    transform: scale(1.1);
     height: 100%;
     left: 0;
     position: absolute;
