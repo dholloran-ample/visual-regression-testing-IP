@@ -139,7 +139,7 @@ export class SharedHeader {
       this.mainNavIsShowing = false;
       this.profileNavIsShowing = !this.profileNavIsShowing;
       return this.profileNavIsShowing
-        ? document.body.setAttribute('style', 'overflow: hidden; position: absolute;')
+        ? document.body.setAttribute('style', 'overflow: hidden; position: absolute; width: 100vw;')
         : document.body.setAttribute('style', 'overflow: scroll;');
     } else if (navType == 'give-nav') {
       this.giveNavIsShowing = !this.giveNavIsShowing;
@@ -147,7 +147,7 @@ export class SharedHeader {
       this.profileNavIsShowing = false;
       return this.giveNavIsShowing
         ? document.body.setAttribute('style', 'overflow: hidden; position: absolute; width: 100vw;')
-        : document.body.setAttribute('style', 'overflow: scroll;');
+        : document.body.setAttribute('style', 'overflow: scroll; ');
     }
   }
 
@@ -192,6 +192,7 @@ export class SharedHeader {
           giveNavIsShowing={this.giveNavIsShowing}
           navClickHandler={this.toggleMenu.bind(this)}
           giveData={this.data.give}
+          profileData={this.data.profile}
           config={this.data.config}
           env={this.env}
         />
