@@ -1,4 +1,4 @@
-import { Component, Prop, State, Listen, PropDidChange } from '@stencil/core';
+import { Component, Element, Prop, State, Listen, PropDidChange } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
@@ -18,13 +18,20 @@ export class SharedHeader {
   @State() giveNavIsShowing: boolean = false;
   @State() data: any = [];
 
+  @Element() element: HTMLElement;
+
   /**
    * Fires before render...
    */
-  
+
   public componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
     axios.get(url).then(response => (this.data = response.data));
+  }
+
+  componentDidRender() {
+    this.element.parentElement.classList.add('shared-header');
+    this.element.parentElement.classList.remove('shared-header-skeleton');
   }
 
   /**
@@ -64,7 +71,7 @@ export class SharedHeader {
   // TODO: refactor renderSubnavs to work with
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
-  
+
   private renderSubnavs(payload) {
     if (!payload) return null;
     const sections = payload.map(section => {

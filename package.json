@@ -39,7 +39,7 @@
     "ajv": "^6.9.1",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.5",
-    "crds-styles": "^3.2.3",
+    "crds-styles": "3.2.3",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "lit-html": "^1.0.0-rc.2",

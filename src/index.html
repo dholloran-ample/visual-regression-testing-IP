@@ -19,6 +19,37 @@
       body {
         margin: 0;
       }
+
+      :root {
+        --skeleton-blue-bar-height: 49px;
+        --skeleton-snail-trail-height: 43px;
+      }
+
+      .shared-header {
+        background-color: transparent;
+      }
+
+      .shared-header-skeleton {
+        background-color: #0095d9;
+      }
+
+      .shared-header,
+      .shared-header-skeleton {
+        min-height: var(--skeleton-blue-bar-height);
+        position: relative;
+        z-index: 10;
+      }
+
+      .shared-snail-trail-skeleton {
+        background-color: #fff;
+        min-height: var(--skeleton-snail-trail-height);
+        position: relative;
+      }
+
+      .shared-footer-skeleton {
+        background-color: #e7e7e7;
+        min-height: 626px;
+      }
     </style>
 
     <script src=https://use.typekit.net/ccb3vpa.js></script>
@@ -32,11 +63,11 @@
   </head>
   <body>
 
-    <div class="shared-header-skeleton" style="min-height: 49px; background-color: #0095d9">
-      <shared-header></shared-header>
+    <div class="shared-header-skeleton">
+      <shared-header env="int"></shared-header>
     </div>
 
-    <div class="snail-trail" style="min-height: 43px; background-color: white">
+    <div class="shared-snail-trail-skeleton">
       <snail-trail name="trending"></snail-trail>
     </div>
 
@@ -64,7 +95,7 @@
       <!--heart-button id="4D9pCED9eM0GOQCOKyY0mS"></heart-button-->
     </div>
 
-    <div class="shared-footer-skeleton" style="min-height: 626px; background-color: #e7e7e7">
+    <div class="shared-footer-skeleton">
       <shared-footer></shared-footer>
     </div>
   </body>
