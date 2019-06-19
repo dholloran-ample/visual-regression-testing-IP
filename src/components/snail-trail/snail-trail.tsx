@@ -22,7 +22,7 @@ export class SnailTrail {
 
   componentDidRender() {
     this.element.parentElement.classList.add('snail-trail');
-    this.element.parentElement.classList.remove('shared-snail-trail-skeleton');
+    this.element.parentElement.classList.remove('snail-trail-skeleton');
   }
 
   listItems() {
