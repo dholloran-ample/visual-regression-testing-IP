@@ -1,4 +1,4 @@
-import { Component, Prop, State, Listen, PropDidChange } from '@stencil/core';
+import { Component, Element, Prop, State, Listen, PropDidChange } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
@@ -18,6 +18,8 @@ export class SharedHeader {
   @State() giveNavIsShowing: boolean = false;
   @State() data: any = [];
 
+  @Element() element: HTMLElement;
+
   /**
    * Fires before render...
    */
@@ -28,7 +30,8 @@ export class SharedHeader {
   }
 
   componentDidRender() {
-    document.querySelector('.shared-header-skeleton').className = 'shared-header';
+    this.element.parentElement.classList.add('shared-header');
+    this.element.parentElement.classList.remove('shared-header-skeleton');
   }
 
   /**

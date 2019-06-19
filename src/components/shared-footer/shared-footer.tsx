@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Element, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 
@@ -13,13 +13,16 @@ export class SharedFooter {
 
   @State() data: Array<any> = [];
 
+  @Element() element: HTMLElement;
+
   componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/shared-footer/${this.env}.json`;
     axios.get(url).then(response => (this.data = response.data));
   }
 
   componentDidRender() {
-    document.querySelector('.shared-footer-skeleton').className = 'shared-footer';
+    this.element.parentElement.classList.add('shared-footer');
+    this.element.parentElement.classList.remove('shared-footer-skeleton');
   }
 
   private renderElement(el: any) {

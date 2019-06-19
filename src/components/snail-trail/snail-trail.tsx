@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Element, Prop, State } from '@stencil/core';
 import axios from 'axios';
 
 @Component({
@@ -13,13 +13,16 @@ export class SnailTrail {
 
   @State() data: Array<any> = [];
 
+  @Element() element: HTMLElement;
+
   componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
     axios.get(url).then(response => (this.data = response.data));
   }
 
   componentDidRender() {
-    document.querySelector('.shared-snail-trail-skeleton').className = 'snail-trail';
+    this.element.parentElement.classList.add('snail-trail');
+    this.element.parentElement.classList.remove('shared-snail-trail-skeleton');
   }
 
   listItems() {
