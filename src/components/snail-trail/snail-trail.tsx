@@ -21,7 +21,7 @@ export class SnailTrail {
   listItems() {
     return this.data.map(item => {
       if (typeof item === 'string') return <span>{item}</span>;
-      let attrs = { href: item.path };
+      let attrs = { href: item.href };
       if (item['automation-id']) attrs['data-automation-id'] = item['automation-id'];
       return (
         <li>

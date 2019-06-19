@@ -19,10 +19,10 @@ export class SharedFooter {
   }
 
   private renderElement(el: any) {
-    if (!el.path) return el.title;
+    if (!el.href) return el.title;
     let attrs = {
-      target: el.path.match(/:\/\//) ? '_blank' : '',
-      href: el.path
+      target: el.href.match(/:\/\//) ? '_blank' : '',
+      href: el.href
     };
     if (el['automation-id']) attrs['data-automation-id'] = el['automation-id'];
     return <a {...attrs}>{el.img ? <img src={el.img} alt={el.title} title={el.title} /> : el.title}</a>;
