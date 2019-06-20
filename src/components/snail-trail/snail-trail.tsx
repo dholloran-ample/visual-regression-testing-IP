@@ -16,16 +16,19 @@ export class SnailTrail {
   @Element() element: HTMLElement;
 
   componentWillLoad() {
-    const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
-    axios.get(url).then(response => (this.data = response.data));
+    if (this.name && this.env) {
+      const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
+      axios.get(url).then(response => (this.data = response.data));
+    }
   }
 
   listItem(item) {
     if (!item.href) return <strong>{item.title}</strong>;
-    let attrs = { href: item.href };
-    if (item['data-automation-id']) attrs['data-automation-id'] = item['data-automation-id'];
-
-    return <a {...attrs}>{item.title}</a>;
+    return (
+      <snail-trail-link href={item.href} automationId={item['data-automation-id']}>
+        {item.title}
+      </snail-trail-link>
+    );
   }
 
   list(section) {
@@ -40,10 +43,13 @@ export class SnailTrail {
   }
 
   render() {
-    if (!this.data.nav) return;
+    if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
       <nav>
-        <div>{this.navSections()}</div>
+        <div>
+          {this.element.childElementCount > 0 && <slot />}
+          {this.element.childElementCount == 0 && <ul>{this.navSections()}</ul>}
+        </div>
       </nav>
     );
   }
