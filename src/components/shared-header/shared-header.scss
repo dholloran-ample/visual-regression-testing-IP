@@ -114,11 +114,8 @@ nav {
       padding-bottom: 0;
     }
   }
-
-  &.section--come-visit,
-  &.section--find-community,
-  &.section--get-support,
-  &.section--watch-listen-read {
+  
+  &[class*="section--"] {
     .content {
       @media (max-width: $screen-md) {
         transform: translateX(-100vw);
