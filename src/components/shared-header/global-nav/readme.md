@@ -16,6 +16,7 @@
 | `href`                | `href`                   |             | `string`   | `undefined` |
 | `mainNavIsShowing`    | `main-nav-is-showing`    |             | `boolean`  | `false`     |
 | `navClickHandler`     | --                       |             | `Function` | `undefined` |
+| `profileData`         | --                       |             | `JSON`     | `undefined` |
 | `profileNavIsShowing` | `profile-nav-is-showing` |             | `boolean`  | `false`     |
 
 
