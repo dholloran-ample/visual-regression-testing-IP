@@ -29,9 +29,7 @@ export class ProfileMenu {
     return (
       <div>
         <h2> {title} </h2>
-        {payload.children.map(child => 
-          this.renderChild(child, topLevel)
-        )}
+        {payload.children.map(child => this.renderChild(child, topLevel))}
       </div>
     );
   };
@@ -48,25 +46,23 @@ export class ProfileMenu {
   };
 
   renderChildHTML = (child, topLevel) => {
-    
-      return child.map(el => {
-        if (typeof el != 'string')
-          return (
-            <li class={topLevel.value ? '' : 'top-level'}>
-              <a
-                href={el.path}
-                data-automation-id={el['automation-id']}
-                onClick={e => {
-                  if (el['sign-out']) this.onSignOut(e);
-                }}
-              >
-                {' '}
-                {el.title}
-              </a>
-            </li>
-          );
-      });
-    
+    return child.map(el => {
+      if (typeof el != 'string')
+        return (
+          <li class={topLevel.value ? '' : 'top-level'}>
+            <a
+              href={el.href}
+              data-automation-id={el['automation-id']}
+              onClick={e => {
+                if (el['sign-out']) this.onSignOut(e);
+              }}
+            >
+              {' '}
+              {el.title}
+            </a>
+          </li>
+        );
+    });
   };
 
   render() {
