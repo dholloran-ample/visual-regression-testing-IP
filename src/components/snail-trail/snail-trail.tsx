@@ -16,8 +16,10 @@ export class SnailTrail {
   @Element() element: HTMLElement;
 
   componentWillLoad() {
-    const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
-    axios.get(url).then(response => (this.data = response.data));
+    if (this.name && this.env) {
+      const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
+      axios.get(url).then(response => (this.data = response.data));
+    }
   }
 
   listItem(item) {
@@ -41,7 +43,7 @@ export class SnailTrail {
   }
 
   render() {
-    if (!this.data.nav) return;
+    if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
       <nav>
         <div>
