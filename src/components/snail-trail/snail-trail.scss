@@ -96,25 +96,4 @@ li {
   display: inline-block;
   flex: none;
   text-transform: capitalize;
-
-  // &:last-of-type {
-  //   a {
-  //     color: $cr-cyan;
-  //     position: relative;
-
-  //     &::before {
-  //       border-right: 1px solid #d8d8d8;
-  //       content: '';
-  //       display: inline-block;
-  //       height: calc(100% - 22px);
-  //       left: 0;
-  //       position: absolute;
-  //       width: 1px;
-  //     }
-
-  //     &:hover {
-  //       color: darken($cr-cyan, 10);
-  //     }
-  //   }
-  // }
 }
