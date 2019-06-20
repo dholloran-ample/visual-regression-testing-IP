@@ -43,7 +43,8 @@ export class SnailTrail {
     return (
       <nav>
         <div>
-          <ul>{this.listItems()}</ul>
+          {this.element.childElementCount > 0 && <slot />}
+          {this.element.childElementCount == 0 && <ul>{this.listItems()}</ul>}
         </div>
       </nav>
     );
