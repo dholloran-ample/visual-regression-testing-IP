@@ -20,7 +20,11 @@ export class SnailTrailLink {
   }
 
   stripTrailingSlash(str) {
-    return str.replace(/^(.+?)\/*?$/, '$1');
+    try {
+      return str.replace(/^(.+?)\/*?$/, '$1');
+    } catch {
+      return str;
+    }
   }
 
   clicked() {
