@@ -71,7 +71,8 @@
     "stylelint-scss": "^3.5.3",
     "stylelint-suitcss": "^3.0.0",
     "stylelint-z-index-value-constraint": "^1.0.0",
-    "unescape": "^1.0.1"
+    "unescape": "^1.0.1",
+    "url": "^0.11.0"
   },
   "license": "MIT"
 }

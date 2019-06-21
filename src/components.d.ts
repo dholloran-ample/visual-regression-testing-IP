@@ -152,10 +152,12 @@ export namespace Components {
   interface SnailTrailLink {
     'automationId': string;
     'href': string;
+    'isActive': boolean;
   }
   interface SnailTrailLinkAttributes extends StencilHTMLAttributes {
     'automationId'?: string;
     'href'?: string;
+    'isActive'?: boolean;
   }
 
   interface SnailTrail {
