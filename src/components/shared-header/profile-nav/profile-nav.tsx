@@ -54,7 +54,7 @@ export class ProfileMenu {
           return (
             <li class={topLevel.value ? '' : 'top-level'}>
               <a
-                href={el.path}
+                href={el.href}
                 data-automation-id={el['automation-id']}
                 onClick={e => {
                   if (el['sign-out']) this.onSignOut(e);
