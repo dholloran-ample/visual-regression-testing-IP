@@ -6,7 +6,20 @@ a {
   position: relative;
   text-decoration: none;
 
-  &.is-active,
+  &.active {
+    &::before {
+      content: '';
+      position: absolute;
+      border: 10px solid transparent;
+      border-bottom: 0;
+      border-top-color: $cr-cyan;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+    }
+  }
+
   &:hover {
     &::after {
       background-color: $cr-cyan;

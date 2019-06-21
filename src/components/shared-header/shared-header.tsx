@@ -175,7 +175,9 @@ export class SharedHeader {
 
   @Listen('window:click')
   handleScroll(event) {
-    return document.body.setAttribute('style', 'overflow: scroll;'), this.closeMenus(event);
+    if (this.mainNavIsShowing || this.giveNavIsShowing || this.profileNavIsShowing) {
+      return document.body.setAttribute('style', 'overflow: scroll;'), this.closeMenus(event);
+    }
   }
 
   /**

@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property       | Attribute       | Description | Type     | Default     |
-| -------------- | --------------- | ----------- | -------- | ----------- |
-| `automationId` | `automation-id` |             | `string` | `undefined` |
-| `href`         | `href`          |             | `string` | `'#'`       |
+| Property       | Attribute       | Description | Type      | Default     |
+| -------------- | --------------- | ----------- | --------- | ----------- |
+| `automationId` | `automation-id` |             | `string`  | `undefined` |
+| `href`         | `href`          |             | `string`  | `'#'`       |
+| `isActive`     | `is-active`     |             | `boolean` | `false`     |
 
 
 ----------------------------------------------
