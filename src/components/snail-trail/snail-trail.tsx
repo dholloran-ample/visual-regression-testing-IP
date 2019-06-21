@@ -1,7 +1,6 @@
 import { Component, Element, Prop, State } from '@stencil/core';
 import axios from 'axios';
 import Fragment from 'stencil-fragment';
-import { ComponentWillLoad } from '../../../dist/types/stencil.core.d';
 
 @Component({
   tag: 'snail-trail',
