@@ -170,6 +170,15 @@ export namespace Components {
     'name'?: string;
     'src'?: string;
   }
+
+  interface SubscribeModal {
+    'modalIsShowing': boolean;
+    'navClickHandler': Function;
+  }
+  interface SubscribeModalAttributes extends StencilHTMLAttributes {
+    'modalIsShowing'?: boolean;
+    'navClickHandler'?: Function;
+  }
 }
 
 declare global {
@@ -185,6 +194,7 @@ declare global {
     'SharedHeader': Components.SharedHeader;
     'SnailTrailLink': Components.SnailTrailLink;
     'SnailTrail': Components.SnailTrail;
+    'SubscribeModal': Components.SubscribeModal;
   }
 
   interface StencilIntrinsicElements {
@@ -199,6 +209,7 @@ declare global {
     'shared-header': Components.SharedHeaderAttributes;
     'snail-trail-link': Components.SnailTrailLinkAttributes;
     'snail-trail': Components.SnailTrailAttributes;
+    'subscribe-modal': Components.SubscribeModalAttributes;
   }
 
 
@@ -268,6 +279,12 @@ declare global {
     new (): HTMLSnailTrailElement;
   };
 
+  interface HTMLSubscribeModalElement extends Components.SubscribeModal, HTMLStencilElement {}
+  var HTMLSubscribeModalElement: {
+    prototype: HTMLSubscribeModalElement;
+    new (): HTMLSubscribeModalElement;
+  };
+
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
     'shared-footer': HTMLSharedFooterElement
@@ -280,6 +297,7 @@ declare global {
     'shared-header': HTMLSharedHeaderElement
     'snail-trail-link': HTMLSnailTrailLinkElement
     'snail-trail': HTMLSnailTrailElement
+    'subscribe-modal': HTMLSubscribeModalElement
   }
 
   interface ElementTagNameMap {
@@ -294,6 +312,7 @@ declare global {
     'shared-header': HTMLSharedHeaderElement;
     'snail-trail-link': HTMLSnailTrailLinkElement;
     'snail-trail': HTMLSnailTrailElement;
+    'subscribe-modal': HTMLSubscribeModalElement;
   }
 
 

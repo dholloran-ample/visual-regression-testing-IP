@@ -1,5 +1,7 @@
 import { Component, Element, Prop, State } from '@stencil/core';
 import axios from 'axios';
+import Fragment from 'stencil-fragment';
+import { ComponentWillLoad } from '../../../dist/types/stencil.core.d';
 
 @Component({
   tag: 'snail-trail',
@@ -12,6 +14,7 @@ export class SnailTrail {
   @Prop() name: string;
 
   @State() data: any = {};
+  @State() modalIsShowing: boolean = false;
 
   @Element() element: HTMLElement;
 
@@ -20,6 +23,12 @@ export class SnailTrail {
       const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
       axios.get(url).then(response => (this.data = response.data));
     }
+  }
+
+  toggleSubscribeModal(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.modalIsShowing = !this.modalIsShowing;
   }
 
   listItem(item) {
@@ -42,15 +51,41 @@ export class SnailTrail {
     return this.data.nav.map(section => <ul>{this.list(section)}</ul>);
   }
 
+  subscribeLink() {
+    if (this.name === 'media') {
+      return (
+        <button onClick={event => this.toggleSubscribeModal(event)} class="subscribe-button">
+          Subscribe
+        </button>
+      );
+    }
+  }
+
+  subscribeModal() {
+    if (this.name === 'media') {
+      return (
+        <subscribe-modal navClickHandler={this.toggleSubscribeModal.bind(this)} modalIsShowing={this.modalIsShowing} />
+      );
+    }
+  }
+
   render() {
     if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
-      <nav>
-        <div>
-          {this.element.childElementCount > 0 && <slot />}
-          {this.element.childElementCount == 0 && <ul>{this.navSections()}</ul>}
-        </div>
-      </nav>
+      <Fragment>
+        <nav>
+          <div>
+            {this.element.childElementCount > 0 && <slot />}
+            {this.element.childElementCount == 0 && (
+              <Fragment>
+                {this.navSections()}
+                {this.subscribeLink()}
+              </Fragment>
+            )}
+          </div>
+        </nav>
+        {this.subscribeModal()}
+      </Fragment>
     );
   }
 }
