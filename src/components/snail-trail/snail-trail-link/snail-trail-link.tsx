@@ -9,14 +9,14 @@ import { parse } from 'url';
 export class SnailTrailLink {
   @Prop() automationId: string;
   @Prop() href: string = '#';
-  @Prop({ mutable: true }) isActive: boolean = false;
+  @Prop({ mutable: true }) isActive: boolean;
   @Element() element: HTMLElement;
 
   componentWillLoad() {
     const url = parse(this.href);
     const elPath = this.stripTrailingSlash(url.pathname);
     const currentPath = this.stripTrailingSlash(window.location.pathname);
-    this.isActive = elPath == currentPath;
+    this.isActive = this.isActive == undefined ? elPath == currentPath : this.isActive;
   }
 
   stripTrailingSlash(str) {

@@ -11,7 +11,7 @@
 | -------------- | --------------- | ----------- | --------- | ----------- |
 | `automationId` | `automation-id` |             | `string`  | `undefined` |
 | `href`         | `href`          |             | `string`  | `'#'`       |
-| `isActive`     | `is-active`     |             | `boolean` | `false`     |
+| `isActive`     | `is-active`     |             | `boolean` | `undefined` |
 
 
 ----------------------------------------------
