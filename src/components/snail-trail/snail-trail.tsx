@@ -11,39 +11,44 @@ export class SnailTrail {
   @Prop() env: string = 'prod';
   @Prop() name: string;
 
-  @State() data: Array<any> = [];
+  @State() data: any = {};
 
   @Element() element: HTMLElement;
 
   componentWillLoad() {
-    const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
-    axios.get(url).then(response => (this.data = response.data));
+    if (this.name && this.env) {
+      const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
+      axios.get(url).then(response => (this.data = response.data));
+    }
   }
 
-  componentDidRender() {
-    this.element.parentElement.classList.add('snail-trail');
-    this.element.parentElement.classList.remove('snail-trail-skeleton');
+  listItem(item) {
+    if (!item.href) return <strong>{item.title}</strong>;
+    return (
+      <snail-trail-link href={item.href} automationId={item['data-automation-id']}>
+        {item.title}
+      </snail-trail-link>
+    );
   }
 
-  listItems() {
-    return this.data.map(item => {
-      if (typeof item === 'string') return <span>{item}</span>;
-      let attrs = { href: item.href };
-      if (item['automation-id']) attrs['data-automation-id'] = item['automation-id'];
-      return (
-        <li>
-          <a {...attrs}>{item.title}</a>
-        </li>
-      );
+  list(section) {
+    return section.map(item => {
+      return <li>{this.listItem(item)}</li>;
     });
   }
 
+  navSections() {
+    if (!this.data.nav) return;
+    return this.data.nav.map(section => <ul>{this.list(section)}</ul>);
+  }
+
   render() {
-    if (this.data.length === 0) return null;
+    if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
       <nav>
         <div>
-          <ul>{this.listItems()}</ul>
+          {this.element.childElementCount > 0 && <slot />}
+          {this.element.childElementCount == 0 && <ul>{this.navSections()}</ul>}
         </div>
       </nav>
     );
