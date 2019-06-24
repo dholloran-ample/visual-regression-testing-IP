@@ -149,17 +149,6 @@ export namespace Components {
     'src'?: string;
   }
 
-  interface SnailTrailLink {
-    'automationId': string;
-    'href': string;
-    'isActive': boolean;
-  }
-  interface SnailTrailLinkAttributes extends StencilHTMLAttributes {
-    'automationId'?: string;
-    'href'?: string;
-    'isActive'?: boolean;
-  }
-
   interface SnailTrail {
     'env': string;
     'name': string;
@@ -183,7 +172,6 @@ declare global {
     'GiveNav': Components.GiveNav;
     'ProfileNav': Components.ProfileNav;
     'SharedHeader': Components.SharedHeader;
-    'SnailTrailLink': Components.SnailTrailLink;
     'SnailTrail': Components.SnailTrail;
   }
 
@@ -197,7 +185,6 @@ declare global {
     'give-nav': Components.GiveNavAttributes;
     'profile-nav': Components.ProfileNavAttributes;
     'shared-header': Components.SharedHeaderAttributes;
-    'snail-trail-link': Components.SnailTrailLinkAttributes;
     'snail-trail': Components.SnailTrailAttributes;
   }
 
@@ -256,12 +243,6 @@ declare global {
     new (): HTMLSharedHeaderElement;
   };
 
-  interface HTMLSnailTrailLinkElement extends Components.SnailTrailLink, HTMLStencilElement {}
-  var HTMLSnailTrailLinkElement: {
-    prototype: HTMLSnailTrailLinkElement;
-    new (): HTMLSnailTrailLinkElement;
-  };
-
   interface HTMLSnailTrailElement extends Components.SnailTrail, HTMLStencilElement {}
   var HTMLSnailTrailElement: {
     prototype: HTMLSnailTrailElement;
@@ -278,7 +259,6 @@ declare global {
     'give-nav': HTMLGiveNavElement
     'profile-nav': HTMLProfileNavElement
     'shared-header': HTMLSharedHeaderElement
-    'snail-trail-link': HTMLSnailTrailLinkElement
     'snail-trail': HTMLSnailTrailElement
   }
 
@@ -292,7 +272,6 @@ declare global {
     'give-nav': HTMLGiveNavElement;
     'profile-nav': HTMLProfileNavElement;
     'shared-header': HTMLSharedHeaderElement;
-    'snail-trail-link': HTMLSnailTrailLinkElement;
     'snail-trail': HTMLSnailTrailElement;
   }
 

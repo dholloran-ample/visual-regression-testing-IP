@@ -24,7 +24,7 @@ export class ProfileMenu {
   renderSections = payload => {
     let topLevel = { value: false };
 
-    const title = payload.title.replace('%user_name%', this.currentUser.name);
+    const title = payload.title.replace('%user_name%', this.currentUser.name).replace(/%20/g, " ");;
 
     return (
       <div>
@@ -57,7 +57,6 @@ export class ProfileMenu {
                 if (el['sign-out']) this.onSignOut(e);
               }}
             >
-              {' '}
               {el.title}
             </a>
           </li>
