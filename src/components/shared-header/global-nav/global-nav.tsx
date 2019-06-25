@@ -122,7 +122,7 @@ export class GlobalNav {
                   class={this.profileClasses()}
                   onClick={event => this.handleProfileClick(event)}
                   data-automation-id="sh-profile"
-                  data-label="sign in"
+                  data-label={this.authenticated ? 'my account' : 'sign in'}
                 >
                   {this.authenticated ? (
                     <div class="account">
