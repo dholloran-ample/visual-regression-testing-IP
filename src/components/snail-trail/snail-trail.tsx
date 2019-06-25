@@ -1,5 +1,6 @@
 import { Component, Element, Prop, State } from '@stencil/core';
 import axios from 'axios';
+import Fragment from 'stencil-fragment';
 
 @Component({
   tag: 'snail-trail',
@@ -48,7 +49,7 @@ export class SnailTrail {
       <nav>
         <div>
           {this.element.childElementCount > 0 && <slot />}
-          {this.element.childElementCount == 0 && <ul>{this.navSections()}</ul>}
+          {this.element.childElementCount == 0 && <Fragment>{this.navSections()}</Fragment>}
         </div>
       </nav>
     );
