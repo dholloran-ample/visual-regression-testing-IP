@@ -6,7 +6,7 @@ header {
   z-index: 2;
 
   @supports (position: sticky) {
-    position: fixed;
+    position: sticky;
   }
 
   > div {
