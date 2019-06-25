@@ -1,4 +1,5 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, State } from '@stencil/core';
+import axios from 'axios';
 
 @Component({
   tag: 'subscribe-modal',
@@ -8,6 +9,7 @@ import { Component, Prop } from '@stencil/core';
 export class Subscribe {
   @Prop() modalIsShowing: boolean = false;
   @Prop() navClickHandler: Function;
+  @State() hubspotDidLoad = false;
 
   modalClasses() {
     let classes = ['modal'];
@@ -15,26 +17,45 @@ export class Subscribe {
     return classes.join(' ');
   }
 
+  loadScript = () => {
+    const hubspotEl = window.document.getElementById("hubspot");
+    hubspotEl.addEventListener('load', () => {
+      this.hubspotDidLoad = true;
+    });
+  };
+
   render() {
+
     console.log('subscribe-modal - modalIsShowing = ' + this.modalIsShowing);
+    this.loadScript();
 
     return (
-      <div class={this.modalClasses()}>
-        <div class="modal-container">
-          <button onClick={event => this.navClickHandler(event)} type="button" class="close" />
-
+      <div
+        class="modal fade"
+        id="subscribeModalForm"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="Subscribe email form"
+      >
+        <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <h2>Subscribe</h2>
-            <span>Get our top picks delivered to your inbox every week.</span>
-
-            <div>
-              <label>*</label>
-              <div class="input">
-                <input placeholder="Email address" value="" autocomplete="email" type="text" />
-              </div>
+            <div class="modal-header">
+              <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-
-            <input type="submit" value="Subscribe" class="submit" />
+            <div class="modal-body hard-bottom">
+              <h3 class="font-family-condensed-extra font-size-h2 text-uppercase flush-top">Subscribe</h3>
+              {this.hubspotDidLoad &&
+                (window.document.getElementById("hubspot") as any).forms.create({
+                  portalId: '3993985',
+                  formId: '52b50268-5d9c-4369-8359-e96ff69094f9',
+                  formInstanceId: '1',
+                  submitButtonClass: 'btn btn-cyan btn-lg push-top',
+                  errorMessageClass: 'hs-error-msgs inputs-list list-unstyled'
+                })}
+            </div>
+            <div class="modal-footer" />
           </div>
         </div>
       </div>
