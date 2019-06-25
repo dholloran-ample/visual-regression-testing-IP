@@ -28,7 +28,7 @@
     "@alepop/stencil-env": "^0.2.0",
     "@babel/core": "^7.2.2",
     "@stencil/core": "~0.16.2",
-    "@stencil/sass": "^0.2.1",
+    "@stencil/sass": "^1.0.1",
     "@storybook/addon-knobs": "^5.0.11",
     "@storybook/addon-storysource": "^5.0.11",
     "@storybook/polymer": "^5.0.11",

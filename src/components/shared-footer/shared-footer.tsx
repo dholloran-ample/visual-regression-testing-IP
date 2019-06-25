@@ -20,7 +20,7 @@ export class SharedFooter {
     axios.get(url).then(response => (this.data = response.data));
   }
 
-  componentDidRender() {
+  componentDidLoad() {
     this.element.parentElement.classList.add('shared-footer');
     this.element.parentElement.classList.remove('shared-footer-skeleton');
   }

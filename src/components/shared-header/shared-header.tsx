@@ -29,7 +29,7 @@ export class SharedHeader {
     axios.get(url).then(response => (this.data = response.data));
   }
 
-  componentDidRender() {
+  componentDidLoad() {
     this.element.parentElement.classList.add('shared-header');
     this.element.parentElement.classList.remove('shared-header-skeleton');
   }
