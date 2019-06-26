@@ -33,7 +33,7 @@ export class GiveMenu {
                     if (typeof el != 'string')
                       return (
                         <li class={top_level ? 'top-level' : ''}>
-                          <a href={el.href} automation-id={el['automation-id']}>
+                          <a href={el.href} data-automation-id={el['automation-id']}>
                             {' '}
                             {el.title}
                           </a>
