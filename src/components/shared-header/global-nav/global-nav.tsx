@@ -104,7 +104,7 @@ export class GlobalNav {
               </div>
 
               <a
-                href={this.env === 'prod' ? '//crossroads.net' : `//${this.env}.crossroads.net`}
+                href={this.env === 'prod' ? 'https://www.crossroads.net' : `https://${this.env}.crossroads.net`}
                 data-automation-id="sh-logo"
                 class="logo"
                 innerHTML={logo}
