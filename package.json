@@ -21,11 +21,9 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {
-    "@crds_npm/crds-client-auth": "1.0.19",
-    "iframe-resizer": "^4.1.1"
-  },
   "devDependencies": {
+    "@crds_npm/crds-client-auth": "1.0.19",
+    "iframe-resizer": "^4.1.1",
     "@alepop/stencil-env": "^0.2.0",
     "@babel/core": "^7.2.2",
     "@stencil/core": "~0.16.2",

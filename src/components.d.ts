@@ -23,8 +23,14 @@ export namespace Components {
     'title'?: string;
   }
 
-  interface CrdsSubscribe {}
-  interface CrdsSubscribeAttributes extends StencilHTMLAttributes {}
+  interface CrdsSubscribe {
+    'src': string;
+    'title': string;
+  }
+  interface CrdsSubscribeAttributes extends StencilHTMLAttributes {
+    'src'?: string;
+    'title'?: string;
+  }
 
   interface HeartButton {
     /**

@@ -25,6 +25,7 @@ export class SnailTrail {
 
   listItem(item) {
     if (!item.href) return <strong>{item.title}</strong>;
+    if (item.subscribe) return <crds-subscribe src={item.href} title={item.title} />;
     return (
       <snail-trail-link href={item.href} automationId={item['data-automation-id']}>
         {item.title}
@@ -43,10 +44,6 @@ export class SnailTrail {
     return this.data.nav.map(section => <ul>{this.list(section)}</ul>);
   }
 
-  subscribeLink() {
-    if (this.name === 'media') return <crds-subscribe />;
-  }
-
   render() {
     if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
@@ -54,12 +51,7 @@ export class SnailTrail {
         <nav>
           <div>
             {this.element.childElementCount > 0 && <slot />}
-            {this.element.childElementCount == 0 && (
-              <Fragment>
-                {this.navSections()}
-                {this.subscribeLink()}
-              </Fragment>
-            )}
+            {this.element.childElementCount == 0 && <Fragment>{this.navSections()}</Fragment>}
           </div>
         </nav>
       </Fragment>

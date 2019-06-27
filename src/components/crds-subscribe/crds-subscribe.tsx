@@ -1,4 +1,4 @@
-import { Component, State } from '@stencil/core';
+import { Component, State, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import iframeResizer from 'iframe-resizer';
 
@@ -8,6 +8,9 @@ import iframeResizer from 'iframe-resizer';
   shadow: true
 })
 export class CrdsSubscribe {
+  @Prop() title: string;
+  @Prop() src: string;
+
   @State() modalIsShowing: boolean = false;
 
   private frame: HTMLIFrameElement;
@@ -29,14 +32,10 @@ export class CrdsSubscribe {
       <Fragment>
         <div class="subscribe-script" />
         <button onClick={this.handleSubscribeClick} class="subscribe-button">
-          Subscribe
+          {this.title}
         </button>
-        <crds-modal title="Subscribe" isActive={this.modalIsShowing} onClose={this.handleModalClose}>
-          <iframe
-            ref={el => (this.frame = el)}
-            src="http://localhost:4000/hubspot-subscribe-form/"
-            class="subscribe-frame"
-          />
+        <crds-modal title={this.title} isActive={this.modalIsShowing} onClose={this.handleModalClose}>
+          <iframe ref={el => (this.frame = el)} src={this.src} class="subscribe-frame" />
         </crds-modal>
       </Fragment>
     );
