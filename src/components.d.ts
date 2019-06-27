@@ -49,6 +49,17 @@ export namespace Components {
     'key'?: string;
   }
 
+  interface CrdsModal {
+    'isActive': boolean;
+    'onClose': Function;
+    'title': String;
+  }
+  interface CrdsModalAttributes extends StencilHTMLAttributes {
+    'isActive'?: boolean;
+    'onClose'?: Function;
+    'title'?: String;
+  }
+
   interface SharedFooter {
     'env': string;
     'src': string;
@@ -170,20 +181,12 @@ export namespace Components {
     'name'?: string;
     'src'?: string;
   }
-
-  interface SubscribeModal {
-    'modalIsShowing': boolean;
-    'onModalClose': Function;
-  }
-  interface SubscribeModalAttributes extends StencilHTMLAttributes {
-    'modalIsShowing'?: boolean;
-    'onModalClose'?: Function;
-  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'HeartButton': Components.HeartButton;
+    'CrdsModal': Components.CrdsModal;
     'SharedFooter': Components.SharedFooter;
     'GlobalNav': Components.GlobalNav;
     'NavCtas': Components.NavCtas;
@@ -194,11 +197,11 @@ declare global {
     'SharedHeader': Components.SharedHeader;
     'SnailTrailLink': Components.SnailTrailLink;
     'SnailTrail': Components.SnailTrail;
-    'SubscribeModal': Components.SubscribeModal;
   }
 
   interface StencilIntrinsicElements {
     'heart-button': Components.HeartButtonAttributes;
+    'crds-modal': Components.CrdsModalAttributes;
     'shared-footer': Components.SharedFooterAttributes;
     'global-nav': Components.GlobalNavAttributes;
     'nav-ctas': Components.NavCtasAttributes;
@@ -209,7 +212,6 @@ declare global {
     'shared-header': Components.SharedHeaderAttributes;
     'snail-trail-link': Components.SnailTrailLinkAttributes;
     'snail-trail': Components.SnailTrailAttributes;
-    'subscribe-modal': Components.SubscribeModalAttributes;
   }
 
 
@@ -217,6 +219,12 @@ declare global {
   var HTMLHeartButtonElement: {
     prototype: HTMLHeartButtonElement;
     new (): HTMLHeartButtonElement;
+  };
+
+  interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
+  var HTMLCrdsModalElement: {
+    prototype: HTMLCrdsModalElement;
+    new (): HTMLCrdsModalElement;
   };
 
   interface HTMLSharedFooterElement extends Components.SharedFooter, HTMLStencilElement {}
@@ -279,14 +287,9 @@ declare global {
     new (): HTMLSnailTrailElement;
   };
 
-  interface HTMLSubscribeModalElement extends Components.SubscribeModal, HTMLStencilElement {}
-  var HTMLSubscribeModalElement: {
-    prototype: HTMLSubscribeModalElement;
-    new (): HTMLSubscribeModalElement;
-  };
-
   interface HTMLElementTagNameMap {
     'heart-button': HTMLHeartButtonElement
+    'crds-modal': HTMLCrdsModalElement
     'shared-footer': HTMLSharedFooterElement
     'global-nav': HTMLGlobalNavElement
     'nav-ctas': HTMLNavCtasElement
@@ -297,11 +300,11 @@ declare global {
     'shared-header': HTMLSharedHeaderElement
     'snail-trail-link': HTMLSnailTrailLinkElement
     'snail-trail': HTMLSnailTrailElement
-    'subscribe-modal': HTMLSubscribeModalElement
   }
 
   interface ElementTagNameMap {
     'heart-button': HTMLHeartButtonElement;
+    'crds-modal': HTMLCrdsModalElement;
     'shared-footer': HTMLSharedFooterElement;
     'global-nav': HTMLGlobalNavElement;
     'nav-ctas': HTMLNavCtasElement;
@@ -312,7 +315,6 @@ declare global {
     'shared-header': HTMLSharedHeaderElement;
     'snail-trail-link': HTMLSnailTrailLinkElement;
     'snail-trail': HTMLSnailTrailElement;
-    'subscribe-modal': HTMLSubscribeModalElement;
   }
 
 

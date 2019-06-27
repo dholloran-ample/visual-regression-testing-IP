@@ -1,24 +1,22 @@
 import { Component, Prop, State } from '@stencil/core';
 
 @Component({
-  tag: 'subscribe-modal',
-  styleUrl: 'subscribe-modal.scss',
+  tag: 'crds-modal',
+  styleUrl: 'modal.scss',
   shadow: true
 })
-export class Subscribe {
-  @Prop({ mutable: true }) modalIsShowing: boolean = false;
-  @Prop() onModalClose: Function;
-  @State() hubspotDidLoad = false;
+export class Modal {
+  @Prop({ mutable: true }) isActive: boolean = false;
+  @Prop() onClose: Function;
+  @Prop() title: String;
+  // @State() hubspotDidLoad = false;
 
-  loadScript = () => {
-    // TODO: Actually load the script
-    const hubspotEl = window.document.getElementById('hubspot');
-    hubspotEl.addEventListener('load', () => {
-      this.hubspotDidLoad = true;
-    });
-  };
-
-  // handleOuterClick = () => {
+  // loadScript = () => {
+  //   // TODO: Actually load the script
+  //   const hubspotEl = window.document.getElementById('hubspot');
+  //   hubspotEl.addEventListener('load', () => {
+  //     this.hubspotDidLoad = true;
+  //   });
   // };
 
   handleInnerClick = event => {
@@ -26,17 +24,14 @@ export class Subscribe {
   };
 
   closeModal = () => {
-    this.modalIsShowing = false;
-    if (typeof this.onModalClose == 'function') this.onModalClose();
+    this.isActive = false;
+    if (typeof this.onClose == 'function') this.onClose();
   };
 
   render() {
-    // console.log('subscribe-modal - modalIsShowing = ' + this.modalIsShowing);
-    // this.loadScript();
-
     return (
       <div
-        class={`modal ${this.modalIsShowing ? 'is-active' : ''}`}
+        class={`modal ${this.isActive ? 'is-active' : ''}`}
         id="subscribeModalForm"
         tabindex="-1"
         onClick={this.closeModal}
@@ -46,16 +41,16 @@ export class Subscribe {
             <button type="button" class="modal-close" onClick={this.closeModal} />
           </div>
           <div class="modal-body">
-            <h3 class="modal-title">Subscribe</h3>
+            {this.title && <h3 class="modal-title">{this.title}</h3>}
             <p>Hello World!</p>
-            {this.hubspotDidLoad &&
+            {/* {this.hubspotDidLoad &&
               (window.document.getElementById('hubspot') as any).forms.create({
                 portalId: '3993985',
                 formId: '52b50268-5d9c-4369-8359-e96ff69094f9',
                 formInstanceId: '1',
                 submitButtonClass: 'modal-button',
                 errorMessageClass: 'modal-error'
-              })}
+              })} */}
           </div>
         </div>
       </div>

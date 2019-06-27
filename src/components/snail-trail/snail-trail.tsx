@@ -67,7 +67,7 @@ export class SnailTrail {
 
   subscribeModal() {
     if (this.name === 'media') {
-      return <subscribe-modal modalIsShowing={this.modalIsShowing} onModalClose={this.handleModalClose} />;
+      return <crds-modal title="Subscribe" isActive={this.modalIsShowing} onClose={this.handleModalClose} />;
     }
   }
 

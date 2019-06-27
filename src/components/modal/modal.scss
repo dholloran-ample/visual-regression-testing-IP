@@ -1,3 +1,5 @@
+// ---------------------------------------- | Base
+
 .modal {
   background-color: rgba($cr-black, 0.8);
   bottom: 0;
@@ -21,6 +23,8 @@
   }
 }
 
+// ---------------------------------------- | Content
+
 .modal-content {
   background: $cr-white;
   font-size: 16px;
@@ -35,8 +39,6 @@
 .modal-body {
   padding: 40px;
 }
-
-// ---------------------------------------- | Content
 
 .modal-title {
   @include font-family-condensed-extra;
