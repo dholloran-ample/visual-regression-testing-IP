@@ -24,11 +24,16 @@ export class SnailTrail {
     }
   }
 
-  toggleSubscribeModal(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.modalIsShowing = !this.modalIsShowing;
-  }
+  handleSubscribeClick = () => {
+    // event.preventDefault();
+    // event.stopPropagation();
+    // console.log('SHOW MODAL');
+    this.modalIsShowing = true;
+  };
+
+  handleModalClose = () => {
+    this.modalIsShowing = false;
+  };
 
   listItem(item) {
     if (!item.href) return <strong>{item.title}</strong>;
@@ -53,7 +58,7 @@ export class SnailTrail {
   subscribeLink() {
     if (this.name === 'media') {
       return (
-        <button onClick={event => this.toggleSubscribeModal(event)} class="subscribe-button">
+        <button onClick={this.handleSubscribeClick} class="subscribe-button">
           Subscribe
         </button>
       );
@@ -62,9 +67,7 @@ export class SnailTrail {
 
   subscribeModal() {
     if (this.name === 'media') {
-      return (
-        <subscribe-modal navClickHandler={this.toggleSubscribeModal.bind(this)} modalIsShowing={this.modalIsShowing} />
-      );
+      return <subscribe-modal modalIsShowing={this.modalIsShowing} onModalClose={this.handleModalClose} />;
     }
   }
 

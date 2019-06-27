@@ -1,5 +1,4 @@
 import { Component, Prop, State } from '@stencil/core';
-import axios from 'axios';
 
 @Component({
   tag: 'subscribe-modal',
@@ -7,55 +6,56 @@ import axios from 'axios';
   shadow: true
 })
 export class Subscribe {
-  @Prop() modalIsShowing: boolean = false;
-  @Prop() navClickHandler: Function;
+  @Prop({ mutable: true }) modalIsShowing: boolean = false;
+  @Prop() onModalClose: Function;
   @State() hubspotDidLoad = false;
 
-  modalClasses() {
-    let classes = ['modal'];
-    if (this.modalIsShowing) classes.push('is-active');
-    return classes.join(' ');
-  }
-
   loadScript = () => {
-    const hubspotEl = window.document.getElementById("hubspot");
+    // TODO: Actually load the script
+    const hubspotEl = window.document.getElementById('hubspot');
     hubspotEl.addEventListener('load', () => {
       this.hubspotDidLoad = true;
     });
   };
 
-  render() {
+  // handleOuterClick = () => {
+  // };
 
-    console.log('subscribe-modal - modalIsShowing = ' + this.modalIsShowing);
-    this.loadScript();
+  handleInnerClick = event => {
+    event.stopPropagation();
+  };
+
+  closeModal = () => {
+    this.modalIsShowing = false;
+    if (typeof this.onModalClose == 'function') this.onModalClose();
+  };
+
+  render() {
+    // console.log('subscribe-modal - modalIsShowing = ' + this.modalIsShowing);
+    // this.loadScript();
 
     return (
       <div
-        class="modal fade"
+        class={`modal ${this.modalIsShowing ? 'is-active' : ''}`}
         id="subscribeModalForm"
         tabindex="-1"
-        role="dialog"
-        aria-labelledby="Subscribe email form"
+        onClick={this.closeModal}
       >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body hard-bottom">
-              <h3 class="font-family-condensed-extra font-size-h2 text-uppercase flush-top">Subscribe</h3>
-              {this.hubspotDidLoad &&
-                (window.document.getElementById("hubspot") as any).forms.create({
-                  portalId: '3993985',
-                  formId: '52b50268-5d9c-4369-8359-e96ff69094f9',
-                  formInstanceId: '1',
-                  submitButtonClass: 'btn btn-cyan btn-lg push-top',
-                  errorMessageClass: 'hs-error-msgs inputs-list list-unstyled'
-                })}
-            </div>
-            <div class="modal-footer" />
+        <div class="modal-content" onClick={this.handleInnerClick}>
+          <div class="modal-header">
+            <button type="button" class="modal-close" onClick={this.closeModal} />
+          </div>
+          <div class="modal-body">
+            <h3 class="modal-title">Subscribe</h3>
+            <p>Hello World!</p>
+            {this.hubspotDidLoad &&
+              (window.document.getElementById('hubspot') as any).forms.create({
+                portalId: '3993985',
+                formId: '52b50268-5d9c-4369-8359-e96ff69094f9',
+                formInstanceId: '1',
+                submitButtonClass: 'modal-button',
+                errorMessageClass: 'modal-error'
+              })}
           </div>
         </div>
       </div>

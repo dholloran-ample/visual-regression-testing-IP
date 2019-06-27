@@ -173,11 +173,11 @@ export namespace Components {
 
   interface SubscribeModal {
     'modalIsShowing': boolean;
-    'navClickHandler': Function;
+    'onModalClose': Function;
   }
   interface SubscribeModalAttributes extends StencilHTMLAttributes {
     'modalIsShowing'?: boolean;
-    'navClickHandler'?: Function;
+    'onModalClose'?: Function;
   }
 }
 
