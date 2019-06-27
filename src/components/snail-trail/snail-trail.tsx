@@ -13,7 +13,6 @@ export class SnailTrail {
   @Prop() name: string;
 
   @State() data: any = {};
-  @State() modalIsShowing: boolean = false;
 
   @Element() element: HTMLElement;
 
@@ -23,17 +22,6 @@ export class SnailTrail {
       axios.get(url).then(response => (this.data = response.data));
     }
   }
-
-  handleSubscribeClick = () => {
-    // event.preventDefault();
-    // event.stopPropagation();
-    // console.log('SHOW MODAL');
-    this.modalIsShowing = true;
-  };
-
-  handleModalClose = () => {
-    this.modalIsShowing = false;
-  };
 
   listItem(item) {
     if (!item.href) return <strong>{item.title}</strong>;
@@ -56,19 +44,7 @@ export class SnailTrail {
   }
 
   subscribeLink() {
-    if (this.name === 'media') {
-      return (
-        <button onClick={this.handleSubscribeClick} class="subscribe-button">
-          Subscribe
-        </button>
-      );
-    }
-  }
-
-  subscribeModal() {
-    if (this.name === 'media') {
-      return <crds-modal title="Subscribe" isActive={this.modalIsShowing} onClose={this.handleModalClose} />;
-    }
+    if (this.name === 'media') return <crds-subscribe />;
   }
 
   render() {
@@ -86,7 +62,6 @@ export class SnailTrail {
             )}
           </div>
         </nav>
-        {this.subscribeModal()}
       </Fragment>
     );
   }

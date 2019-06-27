@@ -1,0 +1,21 @@
+.subscribe-button {
+  background-color: transparent;
+  border: 0;
+  color: $cr-cyan;
+  cursor: pointer;
+  display: inline-block;
+  font: inherit;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  padding: 11px 15px;
+
+  &:focus {
+    border: 0;
+    outline: none;
+  }
+}
+
+#crds-subscribe-hubspot-script {
+  display: none;
+}

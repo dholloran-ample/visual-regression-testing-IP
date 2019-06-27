@@ -2,22 +2,13 @@ import { Component, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'crds-modal',
-  styleUrl: 'modal.scss',
+  styleUrl: 'crds-modal.scss',
   shadow: true
 })
-export class Modal {
+export class CrdsModal {
   @Prop({ mutable: true }) isActive: boolean = false;
   @Prop() onClose: Function;
-  @Prop() title: String;
-  // @State() hubspotDidLoad = false;
-
-  // loadScript = () => {
-  //   // TODO: Actually load the script
-  //   const hubspotEl = window.document.getElementById('hubspot');
-  //   hubspotEl.addEventListener('load', () => {
-  //     this.hubspotDidLoad = true;
-  //   });
-  // };
+  @Prop() title: string;
 
   handleInnerClick = event => {
     event.stopPropagation();
@@ -42,15 +33,7 @@ export class Modal {
           </div>
           <div class="modal-body">
             {this.title && <h3 class="modal-title">{this.title}</h3>}
-            <p>Hello World!</p>
-            {/* {this.hubspotDidLoad &&
-              (window.document.getElementById('hubspot') as any).forms.create({
-                portalId: '3993985',
-                formId: '52b50268-5d9c-4369-8359-e96ff69094f9',
-                formInstanceId: '1',
-                submitButtonClass: 'modal-button',
-                errorMessageClass: 'modal-error'
-              })} */}
+            <slot />
           </div>
         </div>
       </div>
