@@ -24,7 +24,7 @@ export class ProfileMenu {
   renderSections = payload => {
     let topLevel = { value: false };
 
-    const title = unescape(payload.title.replace('%user_name%', this.currentUser.name));
+    const title = unescape(payload.title.replace('%user_name%', this.currentUser.name || ''));
 
     return (
       <div>
