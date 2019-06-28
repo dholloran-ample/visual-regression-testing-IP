@@ -14,7 +14,7 @@ nav {
   > div {
     display: flex;
     -webkit-overflow-scrolling: touch;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     position: relative;
     scrollbar-width: none;
@@ -62,10 +62,6 @@ ul {
       height: calc(100% - 22px);
       width: 1px;
     }
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
   }
 }
 
