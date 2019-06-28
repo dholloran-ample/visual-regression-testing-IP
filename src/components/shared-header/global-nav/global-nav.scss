@@ -71,8 +71,10 @@ $icon-size: 22px;
     height: $icon-size;
     width: $icon-size;
 
-    &:hover {
-      filter: brightness(90%);
+    @media (hover) {
+      &:hover {
+        filter: brightness(90%);
+      }
     }
   }
 }
@@ -123,11 +125,13 @@ $icon-size: 22px;
     fill: $cr-white;
   }
 
-  &:hover {
-    color: darken($cr-white, 20);
+  @media (hover) {
+    &:hover {
+      color: darken($cr-white, 20);
 
-    svg {
-      fill: darken($cr-white, 20);
+      svg {
+        fill: darken($cr-white, 20);
+      }
     }
   }
 }
