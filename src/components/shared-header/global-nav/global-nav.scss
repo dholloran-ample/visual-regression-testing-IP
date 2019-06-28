@@ -2,11 +2,15 @@ header {
   background-color: $cr-cyan;
   position: relative;
   top: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 2;
 
   @supports (position: sticky) {
     position: sticky;
+  }
+
+  &.nav-is-showing {
+    position: fixed;
   }
 
   > div {
