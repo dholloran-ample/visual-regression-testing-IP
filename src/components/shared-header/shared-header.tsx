@@ -128,7 +128,6 @@ export class SharedHeader {
       this.giveNavIsShowing = false;
       this.mainNavIsShowing = !this.mainNavIsShowing;
       this.profileNavIsShowing = false;
-      console.log(this.mainNavIsShowing);
       if (this.mainNavIsShowing) {
         document.body.setAttribute('style', 'overflow: hidden; position: absolute;');
       } else {

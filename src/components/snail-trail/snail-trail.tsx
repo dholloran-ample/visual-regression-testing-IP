@@ -17,13 +17,14 @@ export class SnailTrail {
   @Element() element: HTMLElement;
 
   componentWillLoad() {
-    if (this.name && this.env) {
+    if (this.src || (this.name && this.env)) {
       const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
       axios.get(url).then(response => (this.data = response.data));
     }
   }
 
   listItem(item) {
+    if (item.subscribe && item.src) return <crds-subscribe src={item.src} title={item.title} />;
     if (!item.href) return <strong>{item.title}</strong>;
     return (
       <snail-trail-link href={item.href} automationId={item['data-automation-id']}>
@@ -46,12 +47,14 @@ export class SnailTrail {
   render() {
     if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
-      <nav>
-        <div>
-          {this.element.childElementCount > 0 && <slot />}
-          {this.element.childElementCount == 0 && <Fragment>{this.navSections()}</Fragment>}
-        </div>
-      </nav>
+      <Fragment>
+        <nav>
+          <div>
+            {this.element.childElementCount > 0 && <slot />}
+            {this.element.childElementCount == 0 && <Fragment>{this.navSections()}</Fragment>}
+          </div>
+        </nav>
+      </Fragment>
     );
   }
 }

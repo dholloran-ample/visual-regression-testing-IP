@@ -12,6 +12,26 @@ import '@stencil/core';
 
 export namespace Components {
 
+  interface CrdsModal {
+    'isActive': boolean;
+    'onClose': Function;
+    'title': string;
+  }
+  interface CrdsModalAttributes extends StencilHTMLAttributes {
+    'isActive'?: boolean;
+    'onClose'?: Function;
+    'title'?: string;
+  }
+
+  interface CrdsSubscribe {
+    'src': string;
+    'title': string;
+  }
+  interface CrdsSubscribeAttributes extends StencilHTMLAttributes {
+    'src'?: string;
+    'title'?: string;
+  }
+
   interface HeartButton {
     /**
     * Total number of hearts
@@ -174,6 +194,8 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'CrdsModal': Components.CrdsModal;
+    'CrdsSubscribe': Components.CrdsSubscribe;
     'HeartButton': Components.HeartButton;
     'SharedFooter': Components.SharedFooter;
     'GlobalNav': Components.GlobalNav;
@@ -188,6 +210,8 @@ declare global {
   }
 
   interface StencilIntrinsicElements {
+    'crds-modal': Components.CrdsModalAttributes;
+    'crds-subscribe': Components.CrdsSubscribeAttributes;
     'heart-button': Components.HeartButtonAttributes;
     'shared-footer': Components.SharedFooterAttributes;
     'global-nav': Components.GlobalNavAttributes;
@@ -201,6 +225,18 @@ declare global {
     'snail-trail': Components.SnailTrailAttributes;
   }
 
+
+  interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
+  var HTMLCrdsModalElement: {
+    prototype: HTMLCrdsModalElement;
+    new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsSubscribeElement extends Components.CrdsSubscribe, HTMLStencilElement {}
+  var HTMLCrdsSubscribeElement: {
+    prototype: HTMLCrdsSubscribeElement;
+    new (): HTMLCrdsSubscribeElement;
+  };
 
   interface HTMLHeartButtonElement extends Components.HeartButton, HTMLStencilElement {}
   var HTMLHeartButtonElement: {
@@ -269,6 +305,8 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'crds-modal': HTMLCrdsModalElement
+    'crds-subscribe': HTMLCrdsSubscribeElement
     'heart-button': HTMLHeartButtonElement
     'shared-footer': HTMLSharedFooterElement
     'global-nav': HTMLGlobalNavElement
@@ -283,6 +321,8 @@ declare global {
   }
 
   interface ElementTagNameMap {
+    'crds-modal': HTMLCrdsModalElement;
+    'crds-subscribe': HTMLCrdsSubscribeElement;
     'heart-button': HTMLHeartButtonElement;
     'shared-footer': HTMLSharedFooterElement;
     'global-nav': HTMLGlobalNavElement;
