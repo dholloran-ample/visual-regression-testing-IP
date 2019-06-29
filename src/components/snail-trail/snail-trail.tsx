@@ -25,7 +25,7 @@ export class SnailTrail {
 
   listItem(item) {
     if (!item.href) return <strong>{item.title}</strong>;
-    if (item.subscribe) return <crds-subscribe src={item.href} title={item.title} />;
+    if (item.subscribe) return <crds-subscribe src={item.src} title={item.title} />;
     return (
       <snail-trail-link href={item.href} automationId={item['data-automation-id']}>
         {item.title}
