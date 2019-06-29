@@ -5,11 +5,12 @@
   background-color: $cr-black;
   background-repeat: no-repeat;
   background-size: 100%;
-  height: 100%;
+  height: 100vh;
   left: 0;
-  overflow-y: auto;
+  max-height: 100vh;
+  overflow-y: scroll;
   position: fixed;
-  top: 47px;
+  top: 48px;
   width: 100vw;
   z-index: 2;
 
@@ -26,6 +27,10 @@
     margin-right: 0;
   }
 
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
   ul {
     &:last-of-type {
       padding-bottom: 30px;
@@ -39,7 +44,7 @@
 
 .profile-nav {
   &:after {
-    background-color: rgba($cr-black, 0.75);
+    background-color: rgba($cr-black, .75);
     content: ' ';
     height: 100%;
     left: 0;
@@ -50,10 +55,10 @@
   }
 
   .profile-nav-img {
-    box-sizing: border-box;
-    background-position:top;
+    background-position: top;
     background-repeat: no-repeat;
     background-size: contain;
+    box-sizing: border-box;
     filter: blur(2px);
     height: 100%;
     left: 0;
@@ -61,5 +66,11 @@
     top: 0;
     width: 100%;
     z-index: -2;
+  }
+
+  @media (min-width: $screen-md) {
+    div {
+      padding-bottom: 0;
+    }
   }
 }

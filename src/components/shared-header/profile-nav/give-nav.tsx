@@ -32,9 +32,8 @@ export class GiveMenu {
                   {child.map(el => {
                     if (typeof el != 'string')
                       return (
-                        <li class={top_level ? 'top-level' : ''}>
-                          <a href={el.href} automation-id={el['automation-id']}>
-                            {' '}
+                        <li class={top_level ? '' : 'top-level'}>
+                          <a href={el.href} data-automation-id={el['automation-id']}>
                             {el.title}
                           </a>
                         </li>
