@@ -1,0 +1,36 @@
+a {
+  color: $cr-gray-dark;
+  display: block;
+  font-weight: 300;
+  padding: 11px 15px;
+  position: relative;
+  text-decoration: none;
+
+  &.active {
+    &::before {
+      border: 10px solid transparent;
+      border-bottom: 0;
+      border-top-color: $cr-cyan;
+      content: '';
+      left: 50%;
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (hover) {
+    &:hover {
+      &::after {
+        background-color: $cr-cyan;
+        bottom: 0;
+        content: '';
+        display: inline-block;
+        height: 2px;
+        left: 15px;
+        position: absolute;
+        width: calc(100% - 30px);
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+var a=(a,r)=>[...r];export{a};
