@@ -1,4 +1,3 @@
-import '../../stencil.core';
 export declare class SharedHeader {
     src: string;
     env: string;
@@ -42,5 +41,5 @@ export declare class SharedHeader {
     /**
      * HTML
      */
-    render(): JSX.Element;
+    render(): any;
 }

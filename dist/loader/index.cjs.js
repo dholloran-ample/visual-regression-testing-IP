@@ -1,1 +1,0 @@
-module.exports = require('../cjs/es5/crds-components.define.js');

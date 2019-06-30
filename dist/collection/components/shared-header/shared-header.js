@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
@@ -9,6 +10,9 @@ export class SharedHeader {
         this.giveNavIsShowing = false;
         this.data = [];
     }
+    /**
+     * Fires before render...
+     */
     componentWillLoad() {
         const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
         axios.get(url).then(response => (this.data = response.data));
@@ -17,10 +21,18 @@ export class SharedHeader {
         this.element.parentElement.classList.add('shared-header');
         this.element.parentElement.classList.remove('shared-header-skeleton');
     }
+    /**
+     * Section onClick event handler
+     * @param e Event
+     * @param id string
+     */
     onClick(e, id) {
         e.preventDefault();
         this.active = id;
     }
+    /**
+     * Renders all sections from payload
+     */
     renderSections(payload) {
         if (!payload)
             return null;
@@ -35,6 +47,13 @@ export class SharedHeader {
         event.preventDefault();
         this.active = null;
     }
+    /**
+     * Returns all subnav elements
+     * @param payload
+     */
+    // TODO: refactor renderSubnavs to work with
+    // nav-section-subnav, profile nav, and give nav
+    // ------------------------------------------------------
     renderSubnavs(payload) {
         if (!payload)
             return null;
@@ -43,6 +62,10 @@ export class SharedHeader {
         });
         return h("div", { class: "subnavigation" }, sections);
     }
+    /**
+     * Returns header or unordered list
+     * @param section
+     */
     renderChildren(section) {
         const sectionChildren = section.children.map(child => {
             if (typeof child == 'string') {
@@ -119,6 +142,9 @@ export class SharedHeader {
             return document.body.setAttribute('style', 'overflow: scroll;'), this.closeMenus(event);
         }
     }
+    /**
+     * HTML
+     */
     render() {
         let close = '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="times" class="svg-inline--fa fa-times fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"></path></svg>';
         return (h(Fragment, null,
@@ -134,37 +160,62 @@ export class SharedHeader {
     }
     static get is() { return "shared-header"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["shared-header.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["shared-header.css"]
+    }; }
     static get properties() { return {
-        "active": {
-            "state": true
-        },
-        "data": {
-            "state": true
-        },
-        "element": {
-            "elementRef": true
+        "src": {
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "src",
+            "reflect": false
         },
         "env": {
-            "type": String,
-            "attr": "env"
-        },
-        "giveNavIsShowing": {
-            "state": true
-        },
-        "mainNavIsShowing": {
-            "state": true
-        },
-        "profileNavIsShowing": {
-            "state": true
-        },
-        "src": {
-            "type": String,
-            "attr": "src"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "env",
+            "reflect": false,
+            "defaultValue": "'prod'"
         }
     }; }
+    static get states() { return {
+        "active": {},
+        "mainNavIsShowing": {},
+        "profileNavIsShowing": {},
+        "giveNavIsShowing": {},
+        "data": {}
+    }; }
+    static get elementRef() { return "element"; }
     static get listeners() { return [{
-            "name": "window:click",
-            "method": "handleScroll"
+            "name": "click",
+            "method": "handleScroll",
+            "target": "window",
+            "capture": false,
+            "passive": false
         }]; }
-    static get style() { return "/**style-placeholder:shared-header:**/"; }
 }

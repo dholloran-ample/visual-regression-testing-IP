@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 export class ProfileMenu {
     constructor() {
         this.profileNavIsShowing = true;
@@ -45,31 +46,109 @@ export class ProfileMenu {
     }
     static get is() { return "profile-nav"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["profile-nav.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["profile-nav.css"]
+    }; }
     static get properties() { return {
         "config": {
-            "type": "Any",
-            "attr": "config"
+            "type": "any",
+            "mutable": false,
+            "complexType": {
+                "original": "any",
+                "resolved": "any",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "config",
+            "reflect": false
         },
         "currentUser": {
-            "type": "Any",
-            "attr": "current-user"
-        },
-        "data": {
-            "type": "Any",
-            "attr": "data"
+            "type": "any",
+            "mutable": false,
+            "complexType": {
+                "original": "any",
+                "resolved": "any",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "current-user",
+            "reflect": false
         },
         "onSignOut": {
-            "type": "Any",
-            "attr": "on-sign-out"
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "Function",
+                "resolved": "Function",
+                "references": {
+                    "Function": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
         },
         "profileNavIsShowing": {
-            "type": Boolean,
-            "attr": "profile-nav-is-showing"
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "profile-nav-is-showing",
+            "reflect": false,
+            "defaultValue": "true"
+        },
+        "data": {
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "JSON",
+                "resolved": "JSON",
+                "references": {
+                    "JSON": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
         }
     }; }
     static get listeners() { return [{
             "name": "click",
-            "method": "handleClick"
+            "method": "handleClick",
+            "target": undefined,
+            "capture": false,
+            "passive": false
         }]; }
-    static get style() { return "/**style-placeholder:profile-nav:**/"; }
 }

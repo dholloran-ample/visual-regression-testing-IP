@@ -1,4 +1,3 @@
-import '../../stencil.core';
 export declare class CrdsSubscribe {
     title: string;
     src: string;
@@ -7,5 +6,5 @@ export declare class CrdsSubscribe {
     componentDidUpdate(): void;
     handleSubscribeClick: () => void;
     handleModalClose: () => void;
-    render(): JSX.Element;
+    render(): any;
 }

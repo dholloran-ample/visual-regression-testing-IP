@@ -1,4 +1,3 @@
-import '../../stencil.core';
 export declare class HeartButton {
     /**
      * Print log messages?
@@ -15,19 +14,19 @@ export declare class HeartButton {
     /**
      * Cache key for localStorage
      */
-    private key;
+    key: string;
     /**
      * Unique identifier for likeable resource
      */
-    private id;
+    id: string;
     /**
      * Total number of hearts
      */
-    private count;
+    count: number;
     /**
      * Boolean indicating whether likeable resource has been liked
      */
-    private isLiked;
+    isLiked: boolean;
     /**
      * Emphemeral array object for managing updates to localStorage
      */
@@ -61,7 +60,7 @@ export declare class HeartButton {
      * Add current ID to localStorage
      */
     private add;
-    removeDuplicates(arr: any): {}[];
+    removeDuplicates(arr: any): unknown[];
     /**
      * Persist array of IDs to localStorage
      * @param arr Array of likeable resource IDs
@@ -74,5 +73,5 @@ export declare class HeartButton {
     /**
      * HTML
      */
-    render(): JSX.Element;
+    render(): any;
 }

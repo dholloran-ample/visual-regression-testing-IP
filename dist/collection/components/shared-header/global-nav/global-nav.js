@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { Auth } from '../../../shared/auth';
 export class GlobalNav {
@@ -28,6 +29,8 @@ export class GlobalNav {
             return event.stopPropagation();
         return this.navClickHandler(event, 'profile-nav');
     }
+    // TODO: consoliate menuClasses, profileClasses, and  giveClasses
+    // ------------------------------------------------------
     menuClasses() {
         let classes = ['menu-container'];
         if (this.mainNavIsShowing)
@@ -79,46 +82,179 @@ export class GlobalNav {
     }
     static get is() { return "global-nav"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["global-nav.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["global-nav.css"]
+    }; }
     static get properties() { return {
-        "authenticated": {
-            "state": true
-        },
         "config": {
-            "type": "Any",
-            "attr": "config"
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "Object",
+                "resolved": "Object",
+                "references": {
+                    "Object": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
         },
         "env": {
-            "type": String,
-            "attr": "env"
-        },
-        "giveData": {
-            "type": "Any",
-            "attr": "give-data"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "env",
+            "reflect": false
         },
         "giveNavIsShowing": {
-            "type": Boolean,
-            "attr": "give-nav-is-showing"
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "give-nav-is-showing",
+            "reflect": false,
+            "defaultValue": "false"
         },
         "href": {
-            "type": String,
-            "attr": "href"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "href",
+            "reflect": false
         },
         "mainNavIsShowing": {
-            "type": Boolean,
-            "attr": "main-nav-is-showing"
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "main-nav-is-showing",
+            "reflect": false,
+            "defaultValue": "false"
         },
         "navClickHandler": {
-            "type": "Any",
-            "attr": "nav-click-handler"
-        },
-        "profileData": {
-            "type": "Any",
-            "attr": "profile-data"
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "Function",
+                "resolved": "Function",
+                "references": {
+                    "Function": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
         },
         "profileNavIsShowing": {
-            "type": Boolean,
-            "attr": "profile-nav-is-showing"
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "profile-nav-is-showing",
+            "reflect": false,
+            "defaultValue": "false"
+        },
+        "giveData": {
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "JSON",
+                "resolved": "JSON",
+                "references": {
+                    "JSON": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
+        },
+        "profileData": {
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "JSON",
+                "resolved": "JSON",
+                "references": {
+                    "JSON": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
         }
     }; }
-    static get style() { return "/**style-placeholder:global-nav:**/"; }
+    static get states() { return {
+        "authenticated": {}
+    }; }
 }

@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import decode from 'unescape';
 export class NavCtas {
     decodedData() {
@@ -10,19 +11,63 @@ export class NavCtas {
     }
     static get is() { return "nav-ctas"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["nav-ctas.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["nav-ctas.css"]
+    }; }
     static get properties() { return {
+        "href": {
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "href",
+            "reflect": false
+        },
         "active": {
-            "type": String,
-            "attr": "active"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "active",
+            "reflect": false
         },
         "data": {
-            "type": String,
-            "attr": "data"
-        },
-        "href": {
-            "type": String,
-            "attr": "href"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "data",
+            "reflect": false
         }
     }; }
-    static get style() { return "/**style-placeholder:nav-ctas:**/"; }
 }
