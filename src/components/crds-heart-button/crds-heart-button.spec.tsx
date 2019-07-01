@@ -13,7 +13,7 @@ describe('<crds-heart-button>', () => {
   });
 
   it('should set the key property', () => {
-    expect(this.btn.key).toBe('crds-hearts');
+    expect(this.btn.storageKey).toBe('crds-hearts');
   });
 
   it('should set return likes array', () => {

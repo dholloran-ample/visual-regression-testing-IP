@@ -8,7 +8,7 @@ import iframeResizer from 'iframe-resizer';
   shadow: true
 })
 export class CrdsSubscribe {
-  @Prop() title: string;
+  @Prop() label: string;
   @Prop() src: string;
 
   @State() modalIsShowing: boolean = false;
@@ -32,9 +32,9 @@ export class CrdsSubscribe {
       <Fragment>
         <div class="subscribe-script" />
         <button onClick={this.handleSubscribeClick} class="subscribe-button">
-          {this.title}
+          {this.label}
         </button>
-        <crds-modal title={this.title} isActive={this.modalIsShowing} onClose={this.handleModalClose}>
+        <crds-modal label={this.label} isActive={this.modalIsShowing} onModalClose={this.handleModalClose}>
           <iframe ref={el => (this.frame = el)} src={this.src} class="subscribe-frame" frameborder="0" />
         </crds-modal>
       </Fragment>

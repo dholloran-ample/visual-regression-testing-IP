@@ -29,8 +29,8 @@ export namespace Components {
   }
   interface CrdsModal {
     'isActive': boolean;
-    'onClose': Function;
-    'title': string;
+    'label': string;
+    'onModalClose': Function;
   }
   interface CrdsSharedFooter {
     'env': string;
@@ -51,8 +51,8 @@ export namespace Components {
     'isActive': boolean;
   }
   interface CrdsSubscribe {
+    'label': string;
     'src': string;
-    'title': string;
   }
   interface GiveNav {
     'data': JSON;
@@ -212,8 +212,8 @@ declare namespace LocalJSX {
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
-    'onClose'?: Function;
-    'title'?: string;
+    'label'?: string;
+    'onModalClose'?: Function;
   }
   interface CrdsSharedFooter extends JSXBase.HTMLAttributes<HTMLCrdsSharedFooterElement> {
     'env'?: string;
@@ -234,8 +234,8 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
   }
   interface CrdsSubscribe extends JSXBase.HTMLAttributes<HTMLCrdsSubscribeElement> {
+    'label'?: string;
     'src'?: string;
-    'title'?: string;
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: JSON;
