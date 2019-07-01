@@ -32,6 +32,10 @@ export namespace Components {
     'onClose': Function;
     'title': string;
   }
+  interface CrdsSharedFooter {
+    'env': string;
+    'src': string;
+  }
   interface CrdsSnailTrail {
     'env': string;
     'name': string;
@@ -84,10 +88,6 @@ export namespace Components {
     'onSignOut': Function;
     'profileNavIsShowing': boolean;
   }
-  interface SharedFooter {
-    'env': string;
-    'src': string;
-  }
   interface SharedHeader {
     'env': string;
     'src': string;
@@ -107,6 +107,12 @@ declare global {
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
     new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsSharedFooterElement extends Components.CrdsSharedFooter, HTMLStencilElement {}
+  var HTMLCrdsSharedFooterElement: {
+    prototype: HTMLCrdsSharedFooterElement;
+    new (): HTMLCrdsSharedFooterElement;
   };
 
   interface HTMLCrdsSnailTrailElement extends Components.CrdsSnailTrail, HTMLStencilElement {}
@@ -163,12 +169,6 @@ declare global {
     new (): HTMLProfileNavElement;
   };
 
-  interface HTMLSharedFooterElement extends Components.SharedFooter, HTMLStencilElement {}
-  var HTMLSharedFooterElement: {
-    prototype: HTMLSharedFooterElement;
-    new (): HTMLSharedFooterElement;
-  };
-
   interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
   var HTMLSharedHeaderElement: {
     prototype: HTMLSharedHeaderElement;
@@ -177,6 +177,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
+    'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
@@ -186,7 +187,6 @@ declare global {
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'profile-nav': HTMLProfileNavElement;
-    'shared-footer': HTMLSharedFooterElement;
     'shared-header': HTMLSharedHeaderElement;
   }
 }
@@ -214,6 +214,10 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
     'onClose'?: Function;
     'title'?: string;
+  }
+  interface CrdsSharedFooter extends JSXBase.HTMLAttributes<HTMLCrdsSharedFooterElement> {
+    'env'?: string;
+    'src'?: string;
   }
   interface CrdsSnailTrail extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailElement> {
     'env'?: string;
@@ -267,10 +271,6 @@ declare namespace LocalJSX {
     'onSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }
-  interface SharedFooter extends JSXBase.HTMLAttributes<HTMLSharedFooterElement> {
-    'env'?: string;
-    'src'?: string;
-  }
   interface SharedHeader extends JSXBase.HTMLAttributes<HTMLSharedHeaderElement> {
     'env'?: string;
     'src'?: string;
@@ -279,6 +279,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
+    'crds-shared-footer': CrdsSharedFooter;
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
@@ -288,7 +289,6 @@ declare namespace LocalJSX {
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
     'profile-nav': ProfileNav;
-    'shared-footer': SharedFooter;
     'shared-header': SharedHeader;
   }
 }

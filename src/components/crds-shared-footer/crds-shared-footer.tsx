@@ -3,8 +3,8 @@ import Fragment from 'stencil-fragment';
 import axios from 'axios';
 
 @Component({
-  tag: 'shared-footer',
-  styleUrl: 'shared-footer.scss',
+  tag: 'crds-shared-footer',
+  styleUrl: 'crds-shared-footer.scss',
   shadow: true
 })
 export class SharedFooter {
