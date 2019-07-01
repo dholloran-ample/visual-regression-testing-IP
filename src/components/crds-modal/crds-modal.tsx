@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Prop, Element, h } from '@stencil/core';
 
 @Component({
   tag: 'crds-modal',
@@ -9,6 +9,12 @@ export class CrdsModal {
   @Prop({ mutable: true }) isActive: boolean = false;
   @Prop() onClose: Function;
   @Prop() title: string;
+
+  @Element() element: HTMLElement;
+
+  componentDidUpdate() {
+    document.body.appendChild(this.element);
+  }
 
   handleInnerClick = event => {
     event.stopPropagation();
