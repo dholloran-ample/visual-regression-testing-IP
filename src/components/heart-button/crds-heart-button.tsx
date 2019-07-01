@@ -6,8 +6,8 @@ import { Config } from '../../shared/config';
 import { Utils } from '../../shared/utils';
 
 @Component({
-  tag: 'heart-button',
-  styleUrl: 'heart-button.scss',
+  tag: 'crds-heart-button',
+  styleUrl: 'crds-heart-button.scss',
   shadow: true
 })
 export class HeartButton {
@@ -29,12 +29,12 @@ export class HeartButton {
   /**
    * Cache key for localStorage
    */
-  @Prop() public key: string = 'crds-hearts';
+  @Prop() public storageKey: string = 'crds-hearts';
 
   /**
    * Unique identifier for likeable resource
    */
-  @Prop() public id: string;
+  @Prop() public contentfulId: string;
 
   /**
    * Total number of hearts
@@ -57,7 +57,7 @@ export class HeartButton {
   public componentWillLoad() {
     this.console = new Logger(this.debug);
     this.config = new Config();
-    this.isLiked = this.likes().includes(this.id);
+    this.isLiked = this.likes().includes(this.contentfulId);
     this.getCount().then(result => {
       this.count = result;
     });
@@ -67,7 +67,7 @@ export class HeartButton {
    * Returns total number of likes from Contentful
    */
   public getCount() {
-    let url = `${this.config.endpoint()}/entries/${this.id}`;
+    let url = `${this.config.endpoint()}/entries/${this.contentfulId}`;
     return axios
       .get(url, {
         params: {
@@ -96,7 +96,7 @@ export class HeartButton {
    * Returns array of all liked ids from localStorage
    */
   private likes() {
-    const ids = localStorage.getItem(this.key);
+    const ids = localStorage.getItem(this.storageKey);
     return ids ? JSON.parse(ids) : [];
   }
 
@@ -125,7 +125,7 @@ export class HeartButton {
   private remove() {
     this.console.log('removeFromStore()');
     this._likes = this.likes().filter(id => {
-      if (id.toString() !== this.id) {
+      if (id.toString() !== this.contentfulId) {
         return id;
       }
     });
@@ -137,7 +137,7 @@ export class HeartButton {
    */
   private add() {
     this._likes = this.likes();
-    this._likes.push(this.id);
+    this._likes.push(this.contentfulId);
     this.save(this.removeDuplicates(this._likes));
   }
 
@@ -151,9 +151,9 @@ export class HeartButton {
    */
   private save(arr) {
     this.console.log('save()');
-    localStorage.setItem(this.key, JSON.stringify(arr));
+    localStorage.setItem(this.storageKey, JSON.stringify(arr));
     axios.post(`${this.endpoint()}/content-interactions`, {
-      entry_id: this.id,
+      entry_id: this.contentfulId,
       action: this.isLiked ? 'add' : 'subtract'
     });
   }

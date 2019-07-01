@@ -9,6 +9,24 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
+  interface CrdsHeartButton {
+    /**
+    * Unique identifier for likeable resource
+    */
+    'contentfulId': string;
+    /**
+    * Total number of hearts
+    */
+    'count': number;
+    /**
+    * Boolean indicating whether likeable resource has been liked
+    */
+    'isLiked': boolean;
+    /**
+    * Cache key for localStorage
+    */
+    'storageKey': string;
+  }
   interface CrdsModal {
     'isActive': boolean;
     'onClose': Function;
@@ -32,24 +50,6 @@ export namespace Components {
     'navClickHandler': Function;
     'profileData': JSON;
     'profileNavIsShowing': boolean;
-  }
-  interface HeartButton {
-    /**
-    * Total number of hearts
-    */
-    'count': number;
-    /**
-    * Unique identifier for likeable resource
-    */
-    'id': string;
-    /**
-    * Boolean indicating whether likeable resource has been liked
-    */
-    'isLiked': boolean;
-    /**
-    * Cache key for localStorage
-    */
-    'key': string;
   }
   interface NavCtas {
     'active': string;
@@ -97,6 +97,12 @@ export namespace Components {
 declare global {
 
 
+  interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
+  var HTMLCrdsHeartButtonElement: {
+    prototype: HTMLCrdsHeartButtonElement;
+    new (): HTMLCrdsHeartButtonElement;
+  };
+
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
@@ -119,12 +125,6 @@ declare global {
   var HTMLGlobalNavElement: {
     prototype: HTMLGlobalNavElement;
     new (): HTMLGlobalNavElement;
-  };
-
-  interface HTMLHeartButtonElement extends Components.HeartButton, HTMLStencilElement {}
-  var HTMLHeartButtonElement: {
-    prototype: HTMLHeartButtonElement;
-    new (): HTMLHeartButtonElement;
   };
 
   interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
@@ -175,11 +175,11 @@ declare global {
     new (): HTMLSnailTrailLinkElement;
   };
   interface HTMLElementTagNameMap {
+    'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
-    'heart-button': HTMLHeartButtonElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
@@ -192,6 +192,24 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface CrdsHeartButton extends JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement> {
+    /**
+    * Unique identifier for likeable resource
+    */
+    'contentfulId'?: string;
+    /**
+    * Total number of hearts
+    */
+    'count'?: number;
+    /**
+    * Boolean indicating whether likeable resource has been liked
+    */
+    'isLiked'?: boolean;
+    /**
+    * Cache key for localStorage
+    */
+    'storageKey'?: string;
+  }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
     'onClose'?: Function;
@@ -215,24 +233,6 @@ declare namespace LocalJSX {
     'navClickHandler'?: Function;
     'profileData'?: JSON;
     'profileNavIsShowing'?: boolean;
-  }
-  interface HeartButton extends JSXBase.HTMLAttributes<HTMLHeartButtonElement> {
-    /**
-    * Total number of hearts
-    */
-    'count'?: number;
-    /**
-    * Unique identifier for likeable resource
-    */
-    'id'?: string;
-    /**
-    * Boolean indicating whether likeable resource has been liked
-    */
-    'isLiked'?: boolean;
-    /**
-    * Cache key for localStorage
-    */
-    'key'?: string;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'active'?: string;
@@ -277,11 +277,11 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
     'crds-subscribe': CrdsSubscribe;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
-    'heart-button': HeartButton;
     'nav-ctas': NavCtas;
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
