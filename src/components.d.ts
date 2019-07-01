@@ -32,6 +32,16 @@ export namespace Components {
     'onClose': Function;
     'title': string;
   }
+  interface CrdsSnailTrail {
+    'env': string;
+    'name': string;
+    'src': string;
+  }
+  interface CrdsSnailTrailLink {
+    'automationId': string;
+    'href': string;
+    'isActive': boolean;
+  }
   interface CrdsSubscribe {
     'src': string;
     'title': string;
@@ -82,16 +92,6 @@ export namespace Components {
     'env': string;
     'src': string;
   }
-  interface SnailTrail {
-    'env': string;
-    'name': string;
-    'src': string;
-  }
-  interface SnailTrailLink {
-    'automationId': string;
-    'href': string;
-    'isActive': boolean;
-  }
 }
 
 declare global {
@@ -107,6 +107,18 @@ declare global {
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
     new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsSnailTrailElement extends Components.CrdsSnailTrail, HTMLStencilElement {}
+  var HTMLCrdsSnailTrailElement: {
+    prototype: HTMLCrdsSnailTrailElement;
+    new (): HTMLCrdsSnailTrailElement;
+  };
+
+  interface HTMLCrdsSnailTrailLinkElement extends Components.CrdsSnailTrailLink, HTMLStencilElement {}
+  var HTMLCrdsSnailTrailLinkElement: {
+    prototype: HTMLCrdsSnailTrailLinkElement;
+    new (): HTMLCrdsSnailTrailLinkElement;
   };
 
   interface HTMLCrdsSubscribeElement extends Components.CrdsSubscribe, HTMLStencilElement {}
@@ -162,21 +174,11 @@ declare global {
     prototype: HTMLSharedHeaderElement;
     new (): HTMLSharedHeaderElement;
   };
-
-  interface HTMLSnailTrailElement extends Components.SnailTrail, HTMLStencilElement {}
-  var HTMLSnailTrailElement: {
-    prototype: HTMLSnailTrailElement;
-    new (): HTMLSnailTrailElement;
-  };
-
-  interface HTMLSnailTrailLinkElement extends Components.SnailTrailLink, HTMLStencilElement {}
-  var HTMLSnailTrailLinkElement: {
-    prototype: HTMLSnailTrailLinkElement;
-    new (): HTMLSnailTrailLinkElement;
-  };
   interface HTMLElementTagNameMap {
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
+    'crds-snail-trail': HTMLCrdsSnailTrailElement;
+    'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
@@ -186,8 +188,6 @@ declare global {
     'profile-nav': HTMLProfileNavElement;
     'shared-footer': HTMLSharedFooterElement;
     'shared-header': HTMLSharedHeaderElement;
-    'snail-trail': HTMLSnailTrailElement;
-    'snail-trail-link': HTMLSnailTrailLinkElement;
   }
 }
 
@@ -214,6 +214,16 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
     'onClose'?: Function;
     'title'?: string;
+  }
+  interface CrdsSnailTrail extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailElement> {
+    'env'?: string;
+    'name'?: string;
+    'src'?: string;
+  }
+  interface CrdsSnailTrailLink extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailLinkElement> {
+    'automationId'?: string;
+    'href'?: string;
+    'isActive'?: boolean;
   }
   interface CrdsSubscribe extends JSXBase.HTMLAttributes<HTMLCrdsSubscribeElement> {
     'src'?: string;
@@ -265,20 +275,12 @@ declare namespace LocalJSX {
     'env'?: string;
     'src'?: string;
   }
-  interface SnailTrail extends JSXBase.HTMLAttributes<HTMLSnailTrailElement> {
-    'env'?: string;
-    'name'?: string;
-    'src'?: string;
-  }
-  interface SnailTrailLink extends JSXBase.HTMLAttributes<HTMLSnailTrailLinkElement> {
-    'automationId'?: string;
-    'href'?: string;
-    'isActive'?: boolean;
-  }
 
   interface IntrinsicElements {
     'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
+    'crds-snail-trail': CrdsSnailTrail;
+    'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
@@ -288,8 +290,6 @@ declare namespace LocalJSX {
     'profile-nav': ProfileNav;
     'shared-footer': SharedFooter;
     'shared-header': SharedHeader;
-    'snail-trail': SnailTrail;
-    'snail-trail-link': SnailTrailLink;
   }
 }
 

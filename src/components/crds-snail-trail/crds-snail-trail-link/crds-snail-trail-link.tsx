@@ -2,8 +2,8 @@ import { Component, Element, Prop, h } from '@stencil/core';
 import { parse } from 'url';
 
 @Component({
-  tag: 'snail-trail-link',
-  styleUrl: 'snail-trail-link.scss',
+  tag: 'crds-snail-trail-link',
+  styleUrl: 'crds-snail-trail-link.scss',
   shadow: true
 })
 export class SnailTrailLink {
@@ -28,8 +28,8 @@ export class SnailTrailLink {
   }
 
   clicked() {
-    let siblings = this.element.parentNode.parentElement.querySelectorAll('snail-trail-link');
-    siblings.forEach(el => (el.isActive = false));
+    let siblings = this.element.parentNode.parentElement.querySelectorAll('crds-snail-trail-link');
+    siblings.forEach(el => (el['isActive'] = false));
     this.isActive = true;
   }
 

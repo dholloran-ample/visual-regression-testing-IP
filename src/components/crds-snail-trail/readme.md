@@ -19,15 +19,15 @@
 ### Depends on
 
 - [crds-subscribe](../crds-subscribe)
-- [snail-trail-link](snail-trail-link)
+- [crds-snail-trail-link](crds-snail-trail-link)
 
 ### Graph
 ```mermaid
 graph TD;
-  snail-trail --> crds-subscribe
-  snail-trail --> snail-trail-link
+  crds-snail-trail --> crds-subscribe
+  crds-snail-trail --> crds-snail-trail-link
   crds-subscribe --> crds-modal
-  style snail-trail fill:#f9f,stroke:#333,stroke-width:4px
+  style crds-snail-trail fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
