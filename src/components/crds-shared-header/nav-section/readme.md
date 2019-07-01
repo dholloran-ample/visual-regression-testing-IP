@@ -10,21 +10,21 @@
 | Property        | Attribute        | Description | Type      | Default     |
 | --------------- | ---------------- | ----------- | --------- | ----------- |
 | `activeSection` | `active-section` |             | `any`     | `undefined` |
-| `id`            | `id`             |             | `string`  | `undefined` |
 | `isActive`      | `is-active`      |             | `boolean` | `false`     |
 | `onActivate`    | `on-activate`    |             | `any`     | `undefined` |
+| `slug`          | `slug`           |             | `string`  | `undefined` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [shared-header](..)
+ - [crds-shared-header](..)
 
 ### Graph
 ```mermaid
 graph TD;
-  shared-header --> nav-section
+  crds-shared-header --> nav-section
   style nav-section fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

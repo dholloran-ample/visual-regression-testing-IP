@@ -25,13 +25,13 @@
 ### Graph
 ```mermaid
 graph TD;
-  shared-header --> nav-section
-  shared-header --> nav-section-subnav
-  shared-header --> global-nav
-  shared-header --> nav-ctas
+  crds-shared-header --> nav-section
+  crds-shared-header --> nav-section-subnav
+  crds-shared-header --> global-nav
+  crds-shared-header --> nav-ctas
   global-nav --> profile-nav
   global-nav --> give-nav
-  style shared-header fill:#f9f,stroke:#333,stroke-width:4px
+  style crds-shared-header fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

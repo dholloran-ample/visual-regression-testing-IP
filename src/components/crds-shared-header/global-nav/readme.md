@@ -24,7 +24,7 @@
 
 ### Used by
 
- - [shared-header](..)
+ - [crds-shared-header](..)
 
 ### Depends on
 
@@ -36,7 +36,7 @@
 graph TD;
   global-nav --> profile-nav
   global-nav --> give-nav
-  shared-header --> global-nav
+  crds-shared-header --> global-nav
   style global-nav fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

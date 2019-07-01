@@ -36,6 +36,10 @@ export namespace Components {
     'env': string;
     'src': string;
   }
+  interface CrdsSharedHeader {
+    'env': string;
+    'src': string;
+  }
   interface CrdsSnailTrail {
     'env': string;
     'name': string;
@@ -72,14 +76,14 @@ export namespace Components {
   }
   interface NavSection {
     'activeSection': any;
-    'id': string;
     'isActive': boolean;
     'onActivate': any;
+    'slug': string;
   }
   interface NavSectionSubnav {
     'active': string;
-    'id': string;
     'onBack': Function;
+    'slug': string;
   }
   interface ProfileNav {
     'config': any;
@@ -87,10 +91,6 @@ export namespace Components {
     'data': JSON;
     'onSignOut': Function;
     'profileNavIsShowing': boolean;
-  }
-  interface SharedHeader {
-    'env': string;
-    'src': string;
   }
 }
 
@@ -113,6 +113,12 @@ declare global {
   var HTMLCrdsSharedFooterElement: {
     prototype: HTMLCrdsSharedFooterElement;
     new (): HTMLCrdsSharedFooterElement;
+  };
+
+  interface HTMLCrdsSharedHeaderElement extends Components.CrdsSharedHeader, HTMLStencilElement {}
+  var HTMLCrdsSharedHeaderElement: {
+    prototype: HTMLCrdsSharedHeaderElement;
+    new (): HTMLCrdsSharedHeaderElement;
   };
 
   interface HTMLCrdsSnailTrailElement extends Components.CrdsSnailTrail, HTMLStencilElement {}
@@ -168,16 +174,11 @@ declare global {
     prototype: HTMLProfileNavElement;
     new (): HTMLProfileNavElement;
   };
-
-  interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
-  var HTMLSharedHeaderElement: {
-    prototype: HTMLSharedHeaderElement;
-    new (): HTMLSharedHeaderElement;
-  };
   interface HTMLElementTagNameMap {
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
+    'crds-shared-header': HTMLCrdsSharedHeaderElement;
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
@@ -187,7 +188,6 @@ declare global {
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'profile-nav': HTMLProfileNavElement;
-    'shared-header': HTMLSharedHeaderElement;
   }
 }
 
@@ -216,6 +216,10 @@ declare namespace LocalJSX {
     'title'?: string;
   }
   interface CrdsSharedFooter extends JSXBase.HTMLAttributes<HTMLCrdsSharedFooterElement> {
+    'env'?: string;
+    'src'?: string;
+  }
+  interface CrdsSharedHeader extends JSXBase.HTMLAttributes<HTMLCrdsSharedHeaderElement> {
     'env'?: string;
     'src'?: string;
   }
@@ -255,14 +259,14 @@ declare namespace LocalJSX {
   }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'activeSection'?: any;
-    'id'?: string;
     'isActive'?: boolean;
     'onActivate'?: any;
+    'slug'?: string;
   }
   interface NavSectionSubnav extends JSXBase.HTMLAttributes<HTMLNavSectionSubnavElement> {
     'active'?: string;
-    'id'?: string;
     'onBack'?: Function;
+    'slug'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
     'config'?: any;
@@ -271,15 +275,12 @@ declare namespace LocalJSX {
     'onSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }
-  interface SharedHeader extends JSXBase.HTMLAttributes<HTMLSharedHeaderElement> {
-    'env'?: string;
-    'src'?: string;
-  }
 
   interface IntrinsicElements {
     'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
     'crds-shared-footer': CrdsSharedFooter;
+    'crds-shared-header': CrdsSharedHeader;
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
@@ -289,7 +290,6 @@ declare namespace LocalJSX {
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
     'profile-nav': ProfileNav;
-    'shared-header': SharedHeader;
   }
 }
 
