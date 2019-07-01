@@ -35,7 +35,7 @@ export class CrdsSubscribe {
           {this.title}
         </button>
         <crds-modal title={this.title} isActive={this.modalIsShowing} onClose={this.handleModalClose}>
-          <iframe ref={el => (this.frame = el)} src={this.src} class="subscribe-frame" />
+          <iframe ref={el => (this.frame = el)} src={this.src} class="subscribe-frame" frameborder="0" />
         </crds-modal>
       </Fragment>
     );
