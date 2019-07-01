@@ -9,8 +9,8 @@
 
 | Property | Attribute | Description | Type     | Default     |
 | -------- | --------- | ----------- | -------- | ----------- |
+| `label`  | `label`   |             | `string` | `undefined` |
 | `src`    | `src`     |             | `string` | `undefined` |
-| `title`  | `title`   |             | `string` | `undefined` |
 
 
 ## Dependencies

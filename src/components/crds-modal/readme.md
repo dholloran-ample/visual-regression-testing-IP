@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute   | Description | Type       | Default     |
-| ---------- | ----------- | ----------- | ---------- | ----------- |
-| `isActive` | `is-active` |             | `boolean`  | `false`     |
-| `onClose`  | --          |             | `Function` | `undefined` |
-| `title`    | `title`     |             | `string`   | `undefined` |
+| Property       | Attribute   | Description | Type       | Default     |
+| -------------- | ----------- | ----------- | ---------- | ----------- |
+| `isActive`     | `is-active` |             | `boolean`  | `false`     |
+| `label`        | `label`     |             | `string`   | `undefined` |
+| `onModalClose` | --          |             | `Function` | `undefined` |
 
 
 ## Dependencies
