@@ -1,9 +1,9 @@
 {
   "name": "crds-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Custom Elements for Crossroads Church",
   "module": "dist/index.mjs",
-  "main": "dist/index.js",
+  "main": "dist/crds-components.js",
   "repository": "git://github.com/crdschurch/crds-components",
   "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
