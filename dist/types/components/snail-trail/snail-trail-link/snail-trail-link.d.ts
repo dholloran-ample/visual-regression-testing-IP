@@ -1,4 +1,3 @@
-import '../../../stencil.core';
 export declare class SnailTrailLink {
     automationId: string;
     href: string;
@@ -7,5 +6,5 @@ export declare class SnailTrailLink {
     componentWillLoad(): void;
     stripTrailingSlash(str: any): any;
     clicked(): void;
-    render(): JSX.Element;
+    render(): any;
 }

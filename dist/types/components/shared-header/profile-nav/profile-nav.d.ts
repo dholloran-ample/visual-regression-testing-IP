@@ -1,4 +1,3 @@
-import '../../../stencil.core';
 export declare class ProfileMenu {
     config: any;
     currentUser: any;
@@ -7,8 +6,8 @@ export declare class ProfileMenu {
     data: JSON;
     envUrl(path: any): string;
     handleClick(event: any): void;
-    renderSections: (payload: any) => JSX.Element;
-    renderChild: (child: any, topLevel: any) => JSX.Element;
+    renderSections: (payload: any) => any;
+    renderChild: (child: any, topLevel: any) => any;
     renderChildHTML: (child: any, topLevel: any) => any;
-    render(): JSX.Element;
+    render(): any;
 }

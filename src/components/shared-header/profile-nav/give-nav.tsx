@@ -1,5 +1,4 @@
-import { Component, Prop, Listen } from '@stencil/core';
-import { Utils } from '../../../shared/utils';
+import { Component, Prop, Listen, h } from '@stencil/core';
 
 @Component({
   tag: 'give-nav',

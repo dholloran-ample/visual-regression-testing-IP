@@ -20,6 +20,26 @@
 | `profileNavIsShowing` | `profile-nav-is-showing` |             | `boolean`  | `false`     |
 
 
+## Dependencies
+
+### Used by
+
+ - [shared-header](..)
+
+### Depends on
+
+- [profile-nav](../profile-nav)
+- [give-nav](../profile-nav)
+
+### Graph
+```mermaid
+graph TD;
+  global-nav --> profile-nav
+  global-nav --> give-nav
+  shared-header --> global-nav
+  style global-nav fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

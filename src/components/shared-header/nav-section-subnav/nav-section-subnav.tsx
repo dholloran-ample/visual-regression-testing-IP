@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 
 @Component({
   tag: 'nav-section-subnav',
@@ -6,9 +6,9 @@ import { Component, Prop } from '@stencil/core';
   shadow: false
 })
 export class NavSectionSubnav {
-  @Prop({ mutable: true }) private active: string;
-  @Prop() private id: string;
-  @Prop() onBack: Function;
+  @Prop({ mutable: true }) public active: string;
+  @Prop() public id: string;
+  @Prop() public onBack: Function;
 
   render() {
     let chevronLeftLight =
@@ -16,7 +16,12 @@ export class NavSectionSubnav {
 
     return (
       <div class={this.active == this.id ? '' : ' hidden'}>
-        <a href="" data-automation-id={`sh-section-subnav-${this.id}`} class="back" onClick={event => this.onBack(event)}>
+        <a
+          href=""
+          data-automation-id={`sh-section-subnav-${this.id}`}
+          class="back"
+          onClick={event => this.onBack(event)}
+        >
           <span innerHTML={chevronLeftLight} />
           Back
         </a>

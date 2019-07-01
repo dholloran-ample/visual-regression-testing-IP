@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import iframeResizer from 'iframe-resizer';
 export class CrdsSubscribe {
@@ -22,18 +23,49 @@ export class CrdsSubscribe {
     }
     static get is() { return "crds-subscribe"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["crds-subscribe.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["crds-subscribe.css"]
+    }; }
     static get properties() { return {
-        "modalIsShowing": {
-            "state": true
+        "title": {
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "title",
+            "reflect": false
         },
         "src": {
-            "type": String,
-            "attr": "src"
-        },
-        "title": {
-            "type": String,
-            "attr": "title"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "src",
+            "reflect": false
         }
     }; }
-    static get style() { return "/**style-placeholder:crds-subscribe:**/"; }
+    static get states() { return {
+        "modalIsShowing": {}
+    }; }
 }

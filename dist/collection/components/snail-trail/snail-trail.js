@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import axios from 'axios';
 import Fragment from 'stencil-fragment';
 export class SnailTrail {
@@ -39,25 +40,68 @@ export class SnailTrail {
     }
     static get is() { return "snail-trail"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["snail-trail.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["snail-trail.css"]
+    }; }
     static get properties() { return {
-        "data": {
-            "state": true
-        },
-        "element": {
-            "elementRef": true
+        "src": {
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "src",
+            "reflect": false
         },
         "env": {
-            "type": String,
-            "attr": "env"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "env",
+            "reflect": false,
+            "defaultValue": "'prod'"
         },
         "name": {
-            "type": String,
-            "attr": "name"
-        },
-        "src": {
-            "type": String,
-            "attr": "src"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "name",
+            "reflect": false
         }
     }; }
-    static get style() { return "/**style-placeholder:snail-trail:**/"; }
+    static get states() { return {
+        "data": {}
+    }; }
+    static get elementRef() { return "element"; }
 }

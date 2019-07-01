@@ -1,4 +1,4 @@
-import { Component, Prop, Listen } from '@stencil/core';
+import { Component, Prop, Listen, h } from '@stencil/core';
 
 @Component({
   tag: 'profile-nav',

@@ -1,4 +1,3 @@
-import '../../stencil.core';
 export declare class CrdsModal {
     isActive: boolean;
     onClose: Function;
@@ -7,5 +6,5 @@ export declare class CrdsModal {
     componentDidUpdate(): void;
     handleInnerClick: (event: any) => void;
     closeModal: () => void;
-    render(): JSX.Element;
+    render(): any;
 }
