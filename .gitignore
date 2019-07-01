@@ -1,4 +1,3 @@
-dist/
 www/
 storybook-static/
 
@@ -26,3 +25,4 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 .envrc
+dist/

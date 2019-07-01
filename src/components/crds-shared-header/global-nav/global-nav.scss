@@ -1,0 +1,168 @@
+header {
+  background-color: $cr-cyan;
+  position: relative;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
+
+  @supports (position: sticky) {
+    position: sticky;
+  }
+
+  &.nav-is-showing {
+    position: fixed;
+  }
+
+  > div {
+    @include container();
+
+    padding: 0 $global-nav-padding;
+    position: relative;
+  }
+}
+
+.global-nav-items {
+  display: flex;
+  justify-content: space-between;
+}
+
+.global-actions,
+.user-actions {
+  display: flex;
+
+  a {
+    &:first-of-type {
+      margin-right: 18px;
+    }
+  }
+}
+
+.logo {
+  padding: 7px;
+
+  svg {
+    fill: $cr-white;
+    height: 29px;
+    width: 111px;
+  }
+}
+
+$icon-size: 22px;
+
+.account,
+.donate,
+.menu,
+.search {
+  height: $icon-size;
+  padding: 12px 0;
+  width: $icon-size;
+
+  svg {
+    height: $icon-size;
+    width: $icon-size;
+  }
+}
+
+.account {
+  .account-authenticated {
+    background-color: $cr-white;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $icon-size;
+    border: 1.5px solid $cr-white;
+    border-radius: 50%;
+    box-sizing: border-box;
+    height: $icon-size;
+    width: $icon-size;
+
+    @media (hover) {
+      &:hover {
+        filter: brightness(90%);
+      }
+    }
+  }
+}
+
+.close {
+  $size: 26px;
+
+  height: $size;
+  padding: 9px 0;
+  width: $size;
+
+  svg {
+    height: $size;
+    width: $size;
+  }
+}
+
+.account,
+.close,
+.donate,
+.menu,
+.search {
+  display: block;
+}
+
+.give-container,
+.menu-container,
+.profile-container,
+.search-container {
+  color: $cr-white;
+  display: flex;
+  text-decoration: none;
+
+  &::after {
+    @media (min-width: $screen-sm) {
+      align-self: center;
+      bottom: 2px;
+      content: attr(data-label);
+      display: inline-block;
+      font-size: 13px;
+      margin-left: 7px;
+      position: relative;
+      text-transform: capitalize;
+    }
+  }
+
+  svg {
+    fill: $cr-white;
+  }
+
+  @media (hover) {
+    &:hover {
+      color: darken($cr-white, 20);
+
+      svg {
+        fill: darken($cr-white, 20);
+      }
+    }
+  }
+}
+
+$has-close-button: (
+  menu-container: menu,
+  profile-container: account,
+  give-container: donate
+);
+
+@each $container, $icon in $has-close-button {
+  .#{$container} {
+    .close {
+      display: none;
+      margin-right: -4px;
+    }
+
+    &.nav-is-showing {
+      @media (min-width: $screen-md) {
+        .#{$icon} {
+          display: none;
+        }
+
+        .close {
+          display: block;
+        }
+      }
+    }
+  }
+}
