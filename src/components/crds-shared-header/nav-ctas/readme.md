@@ -18,12 +18,12 @@
 
 ### Used by
 
- - [shared-header](..)
+ - [crds-shared-header](..)
 
 ### Graph
 ```mermaid
 graph TD;
-  shared-header --> nav-ctas
+  crds-shared-header --> nav-ctas
   style nav-ctas fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

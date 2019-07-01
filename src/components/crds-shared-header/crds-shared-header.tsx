@@ -4,8 +4,8 @@ import axios from 'axios';
 import { Utils } from '../../shared/utils';
 
 @Component({
-  tag: 'shared-header',
-  styleUrl: 'shared-header.scss',
+  tag: 'crds-shared-header',
+  styleUrl: 'crds-shared-header.scss',
   shadow: true
 })
 export class SharedHeader {
@@ -52,7 +52,7 @@ export class SharedHeader {
     return payload.map(section => {
       const id = Utils.parameterize(section.title);
       return (
-        <nav-section id={id} onActivate={this.onClick.bind(this)} isActive={this.active == id}>
+        <nav-section slug={id} onActivate={this.onClick.bind(this)} isActive={this.active == id}>
           <h2>{section.title}</h2>
           <p>{section.description}</p>
         </nav-section>
@@ -79,7 +79,7 @@ export class SharedHeader {
         <nav-section-subnav
           onBack={this.handleBackClick.bind(this)}
           active={this.active}
-          id={Utils.parameterize(section.title)}
+          slug={Utils.parameterize(section.title)}
         >
           {this.renderChildren(section)}
         </nav-section-subnav>
@@ -172,7 +172,7 @@ export class SharedHeader {
     return classes.join(' ');
   }
 
-  @Listen('window:click')
+  @Listen('click', { target: 'window' })
   handleScroll(event) {
     if (this.mainNavIsShowing || this.giveNavIsShowing || this.profileNavIsShowing) {
       return document.body.setAttribute('style', 'overflow: scroll;'), this.closeMenus(event);

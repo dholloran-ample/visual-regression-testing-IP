@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/polymer';
 const stories = storiesOf('Header', module);
 stories
   // .addDecorator(withKnobs) //
-  .add('<shared-header />', () => {
+  .add('<crds-shared-header />', () => {
     // const id = text("id", "4D9pCED9eM0GOQCOKyY0mS");
-    return `<shared-header></shared-header>`;
+    return `<crds-shared-header></crds-shared-header>`;
   });

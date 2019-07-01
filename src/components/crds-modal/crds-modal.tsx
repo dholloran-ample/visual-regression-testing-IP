@@ -7,8 +7,8 @@ import { Component, Prop, Element, h } from '@stencil/core';
 })
 export class CrdsModal {
   @Prop({ mutable: true }) isActive: boolean = false;
-  @Prop() onClose: Function;
-  @Prop() title: string;
+  @Prop() onModalClose: Function;
+  @Prop() label: string;
 
   @Element() element: HTMLElement;
 
@@ -22,7 +22,7 @@ export class CrdsModal {
 
   closeModal = () => {
     this.isActive = false;
-    if (typeof this.onClose == 'function') this.onClose();
+    if (typeof this.onModalClose == 'function') this.onModalClose();
   };
 
   render() {
@@ -38,7 +38,7 @@ export class CrdsModal {
             <button type="button" class="modal-close" onClick={this.closeModal} />
           </div>
           <div class="modal-body">
-            {this.title && <h3 class="modal-title">{this.title}</h3>}
+            {this.label && <h3 class="modal-title">{this.label}</h3>}
             <slot />
           </div>
         </div>

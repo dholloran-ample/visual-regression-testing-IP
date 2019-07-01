@@ -3,8 +3,8 @@ import axios from 'axios';
 import Fragment from 'stencil-fragment';
 
 @Component({
-  tag: 'snail-trail',
-  styleUrl: 'snail-trail.scss',
+  tag: 'crds-snail-trail',
+  styleUrl: 'crds-snail-trail.scss',
   shadow: true
 })
 export class SnailTrail {
@@ -24,12 +24,12 @@ export class SnailTrail {
   }
 
   listItem(item) {
-    if (item.subscribe && item.src) return <crds-subscribe src={item.src} title={item.title} />;
+    if (item.subscribe && item.src) return <crds-subscribe src={item.src} label={item.title} />;
     if (!item.href) return <strong>{item.title}</strong>;
     return (
-      <snail-trail-link href={item.href} automationId={item['data-automation-id']}>
+      <crds-snail-trail-link href={item.href} automationId={item['data-automation-id']}>
         {item.title}
-      </snail-trail-link>
+      </crds-snail-trail-link>
     );
   }
 

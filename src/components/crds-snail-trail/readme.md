@@ -1,4 +1,4 @@
-# shared-header
+# snail-trail
 
 
 
@@ -10,6 +10,7 @@
 | Property | Attribute | Description | Type     | Default     |
 | -------- | --------- | ----------- | -------- | ----------- |
 | `env`    | `env`     |             | `string` | `'prod'`    |
+| `name`   | `name`    |             | `string` | `undefined` |
 | `src`    | `src`     |             | `string` | `undefined` |
 
 
@@ -17,21 +18,16 @@
 
 ### Depends on
 
-- [nav-section](nav-section)
-- [nav-section-subnav](nav-section-subnav)
-- [global-nav](global-nav)
-- [nav-ctas](nav-ctas)
+- [crds-subscribe](../crds-subscribe)
+- [crds-snail-trail-link](crds-snail-trail-link)
 
 ### Graph
 ```mermaid
 graph TD;
-  shared-header --> nav-section
-  shared-header --> nav-section-subnav
-  shared-header --> global-nav
-  shared-header --> nav-ctas
-  global-nav --> profile-nav
-  global-nav --> give-nav
-  style shared-header fill:#f9f,stroke:#333,stroke-width:4px
+  crds-snail-trail --> crds-subscribe
+  crds-snail-trail --> crds-snail-trail-link
+  crds-subscribe --> crds-modal
+  style crds-snail-trail fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

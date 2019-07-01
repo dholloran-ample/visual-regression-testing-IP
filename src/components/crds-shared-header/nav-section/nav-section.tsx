@@ -8,7 +8,7 @@ import { Config } from '../../../shared/config';
   shadow: false
 })
 export class NavigationSection {
-  @Prop() public id: string;
+  @Prop() public slug: string;
   @Prop({ mutable: true }) public activeSection: any;
   @Prop() public isActive: boolean = false;
   @Prop() public onActivate: any;
@@ -29,8 +29,8 @@ export class NavigationSection {
     return (
       <li>
         <a
-          onClick={e => this.onActivate(e, this.id)}
-          data-automation-id={`sh-section-${this.id}`}
+          onClick={e => this.onActivate(e, this.slug)}
+          data-automation-id={`sh-section-${this.slug}`}
           class={this.isActive ? 'is-active' : ''}
         >
           <slot />

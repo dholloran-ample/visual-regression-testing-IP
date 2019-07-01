@@ -18,13 +18,13 @@
 
 ### Used by
 
- - [snail-trail](..)
+ - [crds-snail-trail](..)
 
 ### Graph
 ```mermaid
 graph TD;
-  snail-trail --> snail-trail-link
-  style snail-trail-link fill:#f9f,stroke:#333,stroke-width:4px
+  crds-snail-trail --> crds-snail-trail-link
+  style crds-snail-trail-link fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

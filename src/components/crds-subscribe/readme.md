@@ -17,7 +17,7 @@
 
 ### Used by
 
- - [snail-trail](../snail-trail)
+ - [crds-snail-trail](../crds-snail-trail)
 
 ### Depends on
 
@@ -27,7 +27,7 @@
 ```mermaid
 graph TD;
   crds-subscribe --> crds-modal
-  snail-trail --> crds-subscribe
+  crds-snail-trail --> crds-subscribe
   style crds-subscribe fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
