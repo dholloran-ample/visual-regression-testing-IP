@@ -286,19 +286,19 @@ class Config {
      * Returns space_id
      */
     space_id() {
-        return Utils.getMeta('cfl:space_id') || "lkrmxse64d8p";
+        return Utils.getMeta('cfl:space_id') || "";
     }
     /**
      * Returns environment
      */
     env() {
-        return Utils.getMeta('cfl:env') || "master" || 'master';
+        return Utils.getMeta('cfl:env') || "" || 'master';
     }
     /**
      * Returns delivery token
      */
     token() {
-        return Utils.getMeta('cfl:token') || "0f27aa9ad58b87224832b8baab321fcceb407e2b8e18aa06ac238d3e6f8d088c";
+        return Utils.getMeta('cfl:token') || "";
     }
     /**
      * Returns service endpoint

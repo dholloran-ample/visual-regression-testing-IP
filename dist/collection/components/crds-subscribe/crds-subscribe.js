@@ -19,7 +19,7 @@ export class CrdsSubscribe {
             h("div", { class: "subscribe-script" }),
             h("button", { onClick: this.handleSubscribeClick, class: "subscribe-button" }, this.title),
             h("crds-modal", { title: this.title, isActive: this.modalIsShowing, onClose: this.handleModalClose },
-                h("iframe", { ref: el => (this.frame = el), src: this.src, class: "subscribe-frame" }))));
+                h("iframe", { ref: el => (this.frame = el), src: this.src, class: "subscribe-frame", frameborder: "0" }))));
     }
     static get is() { return "crds-subscribe"; }
     static get encapsulation() { return "shadow"; }

@@ -1,5 +1,5 @@
 import { r as registerInstance, h } from './chunk-a3f529aa.js';
-import { L as Logger, C as Config, a as axios, U as Utils } from './chunk-57927b09.js';
+import { L as Logger, C as Config, a as axios, U as Utils } from './chunk-71586518.js';
 var dist = function (target) {
     for (var _len = arguments.length, keys = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         keys[_key - 1] = arguments[_key];
@@ -162,7 +162,7 @@ var HeartButton = /** @class */ (function () {
      * Returns service endpoint
      */
     HeartButton.prototype.endpoint = function () {
-        return Utils.getMeta('crds:interactions-endpoint') || "https://8k97vbzbrk.execute-api.us-east-1.amazonaws.com/int";
+        return Utils.getMeta('crds:interactions-endpoint') || "";
     };
     /**
      * HTML

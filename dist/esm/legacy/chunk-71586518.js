@@ -275,19 +275,19 @@ var Config = /** @class */ (function () {
      * Returns space_id
      */
     Config.prototype.space_id = function () {
-        return Utils.getMeta('cfl:space_id') || "lkrmxse64d8p";
+        return Utils.getMeta('cfl:space_id') || "";
     };
     /**
      * Returns environment
      */
     Config.prototype.env = function () {
-        return Utils.getMeta('cfl:env') || "master" || 'master';
+        return Utils.getMeta('cfl:env') || "" || 'master';
     };
     /**
      * Returns delivery token
      */
     Config.prototype.token = function () {
-        return Utils.getMeta('cfl:token') || "0f27aa9ad58b87224832b8baab321fcceb407e2b8e18aa06ac238d3e6f8d088c";
+        return Utils.getMeta('cfl:token') || "";
     };
     /**
      * Returns service endpoint

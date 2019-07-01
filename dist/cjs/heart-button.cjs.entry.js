@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const __chunk_1 = require('./chunk-62346bcb.js');
-const __chunk_2 = require('./chunk-607655b3.js');
+const __chunk_2 = require('./chunk-aaefafaf.js');
 
 var dist = function (target) {
   for (var _len = arguments.length, keys = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -165,7 +165,7 @@ class HeartButton {
      * Returns service endpoint
      */
     endpoint() {
-        return __chunk_2.Utils.getMeta('crds:interactions-endpoint') || "https://8k97vbzbrk.execute-api.us-east-1.amazonaws.com/int";
+        return __chunk_2.Utils.getMeta('crds:interactions-endpoint') || "";
     }
     /**
      * HTML

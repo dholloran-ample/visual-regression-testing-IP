@@ -11,6 +11,9 @@ export class CrdsModal {
                 this.onClose();
         };
     }
+    componentDidUpdate() {
+        document.body.appendChild(this.element);
+    }
     render() {
         return (h("div", { class: `modal ${this.isActive ? 'is-active' : ''}`, id: "subscribeModalForm", tabindex: "-1", onClick: this.closeModal },
             h("div", { class: "modal-content", onClick: this.handleInnerClick },
@@ -84,4 +87,5 @@ export class CrdsModal {
             "reflect": false
         }
     }; }
+    static get elementRef() { return "element"; }
 }

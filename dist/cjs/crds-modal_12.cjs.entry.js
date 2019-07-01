@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const __chunk_1 = require('./chunk-62346bcb.js');
-const __chunk_2 = require('./chunk-607655b3.js');
+const __chunk_2 = require('./chunk-aaefafaf.js');
 
 class CrdsModal {
     constructor(hostRef) {
@@ -18,9 +18,13 @@ class CrdsModal {
                 this.onClose();
         };
     }
+    componentDidUpdate() {
+        document.body.appendChild(this.element);
+    }
     render() {
         return (__chunk_1.h("div", { class: `modal ${this.isActive ? 'is-active' : ''}`, id: "subscribeModalForm", tabindex: "-1", onClick: this.closeModal }, __chunk_1.h("div", { class: "modal-content", onClick: this.handleInnerClick }, __chunk_1.h("div", { class: "modal-header" }, __chunk_1.h("button", { type: "button", class: "modal-close", onClick: this.closeModal })), __chunk_1.h("div", { class: "modal-body" }, this.title && __chunk_1.h("h3", { class: "modal-title" }, this.title), __chunk_1.h("slot", null)))));
     }
+    get element() { return __chunk_1.getElement(this); }
     static get style() { return ".modal{background-color:rgba(0,0,0,.8);bottom:0;left:0;opacity:0;position:fixed;right:0;top:0;-webkit-transition:opacity .3s ease,visibility .3s ease;transition:opacity .3s ease,visibility .3s ease;visibility:hidden;will-change:opacity,visibility}.modal.is-active{opacity:1;visibility:visible;z-index:11}.modal.is-active .modal-content{-webkit-transform:translateY(0);transform:translateY(0)}.modal-content{background:#fff;font-size:16px;margin:45px auto;max-width:600px;position:relative;-webkit-transform:translateY(-50px);transform:translateY(-50px);-webkit-transition:-webkit-transform .35s ease;transition:-webkit-transform .35s ease;transition:transform .35s ease;transition:transform .35s ease,-webkit-transform .35s ease;will-change:transform}.modal-body{padding:40px}.modal-title{font-family:acumin-pro-extra-condensed,sans-serif!important;font-weight:500!important;font-size:36px!important;margin:0;text-transform:uppercase}\@media screen and (min-width:480px){.modal-title{font-size:52.2px!important}}input{background-image:none;-webkit-box-shadow:none;box-shadow:none}input[type=text]{background-color:#f4f4f4;border:1px solid #f4f4f4;border-radius:0;color:#4d4d4d;display:block;font-size:16px;line-height:1.5;padding:8px 10px;-webkit-transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;width:100%}input:focus{border-color:#8bceed;-webkit-box-shadow:inset 0 0 0 1px rgba(139,206,237,.5);box-shadow:inset 0 0 0 1px rgba(139,206,237,.5)}input[type=submit]{-webkit-appearance:button;-moz-appearance:button;appearance:button;background-color:#0095d9;border:1px solid #0095d9;border-radius:4px;color:#fff;cursor:pointer;font-size:16px;line-height:1;margin-top:24px;padding:14px 20px 16px}input[type=submit],label{display:inline-block;margin-bottom:5px}label{font-weight:700;max-width:100%}.modal-close{-webkit-appearance:none;-moz-appearance:none;appearance:none;background-color:hsla(0,0%,73.3%,.6);-o-border-image:none;border-image:none;border-radius:50%;border-style:none;color:#fff;cursor:pointer;height:25px;position:absolute;right:15px;top:15px;width:25px}.modal-close:after{font-family:acumin-pro,helvetica,arial,sans-serif!important;font-weight:300!important;bottom:3px;content:\"x\";display:inline-block;font-size:16px;position:relative}.modal-close:focus{outline:none}"; }
 }
 
@@ -2674,7 +2678,7 @@ class CrdsSubscribe {
         iframeResizer$2.iframeResizer({}, this.frame);
     }
     render() {
-        return (__chunk_1.h(Fragment, null, __chunk_1.h("div", { class: "subscribe-script" }), __chunk_1.h("button", { onClick: this.handleSubscribeClick, class: "subscribe-button" }, this.title), __chunk_1.h("crds-modal", { title: this.title, isActive: this.modalIsShowing, onClose: this.handleModalClose }, __chunk_1.h("iframe", { ref: el => (this.frame = el), src: this.src, class: "subscribe-frame" }))));
+        return (__chunk_1.h(Fragment, null, __chunk_1.h("div", { class: "subscribe-script" }), __chunk_1.h("button", { onClick: this.handleSubscribeClick, class: "subscribe-button" }, this.title), __chunk_1.h("crds-modal", { title: this.title, isActive: this.modalIsShowing, onClose: this.handleModalClose }, __chunk_1.h("iframe", { ref: el => (this.frame = el), src: this.src, class: "subscribe-frame", frameborder: "0" }))));
     }
     static get style() { return ".subscribe-button{background-color:transparent;border:0;color:#0095d9;cursor:pointer;display:inline-block;font:inherit;font-weight:600;line-height:normal;margin:0;padding:11px 15px}.subscribe-button:focus{border:0;outline:none}.subscribe-frame{border:none;height:100%;width:100%}"; }
 }
