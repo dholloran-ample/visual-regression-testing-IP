@@ -7,7 +7,12 @@ This project contains custom web components developed for Crossroads' Church. Se
 
 The following components are made available via this library. Please see the README file for each, for more information on usage, available props, etc.
 
-- [`<heart-button />`](https://github.com/crdschurch/crds-components/tree/master/src/components/heart-button)
+- [`<crds-heart-button />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-heart-button)
+- [`<crds-modal />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-modal)
+- [`<crds-shared-footer />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-shared-footer)
+- [`<crds-shared-header />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-shared-header)
+- [`<crds-snail-trail />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-snail-trail)
+- [`<crds-subscribe />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-subscribe)
 
 ## Environments
 
@@ -23,4 +28,3 @@ You need to export following variables when building or running the project...
 ## License
 
 This project is licensed under the [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).
-
