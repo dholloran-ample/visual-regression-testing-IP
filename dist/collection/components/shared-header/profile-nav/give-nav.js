@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 export class GiveMenu {
     constructor() {
         this.giveNavIsShowing = true;
@@ -30,19 +31,56 @@ export class GiveMenu {
     }
     static get is() { return "give-nav"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["profile-nav.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["profile-nav.css"]
+    }; }
     static get properties() { return {
-        "data": {
-            "type": "Any",
-            "attr": "data"
-        },
         "giveNavIsShowing": {
-            "type": Boolean,
-            "attr": "give-nav-is-showing"
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "give-nav-is-showing",
+            "reflect": false,
+            "defaultValue": "true"
+        },
+        "data": {
+            "type": "unknown",
+            "mutable": false,
+            "complexType": {
+                "original": "JSON",
+                "resolved": "JSON",
+                "references": {
+                    "JSON": {
+                        "location": "global"
+                    }
+                }
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            }
         }
     }; }
     static get listeners() { return [{
             "name": "click",
-            "method": "handleClick"
+            "method": "handleClick",
+            "target": undefined,
+            "capture": false,
+            "passive": false
         }]; }
-    static get style() { return "/**style-placeholder:give-nav:**/"; }
 }

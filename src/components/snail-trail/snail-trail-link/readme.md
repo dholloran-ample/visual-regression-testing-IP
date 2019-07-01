@@ -14,6 +14,19 @@
 | `isActive`     | `is-active`     |             | `boolean` | `undefined` |
 
 
+## Dependencies
+
+### Used by
+
+ - [snail-trail](..)
+
+### Graph
+```mermaid
+graph TD;
+  snail-trail --> snail-trail-link
+  style snail-trail-link fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

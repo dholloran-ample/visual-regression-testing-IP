@@ -1,7 +1,6 @@
-import '../../../stencil.core';
 export declare class NavSectionSubnav {
-    private active;
-    private id;
+    active: string;
+    id: string;
     onBack: Function;
-    render(): JSX.Element;
+    render(): any;
 }

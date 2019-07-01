@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 export class SharedFooter {
@@ -48,21 +49,51 @@ export class SharedFooter {
     }
     static get is() { return "shared-footer"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["shared-footer.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["shared-footer.css"]
+    }; }
     static get properties() { return {
-        "data": {
-            "state": true
-        },
-        "element": {
-            "elementRef": true
+        "src": {
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "src",
+            "reflect": false
         },
         "env": {
-            "type": String,
-            "attr": "env"
-        },
-        "src": {
-            "type": String,
-            "attr": "src"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "env",
+            "reflect": false,
+            "defaultValue": "'prod'"
         }
     }; }
-    static get style() { return "/**style-placeholder:shared-footer:**/"; }
+    static get states() { return {
+        "data": {}
+    }; }
+    static get elementRef() { return "element"; }
 }

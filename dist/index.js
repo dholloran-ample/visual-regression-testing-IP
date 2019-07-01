@@ -1,2 +1,1 @@
-// CrdsComponents: CommonJS Main
-module.exports = require('../esm/index.js');
+module.exports = require('./cjs/index.cjs.js');

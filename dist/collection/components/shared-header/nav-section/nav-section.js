@@ -1,8 +1,12 @@
+import { h } from '@stencil/core';
 import { Logger } from '../../../shared/logger';
 import { Config } from '../../../shared/config';
 export class NavigationSection {
     constructor() {
         this.isActive = false;
+        /**
+         * Print log messages?
+         */
         this.debug = true;
     }
     componentWillLoad() {
@@ -15,24 +19,81 @@ export class NavigationSection {
                 h("slot", null))));
     }
     static get is() { return "nav-section"; }
+    static get originalStyleUrls() { return {
+        "$": ["nav-section.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["nav-section.css"]
+    }; }
     static get properties() { return {
-        "activeSection": {
-            "type": "Any",
-            "attr": "active-section",
-            "mutable": true
-        },
         "id": {
-            "type": String,
-            "attr": "id"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "id",
+            "reflect": false
+        },
+        "activeSection": {
+            "type": "any",
+            "mutable": true,
+            "complexType": {
+                "original": "any",
+                "resolved": "any",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "active-section",
+            "reflect": false
         },
         "isActive": {
-            "type": Boolean,
-            "attr": "is-active"
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "is-active",
+            "reflect": false,
+            "defaultValue": "false"
         },
         "onActivate": {
-            "type": "Any",
-            "attr": "on-activate"
+            "type": "any",
+            "mutable": false,
+            "complexType": {
+                "original": "any",
+                "resolved": "any",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "on-activate",
+            "reflect": false
         }
     }; }
-    static get style() { return "/**style-placeholder:nav-section:**/"; }
 }

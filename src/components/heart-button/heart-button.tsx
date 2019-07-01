@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Prop, State, h } from '@stencil/core';
 import dig from 'object-dig';
 import axios from 'axios';
 import { Logger } from '../../shared/logger';
@@ -29,22 +29,22 @@ export class HeartButton {
   /**
    * Cache key for localStorage
    */
-  @Prop() private key: string = 'crds-hearts';
+  @Prop() public key: string = 'crds-hearts';
 
   /**
    * Unique identifier for likeable resource
    */
-  @Prop() private id: string;
+  @Prop() public id: string;
 
   /**
    * Total number of hearts
    */
-  @Prop({ mutable: true }) private count: number;
+  @Prop({ mutable: true }) public count: number;
 
   /**
    * Boolean indicating whether likeable resource has been liked
    */
-  @Prop({ mutable: true }) private isLiked: boolean;
+  @Prop({ mutable: true }) public isLiked: boolean;
 
   /**
    * Emphemeral array object for managing updates to localStorage

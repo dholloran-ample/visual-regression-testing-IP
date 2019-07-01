@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { Logger } from '../../../shared/logger';
 import { Config } from '../../../shared/config';
 
@@ -10,8 +10,8 @@ import { Config } from '../../../shared/config';
 export class NavigationSection {
   @Prop() public id: string;
   @Prop({ mutable: true }) public activeSection: any;
-  @Prop() isActive: boolean = false;
-  @Prop() private onActivate: any;
+  @Prop() public isActive: boolean = false;
+  @Prop() public onActivate: any;
 
   /**
    * Print log messages?
@@ -28,7 +28,11 @@ export class NavigationSection {
   render() {
     return (
       <li>
-        <a onClick={e => this.onActivate(e, this.id)} data-automation-id={`sh-section-${this.id}`} class={this.isActive ? 'is-active' : ''}>
+        <a
+          onClick={e => this.onActivate(e, this.id)}
+          data-automation-id={`sh-section-${this.id}`}
+          class={this.isActive ? 'is-active' : ''}
+        >
           <slot />
         </a>
       </li>

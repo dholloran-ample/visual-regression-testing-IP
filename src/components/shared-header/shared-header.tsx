@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State, Listen, PropDidChange } from '@stencil/core';
+import { Component, Element, Prop, State, Listen, h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';

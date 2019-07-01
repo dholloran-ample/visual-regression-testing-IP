@@ -1,4 +1,3 @@
-import '../../stencil.core';
 export declare class SnailTrail {
     src: string;
     env: string;
@@ -6,8 +5,8 @@ export declare class SnailTrail {
     data: any;
     element: HTMLElement;
     componentWillLoad(): void;
-    listItem(item: any): JSX.Element;
+    listItem(item: any): any;
     list(section: any): any;
     navSections(): any;
-    render(): JSX.Element;
+    render(): any;
 }

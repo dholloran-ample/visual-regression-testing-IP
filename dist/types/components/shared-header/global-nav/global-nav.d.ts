@@ -1,4 +1,3 @@
-import '../../../stencil.core';
 export declare class GlobalNav {
     config: Object;
     env: string;
@@ -21,5 +20,5 @@ export declare class GlobalNav {
     menuClasses(): string;
     profileClasses(): string;
     giveClasses(): string;
-    render(): JSX.Element;
+    render(): any;
 }

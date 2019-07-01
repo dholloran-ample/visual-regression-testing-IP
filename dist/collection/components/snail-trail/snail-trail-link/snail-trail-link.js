@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import { parse } from 'url';
 export class SnailTrailLink {
     constructor() {
@@ -33,23 +34,65 @@ export class SnailTrailLink {
     }
     static get is() { return "snail-trail-link"; }
     static get encapsulation() { return "shadow"; }
+    static get originalStyleUrls() { return {
+        "$": ["snail-trail-link.scss"]
+    }; }
+    static get styleUrls() { return {
+        "$": ["snail-trail-link.css"]
+    }; }
     static get properties() { return {
         "automationId": {
-            "type": String,
-            "attr": "automation-id"
-        },
-        "element": {
-            "elementRef": true
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "automation-id",
+            "reflect": false
         },
         "href": {
-            "type": String,
-            "attr": "href"
+            "type": "string",
+            "mutable": false,
+            "complexType": {
+                "original": "string",
+                "resolved": "string",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "href",
+            "reflect": false,
+            "defaultValue": "'#'"
         },
         "isActive": {
-            "type": Boolean,
-            "attr": "is-active",
-            "mutable": true
+            "type": "boolean",
+            "mutable": true,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "is-active",
+            "reflect": false
         }
     }; }
-    static get style() { return "/**style-placeholder:snail-trail-link:**/"; }
+    static get elementRef() { return "element"; }
 }

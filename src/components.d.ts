@@ -5,33 +5,34 @@
  */
 
 
-import '@stencil/core';
-
-
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-
   interface CrdsModal {
     'isActive': boolean;
     'onClose': Function;
     'title': string;
   }
-  interface CrdsModalAttributes extends StencilHTMLAttributes {
-    'isActive'?: boolean;
-    'onClose'?: Function;
-    'title'?: string;
-  }
-
   interface CrdsSubscribe {
     'src': string;
     'title': string;
   }
-  interface CrdsSubscribeAttributes extends StencilHTMLAttributes {
-    'src'?: string;
-    'title'?: string;
+  interface GiveNav {
+    'data': JSON;
+    'giveNavIsShowing': boolean;
   }
-
+  interface GlobalNav {
+    'config': Object;
+    'env': string;
+    'giveData': JSON;
+    'giveNavIsShowing': boolean;
+    'href': string;
+    'mainNavIsShowing': boolean;
+    'navClickHandler': Function;
+    'profileData': JSON;
+    'profileNavIsShowing': boolean;
+  }
   interface HeartButton {
     /**
     * Total number of hearts
@@ -50,7 +51,172 @@ export namespace Components {
     */
     'key': string;
   }
-  interface HeartButtonAttributes extends StencilHTMLAttributes {
+  interface NavCtas {
+    'active': string;
+    'data': string;
+    'href': string;
+  }
+  interface NavSection {
+    'activeSection': any;
+    'id': string;
+    'isActive': boolean;
+    'onActivate': any;
+  }
+  interface NavSectionSubnav {
+    'active': string;
+    'id': string;
+    'onBack': Function;
+  }
+  interface ProfileNav {
+    'config': any;
+    'currentUser': any;
+    'data': JSON;
+    'onSignOut': Function;
+    'profileNavIsShowing': boolean;
+  }
+  interface SharedFooter {
+    'env': string;
+    'src': string;
+  }
+  interface SharedHeader {
+    'env': string;
+    'src': string;
+  }
+  interface SnailTrail {
+    'env': string;
+    'name': string;
+    'src': string;
+  }
+  interface SnailTrailLink {
+    'automationId': string;
+    'href': string;
+    'isActive': boolean;
+  }
+}
+
+declare global {
+
+
+  interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
+  var HTMLCrdsModalElement: {
+    prototype: HTMLCrdsModalElement;
+    new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsSubscribeElement extends Components.CrdsSubscribe, HTMLStencilElement {}
+  var HTMLCrdsSubscribeElement: {
+    prototype: HTMLCrdsSubscribeElement;
+    new (): HTMLCrdsSubscribeElement;
+  };
+
+  interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
+  var HTMLGiveNavElement: {
+    prototype: HTMLGiveNavElement;
+    new (): HTMLGiveNavElement;
+  };
+
+  interface HTMLGlobalNavElement extends Components.GlobalNav, HTMLStencilElement {}
+  var HTMLGlobalNavElement: {
+    prototype: HTMLGlobalNavElement;
+    new (): HTMLGlobalNavElement;
+  };
+
+  interface HTMLHeartButtonElement extends Components.HeartButton, HTMLStencilElement {}
+  var HTMLHeartButtonElement: {
+    prototype: HTMLHeartButtonElement;
+    new (): HTMLHeartButtonElement;
+  };
+
+  interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
+  var HTMLNavCtasElement: {
+    prototype: HTMLNavCtasElement;
+    new (): HTMLNavCtasElement;
+  };
+
+  interface HTMLNavSectionElement extends Components.NavSection, HTMLStencilElement {}
+  var HTMLNavSectionElement: {
+    prototype: HTMLNavSectionElement;
+    new (): HTMLNavSectionElement;
+  };
+
+  interface HTMLNavSectionSubnavElement extends Components.NavSectionSubnav, HTMLStencilElement {}
+  var HTMLNavSectionSubnavElement: {
+    prototype: HTMLNavSectionSubnavElement;
+    new (): HTMLNavSectionSubnavElement;
+  };
+
+  interface HTMLProfileNavElement extends Components.ProfileNav, HTMLStencilElement {}
+  var HTMLProfileNavElement: {
+    prototype: HTMLProfileNavElement;
+    new (): HTMLProfileNavElement;
+  };
+
+  interface HTMLSharedFooterElement extends Components.SharedFooter, HTMLStencilElement {}
+  var HTMLSharedFooterElement: {
+    prototype: HTMLSharedFooterElement;
+    new (): HTMLSharedFooterElement;
+  };
+
+  interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
+  var HTMLSharedHeaderElement: {
+    prototype: HTMLSharedHeaderElement;
+    new (): HTMLSharedHeaderElement;
+  };
+
+  interface HTMLSnailTrailElement extends Components.SnailTrail, HTMLStencilElement {}
+  var HTMLSnailTrailElement: {
+    prototype: HTMLSnailTrailElement;
+    new (): HTMLSnailTrailElement;
+  };
+
+  interface HTMLSnailTrailLinkElement extends Components.SnailTrailLink, HTMLStencilElement {}
+  var HTMLSnailTrailLinkElement: {
+    prototype: HTMLSnailTrailLinkElement;
+    new (): HTMLSnailTrailLinkElement;
+  };
+  interface HTMLElementTagNameMap {
+    'crds-modal': HTMLCrdsModalElement;
+    'crds-subscribe': HTMLCrdsSubscribeElement;
+    'give-nav': HTMLGiveNavElement;
+    'global-nav': HTMLGlobalNavElement;
+    'heart-button': HTMLHeartButtonElement;
+    'nav-ctas': HTMLNavCtasElement;
+    'nav-section': HTMLNavSectionElement;
+    'nav-section-subnav': HTMLNavSectionSubnavElement;
+    'profile-nav': HTMLProfileNavElement;
+    'shared-footer': HTMLSharedFooterElement;
+    'shared-header': HTMLSharedHeaderElement;
+    'snail-trail': HTMLSnailTrailElement;
+    'snail-trail-link': HTMLSnailTrailLinkElement;
+  }
+}
+
+declare namespace LocalJSX {
+  interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
+    'isActive'?: boolean;
+    'onClose'?: Function;
+    'title'?: string;
+  }
+  interface CrdsSubscribe extends JSXBase.HTMLAttributes<HTMLCrdsSubscribeElement> {
+    'src'?: string;
+    'title'?: string;
+  }
+  interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
+    'data'?: JSON;
+    'giveNavIsShowing'?: boolean;
+  }
+  interface GlobalNav extends JSXBase.HTMLAttributes<HTMLGlobalNavElement> {
+    'config'?: Object;
+    'env'?: string;
+    'giveData'?: JSON;
+    'giveNavIsShowing'?: boolean;
+    'href'?: string;
+    'mainNavIsShowing'?: boolean;
+    'navClickHandler'?: Function;
+    'profileData'?: JSON;
+    'profileNavIsShowing'?: boolean;
+  }
+  interface HeartButton extends JSXBase.HTMLAttributes<HTMLHeartButtonElement> {
     /**
     * Total number of hearts
     */
@@ -68,281 +234,72 @@ export namespace Components {
     */
     'key'?: string;
   }
-
-  interface SharedFooter {
-    'env': string;
-    'src': string;
-  }
-  interface SharedFooterAttributes extends StencilHTMLAttributes {
-    'env'?: string;
-    'src'?: string;
-  }
-
-  interface GlobalNav {
-    'config': Object;
-    'env': string;
-    'giveData': JSON;
-    'giveNavIsShowing': boolean;
-    'href': string;
-    'mainNavIsShowing': boolean;
-    'navClickHandler': Function;
-    'profileData': JSON;
-    'profileNavIsShowing': boolean;
-  }
-  interface GlobalNavAttributes extends StencilHTMLAttributes {
-    'config'?: Object;
-    'env'?: string;
-    'giveData'?: JSON;
-    'giveNavIsShowing'?: boolean;
-    'href'?: string;
-    'mainNavIsShowing'?: boolean;
-    'navClickHandler'?: Function;
-    'profileData'?: JSON;
-    'profileNavIsShowing'?: boolean;
-  }
-
-  interface NavCtas {
-    'active': string;
-    'data': string;
-    'href': string;
-  }
-  interface NavCtasAttributes extends StencilHTMLAttributes {
+  interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'active'?: string;
     'data'?: string;
     'href'?: string;
   }
-
-  interface NavSectionSubnav {
-    'active': string;
-    'id': string;
-    'onBack': Function;
-  }
-  interface NavSectionSubnavAttributes extends StencilHTMLAttributes {
-    'active'?: string;
-    'id'?: string;
-    'onBack'?: Function;
-  }
-
-  interface NavSection {
-    'activeSection': any;
-    'id': string;
-    'isActive': boolean;
-    'onActivate': any;
-  }
-  interface NavSectionAttributes extends StencilHTMLAttributes {
+  interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'activeSection'?: any;
     'id'?: string;
     'isActive'?: boolean;
     'onActivate'?: any;
   }
-
-  interface GiveNav {
-    'data': JSON;
-    'giveNavIsShowing': boolean;
+  interface NavSectionSubnav extends JSXBase.HTMLAttributes<HTMLNavSectionSubnavElement> {
+    'active'?: string;
+    'id'?: string;
+    'onBack'?: Function;
   }
-  interface GiveNavAttributes extends StencilHTMLAttributes {
-    'data'?: JSON;
-    'giveNavIsShowing'?: boolean;
-  }
-
-  interface ProfileNav {
-    'config': any;
-    'currentUser': any;
-    'data': JSON;
-    'onSignOut': Function;
-    'profileNavIsShowing': boolean;
-  }
-  interface ProfileNavAttributes extends StencilHTMLAttributes {
+  interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
     'config'?: any;
     'currentUser'?: any;
     'data'?: JSON;
     'onSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }
-
-  interface SharedHeader {
-    'env': string;
-    'src': string;
-  }
-  interface SharedHeaderAttributes extends StencilHTMLAttributes {
+  interface SharedFooter extends JSXBase.HTMLAttributes<HTMLSharedFooterElement> {
     'env'?: string;
     'src'?: string;
   }
-
-  interface SnailTrailLink {
-    'automationId': string;
-    'href': string;
-    'isActive': boolean;
+  interface SharedHeader extends JSXBase.HTMLAttributes<HTMLSharedHeaderElement> {
+    'env'?: string;
+    'src'?: string;
   }
-  interface SnailTrailLinkAttributes extends StencilHTMLAttributes {
+  interface SnailTrail extends JSXBase.HTMLAttributes<HTMLSnailTrailElement> {
+    'env'?: string;
+    'name'?: string;
+    'src'?: string;
+  }
+  interface SnailTrailLink extends JSXBase.HTMLAttributes<HTMLSnailTrailLinkElement> {
     'automationId'?: string;
     'href'?: string;
     'isActive'?: boolean;
   }
 
-  interface SnailTrail {
-    'env': string;
-    'name': string;
-    'src': string;
-  }
-  interface SnailTrailAttributes extends StencilHTMLAttributes {
-    'env'?: string;
-    'name'?: string;
-    'src'?: string;
+  interface IntrinsicElements {
+    'crds-modal': CrdsModal;
+    'crds-subscribe': CrdsSubscribe;
+    'give-nav': GiveNav;
+    'global-nav': GlobalNav;
+    'heart-button': HeartButton;
+    'nav-ctas': NavCtas;
+    'nav-section': NavSection;
+    'nav-section-subnav': NavSectionSubnav;
+    'profile-nav': ProfileNav;
+    'shared-footer': SharedFooter;
+    'shared-header': SharedHeader;
+    'snail-trail': SnailTrail;
+    'snail-trail-link': SnailTrailLink;
   }
 }
 
-declare global {
-  interface StencilElementInterfaces {
-    'CrdsModal': Components.CrdsModal;
-    'CrdsSubscribe': Components.CrdsSubscribe;
-    'HeartButton': Components.HeartButton;
-    'SharedFooter': Components.SharedFooter;
-    'GlobalNav': Components.GlobalNav;
-    'NavCtas': Components.NavCtas;
-    'NavSectionSubnav': Components.NavSectionSubnav;
-    'NavSection': Components.NavSection;
-    'GiveNav': Components.GiveNav;
-    'ProfileNav': Components.ProfileNav;
-    'SharedHeader': Components.SharedHeader;
-    'SnailTrailLink': Components.SnailTrailLink;
-    'SnailTrail': Components.SnailTrail;
-  }
-
-  interface StencilIntrinsicElements {
-    'crds-modal': Components.CrdsModalAttributes;
-    'crds-subscribe': Components.CrdsSubscribeAttributes;
-    'heart-button': Components.HeartButtonAttributes;
-    'shared-footer': Components.SharedFooterAttributes;
-    'global-nav': Components.GlobalNavAttributes;
-    'nav-ctas': Components.NavCtasAttributes;
-    'nav-section-subnav': Components.NavSectionSubnavAttributes;
-    'nav-section': Components.NavSectionAttributes;
-    'give-nav': Components.GiveNavAttributes;
-    'profile-nav': Components.ProfileNavAttributes;
-    'shared-header': Components.SharedHeaderAttributes;
-    'snail-trail-link': Components.SnailTrailLinkAttributes;
-    'snail-trail': Components.SnailTrailAttributes;
-  }
+export { LocalJSX as JSX };
 
 
-  interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
-  var HTMLCrdsModalElement: {
-    prototype: HTMLCrdsModalElement;
-    new (): HTMLCrdsModalElement;
-  };
-
-  interface HTMLCrdsSubscribeElement extends Components.CrdsSubscribe, HTMLStencilElement {}
-  var HTMLCrdsSubscribeElement: {
-    prototype: HTMLCrdsSubscribeElement;
-    new (): HTMLCrdsSubscribeElement;
-  };
-
-  interface HTMLHeartButtonElement extends Components.HeartButton, HTMLStencilElement {}
-  var HTMLHeartButtonElement: {
-    prototype: HTMLHeartButtonElement;
-    new (): HTMLHeartButtonElement;
-  };
-
-  interface HTMLSharedFooterElement extends Components.SharedFooter, HTMLStencilElement {}
-  var HTMLSharedFooterElement: {
-    prototype: HTMLSharedFooterElement;
-    new (): HTMLSharedFooterElement;
-  };
-
-  interface HTMLGlobalNavElement extends Components.GlobalNav, HTMLStencilElement {}
-  var HTMLGlobalNavElement: {
-    prototype: HTMLGlobalNavElement;
-    new (): HTMLGlobalNavElement;
-  };
-
-  interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
-  var HTMLNavCtasElement: {
-    prototype: HTMLNavCtasElement;
-    new (): HTMLNavCtasElement;
-  };
-
-  interface HTMLNavSectionSubnavElement extends Components.NavSectionSubnav, HTMLStencilElement {}
-  var HTMLNavSectionSubnavElement: {
-    prototype: HTMLNavSectionSubnavElement;
-    new (): HTMLNavSectionSubnavElement;
-  };
-
-  interface HTMLNavSectionElement extends Components.NavSection, HTMLStencilElement {}
-  var HTMLNavSectionElement: {
-    prototype: HTMLNavSectionElement;
-    new (): HTMLNavSectionElement;
-  };
-
-  interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
-  var HTMLGiveNavElement: {
-    prototype: HTMLGiveNavElement;
-    new (): HTMLGiveNavElement;
-  };
-
-  interface HTMLProfileNavElement extends Components.ProfileNav, HTMLStencilElement {}
-  var HTMLProfileNavElement: {
-    prototype: HTMLProfileNavElement;
-    new (): HTMLProfileNavElement;
-  };
-
-  interface HTMLSharedHeaderElement extends Components.SharedHeader, HTMLStencilElement {}
-  var HTMLSharedHeaderElement: {
-    prototype: HTMLSharedHeaderElement;
-    new (): HTMLSharedHeaderElement;
-  };
-
-  interface HTMLSnailTrailLinkElement extends Components.SnailTrailLink, HTMLStencilElement {}
-  var HTMLSnailTrailLinkElement: {
-    prototype: HTMLSnailTrailLinkElement;
-    new (): HTMLSnailTrailLinkElement;
-  };
-
-  interface HTMLSnailTrailElement extends Components.SnailTrail, HTMLStencilElement {}
-  var HTMLSnailTrailElement: {
-    prototype: HTMLSnailTrailElement;
-    new (): HTMLSnailTrailElement;
-  };
-
-  interface HTMLElementTagNameMap {
-    'crds-modal': HTMLCrdsModalElement
-    'crds-subscribe': HTMLCrdsSubscribeElement
-    'heart-button': HTMLHeartButtonElement
-    'shared-footer': HTMLSharedFooterElement
-    'global-nav': HTMLGlobalNavElement
-    'nav-ctas': HTMLNavCtasElement
-    'nav-section-subnav': HTMLNavSectionSubnavElement
-    'nav-section': HTMLNavSectionElement
-    'give-nav': HTMLGiveNavElement
-    'profile-nav': HTMLProfileNavElement
-    'shared-header': HTMLSharedHeaderElement
-    'snail-trail-link': HTMLSnailTrailLinkElement
-    'snail-trail': HTMLSnailTrailElement
-  }
-
-  interface ElementTagNameMap {
-    'crds-modal': HTMLCrdsModalElement;
-    'crds-subscribe': HTMLCrdsSubscribeElement;
-    'heart-button': HTMLHeartButtonElement;
-    'shared-footer': HTMLSharedFooterElement;
-    'global-nav': HTMLGlobalNavElement;
-    'nav-ctas': HTMLNavCtasElement;
-    'nav-section-subnav': HTMLNavSectionSubnavElement;
-    'nav-section': HTMLNavSectionElement;
-    'give-nav': HTMLGiveNavElement;
-    'profile-nav': HTMLProfileNavElement;
-    'shared-header': HTMLSharedHeaderElement;
-    'snail-trail-link': HTMLSnailTrailLinkElement;
-    'snail-trail': HTMLSnailTrailElement;
-  }
-
-
+declare module "@stencil/core" {
   export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
   }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+

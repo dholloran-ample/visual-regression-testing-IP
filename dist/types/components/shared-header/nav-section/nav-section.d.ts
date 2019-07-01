@@ -1,9 +1,8 @@
-import '../../../stencil.core';
 export declare class NavigationSection {
     id: string;
     activeSection: any;
     isActive: boolean;
-    private onActivate;
+    onActivate: any;
     /**
      * Print log messages?
      */
@@ -11,5 +10,5 @@ export declare class NavigationSection {
     private console;
     private config;
     componentWillLoad(): void;
-    render(): JSX.Element;
+    render(): any;
 }

@@ -1,4 +1,3 @@
-import '../../stencil.core';
 export declare class SharedFooter {
     src: string;
     env: string;
@@ -9,5 +8,5 @@ export declare class SharedFooter {
     private renderElement;
     private renderGroups;
     private renderColumns;
-    render(): JSX.Element;
+    render(): any;
 }

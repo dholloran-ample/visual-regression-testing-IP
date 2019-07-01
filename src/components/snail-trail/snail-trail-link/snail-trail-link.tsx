@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Prop, h } from '@stencil/core';
 import { parse } from 'url';
 
 @Component({
