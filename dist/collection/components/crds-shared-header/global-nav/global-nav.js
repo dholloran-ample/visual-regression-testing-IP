@@ -9,7 +9,8 @@ export class GlobalNav {
         this.authenticated = false;
         this.auth = {};
         this.subdomainMap = {
-            prod: 'www'
+            prod: 'www',
+            production: 'www'
         };
     }
     initAuth() {
@@ -68,7 +69,7 @@ export class GlobalNav {
                                 h("div", { class: "close", innerHTML: close })),
                             h("a", { href: "/search", class: "search-container", "data-automation-id": "sh-search", "data-label": "search" },
                                 h("div", { class: "search", innerHTML: search }))),
-                        h("a", { href: this.env === 'prod' ? 'https://www.crossroads.net' : `https://${this.env}.crossroads.net`, "data-automation-id": "sh-logo", class: "logo", innerHTML: logo }),
+                        h("a", { href: `https://${this.subdomainMap[this.env] || this.env}.crossroads.net`, "data-automation-id": "sh-logo", class: "logo", innerHTML: logo }),
                         h("div", { class: "user-actions" },
                             h("a", { href: "", "data-automation-id": "sh-give", "data-label": "give", class: this.giveClasses(), onClick: event => this.navClickHandler(event, 'give-nav') },
                                 h("div", { class: "donate", innerHTML: give }),

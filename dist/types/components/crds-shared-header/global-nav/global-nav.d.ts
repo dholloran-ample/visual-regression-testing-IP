@@ -12,6 +12,7 @@ export declare class GlobalNav {
     auth: any;
     subdomainMap: {
         prod: string;
+        production: string;
     };
     initAuth(): void;
     authChangeCallback(): void;
