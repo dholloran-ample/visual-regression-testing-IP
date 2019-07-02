@@ -92,7 +92,7 @@ export class Auth {
     if (!this.authenticated) return null;
     const userId = this.getUserId();
     if (!userId) return null;
-    const subdomain = this.subdomainMap[this.config.env] || this.config.env;
+    const subdomain = Utils.getSubdomain(this.config.env);
     return `https://${subdomain}.crossroads.net/proxy/gateway/api/image/profile/${userId}`;
   }
 }
