@@ -34,4 +34,17 @@ export class Utils {
         .split(';')
         .shift();
   }
+
+  /**
+   * Returns the appropriate subdomain based on the env
+   * @param {String} env
+   */
+  static getSubdomain(env) {
+    const subdomainMap = {
+      development: 'int',
+      prod: 'www',
+      production: 'www'
+    };
+    return subdomainMap[env] || env;
+  }
 }
