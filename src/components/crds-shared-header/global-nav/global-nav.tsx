@@ -24,7 +24,8 @@ export class GlobalNav {
   auth: any = {};
 
   subdomainMap = {
-    prod: 'www'
+    prod: 'www',
+    production: 'www'
   };
 
   initAuth() {
@@ -106,7 +107,7 @@ export class GlobalNav {
               </div>
 
               <a
-                href={this.env === 'prod' ? 'https://www.crossroads.net' : `https://${this.env}.crossroads.net`}
+                href={`https://${this.subdomainMap[this.env] || this.env}.crossroads.net`}
                 data-automation-id="sh-logo"
                 class="logo"
                 innerHTML={logo}
