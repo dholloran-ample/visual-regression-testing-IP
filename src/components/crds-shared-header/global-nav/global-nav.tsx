@@ -2,6 +2,7 @@ import { Component, Prop, State, h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 
 import { Auth } from '../../../shared/auth';
+import { Utils } from '../../../shared/utils';
 
 @Component({
   tag: 'global-nav',
@@ -22,11 +23,6 @@ export class GlobalNav {
   @State() authenticated: boolean = false;
 
   auth: any = {};
-
-  subdomainMap = {
-    prod: 'www',
-    production: 'www'
-  };
 
   initAuth() {
     if (!this.config || this.auth.config) return;
@@ -107,7 +103,7 @@ export class GlobalNav {
               </div>
 
               <a
-                href={`https://${this.subdomainMap[this.env] || this.env}.crossroads.net`}
+                href={`https://${Utils.getSubdomain(this.env)}.crossroads.net`}
                 data-automation-id="sh-logo"
                 class="logo"
                 innerHTML={logo}
@@ -126,7 +122,7 @@ export class GlobalNav {
                 </a>
 
                 <a
-                  href={`https://${this.subdomainMap[this.env] || this.env}.crossroads.net/signin`}
+                  href={`https://${Utils.getSubdomain(this.env)}.crossroads.net/signin`}
                   class={this.profileClasses()}
                   onClick={event => this.handleProfileClick(event)}
                   data-automation-id="sh-profile"
