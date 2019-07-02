@@ -2,16 +2,16 @@
   "entries": [
     "components/crds-modal/crds-modal.js",
     "components/crds-shared-footer/crds-shared-footer.js",
-    "components/crds-shared-header/nav-section/nav-section.js",
-    "components/crds-shared-header/profile-nav/give-nav.js",
     "components/crds-shared-header/nav-ctas/nav-ctas.js",
     "components/crds-shared-header/nav-section-subnav/nav-section-subnav.js",
+    "components/crds-shared-header/nav-section/nav-section.js",
+    "components/crds-shared-header/profile-nav/give-nav.js",
     "components/crds-snail-trail/crds-snail-trail-link/crds-snail-trail-link.js",
     "components/crds-snail-trail/crds-snail-trail.js",
     "components/crds-subscribe/crds-subscribe.js",
+    "components/crds-heart-button/crds-heart-button.js",
     "components/crds-shared-header/crds-shared-header.js",
     "components/crds-shared-header/profile-nav/profile-nav.js",
-    "components/crds-heart-button/crds-heart-button.js",
     "components/crds-shared-header/global-nav/global-nav.js"
   ],
   "compiler": {
