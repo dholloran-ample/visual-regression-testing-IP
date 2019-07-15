@@ -1,70 +1,81 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
 
-    <!--
+  <!--
       <meta property="cfl:space_id" content="...">
       <meta property="cfl:env" content="master">
       <meta property="cfl:token" content="...">
       <meta property="crds:interactions-endpoint" content="...">
     -->
 
-    <title>Crossroads Component Library</title>
+  <title>Crossroads Component Library</title>
 
-    <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
+  <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
 
-    <script src=https://use.typekit.net/ccb3vpa.js></script>
-    <script>
-      try {
-        Typekit.load({ async: true });
-      } catch (e) {}
-    </script>
+  <script src=https://use.typekit.net/ccb3vpa.js> </script> <script>
+    try {
+      Typekit.load({ async: true });
+    } catch (e) { }
+  </script>
 
-    <script type="module" src="/build/crds-components.esm.js"></script>
-    <script nomodule src="/build/crds-components.js"></script>
-  </head>
-  <body>
+  <script type="module" src="/build/crds-components.esm.js"></script>
+  <script nomodule src="/build/crds-components.js"></script>
+</head>
 
-    <div class="shared-header-skeleton">
-      <crds-shared-header env="int"></crds-shared-header>
-    </div>
+<body>
 
-    <div class="snail-trail-skeleton">
-      <crds-snail-trail name="media" env="int"></crds-snail-trail>
-      <!-- <crds-snail-trail>
+  <div class="shared-header-skeleton">
+    <crds-shared-header env="int"></crds-shared-header>
+  </div>
+
+  <div class="snail-trail-skeleton">
+    <crds-snail-trail name="media" env="int"></crds-snail-trail>
+    <!-- <crds-snail-trail>
         <crds-snail-trail-link onclick="alert('zzz')">Click Me</crds-snail-trail-link>
         <crds-snail-trail-link href="/something">No Event</crds-snail-trail-link>
       </crds-snail-trail> -->
-    </div>
+  </div>
 
-    <div class="jumbotron jumbotron-xl" style="background-image: url('//crds-cms-uploads.imgix.net/content/images/streaming-anywhere-hero-off.jpg?auto=format,compress&amp;w=100&amp;fit=crop');">
-      <p class="small-heading text-uppercase">I am a small intro heading</p>
-      <h1 class="title">the main heading</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Repudiandae quos reiciendis vitae eum.
-      </p>
-      <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
-    </div>
+  <div class="jumbotron jumbotron-xl"
+    style="background-image: url('//crds-cms-uploads.imgix.net/content/images/streaming-anywhere-hero-off.jpg?auto=format,compress&amp;w=100&amp;fit=crop');">
+    <p class="small-heading text-uppercase">I am a small intro heading</p>
+    <h1 class="title">the main heading</h1>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eum.
+    </p>
+    <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
+  </div>
 
-    <div class="container soft-sides push-ends">
-      <p class="lead text-center push-bottom">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-        ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
-        tempor in cursus vel, consectetur ut lorem. Phasellus tristique mauris a
-        arcu malesuada lacinia. Praesent sodales ultrices tincidunt. Curabitur
-        sollicitudin varius turpis, ac cursus ex euismod quis. Curabitur a
-        lacinia nisi, ac molestie mi. Phasellus malesuada, risus non ornare
-        lacinia, nibh mi posuere lorem, vitae dignissim tellus nibh nec leo.
-      </p>
+  <div class="container soft-sides push-ends">
+    <p class="lead text-center push-bottom">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+      ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
+      tempor in cursus vel, consectetur ut lorem. Phasellus tristique mauris a
+      arcu malesuada lacinia. Praesent sodales ultrices tincidunt. Curabitur
+      sollicitudin varius turpis, ac cursus ex euismod quis. Curabitur a
+      lacinia nisi, ac molestie mi. Phasellus malesuada, risus non ornare
+      lacinia, nibh mi posuere lorem, vitae dignissim tellus nibh nec leo.
+    </p>
 
-      <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></heart-button>
-    </div>
+    <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></crds-heart-button>
+    <crds-site-happenings></crds-site-happenings>
+  </div>
 
-    <div class="shared-footer-skeleton">
-      <crds-shared-footer></crds-shared-footer>
-    </div>
-  </body>
+  <div class="shared-footer-skeleton">
+    <crds-shared-footer></crds-shared-footer>
+  </div>
+</body>
+<script>
+  // testing only
+  var cmp = document.querySelector('crds-site-happenings');
+  // var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2MzIxNzU5MSwibmJmIjoxNTYzMjE1NzkxLCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbImh0dHA6Ly93d3cudGhpbmttaW5pc3RyeS5jb20vZGF0YXBsYXRmb3JtL3Njb3Blcy9hbGwiLCJvZmZsaW5lX2FjY2VzcyIsIm9wZW5pZCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1NjMyMTU3OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.vsMqkbthEyeOTcFdac2bIlSkMGxhvrrrFHX3bHqAThf7XByK1Wnvwlm-_rwjCKBlnLZpA8uLfF0WT9jgixPOeqUKfsjMGhBxtKz2KMUhMEhILubwQVLS-Isv-mFoEYiJrhG99LxwREPte8Gct8WZbz4Guht87yXT_grduISW18dNUNZqoewG4gGLucUTUGg3RyPPmuDJnUrOejAQ_sAT1q69UTykUVYWVm5U34iItpNlN5PoTbtdJM7l-35jFo2aRKnSK6hM1T0DELYTTmOD4_flZzgih2-_lmgChQ5ZPbuwcHg66_AKxpdJtSAItswiLxLMOYy0V7Dj9jdCO_AIrQ';
+  // cmp.sessionToken = token;
+  var fakeUser = {site: "Florence"};
+  cmp.user = fakeUser;
+</script>
+
 </html>

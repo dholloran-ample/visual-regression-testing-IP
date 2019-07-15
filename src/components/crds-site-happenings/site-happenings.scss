@@ -1,0 +1,191 @@
+* {
+  box-sizing: border-box;
+}
+
+.relative {
+  position: relative;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.happenings-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .happenings-dropdown-select {
+    position: relative;
+    background: 0;
+    border: 0;
+    margin: 0;
+    color: $cr-cyan;
+    padding: 0.5rem;
+    font-size: 1.17em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  .my-site-label {
+    position: absolute;
+    width: 100%;
+    left: calc(100% + 0.625rem);
+    font-size: 0.875rem;
+    color: $cr-gray-light;
+  }
+
+  .dropdown-caret {
+    position: absolute;
+    top: 0.8rem;
+    right: 0;
+    font-size: 12px;
+    color: $cr-cyan;
+  }
+}
+
+.site-select-message {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 1;
+
+  .dropdown {
+    display: inline-block;
+    font-weight: 300;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 14px 16px 12px;
+    background: transparent;
+    border: solid 1px $cr-cyan;
+    color: $cr-cyan;
+  }
+}
+
+// crds-styles
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid #e7e7e7;
+}
+
+.font-family-base {
+  font-family: 'acumin-pro', helvetica, arial, sans-serif !important;
+  font-weight: 300 !important;
+}
+
+.text-gray-light {
+  color: #979797 !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flush {
+  margin: 0 !important;
+}
+
+.font-size-base {
+  font-size: 19px !important;
+}
+
+.flush-bottom {
+  margin-bottom: 0 !important;
+}
+
+.flush-top {
+  margin-top: 0 !important;
+}
+
+.push-bottom-half {
+  margin-bottom: 12px !important;
+}
+
+.card-deck--expanded-layout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  @media (min-width: $screen-sm) {
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+  }
+
+  .card {
+    cursor: auto;
+    -webkit-flex: 1 0 270px;
+    -ms-flex: 1 0 270px;
+    flex: 1 0 270px;
+    flex-basis: 270px;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+    position: relative;
+
+    @media (min-width: $screen-sm) {
+      max-width: 25%;
+    }
+
+    & a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-text {
+      font-size: .9375rem;
+      position: relative;
+    }
+
+    .card-block {
+      font-family: $base-font-face;
+      & .component-header {
+        line-height: .95;
+      }
+    }
+  }
+}
+
+.component-header {
+  font-family: $condensed-extra-font-face;
+  font-size: $font-size-h3; // 32px
+  font-weight: 500;
+  text-transform: uppercase;
+
+  @media screen and (min-width: $screen-xs) {
+    font-size: 2.125rem; // 34px
+  }
+}
