@@ -40,12 +40,7 @@ export namespace Components {
     'env': string;
     'src': string;
   }
-  interface CrdsSiteHappenings {
-    'happenings': any;
-    'sessionToken': string;
-    'sites': string[];
-    'user': any;
-  }
+  interface CrdsSiteHappenings {}
   interface CrdsSnailTrail {
     'env': string;
     'name': string;
@@ -236,12 +231,7 @@ declare namespace LocalJSX {
     'env'?: string;
     'src'?: string;
   }
-  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {
-    'happenings'?: any;
-    'sessionToken'?: string;
-    'sites'?: string[];
-    'user'?: any;
-  }
+  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {}
   interface CrdsSnailTrail extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailElement> {
     'env'?: string;
     'name'?: string;

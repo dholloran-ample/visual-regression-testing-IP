@@ -1,7 +1,10 @@
 import { Component, Prop, State, Element, h } from '@stencil/core';
 import axios from 'axios';
 import marked from 'marked';
+import { Auth } from '../../shared/auth';
 import { Utils } from '../../shared/utils';
+import { CrdsUser } from './site-happenings-interface';
+import { CrdsTokens } from '@crds_npm/crds-client-auth';
 
 @Component({
   tag: 'crds-site-happenings',
@@ -9,16 +12,48 @@ import { Utils } from '../../shared/utils';
   shadow: true
 })
 export class SiteHappenings {
-  @Prop() sites: string[];
-  @Prop() happenings: any;
-  @Prop() user: any;
-  @Prop() sessionToken: string;
+  sites: string[];
+  auth: any;
+  happenings: any;
+  user: CrdsUser = { name: '', site: '' };
+  config: Object = {
+    mp_access_token_cookie: 'intsessionId',
+    mp_refresh_token_cookie: 'intrefreshToken',
+    okta_client_id: '0oahgpg7elMxVJedi0h7',
+    okta_issuer: 'https://crossroads.oktapreview.com/oauth2/default'
+  };
+  env: string = process.env.ENV || 'int';
+
   @State() selectedSite: string;
+  @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
 
-  constructor() {
-    this.fetchContentfulData(),
-    this.fetchUserData()
+  async componentWillLoad() {
+    // this.authenticated = true;
+    // this.user = { ...this.user, site: 'Not site specific' };
+    // this.defaultToUserSite(this.user.site);
+    await this.fetchUserData(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2MzI5OTM1NCwibmJmIjoxNTYzMjk3NTU0LCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1NjMyMTU3OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.1VbvuxM59CU_1ZCaef6Db8FGBrGywjOCxCzEXazjgHS9OpqCYpyN05G0HIyEHG5rpteNwwVqjTgI9oyPJMuJoif0kw0CV59s8C4G6LQ2uFKNZM0fyzhdimZh9LsL2aqzMMFq2Ppv5e1tB_CMqw9KWibFRXDAAEAvnwYfG9Va0Ke6HnDyOg4AJ-G-5-lUUb88P5dXXSVTRv_xhTD8TVJBMvPDh_kMZe7I_xTCq2E7a3cJKmAboXHbEefHS7JJZQuIvEsOUq0WiLARyrXsb8ZjOuNk2JXrpAJbNm5v0f3u1F-lVHU5EWM4K6WSZugwXiELrmpsHPE4APhANpBV0H1s4g'
+    );
+    // await this.initAuth();
+    await this.fetchContentfulData();
+  }
+
+  initAuth() {
+    this.auth = new Auth(Object.assign(this.config, { env: this.env }));
+    this.auth.listen(this.authChangeCallback.bind(this));
+    this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
+      if (tokens != null) {
+        this.fetchUserData(tokens.access_token);
+      } else {
+        this.selectedSite = 'Churchwide';
+        console.log('user is NOT logged in');
+      }
+    });
+  }
+
+  authChangeCallback() {
+    this.authenticated = this.auth.authenticated;
   }
 
   componentDidRender() {
@@ -31,8 +66,18 @@ export class SiteHappenings {
   }
 
   handleSetDefaultSite(event) {
-    this.user = { ...this.user, site: event.target.value };
-    this.selectedSite = this.user.site;
+    if (event.target.value !== 'Anywhere') {
+      this.user = { ...this.user, site: event.target.value };
+    } else {
+      this.user = { ...this.user, site: 'Not site specific' };
+      this.handleClose();
+    }
+
+    this.defaultToUserSite(this.user.site);
+  }
+
+  handleClose() {
+    this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
 
   setWidthBasedOnText(el, text) {
@@ -50,10 +95,67 @@ export class SiteHappenings {
 
   defaultToUserSite(site) {
     if (site == 'Not site specific' || site == 'I do not attend Crossroads') {
-      this.selectedSite = 'Churchwide'
+      this.selectedSite = 'Churchwide';
     } else {
-      this.selectedSite = site
+      this.selectedSite = site;
     }
+  }
+
+  fetchUserData(token) {
+    let apiUrl = process.env.CRDS_GQL_ENDPOINT;
+    return axios
+      .post(
+        apiUrl,
+        {
+          query: `
+          {
+            user {
+              site {
+                id
+                name
+              }
+            }
+          }`
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        let siteName = success.data.data.user.site.name;
+        this.user = { ...this.user, site: siteName };
+        this.defaultToUserSite(this.user.site);
+      });
+  }
+
+  async fetchContentfulData() {
+    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
+      process.env.CONTENTFUL_SPACE_ID
+    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+    return await axios
+      .get(apiUrl, {
+        params: {
+          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
+          query: `{
+            promoCollection {
+              items {
+                title
+                image {
+                  url
+                }
+                description
+                targetAudience
+                linkUrl
+              }
+            }
+          }`
+        }
+      })
+      .then(async success => {
+        await this.setContentfulData(success.data.data.promoCollection.items);
+      });
   }
 
   setContentfulData(data) {
@@ -74,85 +176,29 @@ export class SiteHappenings {
     this.sites = unique_audiences;
   }
 
-  fetchUserData() {
-    if (this.sessionToken !== undefined) {
-      console.log(this.sessionToken);
-      let apiUrl = process.env.CRDS_GQL_ENDPOINT;
-      return axios
-        .post(
-          apiUrl,
-          {
-            query: `
-          {
-            user {
-              site {
-                id
-                name
-              }
-            }
-          }`
-          },
-          {
-            headers: {
-              authorization: this.sessionToken
-            }
-          }
-        )
-        .then(success => {    
-          let siteName = success.data.data.user.site.name;
-          this.user = { ...this.user, site: siteName };
-          this.defaultToUserSite(this.user.site);
-        });
-    } else {
-      console.log('user passed in', this.user.site);
-      this.defaultToUserSite(this.user.site);
-    }
-  }
-
-  fetchContentfulData() {
-    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
-      process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
-    return axios
-      .get(apiUrl, {
-        params: {
-          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
-          query: `{
-            promoCollection {
-              items {
-                title
-                image {
-                  url
-                }
-                description
-                targetAudience
-                linkUrl
-              }
-            }
-          }`
-        }
-      })
-      .then(success => {
-        this.setContentfulData(success.data.data.promoCollection.items);
-      });
-  }
-
   render() {
     return (
       <div class="container push-top">
         <div class="relative">
-          {this.user.site == 'Not site specific' ? (
+          {this.authenticated && this.user.site == 'Not site specific' ? (
             <div class="site-select-message">
+              <button type="button" class="close" aria-label="Close" onClick={() => this.handleClose()}>
+                <svg xmlns="http://www.w3.org/2000/svg">
+                  <line x1="1" y1="10" x2="10" y2="1" stroke="#fff" strokeWidth="2" />
+                  <line x1="1" y1="1" x2="10" y2="10" stroke="#fff" strokeWidth="2" />
+                </svg>
+              </button>
               <div class="text-center">
                 <h2 class="component-header flush-bottom">Looks like you haven't selected a Crossroads site</h2>
-                <p class="flush-top">Let us know which site you attend and we will keep you</p>
+                <p class="flush-top">
+                  Let us know which site you attend and we will keep you up to date on everything going on.
+                </p>
                 <select class="dropdown" onInput={event => this.handleSetDefaultSite(event)}>
                   <option disabled selected>
                     Choose a site
                   </option>
-                  {this.sites.map(site => (
-                    <option value={site}>{site}</option>
-                  ))}
+                  {this.sites.map(site => (site !== 'Churchwide' ? <option value={site}>{site}</option> : ''))}
+                  <option value="Anywhere">Anywhere</option>
                 </select>
                 <p>
                   <small>*This will update the site field in your profile</small>
@@ -160,7 +206,7 @@ export class SiteHappenings {
               </div>
             </div>
           ) : (
-            ''
+            console.log('set site not shown')
           )}
           <hr class="push-bottom-half" />
           <div class="d-flex align-items-center push-bottom-half">
@@ -179,9 +225,7 @@ export class SiteHappenings {
                 ))}
               </select>
               <i class="dropdown-caret">▼</i>
-              {this.selectedSite === this.user.site 
-                ? <span class="my-site-label">(my site)</span> 
-                : ''}
+              {this.selectedSite === this.user.site ? <span class="my-site-label">(my site)</span> : ''}
             </div>
           </div>
 
