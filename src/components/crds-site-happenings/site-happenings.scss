@@ -14,6 +14,13 @@
   align-items: center;
 }
 
+.card-skeleton {
+  svg {
+    height: auto;
+    width: 100%;
+  }
+}
+
 .happenings-dropdown {
   position: relative;
   display: flex;
@@ -181,7 +188,8 @@ hr {
     flex-flow: row wrap;
   }
 
-  .card {
+  .card,
+  .card-skeleton {
     cursor: auto;
     -webkit-flex: 1 0 270px;
     -ms-flex: 1 0 270px;

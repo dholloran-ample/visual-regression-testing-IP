@@ -6,7 +6,9 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  CrdsHappening,
+} from './components/crds-site-happenings/site-happenings-interface';
 
 export namespace Components {
   interface CrdsHeartButton {
@@ -40,7 +42,9 @@ export namespace Components {
     'env': string;
     'src': string;
   }
-  interface CrdsSiteHappenings {}
+  interface CrdsSiteHappenings {
+    'happenings': CrdsHappening[];
+  }
   interface CrdsSnailTrail {
     'env': string;
     'name': string;
@@ -231,7 +235,9 @@ declare namespace LocalJSX {
     'env'?: string;
     'src'?: string;
   }
-  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {}
+  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {
+    'happenings'?: CrdsHappening[];
+  }
   interface CrdsSnailTrail extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailElement> {
     'env'?: string;
     'name'?: string;

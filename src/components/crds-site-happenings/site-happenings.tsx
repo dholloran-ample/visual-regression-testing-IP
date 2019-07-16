@@ -3,7 +3,7 @@ import axios from 'axios';
 import marked from 'marked';
 import { Auth } from '../../shared/auth';
 import { Utils } from '../../shared/utils';
-import { CrdsUser } from './site-happenings-interface';
+import { CrdsUser, CrdsHappening } from './site-happenings-interface';
 import { CrdsTokens } from '@crds_npm/crds-client-auth';
 
 @Component({
@@ -12,9 +12,8 @@ import { CrdsTokens } from '@crds_npm/crds-client-auth';
   shadow: true
 })
 export class SiteHappenings {
-  sites: string[];
+  sites: string[] = [];
   auth: any;
-  happenings: any;
   user: CrdsUser = { name: '', site: '' };
   config: Object = {
     mp_access_token_cookie: 'intsessionId',
@@ -24,7 +23,8 @@ export class SiteHappenings {
   };
   env: string = process.env.ENV || 'int';
 
-  @State() selectedSite: string;
+  @Prop() happenings: CrdsHappening[] = [];
+  @State() selectedSite: string = 'Churchwide';
   @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
 
@@ -32,27 +32,20 @@ export class SiteHappenings {
     // this.authenticated = true;
     // this.user = { ...this.user, site: 'Not site specific' };
     // this.defaultToUserSite(this.user.site);
-    // // await this.fetchUserData(
-    // //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2MzI5OTM1NCwibmJmIjoxNTYzMjk3NTU0LCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1NjMyMTU3OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.1VbvuxM59CU_1ZCaef6Db8FGBrGywjOCxCzEXazjgHS9OpqCYpyN05G0HIyEHG5rpteNwwVqjTgI9oyPJMuJoif0kw0CV59s8C4G6LQ2uFKNZM0fyzhdimZh9LsL2aqzMMFq2Ppv5e1tB_CMqw9KWibFRXDAAEAvnwYfG9Va0Ke6HnDyOg4AJ-G-5-lUUb88P5dXXSVTRv_xhTD8TVJBMvPDh_kMZe7I_xTCq2E7a3cJKmAboXHbEefHS7JJZQuIvEsOUq0WiLARyrXsb8ZjOuNk2JXrpAJbNm5v0f3u1F-lVHU5EWM4K6WSZugwXiELrmpsHPE4APhANpBV0H1s4g'
-    // // );
-    await this.initAuth();
-    await this.fetchContentfulData();
+    this.initAuth();
+    this.fetchContentfulData();
   }
 
   initAuth() {
     this.auth = new Auth(Object.assign(this.config, { env: this.env }));
-    this.auth.listen(this.authChangeCallback.bind(this));
     this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
       if (tokens != null) {
-        this.fetchUserData(tokens.access_token);
+        this.fetchUserData(tokens.access_token.access_token);
       } else {
+        console.log('not signed in');
         this.selectedSite = 'Churchwide';
       }
     });
-  }
-
-  authChangeCallback() {
-    this.authenticated = this.auth.authenticated;
   }
 
   componentDidRender() {
@@ -125,16 +118,17 @@ export class SiteHappenings {
       )
       .then(success => {
         let siteName = success.data.data.user.site.name;
+        this.authenticated = true;
         this.user = { ...this.user, site: siteName };
         this.defaultToUserSite(this.user.site);
       });
   }
 
-  async fetchContentfulData() {
+  fetchContentfulData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
     }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
-    return await axios
+    return axios
       .get(apiUrl, {
         params: {
           access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
@@ -153,14 +147,15 @@ export class SiteHappenings {
           }`
         }
       })
-      .then(async success => {
-        await this.setContentfulData(success.data.data.promoCollection.items);
+      .then(success => {
+        console.log(success);
+        this.setContentfulData(success.data.data.promoCollection.items);
       });
   }
 
   setContentfulData(data) {
     this.happenings = data.filter(promo => promo.targetAudience !== null);
-    // filter for unique sites
+    this.renderHappenings(this.happenings);
     let audiences = [];
     for (let i = 0; i < this.happenings.length; i += 1) {
       if (this.happenings[i].targetAudience) {
@@ -174,6 +169,56 @@ export class SiteHappenings {
       return self.indexOf(value) === index;
     });
     this.sites = unique_audiences;
+  }
+
+  renderHappenings(happenings) {
+    if (!happenings.length) return this.renderHappeningsSkeleton();
+    return happenings
+      .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
+      .map((obj, index) => (
+        <div class="card" key={index}>
+          <a class="relative" href={obj.linkUrl}>
+            <img
+              alt={obj.title}
+              class="img-responsive"
+              src={Utils.imgixify(obj.image.url) + `?auto=format&w=270&h=202&fit=crop`}
+            />
+          </a>
+          <div class="card-block hard soft-quarter-top">
+            <h3 class="component-header flush">
+              <a href={obj.linkUrl}>{obj.title}</a>
+            </h3>
+            <div class="card-text" innerHTML={marked(obj.description)} />
+          </div>
+        </div>
+      ));
+  }
+
+  renderHappeningsSkeleton() {
+    return [1, 2, 3].map(() => (
+      <div class="card-skeleton">
+        <svg
+          width="270px"
+          height="302px"
+          viewBox="0 0 323 302"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns-xlink="http://www.w3.org/1999/xlink"
+        >
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.5">
+            <g id="Short-skeleton-double" transform="translate(-30.000000, -30.000000)" fill="#979797">
+              <g transform="translate(30.000000, 30.000000)">
+                <rect id="bg-recent-1-copy" x="0" y="0" width="323" height="182" rx="1" />
+                <rect id="Rectangle" x="0" y="196" width="94" height="9" rx="1" />
+                <rect id="Rectangle" x="0" y="293" width="72" height="9" rx="1" />
+                <rect id="Rectangle" x="0" y="219" width="275" height="25" rx="1" />
+                <rect id="Rectangle" x="0" y="254" width="145" height="25" rx="1" />
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    ));
   }
 
   render() {
@@ -229,30 +274,7 @@ export class SiteHappenings {
               {this.selectedSite === this.user.site ? <span class="my-site-label">(my site)</span> : ''}
             </div>
           </div>
-
-          <div class="card-deck--expanded-layout">
-            {this.happenings.map((obj, index) =>
-              obj.targetAudience.includes(this.selectedSite) ? (
-                <div class="card" key={index}>
-                  <a class="relative" href={obj.linkUrl}>
-                    <img
-                      alt={obj.title}
-                      class="img-responsive"
-                      src={Utils.imgixify(obj.image.url) + `?auto=format&w=270&h=202&fit=crop`}
-                    />
-                  </a>
-                  <div class="card-block hard soft-quarter-top">
-                    <h3 class="component-header flush">
-                      <a href={obj.linkUrl}>{obj.title}</a>
-                    </h3>
-                    <div class="card-text" innerHTML={marked(obj.description)} />
-                  </div>
-                </div>
-              ) : (
-                ''
-              )
-            )}
-          </div>
+          <div class="card-deck--expanded-layout">{this.renderHappenings(this.happenings)}</div>
         </div>
       </div>
     );
