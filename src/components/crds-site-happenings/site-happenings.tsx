@@ -32,10 +32,10 @@ export class SiteHappenings {
     // this.authenticated = true;
     // this.user = { ...this.user, site: 'Not site specific' };
     // this.defaultToUserSite(this.user.site);
-    await this.fetchUserData(
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2MzI5OTM1NCwibmJmIjoxNTYzMjk3NTU0LCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1NjMyMTU3OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.1VbvuxM59CU_1ZCaef6Db8FGBrGywjOCxCzEXazjgHS9OpqCYpyN05G0HIyEHG5rpteNwwVqjTgI9oyPJMuJoif0kw0CV59s8C4G6LQ2uFKNZM0fyzhdimZh9LsL2aqzMMFq2Ppv5e1tB_CMqw9KWibFRXDAAEAvnwYfG9Va0Ke6HnDyOg4AJ-G-5-lUUb88P5dXXSVTRv_xhTD8TVJBMvPDh_kMZe7I_xTCq2E7a3cJKmAboXHbEefHS7JJZQuIvEsOUq0WiLARyrXsb8ZjOuNk2JXrpAJbNm5v0f3u1F-lVHU5EWM4K6WSZugwXiELrmpsHPE4APhANpBV0H1s4g'
-    );
-    // await this.initAuth();
+    // // await this.fetchUserData(
+    // //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2MzI5OTM1NCwibmJmIjoxNTYzMjk3NTU0LCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1NjMyMTU3OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.1VbvuxM59CU_1ZCaef6Db8FGBrGywjOCxCzEXazjgHS9OpqCYpyN05G0HIyEHG5rpteNwwVqjTgI9oyPJMuJoif0kw0CV59s8C4G6LQ2uFKNZM0fyzhdimZh9LsL2aqzMMFq2Ppv5e1tB_CMqw9KWibFRXDAAEAvnwYfG9Va0Ke6HnDyOg4AJ-G-5-lUUb88P5dXXSVTRv_xhTD8TVJBMvPDh_kMZe7I_xTCq2E7a3cJKmAboXHbEefHS7JJZQuIvEsOUq0WiLARyrXsb8ZjOuNk2JXrpAJbNm5v0f3u1F-lVHU5EWM4K6WSZugwXiELrmpsHPE4APhANpBV0H1s4g'
+    // // );
+    await this.initAuth();
     await this.fetchContentfulData();
   }
 
@@ -47,7 +47,6 @@ export class SiteHappenings {
         this.fetchUserData(tokens.access_token);
       } else {
         this.selectedSite = 'Churchwide';
-        console.log('user is NOT logged in');
       }
     });
   }
@@ -66,14 +65,15 @@ export class SiteHappenings {
   }
 
   handleSetDefaultSite(event) {
-    if (event.target.value !== 'Anywhere') {
-      this.user = { ...this.user, site: event.target.value };
-    } else {
+    if (event.target.value == 'Anywhere') {
       this.user = { ...this.user, site: 'Not site specific' };
-      this.handleClose();
+    } else {
+      this.user = { ...this.user, site: event.target.value };
     }
 
     this.defaultToUserSite(this.user.site);
+    this.handleClose();
+    // call MP with updates
   }
 
   handleClose() {
@@ -199,6 +199,7 @@ export class SiteHappenings {
                   </option>
                   {this.sites.map(site => (site !== 'Churchwide' ? <option value={site}>{site}</option> : ''))}
                   <option value="Anywhere">Anywhere</option>
+                  <option value="I do not attend Crossroads">I do not attend Crossroads</option>
                 </select>
                 <p>
                   <small>*This will update the site field in your profile</small>
@@ -206,7 +207,7 @@ export class SiteHappenings {
               </div>
             </div>
           ) : (
-            console.log('set site not shown')
+            ''
           )}
           <hr class="push-bottom-half" />
           <div class="d-flex align-items-center push-bottom-half">
