@@ -14,3 +14,8 @@ export interface CrdsHappening {
 export interface CrdsImage {
   url: string;
 }
+
+export interface MpCongregation {
+  id: string;
+  name: string;
+}
