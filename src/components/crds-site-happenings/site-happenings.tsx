@@ -33,7 +33,7 @@ export class SiteHappenings {
 
   async componentWillLoad() {
     // this.authenticated = true;
-    // this.user = { ...this.user, site: 'Mason' };
+    // this.user = { ...this.user, site: 'Not site specific' };
     // this.defaultToUserSite(this.user.site);
     this.initAuth();
     this.fetchContentfulData();
@@ -225,7 +225,7 @@ export class SiteHappenings {
     let unique_audiences = audiences.filter((value, index, self) => {
       return self.indexOf(value) === index;
     });
-    this.sites = unique_audiences;
+    this.sites = unique_audiences.sort((a, b) => (a > b ? 1 : b > a ? -1 : 0));
   }
 
   renderSetSiteOptions(mpSites) {
