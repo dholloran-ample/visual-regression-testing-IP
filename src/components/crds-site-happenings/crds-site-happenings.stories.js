@@ -5,7 +5,7 @@ const stories = storiesOf('Personalization', module);
 stories
   .addDecorator(withKnobs)
   .add('<crds-site-happenings />', () => {
-    const t = text('token', '');
+    const t = text('sessionId', '');
     document.cookie = `intsessionId=${t}`;
     return `<crds-site-happenings></crds-site-happenings>`;
   });
