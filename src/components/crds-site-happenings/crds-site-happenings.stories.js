@@ -5,6 +5,7 @@ const stories = storiesOf('Personalization', module);
 stories
   .addDecorator(withKnobs)
   .add('<crds-site-happenings />', () => {
-    const t = text('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2MzIxNzU5MSwibmJmIjoxNTYzMjE1NzkxLCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbImh0dHA6Ly93d3cudGhpbmttaW5pc3RyeS5jb20vZGF0YXBsYXRmb3JtL3Njb3Blcy9hbGwiLCJvZmZsaW5lX2FjY2VzcyIsIm9wZW5pZCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1NjMyMTU3OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.vsMqkbthEyeOTcFdac2bIlSkMGxhvrrrFHX3bHqAThf7XByK1Wnvwlm-_rwjCKBlnLZpA8uLfF0WT9jgixPOeqUKfsjMGhBxtKz2KMUhMEhILubwQVLS-Isv-mFoEYiJrhG99LxwREPte8Gct8WZbz4Guht87yXT_grduISW18dNUNZqoewG4gGLucUTUGg3RyPPmuDJnUrOejAQ_sAT1q69UTykUVYWVm5U34iItpNlN5PoTbtdJM7l-35jFo2aRKnSK6hM1T0DELYTTmOD4_flZzgih2-_lmgChQ5ZPbuwcHg66_AKxpdJtSAItswiLxLMOYy0V7Dj9jdCO_AIrQ');
-    return `<crds-site-happenings sessionToken=${t}></crds-site-happenings>`;
+    const t = text('token', '');
+    document.cookie = `intsessionId=${t}`;
+    return `<crds-site-happenings></crds-site-happenings>`;
   });
