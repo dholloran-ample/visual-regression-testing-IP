@@ -3,7 +3,7 @@ import axios from 'axios';
 import marked from 'marked';
 import { Auth } from '../../shared/auth';
 import { Utils } from '../../shared/utils';
-import { CrdsUser, CrdsHappening } from './site-happenings-interface';
+import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-interface';
 import { CrdsTokens } from '@crds_npm/crds-client-auth';
 
 @Component({
@@ -12,6 +12,7 @@ import { CrdsTokens } from '@crds_npm/crds-client-auth';
   shadow: true
 })
 export class SiteHappenings {
+  gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   sites: string[] = [];
   auth: any;
   user: CrdsUser = { name: '', site: '' };
@@ -23,14 +24,16 @@ export class SiteHappenings {
   };
   env: string = process.env.ENV || 'int';
 
+  @Prop() mpSites: MpCongregation[] = [];
   @Prop() happenings: CrdsHappening[] = [];
   @State() selectedSite: string = 'Churchwide';
+  @State() selectedSiteId: string = '';
   @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
 
   async componentWillLoad() {
     // this.authenticated = true;
-    // this.user = { ...this.user, site: 'Not site specific' };
+    // this.user = { ...this.user, site: 'Mason' };
     // this.defaultToUserSite(this.user.site);
     this.initAuth();
     this.fetchContentfulData();
@@ -40,6 +43,7 @@ export class SiteHappenings {
     this.auth = new Auth(Object.assign(this.config, { env: this.env }));
     this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
       if (tokens != null) {
+        this.fetchSitesData(tokens.access_token.access_token);
         this.fetchUserData(tokens.access_token.access_token);
       } else {
         console.log('not signed in');
@@ -58,15 +62,17 @@ export class SiteHappenings {
   }
 
   handleSetDefaultSite(event) {
-    if (event.target.value == 'Anywhere') {
-      this.user = { ...this.user, site: 'Not site specific' };
-    } else {
-      this.user = { ...this.user, site: event.target.value };
-    }
-
+    this.selectedSiteId = event.target.value;
+    this.selectedSite = event.target.options[event.target.selectedIndex].text;
+    this.user = { ...this.user, site: this.selectedSite };
     this.defaultToUserSite(this.user.site);
     this.handleClose();
     // call MP with updates
+    this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
+      if (tokens != null) {
+        this.setSiteData(tokens.access_token.access_token);
+      }
+    });
   }
 
   handleClose() {
@@ -87,7 +93,7 @@ export class SiteHappenings {
   }
 
   defaultToUserSite(site) {
-    if (site == 'Not site specific' || site == 'I do not attend Crossroads') {
+    if (site == 'Not site specific' || site == 'I do not attend Crossroads' || site == 'Anywhere') {
       this.selectedSite = 'Churchwide';
     } else {
       this.selectedSite = site;
@@ -95,10 +101,9 @@ export class SiteHappenings {
   }
 
   fetchUserData(token) {
-    let apiUrl = process.env.CRDS_GQL_ENDPOINT;
     return axios
       .post(
-        apiUrl,
+        this.gqlUrl,
         {
           query: `
           {
@@ -121,6 +126,59 @@ export class SiteHappenings {
         this.authenticated = true;
         this.user = { ...this.user, site: siteName };
         this.defaultToUserSite(this.user.site);
+      });
+  }
+
+  fetchSitesData(token) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+          {
+            sites {
+              id
+              name
+            }
+          }
+          `
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        this.mpSites = success.data.data.sites;
+        this.renderSetSiteOptions(this.mpSites);
+      })
+      .catch(err => console.log(err));
+  }
+
+  setSiteData(token) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          mutation: `
+        {
+          setSite(siteId: ${Number(this.selectedSiteId)}) {
+            site {
+              id
+              name
+          }
+        }
+        `
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        console.log('setting mp data', success);
       });
   }
 
@@ -148,7 +206,6 @@ export class SiteHappenings {
         }
       })
       .then(success => {
-        console.log(success);
         this.setContentfulData(success.data.data.promoCollection.items);
       });
   }
@@ -171,6 +228,17 @@ export class SiteHappenings {
     this.sites = unique_audiences;
   }
 
+  renderSetSiteOptions(mpSites) {
+    return mpSites
+      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+      .filter(site => site.name !== 'Not site specific' && site.name !== 'Xroads Church')
+      .map(site => (
+        <option value={site.id} data-name={site.name}>
+          {site.name}
+        </option>
+      ));
+  }
+
   renderHappenings(happenings) {
     if (!happenings.length) return this.renderHappeningsSkeleton();
     return happenings
@@ -181,13 +249,13 @@ export class SiteHappenings {
             <img
               alt={obj.title}
               class="img-responsive"
-              src={Utils.imgixify(obj.image.url) + `?auto=format&w=270&h=202&fit=crop`}
+              src={Utils.imgixify(obj.image.url) + `?auto=format&w=400&h=300&fit=crop`}
             />
           </a>
-          <div class="card-block hard soft-quarter-top">
-            <h3 class="component-header flush">
+          <div class="card-block">
+            <h4 class="card-title card-title--overlap text-uppercase">
               <a href={obj.linkUrl}>{obj.title}</a>
-            </h3>
+            </h4>
             <div class="card-text" innerHTML={marked(obj.description)} />
           </div>
         </div>
@@ -195,7 +263,7 @@ export class SiteHappenings {
   }
 
   renderHappeningsSkeleton() {
-    return [1, 2, 3].map(() => (
+    return [1, 2, 3, 4].map(() => (
       <div class="card-skeleton">
         <svg
           width="270px"
@@ -234,7 +302,7 @@ export class SiteHappenings {
                 </svg>
               </button>
               <div class="text-center">
-                <h2 class="component-header flush-bottom">Looks like you haven't selected a Crossroads site</h2>
+                <h2 class="component-header flush-bottom">Looks like you haven't set a Crossroads site</h2>
                 <p class="flush-top">
                   Let us know which site you attend and we will keep you up to date on everything going on.
                 </p>
@@ -242,9 +310,7 @@ export class SiteHappenings {
                   <option disabled selected>
                     Choose a site
                   </option>
-                  {this.sites.map(site => (site !== 'Churchwide' ? <option value={site}>{site}</option> : ''))}
-                  <option value="Anywhere">Anywhere</option>
-                  <option value="I do not attend Crossroads">I do not attend Crossroads</option>
+                  {this.renderSetSiteOptions(this.mpSites)}
                 </select>
                 <p>
                   <small>*This will update the site field in your profile</small>
@@ -257,7 +323,7 @@ export class SiteHappenings {
           <hr class="push-bottom-half" />
           <div class="d-flex align-items-center push-bottom-half">
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
-              happening at
+              happening at crossroads
             </h4>
             <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
               <select
@@ -270,11 +336,24 @@ export class SiteHappenings {
                   </option>
                 ))}
               </select>
-              <i class="dropdown-caret">▼</i>
+              <svg
+                class="dropdown-caret icon icon-1 pull-right push-left"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 237 152"
+              >
+                <path
+                  d="M200.731 135.586L92.136 244.182c-1.854 1.853-4.05 2.78-6.587 2.78s-4.731-.927-6.586-2.78l-24.295-24.295c-1.854-1.854-2.781-4.05-2.781-6.587s.927-4.732 2.78-6.586L132.385 129 54.669 51.285c-1.854-1.853-2.781-4.05-2.781-6.586 0-2.537.927-4.732 2.78-6.587l24.296-24.295c1.854-1.853 4.05-2.78 6.586-2.78 2.537 0 4.732.927 6.587 2.78L200.73 122.414c1.854 1.853 2.781 4.049 2.781 6.586s-.927 4.732-2.78 6.586z"
+                  transform="translate(-9 -53) rotate(90 127.7 129)"
+                />
+              </svg>
               {this.selectedSite === this.user.site ? <span class="my-site-label">(my site)</span> : ''}
             </div>
           </div>
-          <div class="card-deck--expanded-layout">{this.renderHappenings(this.happenings)}</div>
+          <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
+            <div id="section-what-s-happening" class="feature-cards card-deck--expanded-layout" data-automation-id="happenings-cards" data-crds-carousel="mobile-scroll">
+              {this.renderHappenings(this.happenings)}
+            </div>
+          </div>
         </div>
       </div>
     );
