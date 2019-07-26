@@ -12,6 +12,7 @@ import { CrdsTokens } from '@crds_npm/crds-client-auth';
   shadow: true
 })
 export class SiteHappenings {
+  analytics = window['analytics'] || {};
   gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   sites: string[] = [];
   auth: any;
@@ -31,12 +32,19 @@ export class SiteHappenings {
   @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
 
-  async componentWillLoad() {
+  componentWillLoad() {
     // this.authenticated = true;
     // this.user = { ...this.user, site: 'Not site specific' };
     // this.defaultToUserSite(this.user.site);
     this.initAuth();
+  }
+
+  componentDidLoad() {
     this.fetchContentfulData();
+  }
+
+  componentDidRender() {
+    this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
   }
 
   initAuth() {
@@ -46,14 +54,9 @@ export class SiteHappenings {
         this.fetchSitesData(tokens.access_token.access_token);
         this.fetchUserData(tokens.access_token.access_token);
       } else {
-        console.log('not signed in');
         this.selectedSite = 'Churchwide';
       }
     });
-  }
-
-  componentDidRender() {
-    this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
   }
 
   handleSiteSelection(event) {
@@ -71,6 +74,12 @@ export class SiteHappenings {
     this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
       if (tokens != null) {
         this.setSiteData(tokens.access_token.access_token);
+        
+        // track analytics call
+        this.analytics.track('Profile Site Updated', {
+          id: this.selectedSiteId,
+          name: this.selectedSite
+        });
       }
     });
   }
@@ -93,10 +102,7 @@ export class SiteHappenings {
   }
 
   defaultToUserSite(site) {
-    if (site == 'Not site specific' 
-        || site == 'I do not attend Crossroads' 
-        || site == 'Anywhere' 
-        || site == null) {
+    if (site == 'Not site specific' || site == 'I do not attend Crossroads' || site == 'Anywhere' || site == null) {
       this.selectedSite = 'Churchwide';
     } else {
       this.selectedSite = site;
@@ -127,7 +133,7 @@ export class SiteHappenings {
       .then(success => {
         let mpUser = success.data.data.user;
         let siteName;
-        mpUser.site !== null ? siteName = mpUser.site.name : siteName = null;
+        mpUser.site !== null ? (siteName = mpUser.site.name) : (siteName = null);
         this.authenticated = true;
         this.user = { ...this.user, site: siteName };
         this.defaultToUserSite(this.user.site);
@@ -299,7 +305,7 @@ export class SiteHappenings {
     return (
       <div class="container push-top">
         <div class="relative">
-          {this.authenticated && this.user.site == 'Not site specific' || this.user.site == null ? (
+          {(this.authenticated && this.user.site == 'Not site specific') || this.user.site == null ? (
             <div class="site-select-message">
               <button type="button" class="close" aria-label="Close" onClick={() => this.handleClose()}>
                 <svg xmlns="http://www.w3.org/2000/svg">
@@ -356,7 +362,12 @@ export class SiteHappenings {
             </div>
           </div>
           <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
-            <div id="section-what-s-happening" class="feature-cards card-deck--expanded-layout" data-automation-id="happenings-cards" data-crds-carousel="mobile-scroll">
+            <div
+              id="section-what-s-happening"
+              class="feature-cards card-deck--expanded-layout"
+              data-automation-id="happenings-cards"
+              data-crds-carousel="mobile-scroll"
+            >
               {this.renderHappenings(this.happenings)}
             </div>
           </div>
