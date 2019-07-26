@@ -74,9 +74,9 @@ export class SiteHappenings {
     this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
       if (tokens != null) {
         this.setSiteData(tokens.access_token.access_token);
-        
+
         // track analytics call
-        this.analytics.track('Profile Site Updated', {
+        this.analytics.track('Site Updated', {
           id: this.selectedSiteId,
           name: this.selectedSite
         });
@@ -137,7 +137,6 @@ export class SiteHappenings {
         this.authenticated = true;
         this.user = { ...this.user, site: siteName };
         this.defaultToUserSite(this.user.site);
-        console.log(siteName);
       });
   }
 
@@ -189,9 +188,9 @@ export class SiteHappenings {
           }
         }
       )
-      .then(success => {
-        console.log('setting mp data', success);
-      });
+      .then((success) => {
+        console.log('updated site', success);
+      }).catch(err => console.error(err));
   }
 
   fetchContentfulData() {
