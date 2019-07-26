@@ -84,6 +84,26 @@ export class SiteHappenings {
     });
   }
 
+  handleHappeningsClicked(event) {
+    let target = event.target;
+    let params = {
+      title: target.innerText.toLowerCase(),
+      url: target.href,
+      userSite: this.user.site || 'logged out',
+      selectedSite: this.selectedSite
+    };
+    if (target.tagName !== 'A') {
+      params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
+      this.analytics.track('Happenings Clicked', {
+        params
+      });
+    } else {
+      this.analytics.track('Happenings Clicked', {
+        params
+      });
+    }
+  }
+
   handleClose() {
     this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
@@ -172,15 +192,16 @@ export class SiteHappenings {
       .post(
         this.gqlUrl,
         {
-          mutation: `
-        {
-          setSite(siteId: ${Number(this.selectedSiteId)}) {
-            site {
-              id
-              name
+          query:  `
+          mutation {
+            setSite(siteId: ${this.selectedSiteId}) {
+              site {
+                id
+                name
+              }
+            }
           }
-        }
-        `
+          `
         },
         {
           headers: {
@@ -188,9 +209,10 @@ export class SiteHappenings {
           }
         }
       )
-      .then((success) => {
+      .then(success => {
         console.log('updated site', success);
-      }).catch(err => console.error(err));
+      })
+      .catch(err => console.error(err));
   }
 
   fetchContentfulData() {
@@ -256,7 +278,7 @@ export class SiteHappenings {
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
         <div class="card" key={index}>
-          <a class="relative" href={obj.linkUrl}>
+          <a class="relative" href={obj.linkUrl} onClick={event => this.handleHappeningsClicked(event)}>
             <img
               alt={obj.title}
               class="img-responsive"
@@ -265,7 +287,9 @@ export class SiteHappenings {
           </a>
           <div class="card-block">
             <h4 class="card-title card-title--overlap text-uppercase">
-              <a href={obj.linkUrl}>{obj.title}</a>
+              <a href={obj.linkUrl} onClick={event => this.handleHappeningsClicked(event)}>
+                {obj.title}
+              </a>
             </h4>
             <div class="card-text" innerHTML={marked(obj.description)} />
           </div>
