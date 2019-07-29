@@ -63,6 +63,10 @@ export class GlobalNav {
     return classes.join(' ');
   }
 
+  rootURL() {
+    return `https://${Utils.getSubdomain(this.env)}.crossroads.net`;
+  }
+
   render() {
     this.initAuth();
 
@@ -102,12 +106,7 @@ export class GlobalNav {
                 </a>
               </div>
 
-              <a
-                href={`https://${Utils.getSubdomain(this.env)}.crossroads.net`}
-                data-automation-id="sh-logo"
-                class="logo"
-                innerHTML={logo}
-              />
+              <a href={this.rootURL()} data-automation-id="sh-logo" class="logo" innerHTML={logo} />
 
               <div class="user-actions">
                 <a
@@ -122,7 +121,7 @@ export class GlobalNav {
                 </a>
 
                 <a
-                  href={`https://${Utils.getSubdomain(this.env)}.crossroads.net/signin`}
+                  href={`${this.rootURL()}/signin`}
                   class={this.profileClasses()}
                   onClick={event => this.handleProfileClick(event)}
                   data-automation-id="sh-profile"
