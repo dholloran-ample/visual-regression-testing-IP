@@ -1,5 +1,5 @@
 import { Component, Prop, State, h } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import Fragment from '../../../shared/fragment';
 
 import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';

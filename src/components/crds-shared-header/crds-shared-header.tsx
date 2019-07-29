@@ -1,7 +1,7 @@
 import { Component, Element, Prop, State, Listen, h } from '@stencil/core';
-import Fragment from 'stencil-fragment';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
+import Fragment from '../../shared/fragment';
 
 @Component({
   tag: 'crds-shared-header',
