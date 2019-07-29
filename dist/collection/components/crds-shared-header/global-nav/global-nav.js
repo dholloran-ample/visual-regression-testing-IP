@@ -1,6 +1,7 @@
 import { h } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { Auth } from '../../../shared/auth';
+import { Utils } from '../../../shared/utils';
 export class GlobalNav {
     constructor() {
         this.giveNavIsShowing = false;
@@ -8,10 +9,6 @@ export class GlobalNav {
         this.profileNavIsShowing = false;
         this.authenticated = false;
         this.auth = {};
-        this.subdomainMap = {
-            prod: 'www',
-            production: 'www'
-        };
     }
     initAuth() {
         if (!this.config || this.auth.config)
@@ -69,12 +66,12 @@ export class GlobalNav {
                                 h("div", { class: "close", innerHTML: close })),
                             h("a", { href: "/search", class: "search-container", "data-automation-id": "sh-search", "data-label": "search" },
                                 h("div", { class: "search", innerHTML: search }))),
-                        h("a", { href: `https://${this.subdomainMap[this.env] || this.env}.crossroads.net`, "data-automation-id": "sh-logo", class: "logo", innerHTML: logo }),
+                        h("a", { href: `https://${Utils.getSubdomain(this.env)}.crossroads.net`, "data-automation-id": "sh-logo", class: "logo", innerHTML: logo }),
                         h("div", { class: "user-actions" },
                             h("a", { href: "", "data-automation-id": "sh-give", "data-label": "give", class: this.giveClasses(), onClick: event => this.navClickHandler(event, 'give-nav') },
                                 h("div", { class: "donate", innerHTML: give }),
                                 h("div", { class: "close", innerHTML: close })),
-                            h("a", { href: `https://${this.subdomainMap[this.env] || this.env}.crossroads.net/signin`, class: this.profileClasses(), onClick: event => this.handleProfileClick(event), "data-automation-id": "sh-profile", "data-label": this.authenticated ? 'my account' : 'sign in' },
+                            h("a", { href: `https://${Utils.getSubdomain(this.env)}.crossroads.net/signin`, class: this.profileClasses(), onClick: event => this.handleProfileClick(event), "data-automation-id": "sh-profile", "data-label": this.authenticated ? 'my account' : 'sign in' },
                                 this.authenticated ? (h("div", { class: "account" },
                                     h("div", { class: "account-authenticated", style: { backgroundImage: `url('${this.auth.currentUser.avatarUrl}')` } }))) : (h("div", { class: "account", innerHTML: account })),
                                 h("div", { class: "close", innerHTML: close })))),

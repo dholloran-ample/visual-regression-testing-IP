@@ -14,4 +14,9 @@ export declare class Utils {
      * @param {String} name
      */
     static getCookie(name: any): string;
+    /**
+     * Returns the appropriate subdomain based on the env
+     * @param {String} env
+     */
+    static getSubdomain(env: any): any;
 }

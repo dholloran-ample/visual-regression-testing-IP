@@ -10,10 +10,6 @@ export declare class GlobalNav {
     profileData: JSON;
     authenticated: boolean;
     auth: any;
-    subdomainMap: {
-        prod: string;
-        production: string;
-    };
     initAuth(): void;
     authChangeCallback(): void;
     handleSignOut(): void;
