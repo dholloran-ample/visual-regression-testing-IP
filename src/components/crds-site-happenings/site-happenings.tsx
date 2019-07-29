@@ -11,6 +11,7 @@ import { CrdsTokens } from '@crds_npm/crds-client-auth';
   styleUrl: 'site-happenings.scss',
   shadow: true
 })
+
 export class SiteHappenings {
   analytics = window['analytics'] || {};
   gqlUrl = process.env.CRDS_GQL_ENDPOINT;
@@ -32,13 +33,17 @@ export class SiteHappenings {
   @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
 
+  /**
+   * Check to see if user is authenticated
+   * then fetch MP data is applicable
+   */
   componentWillLoad() {
-    // this.authenticated = true;
-    // this.user = { ...this.user, site: 'Not site specific' };
-    // this.defaultToUserSite(this.user.site);
     this.initAuth();
   }
 
+  /**
+   * Get happenings content
+   */
   componentDidLoad() {
     this.fetchContentfulData();
   }
@@ -59,11 +64,19 @@ export class SiteHappenings {
     });
   }
 
+  /**
+   * Update selected site state
+   * from dropdown
+   */
   handleSiteSelection(event) {
     this.selectedSite = event.target.value;
     this.setWidthBasedOnText(event.target, event.target.value);
   }
 
+  /**
+   * Receive user input from the select site
+   * modal
+   */
   handleSetDefaultSite(event) {
     this.selectedSiteId = event.target.value;
     this.selectedSite = event.target.options[event.target.selectedIndex].text;
@@ -73,7 +86,7 @@ export class SiteHappenings {
     // call MP with updates
     this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
       if (tokens != null) {
-        this.setSiteData(tokens.access_token.access_token);
+        this.updateUserSite(tokens.access_token.access_token);
 
         // track analytics call
         this.analytics.track('Site Updated', {
@@ -84,6 +97,10 @@ export class SiteHappenings {
     });
   }
 
+  /**
+   * Receive input from user clicks on happenings
+   * cards
+   */
   handleHappeningsClicked(event) {
     let target = event.target;
     let params = {
@@ -104,10 +121,18 @@ export class SiteHappenings {
     }
   }
 
+  /**
+   * Close the site select modal
+   */
   handleClose() {
     this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
 
+  /**
+   * Override HTML's behavior of
+   * sizing dropdowns to the largest
+   * string in the list
+   */
   setWidthBasedOnText(el, text) {
     let tmpSelect = document.createElement('select');
     let tmpOption = document.createElement('option');
@@ -121,6 +146,10 @@ export class SiteHappenings {
     this.host.shadowRoot.removeChild(tmpSelect);
   }
 
+  /**
+   * Update happenings cards to current user's
+   * selected site
+   */
   defaultToUserSite(site) {
     if (site == 'Not site specific' || site == 'I do not attend Crossroads' || site == 'Anywhere' || site == null) {
       this.selectedSite = 'Churchwide';
@@ -129,6 +158,10 @@ export class SiteHappenings {
     }
   }
 
+  /**
+   * get user info from MP
+   * via graphQL
+   */
   fetchUserData(token) {
     return axios
       .post(
@@ -160,6 +193,10 @@ export class SiteHappenings {
       });
   }
 
+  /**
+   * Get sites list from MP
+   * via graphQL
+   */
   fetchSitesData(token) {
     return axios
       .post(
@@ -187,7 +224,11 @@ export class SiteHappenings {
       .catch(err => console.log(err));
   }
 
-  setSiteData(token) {
+  /**
+   * Update a user's site
+   * in MP via graphQL
+   */
+  updateUserSite(token) {
     return axios
       .post(
         this.gqlUrl,
@@ -215,6 +256,9 @@ export class SiteHappenings {
       .catch(err => console.error(err));
   }
 
+  /**
+   * Get 'promos' content
+   */
   fetchContentfulData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
@@ -243,6 +287,9 @@ export class SiteHappenings {
       });
   }
 
+  /**
+   * Create cards for each promo
+   */
   setContentfulData(data) {
     this.happenings = data.filter(promo => promo.targetAudience !== null);
     this.renderHappenings(this.happenings);
@@ -261,6 +308,40 @@ export class SiteHappenings {
     this.sites = unique_audiences.sort((a, b) => (a > b ? 1 : b > a ? -1 : 0));
   }
 
+  /**
+   * Create cards for each promo
+   */
+  renderSetSiteModal() {
+    return(
+      <div class="site-select-message">
+        <button type="button" class="close" aria-label="Close" onClick={() => this.handleClose()}>
+          <svg xmlns="http://www.w3.org/2000/svg">
+            <line x1="1" y1="10" x2="10" y2="1" stroke="#fff" strokeWidth="2" />
+            <line x1="1" y1="1" x2="10" y2="10" stroke="#fff" strokeWidth="2" />
+          </svg>
+        </button>
+        <div class="text-center">
+          <h2 class="component-header flush-bottom">Looks like you haven't set a Crossroads site</h2>
+          <p class="flush-top">
+            Let us know which site you attend and we will keep you up to date on everything going on.
+          </p>
+          <select class="dropdown" onInput={event => this.handleSetDefaultSite(event)}>
+            <option disabled selected>
+              Choose a site
+            </option>
+            {this.renderSetSiteOptions(this.mpSites)}
+          </select>
+          <p>
+            <small>*This will update the site field in your profile</small>
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  /**
+   * Map crds sites to dropdown
+   */
   renderSetSiteOptions(mpSites) {
     return mpSites
       .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
@@ -272,6 +353,9 @@ export class SiteHappenings {
       ));
   }
 
+  /**
+   * map list of cards filtered by dropdown
+   */
   renderHappenings(happenings) {
     if (!happenings.length) return this.renderHappeningsSkeleton();
     return happenings
@@ -297,6 +381,10 @@ export class SiteHappenings {
       ));
   }
 
+  /**
+   * Map 4 fake cards while processing data
+   * from ctfl
+   */
   renderHappeningsSkeleton() {
     return [1, 2, 3, 4].map(() => (
       <div class="card-skeleton">
@@ -328,33 +416,10 @@ export class SiteHappenings {
     return (
       <div class="container push-top">
         <div class="relative">
-          {(this.authenticated && this.user.site == 'Not site specific') || this.user.site == null ? (
-            <div class="site-select-message">
-              <button type="button" class="close" aria-label="Close" onClick={() => this.handleClose()}>
-                <svg xmlns="http://www.w3.org/2000/svg">
-                  <line x1="1" y1="10" x2="10" y2="1" stroke="#fff" strokeWidth="2" />
-                  <line x1="1" y1="1" x2="10" y2="10" stroke="#fff" strokeWidth="2" />
-                </svg>
-              </button>
-              <div class="text-center">
-                <h2 class="component-header flush-bottom">Looks like you haven't set a Crossroads site</h2>
-                <p class="flush-top">
-                  Let us know which site you attend and we will keep you up to date on everything going on.
-                </p>
-                <select class="dropdown" onInput={event => this.handleSetDefaultSite(event)}>
-                  <option disabled selected>
-                    Choose a site
-                  </option>
-                  {this.renderSetSiteOptions(this.mpSites)}
-                </select>
-                <p>
-                  <small>*This will update the site field in your profile</small>
-                </p>
-              </div>
-            </div>
-          ) : (
-            ''
-          )}
+          {
+            (this.authenticated && this.user.site == 'Not site specific') || this.user.site == null ? 
+              (this.renderSetSiteModal()) : ('')
+          }
           <hr class="push-bottom-half" />
           <div class="d-flex align-items-center push-bottom-half">
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
