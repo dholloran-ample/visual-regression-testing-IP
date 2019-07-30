@@ -44,6 +44,7 @@ export namespace Components {
     'src': string;
   }
   interface CrdsSiteHappenings {
+    'authToken': string;
     'happenings': CrdsHappening[];
     'mpSites': MpCongregation[];
   }
@@ -238,6 +239,7 @@ declare namespace LocalJSX {
     'src'?: string;
   }
   interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {
+    'authToken'?: string;
     'happenings'?: CrdsHappening[];
     'mpSites'?: MpCongregation[];
   }

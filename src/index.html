@@ -63,7 +63,7 @@
 
     <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></crds-heart-button>
     <div style="min-height: 500px;">
-      <crds-site-happenings></crds-site-happenings>
+      <crds-site-happenings auth-token="">
     </div>
   </div>
 
@@ -71,4 +71,19 @@
     <crds-shared-footer></crds-shared-footer>
   </div>
 </body>
+<script>
+  function readCookie(name) {
+    // Escape regexp special characters (thanks kangax!)
+    name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+
+    var regex = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
+        match = document.cookie.match(regex);
+
+    return match && unescape(match[1]);
+  }
+
+  var token = readCookie('intSessionId');
+  var cmp = document.querySelector('crds-site-happenings');
+  cmp.setAttribute('auth-token', token);
+</script>
 </html>
