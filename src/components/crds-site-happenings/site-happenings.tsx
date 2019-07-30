@@ -1,35 +1,25 @@
 import { Component, Prop, State, Element, h } from '@stencil/core';
 import axios from 'axios';
 import marked from 'marked';
-import { Auth } from '../../shared/auth';
 import { Utils } from '../../shared/utils';
 import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-interface';
-import { CrdsTokens } from '@crds_npm/crds-client-auth';
 
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
   shadow: true
 })
-
 export class SiteHappenings {
   analytics = window['analytics'] || {};
   gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   sites: string[] = [];
-  auth: any;
   user: CrdsUser = { name: '', site: '' };
-  config: Object = {
-    mp_access_token_cookie: 'intsessionId',
-    mp_refresh_token_cookie: 'intrefreshToken',
-    okta_client_id: '0oahgpg7elMxVJedi0h7',
-    okta_issuer: 'https://crossroads.oktapreview.com/oauth2/default'
-  };
-  env: string = process.env.ENV || 'int';
+  selectedSiteId: string = '';
 
   @Prop() mpSites: MpCongregation[] = [];
+  @Prop() authToken: string;
   @Prop() happenings: CrdsHappening[] = [];
   @State() selectedSite: string = 'Churchwide';
-  @State() selectedSiteId: string = '';
   @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
 
@@ -38,7 +28,12 @@ export class SiteHappenings {
    * then fetch MP data is applicable
    */
   componentWillLoad() {
-    this.initAuth();
+    if (this.authToken) {
+      this.fetchSitesData(this.authToken);
+      this.fetchUserData(this.authToken);
+    } else {
+      this.selectedSite = 'Churchwide';
+    }
   }
 
   /**
@@ -50,18 +45,6 @@ export class SiteHappenings {
 
   componentDidRender() {
     this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
-  }
-
-  initAuth() {
-    this.auth = new Auth(Object.assign(this.config, { env: this.env }));
-    this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
-      if (tokens != null) {
-        this.fetchSitesData(tokens.access_token.access_token);
-        this.fetchUserData(tokens.access_token.access_token);
-      } else {
-        this.selectedSite = 'Churchwide';
-      }
-    });
   }
 
   /**
@@ -83,17 +66,10 @@ export class SiteHappenings {
     this.user = { ...this.user, site: this.selectedSite };
     this.defaultToUserSite(this.user.site);
     this.handleClose();
-    // call MP with updates
-    this.auth.authService.authenticated().subscribe((tokens: CrdsTokens) => {
-      if (tokens != null) {
-        this.updateUserSite(tokens.access_token.access_token);
-
-        // track analytics call
-        this.analytics.track('Site Updated', {
-          id: this.selectedSiteId,
-          name: this.selectedSite
-        });
-      }
+    this.updateUserSite(this.authToken);
+    this.analytics.track('Site Updated', {
+      id: this.selectedSiteId,
+      name: this.selectedSite
     });
   }
 
@@ -233,7 +209,7 @@ export class SiteHappenings {
       .post(
         this.gqlUrl,
         {
-          query:  `
+          query: `
           mutation {
             setSite(siteId: ${this.selectedSiteId}) {
               site {
@@ -312,7 +288,7 @@ export class SiteHappenings {
    * Create cards for each promo
    */
   renderSetSiteModal() {
-    return(
+    return (
       <div class="site-select-message">
         <button type="button" class="close" aria-label="Close" onClick={() => this.handleClose()}>
           <svg xmlns="http://www.w3.org/2000/svg">
@@ -336,7 +312,7 @@ export class SiteHappenings {
           </p>
         </div>
       </div>
-    )
+    );
   }
 
   /**
@@ -416,10 +392,9 @@ export class SiteHappenings {
     return (
       <div class="container push-top">
         <div class="relative">
-          {
-            (this.authenticated && this.user.site == 'Not site specific') || this.user.site == null ? 
-              (this.renderSetSiteModal()) : ('')
-          }
+          {(this.authenticated && this.user.site == 'Not site specific') || this.user.site == null
+            ? this.renderSetSiteModal()
+            : ''}
           <hr class="push-bottom-half" />
           <div class="d-flex align-items-center push-bottom-half">
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
