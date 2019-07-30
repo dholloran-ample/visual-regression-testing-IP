@@ -13,12 +13,12 @@ export class SiteHappenings {
   analytics = window['analytics'] || {};
   gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   sites: string[] = [];
+  mpSites: MpCongregation[] = [];
+  happenings: CrdsHappening[] = [];
   user: CrdsUser = { name: '', site: '' };
   selectedSiteId: string = '';
 
-  @Prop() mpSites: MpCongregation[] = [];
   @Prop() authToken: string;
-  @Prop() happenings: CrdsHappening[] = [];
   @State() selectedSite: string = 'Churchwide';
   @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
@@ -28,21 +28,38 @@ export class SiteHappenings {
    * then fetch MP data is applicable
    */
   componentWillLoad() {
+    this.selectedSite = 'Churchwide';
+    return Promise.all([
+      this.fetchMpData(), 
+      this.fetchContentfulData()
+    ]);
+  }
+
+  componentWillUpdate() {
+    console.log('will update', this.authToken);
+    return this.fetchMpData();
+  }
+
+  private fetchMpData() {
     if (this.authToken) {
-      this.fetchSitesData(this.authToken);
-      this.fetchUserData(this.authToken);
-    } else {
-      this.selectedSite = 'Churchwide';
+      return Promise.all([
+        this.fetchSitesData(this.authToken), 
+        this.fetchUserData(this.authToken)
+      ]);
     }
   }
 
   /**
    * Get happenings content
    */
-  componentDidLoad() {
-    this.fetchContentfulData();
-  }
+  // componentDidLoad() {
+  //   this.fetchContentfulData();
+  // }
 
+  /**
+   * Update the width of the dropdown based
+   * on the current selected site
+   */
   componentDidRender() {
     this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
   }

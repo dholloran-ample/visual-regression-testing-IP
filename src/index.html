@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
@@ -12,6 +13,11 @@
     -->
 
   <title>Crossroads Component Library</title>
+  <style>
+    .site-happenings-skeleton {
+      min-height: 500px;
+    }
+  </style>
 
   <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
 
@@ -62,8 +68,8 @@
     </p>
 
     <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></crds-heart-button>
-    <div style="min-height: 500px;">
-      <crds-site-happenings auth-token="">
+    <div class="site-happenings-skeleton">
+      <crds-site-happenings auth-token></crds-site-happenings>
     </div>
   </div>
 
@@ -71,19 +77,5 @@
     <crds-shared-footer></crds-shared-footer>
   </div>
 </body>
-<script>
-  function readCookie(name) {
-    // Escape regexp special characters (thanks kangax!)
-    name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 
-    var regex = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
-        match = document.cookie.match(regex);
-
-    return match && unescape(match[1]);
-  }
-
-  var token = readCookie('intSessionId');
-  var cmp = document.querySelector('crds-site-happenings');
-  cmp.setAttribute('auth-token', token);
-</script>
 </html>
