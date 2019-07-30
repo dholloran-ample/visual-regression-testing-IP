@@ -129,7 +129,7 @@ export class SharedHeader {
       this.mainNavIsShowing = !this.mainNavIsShowing;
       this.profileNavIsShowing = false;
       if (this.mainNavIsShowing) {
-        document.body.setAttribute('style', 'overflow: hidden; position: absolute;');
+        document.body.setAttribute('style', 'overflow: hidden; position: absolute; width: 100vw;');
       } else {
         document.body.setAttribute('style', 'overflow: scroll;');
       }
