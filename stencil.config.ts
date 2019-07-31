@@ -35,7 +35,8 @@ export const config: Config = {
       'process.env.CONTENTFUL_ACCESS_TOKEN': JSON.stringify(process.env.CONTENTFUL_ACCESS_TOKEN),
       'process.env.CONTENTFUL_SPACE_ID': JSON.stringify(process.env.CONTENTFUL_SPACE_ID),
       'process.env.CONTENTFUL_ENV': JSON.stringify(process.env.CONTENTFUL_ENV),
-      'process.env.CRDS_INTERACTIONS_ENDPOINT': JSON.stringify(process.env.CRDS_INTERACTIONS_ENDPOINT)
+      'process.env.CRDS_INTERACTIONS_ENDPOINT': JSON.stringify(process.env.CRDS_INTERACTIONS_ENDPOINT),
+      'process.env.CRDS_GQL_ENDPOINT': JSON.stringify(process.env.CRDS_GQL_ENDPOINT)
     })
   ]
 };

@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, h } from '@stencil/core';
+import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import axios from 'axios';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
@@ -10,18 +10,25 @@ import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-inter
   shadow: true
 })
 export class SiteHappenings {
-  analytics = window['analytics'] || {};
-  gqlUrl = process.env.CRDS_GQL_ENDPOINT;
-  sites: string[] = [];
-  mpSites: MpCongregation[] = [];
-  happenings: CrdsHappening[] = [];
-  user: CrdsUser = { name: '', site: '' };
-  selectedSiteId: string = '';
+  private analytics = window['analytics'] || {};
+  private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
+  private sites: string[] = [];
+  private mpSites: MpCongregation[] = [];
+  private happenings: CrdsHappening[] = [];
+  private user: CrdsUser = {name: '', site: ''}
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
-  @State() authenticated: boolean = false;
   @Element() host: HTMLElement;
+
+  renderedEvent = new CustomEvent('component rendered', {
+    detail: this.host
+  });
+
+  @Watch('authToken')
+  watchHandler(newValue: string, oldValue: string) {
+   if (newValue !== oldValue) { this.fetchMpData() }
+  }
 
   /**
    * Check to see if user is authenticated
@@ -30,14 +37,8 @@ export class SiteHappenings {
   componentWillLoad() {
     this.selectedSite = 'Churchwide';
     return Promise.all([
-      this.fetchMpData(), 
-      this.fetchContentfulData()
+      this.fetchMpData(), this.fetchContentfulData()
     ]);
-  }
-
-  componentWillUpdate() {
-    console.log('will update', this.authToken);
-    return this.fetchMpData();
   }
 
   private fetchMpData() {
@@ -50,18 +51,12 @@ export class SiteHappenings {
   }
 
   /**
-   * Get happenings content
-   */
-  // componentDidLoad() {
-  //   this.fetchContentfulData();
-  // }
-
-  /**
    * Update the width of the dropdown based
    * on the current selected site
    */
   componentDidRender() {
     this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
+    document.dispatchEvent(this.renderedEvent);
   }
 
   /**
@@ -78,14 +73,14 @@ export class SiteHappenings {
    * modal
    */
   handleSetDefaultSite(event) {
-    this.selectedSiteId = event.target.value;
+    const selectedSiteId = event.target.value;
     this.selectedSite = event.target.options[event.target.selectedIndex].text;
     this.user = { ...this.user, site: this.selectedSite };
     this.defaultToUserSite(this.user.site);
     this.handleClose();
-    this.updateUserSite(this.authToken);
+    this.updateUserSite(this.authToken, selectedSiteId);
     this.analytics.track('Site Updated', {
-      id: this.selectedSiteId,
+      id: selectedSiteId,
       name: this.selectedSite
     });
   }
@@ -178,9 +173,7 @@ export class SiteHappenings {
       )
       .then(success => {
         let mpUser = success.data.data.user;
-        let siteName;
-        mpUser.site !== null ? (siteName = mpUser.site.name) : (siteName = null);
-        this.authenticated = true;
+        let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
         this.defaultToUserSite(this.user.site);
       });
@@ -221,14 +214,14 @@ export class SiteHappenings {
    * Update a user's site
    * in MP via graphQL
    */
-  updateUserSite(token) {
+  updateUserSite(token, siteId) {
     return axios
       .post(
         this.gqlUrl,
         {
           query: `
           mutation {
-            setSite(siteId: ${this.selectedSiteId}) {
+            setSite(siteId: ${siteId}) {
               site {
                 id
                 name
@@ -409,7 +402,7 @@ export class SiteHappenings {
     return (
       <div class="container push-top">
         <div class="relative">
-          {(this.authenticated && this.user.site == 'Not site specific') || this.user.site == null
+          {(this.user.site == 'Not site specific') || this.user.site == null
             ? this.renderSetSiteModal()
             : ''}
           <hr class="push-bottom-half" />
