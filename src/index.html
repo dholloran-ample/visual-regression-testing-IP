@@ -1,70 +1,81 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
 
-    <!--
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+
+  <!--
       <meta property="cfl:space_id" content="...">
       <meta property="cfl:env" content="master">
       <meta property="cfl:token" content="...">
       <meta property="crds:interactions-endpoint" content="...">
     -->
 
-    <title>Crossroads Component Library</title>
+  <title>Crossroads Component Library</title>
+  <style>
+    .site-happenings-skeleton {
+      min-height: 500px;
+    }
+  </style>
 
-    <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
+  <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
 
-    <script src=https://use.typekit.net/ccb3vpa.js></script>
-    <script>
-      try {
-        Typekit.load({ async: true });
-      } catch (e) {}
-    </script>
+  <script src=https://use.typekit.net/ccb3vpa.js> </script> <script>
+    try {
+      Typekit.load({ async: true });
+    } catch (e) { }
+  </script>
 
-    <script type="module" src="/build/crds-components.esm.js"></script>
-    <script nomodule src="/build/crds-components.js"></script>
-  </head>
-  <body>
+  <script type="module" src="/build/crds-components.esm.js"></script>
+  <script nomodule src="/build/crds-components.js"></script>
+</head>
 
-    <div class="shared-header-skeleton">
-      <crds-shared-header env="int"></crds-shared-header>
-    </div>
+<body>
 
-    <div class="snail-trail-skeleton">
-      <crds-snail-trail name="media" env="int"></crds-snail-trail>
-      <!-- <crds-snail-trail>
+  <div class="shared-header-skeleton">
+    <crds-shared-header env="int"></crds-shared-header>
+  </div>
+
+  <div class="snail-trail-skeleton">
+    <crds-snail-trail name="media" env="int"></crds-snail-trail>
+    <!-- <crds-snail-trail>
         <crds-snail-trail-link onclick="alert('zzz')">Click Me</crds-snail-trail-link>
         <crds-snail-trail-link href="/something">No Event</crds-snail-trail-link>
       </crds-snail-trail> -->
-    </div>
+  </div>
 
-    <div class="jumbotron jumbotron-xl" style="background-image: url('//crds-cms-uploads.imgix.net/content/images/streaming-anywhere-hero-off.jpg?auto=format,compress&amp;w=100&amp;fit=crop');">
-      <p class="small-heading text-uppercase">I am a small intro heading</p>
-      <h1 class="title">the main heading</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Repudiandae quos reiciendis vitae eum.
-      </p>
-      <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
-    </div>
+  <div class="jumbotron jumbotron-xl"
+    style="background-image: url('//crds-cms-uploads.imgix.net/content/images/streaming-anywhere-hero-off.jpg?auto=format,compress&amp;w=100&amp;fit=crop');">
+    <p class="small-heading text-uppercase">I am a small intro heading</p>
+    <h1 class="title">the main heading</h1>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eum.
+    </p>
+    <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
+  </div>
 
-    <div class="container soft-sides push-ends">
-      <p class="lead text-center push-bottom">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-        ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
-        tempor in cursus vel, consectetur ut lorem. Phasellus tristique mauris a
-        arcu malesuada lacinia. Praesent sodales ultrices tincidunt. Curabitur
-        sollicitudin varius turpis, ac cursus ex euismod quis. Curabitur a
-        lacinia nisi, ac molestie mi. Phasellus malesuada, risus non ornare
-        lacinia, nibh mi posuere lorem, vitae dignissim tellus nibh nec leo.
-      </p>
+  <div class="container soft-sides push-ends">
+    <p class="lead text-center push-bottom">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+      ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
+      tempor in cursus vel, consectetur ut lorem. Phasellus tristique mauris a
+      arcu malesuada lacinia. Praesent sodales ultrices tincidunt. Curabitur
+      sollicitudin varius turpis, ac cursus ex euismod quis. Curabitur a
+      lacinia nisi, ac molestie mi. Phasellus malesuada, risus non ornare
+      lacinia, nibh mi posuere lorem, vitae dignissim tellus nibh nec leo.
+    </p>
 
-      <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></heart-button>
+    <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></crds-heart-button>
+    <div class="site-happenings-skeleton">
+      <crds-site-happenings auth-token></crds-site-happenings>
     </div>
+  </div>
 
-    <div class="shared-footer-skeleton">
-      <crds-shared-footer></crds-shared-footer>
-    </div>
-  </body>
+  <div class="shared-footer-skeleton">
+    <crds-shared-footer></crds-shared-footer>
+  </div>
+</body>
+
 </html>
