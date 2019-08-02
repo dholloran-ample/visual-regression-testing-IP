@@ -312,7 +312,7 @@ export class SiteHappenings {
           <p class="flush-top">
             Let us know which site you attend and we will keep you up to date on everything going on.
           </p>
-          <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
+          <select class="dropdown" onInput={event => this.handleSetDefaultSite(event)}>
             <option disabled selected>
               Choose a site
             </option>
