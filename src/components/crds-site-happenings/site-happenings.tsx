@@ -130,7 +130,8 @@ export class SiteHappenings {
     tmpSelect.style.fontSize = styles.fontSize;
     tmpOption.innerText = text;
     this.host.shadowRoot.appendChild(tmpSelect);
-    el.style.width = `${tmpSelect.offsetWidth}px`;
+    // set the parent dropdown's width
+    el.parentNode.style.width = `${tmpSelect.offsetWidth}px`;
     this.host.shadowRoot.removeChild(tmpSelect);
   }
 
@@ -306,7 +307,7 @@ export class SiteHappenings {
             <line x1="1" y1="1" x2="10" y2="10" stroke="#fff" strokeWidth="2" />
           </svg>
         </button>
-        <div class="text-center">
+        <div class="text-center push-top w-100">
           <h2 class="component-header flush-bottom">Looks like you haven't set a Crossroads site</h2>
           <p class="flush-top">
             Let us know which site you attend and we will keep you up to date on everything going on.
@@ -405,14 +406,14 @@ export class SiteHappenings {
           {(this.user.site == 'Not site specific') || this.user.site == null
             ? this.renderSetSiteModal()
             : ''}
-          <hr class="push-bottom-half" />
-          <div class="d-flex align-items-center push-bottom-half">
+          <hr class="push-half-bottom" />
+          <div class="happenings-dropdown-container push-half-bottom">
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
               happening at crossroads
             </h4>
             <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
               <select
-                class="happenings-dropdown-select font-family-base"
+                class="happenings-dropdown-select font-family-base font-size-base"
                 onInput={event => this.handleSiteSelection(event)}
               >
                 {this.sites.map(site => (
