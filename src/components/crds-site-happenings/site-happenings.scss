@@ -20,10 +20,24 @@
   align-items: center;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 .card-skeleton {
   svg {
     height: auto;
     width: 100%;
+  }
+}
+
+.happenings-dropdown-container {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    align-items: center;
   }
 }
 
@@ -38,17 +52,19 @@
     border: 0;
     margin: 0;
     color: $cr-cyan;
-    padding: 0.5rem;
-    font-size: 1.17em;
+    padding: .5rem 0;
     -webkit-appearance: none;
     -moz-appearance: none;
-    text-indent: 1px;
 
     &:hover {
       cursor: pointer;
     }
     &:focus {
       outline: 0;
+    }
+
+    @media (min-width: 480px) {
+      padding: .5rem;
     }
   }
 
@@ -73,13 +89,17 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 1);
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
   z-index: 1;
+
+  @media (min-width: 767px) {
+    align-items: center;
+  }
 
   .close {
     position: absolute;
@@ -167,7 +187,10 @@ hr {
 }
 
 .font-size-base {
-  font-size: 19px !important;
+  font-size: 16px !important;
+  @media (min-width: 480px) {
+    font-size: 19px !important;
+  }
 }
 
 .flush-bottom {
@@ -178,8 +201,12 @@ hr {
   margin-top: 0 !important;
 }
 
-.push-bottom-half {
+.push-half-bottom {
   margin-bottom: 12px !important;
+}
+
+.push-top {
+  margin-top: 24px;
 }
 
 .card-deck .card {
@@ -212,12 +239,13 @@ hr {
     flex: 1 0 270px;
     flex-basis: 270px;
     margin-bottom: 1.5rem;
-    padding: 0 0.5rem;
+    padding: 0;
     position: relative;
     max-width: 100%;
 
     @media (min-width: 480px) {
       max-width: 50%;
+      padding: 0 0.5rem;
     }
 
     @media (min-width: 768px) {
@@ -292,5 +320,6 @@ hr {
   font-family: 'acumin-pro-extra-condensed', sans-serif;
   font-size: 2rem;
   font-weight: 500;
+  line-height: 1.1;
   text-transform: uppercase;
 }
