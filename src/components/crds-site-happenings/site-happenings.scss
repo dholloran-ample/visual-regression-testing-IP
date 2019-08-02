@@ -153,6 +153,10 @@
     background: transparent;
     border: solid 1px $cr-cyan;
     color: $cr-cyan;
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
   }
 }
 
