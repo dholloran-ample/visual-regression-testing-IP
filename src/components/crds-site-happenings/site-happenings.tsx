@@ -403,10 +403,9 @@ export class SiteHappenings {
     return (
       <div class="container push-top">
         <div class="relative">
-          { this.renderSetSiteModal() }
-          {/* {(this.user.site == 'Not site specific') || this.user.site == null
+          {(this.user.site == 'Not site specific') || this.user.site == null
             ? this.renderSetSiteModal()
-            : ''} */}
+            : ''}
           <hr class="push-half-bottom" />
           <div class="happenings-dropdown-container push-half-bottom">
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
