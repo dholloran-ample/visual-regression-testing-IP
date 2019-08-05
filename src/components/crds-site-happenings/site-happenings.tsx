@@ -76,7 +76,7 @@ export class SiteHappenings {
     this.defaultToUserSite(this.user.site);
     this.handleClose();
     this.updateUserSite(this.authToken, selectedSiteId);
-    this.analytics.track('Site Updated', {
+    this.analytics.track('HappeningSiteUpdated', {
       id: selectedSiteId,
       name: this.selectedSite
     });
@@ -96,11 +96,11 @@ export class SiteHappenings {
     };
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-      this.analytics.track('Happenings Clicked', {
+      this.analytics.track('HappeningClicked', {
         params
       });
     } else {
-      this.analytics.track('Happenings Clicked', {
+      this.analytics.track('HappeningClicked', {
         params
       });
     }
