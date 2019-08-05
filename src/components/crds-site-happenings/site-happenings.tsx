@@ -173,7 +173,9 @@ export class SiteHappenings {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
-        siteName == null || 'Not site specific' ? this.renderSetSiteModal : this.defaultToUserSite(this.user.site);
+        siteName == (null || 'Not site specific') 
+          ? this.renderSetSiteModal() 
+          : this.defaultToUserSite(this.user.site);
       });
   }
 
