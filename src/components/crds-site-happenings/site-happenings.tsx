@@ -357,7 +357,7 @@ export class SiteHappenings {
     return happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
-        <div class="card" key={index}>
+        <div class="card carousel-cell" key={index}>
           <a class="relative" href={obj.linkUrl} onClick={event => this.handleHappeningsClicked(event)}>
             <img
               alt={obj.title}
@@ -445,7 +445,7 @@ export class SiteHappenings {
           <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
             <div
               id="section-what-s-happening"
-              class="feature-cards card-deck--expanded-layout"
+              class="feature-cards card-deck--expanded-layout carousel"
               data-automation-id="happenings-cards"
               data-crds-carousel="mobile-scroll"
             >
