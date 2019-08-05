@@ -43,7 +43,10 @@ export class SiteHappenings {
 
   private fetchMpData() {
     if (this.authToken) {
-      return Promise.all([this.fetchSitesData(this.authToken), this.fetchUserData(this.authToken)]);
+      return Promise.all([
+        this.fetchSitesData(this.authToken),
+        this.fetchUserData(this.authToken)
+      ]);
     }
   }
 
@@ -187,10 +190,10 @@ export class SiteHappenings {
         this.gqlUrl,
         {
           query: `
-          {
-            sites {
-              id
+          { 
+            sites(filter: "Available_Online = 1") {
               name
+              id
             }
           }
           `
@@ -246,7 +249,7 @@ export class SiteHappenings {
   fetchContentfulData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+      }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
     return axios
       .get(apiUrl, {
         params: {
