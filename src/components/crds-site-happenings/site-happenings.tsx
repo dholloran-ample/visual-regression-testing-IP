@@ -79,7 +79,7 @@ export class SiteHappenings {
     this.defaultToUserSite(this.user.site);
     this.handleClose();
     this.updateUserSite(this.authToken, selectedSiteId);
-    this.analytics.track('Site Updated', {
+    this.analytics.track('HappeningSiteUpdated', {
       id: selectedSiteId,
       name: this.selectedSite
     });
@@ -99,11 +99,11 @@ export class SiteHappenings {
     };
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-      this.analytics.track('Happenings Clicked', {
+      this.analytics.track('HappeningClicked', {
         params
       });
     } else {
-      this.analytics.track('Happenings Clicked', {
+      this.analytics.track('HappeningClicked', {
         params
       });
     }
@@ -176,7 +176,9 @@ export class SiteHappenings {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
-        siteName == null || 'Not site specific' ? this.renderSetSiteModal : this.defaultToUserSite(this.user.site);
+        siteName == (null || 'Not site specific') 
+          ? this.renderSetSiteModal() 
+          : this.defaultToUserSite(this.user.site);
       });
   }
 
@@ -360,7 +362,7 @@ export class SiteHappenings {
     return happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
-        <div class="card" key={index}>
+        <div class="card carousel-cell" key={index}>
           <a class="relative" href={obj.linkUrl} onClick={event => this.handleHappeningsClicked(event)}>
             <img
               alt={obj.title}
@@ -448,7 +450,7 @@ export class SiteHappenings {
           <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
             <div
               id="section-what-s-happening"
-              class="feature-cards card-deck--expanded-layout"
+              class="feature-cards card-deck--expanded-layout carousel"
               data-automation-id="happenings-cards"
               data-crds-carousel="mobile-scroll"
             >
