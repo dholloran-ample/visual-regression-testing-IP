@@ -15,7 +15,7 @@ export class SiteHappenings {
   private sites: string[] = [];
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
-  private user: CrdsUser = {name: '', site: ''}
+  private user: CrdsUser = { name: '', site: '' }
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
@@ -27,7 +27,7 @@ export class SiteHappenings {
 
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
-   if (newValue !== oldValue) { this.fetchMpData() }
+    if (newValue !== oldValue) { this.fetchMpData() }
   }
 
   /**
@@ -44,7 +44,7 @@ export class SiteHappenings {
   private fetchMpData() {
     if (this.authToken) {
       return Promise.all([
-        this.fetchSitesData(this.authToken), 
+        this.fetchSitesData(this.authToken),
         this.fetchUserData(this.authToken)
       ]);
     }
@@ -190,10 +190,10 @@ export class SiteHappenings {
         this.gqlUrl,
         {
           query: `
-          {
-            sites {
-              id
+          { 
+            sites(filter: "Available_Online = 1") {
               name
+              id
             }
           }
           `
@@ -249,7 +249,7 @@ export class SiteHappenings {
   fetchContentfulData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+      }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
     return axios
       .get(apiUrl, {
         params: {
