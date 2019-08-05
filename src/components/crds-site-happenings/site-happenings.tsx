@@ -15,7 +15,7 @@ export class SiteHappenings {
   private sites: string[] = [];
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
-  private user: CrdsUser = {name: '', site: ''}
+  private user: CrdsUser = { name: '', site: '' };
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
@@ -27,7 +27,9 @@ export class SiteHappenings {
 
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
-   if (newValue !== oldValue) { this.fetchMpData() }
+    if (newValue !== oldValue) {
+      this.fetchMpData();
+    }
   }
 
   /**
@@ -36,17 +38,12 @@ export class SiteHappenings {
    */
   componentWillLoad() {
     this.selectedSite = 'Churchwide';
-    return Promise.all([
-      this.fetchMpData(), this.fetchContentfulData()
-    ]);
+    return Promise.all([this.fetchMpData(), this.fetchContentfulData()]);
   }
 
   private fetchMpData() {
     if (this.authToken) {
-      return Promise.all([
-        this.fetchSitesData(this.authToken), 
-        this.fetchUserData(this.authToken)
-      ]);
+      return Promise.all([this.fetchSitesData(this.authToken), this.fetchUserData(this.authToken)]);
     }
   }
 
@@ -176,7 +173,7 @@ export class SiteHappenings {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
-        this.defaultToUserSite(this.user.site);
+        siteName == null || 'Not site specific' ? this.renderSetSiteModal : this.defaultToUserSite(this.user.site);
       });
   }
 
@@ -312,12 +309,24 @@ export class SiteHappenings {
           <p class="flush-top">
             Let us know which site you attend and we will keep you up to date on everything going on.
           </p>
-          <select class="dropdown" onInput={event => this.handleSetDefaultSite(event)}>
-            <option disabled selected>
-              Choose a site
-            </option>
-            {this.renderSetSiteOptions(this.mpSites)}
-          </select>
+          <div class="happenings-dropdown">
+            <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
+              <option disabled selected>
+                Choose a site
+              </option>
+              {this.renderSetSiteOptions(this.mpSites)}
+            </select>
+            <svg
+              class="dropdown-caret icon icon-1 pull-right push-left"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 237 152"
+            >
+              <path
+                d="M200.731 135.586L92.136 244.182c-1.854 1.853-4.05 2.78-6.587 2.78s-4.731-.927-6.586-2.78l-24.295-24.295c-1.854-1.854-2.781-4.05-2.781-6.587s.927-4.732 2.78-6.586L132.385 129 54.669 51.285c-1.854-1.853-2.781-4.05-2.781-6.586 0-2.537.927-4.732 2.78-6.587l24.296-24.295c1.854-1.853 4.05-2.78 6.586-2.78 2.537 0 4.732.927 6.587 2.78L200.73 122.414c1.854 1.853 2.781 4.049 2.781 6.586s-.927 4.732-2.78 6.586z"
+                transform="translate(-9 -53) rotate(90 127.7 129)"
+              />
+            </svg>
+          </div>
           <p>
             <small>*This will update the site field in your profile</small>
           </p>
@@ -403,9 +412,7 @@ export class SiteHappenings {
     return (
       <div class="container push-top">
         <div class="relative">
-          {(this.user.site == 'Not site specific') || this.user.site == null
-            ? this.renderSetSiteModal()
-            : ''}
+          {this.user.site == 'Not site specific' || this.user.site == null ? this.renderSetSiteModal() : ''}
           <hr class="push-half-bottom" />
           <div class="happenings-dropdown-container push-half-bottom">
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">

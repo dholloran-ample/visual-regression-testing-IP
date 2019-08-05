@@ -77,11 +77,12 @@
   }
 
   .dropdown-caret {
+    fill: $cr-cyan;
     position: absolute;
     width: 0.75rem;
     right: 0;
-    fill: $cr-cyan;
     padding-top: 4px;
+    pointer-events: none; // allow clicks to fall through to select
   }
 }
 
@@ -99,6 +100,50 @@
 
   @media (min-width: 767px) {
     align-items: center;
+  }
+
+  .happenings-dropdown {
+    justify-content: center;
+
+    @media (min-width: 767px) {
+      margin: 0 auto;
+      width: 33.333333%;
+    }
+
+    .dropdown {
+      display: inline-block;
+      font-weight: 300;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
+      vertical-align: middle;
+      touch-action: manipulation;
+      cursor: pointer;
+      background-image: none;
+      font-size: 16px;
+      line-height: 1.5;
+      border-radius: 4px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      padding: 10px;
+      background: transparent;
+      border: solid 1px $cr-cyan;
+      color: $cr-cyan;
+      -webkit-appearance: none;
+  
+      @media (max-width: 480px) {
+        width: 100%;
+      }
+    }
+
+    .dropdown-caret {
+      right: 20px;
+    }
   }
 
   .close {
@@ -126,36 +171,6 @@
       width: 10px;
       height: 10px;
       stroke: white;
-    }
-  }
-
-  .dropdown {
-    display: inline-block;
-    font-weight: 300;
-    text-align: center;
-    font-size: 14px;
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: middle;
-    touch-action: manipulation;
-    cursor: pointer;
-    background-image: none;
-    font-size: 16px;
-    line-height: 1.5;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding: 14px 16px 12px;
-    background: transparent;
-    border: solid 1px $cr-cyan;
-    color: $cr-cyan;
-
-    @media (max-width: 480px) {
-      width: 100%;
     }
   }
 }
