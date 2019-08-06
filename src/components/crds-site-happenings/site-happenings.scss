@@ -256,6 +256,7 @@ hr {
   -ms-flex-flow: row nowrap;
   flex-flow: row nowrap;
   overflow-x: scroll;
+  scroll-snap-type: x mandatory;
 
   @media (min-width: 768px) {
     flex-wrap: wrap;
@@ -272,6 +273,7 @@ hr {
     padding: 0 0.5rem;
     position: relative;
     max-width: 100%;
+    scroll-snap-align: start;
 
     &:first-child {
       padding-left: 0;
