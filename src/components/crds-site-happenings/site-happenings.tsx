@@ -310,10 +310,8 @@ export class SiteHappenings {
           </svg>
         </button>
         <div class="text-center push-top w-100">
-          <h2 class="component-header flush-bottom">Looks like you haven't set a Crossroads site</h2>
-          <p class="flush-top">
-            Let us know which site you attend and we will keep you up to date on everything going on.
-          </p>
+          <h2 class="component-header flush-bottom">Select your Crossroads location</h2>
+          <p class="flush-top">See what's happening in and around your community.</p>
           <div class="happenings-dropdown">
             <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
               <option disabled selected>
@@ -425,7 +423,7 @@ export class SiteHappenings {
             </h4>
             <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
               <select
-                class="happenings-dropdown-select font-family-base font-size-base"
+                class="happenings-dropdown-select font-family-base"
                 onInput={event => this.handleSiteSelection(event)}
               >
                 {this.sites.map(site => (

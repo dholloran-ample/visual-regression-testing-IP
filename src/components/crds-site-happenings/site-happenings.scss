@@ -47,6 +47,7 @@
   align-items: center;
 
   .happenings-dropdown-select {
+    font-size: 19px;
     position: relative;
     background: 0;
     border: 0;
@@ -55,6 +56,7 @@
     padding: 0.5rem 0;
     -webkit-appearance: none;
     -moz-appearance: none;
+    width: 100%;
 
     &:hover {
       cursor: pointer;
@@ -68,6 +70,19 @@
     }
   }
 
+  .dropdown-caret {
+    fill: $cr-cyan;
+    position: absolute;
+    width: 0.75rem;
+    right: 10px;
+    padding-top: 4px;
+    pointer-events: none; // allow clicks to fall through to select
+
+    @media (min-width: 480px) {
+      right: 0;
+    }
+  }
+
   .my-site-label {
     position: absolute;
     width: 100%;
@@ -75,32 +90,19 @@
     font-size: 0.875rem;
     color: $cr-gray-light;
   }
-
-  .dropdown-caret {
-    fill: $cr-cyan;
-    position: absolute;
-    width: 0.75rem;
-    right: 0;
-    padding-top: 4px;
-    pointer-events: none; // allow clicks to fall through to select
-  }
 }
 
 .site-select-message {
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 1);
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
   z-index: 1;
-
-  @media (min-width: 768px) {
-    align-items: center;
-  }
 
   .happenings-dropdown {
     justify-content: center;
@@ -254,6 +256,7 @@ hr {
   -ms-flex-flow: row nowrap;
   flex-flow: row nowrap;
   overflow-x: scroll;
+  scroll-snap-type: x mandatory;
 
   @media (min-width: 768px) {
     flex-wrap: wrap;
@@ -270,11 +273,12 @@ hr {
     padding: 0 0.5rem;
     position: relative;
     max-width: 100%;
+    scroll-snap-align: start;
 
     &:first-child {
       padding-left: 0;
     }
-  
+
     &:last-child {
       padding-right: 0;
     }
