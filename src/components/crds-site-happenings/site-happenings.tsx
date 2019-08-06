@@ -422,7 +422,7 @@ export class SiteHappenings {
             </h4>
             <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
               <select
-                class="happenings-dropdown-select font-family-base font-size-base"
+                class="happenings-dropdown-select font-family-base"
                 onInput={event => this.handleSiteSelection(event)}
               >
                 {this.sites.map(site => (
