@@ -47,4 +47,14 @@ export class Utils {
     };
     return subdomainMap[env] || env;
   }
+
+  /**
+   * Swaps the Contentful domain for Imgix on images
+   * @param {String} url
+   */
+  static imgixify(url) {
+    const ctflDomain = 'images.ctfassets.net/y3a9myzsdjan';
+    const imgixDomain = 'crds-media.imgix.net';
+    return url.replace(ctflDomain, imgixDomain);
+  }
 }
