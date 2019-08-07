@@ -1,1 +1,1 @@
-export default (props, children) => [...children];
+export default (_props, children) => [...children];
