@@ -19,7 +19,6 @@ export class SiteHappenings {
   private inViewCallback = (entries) => { 
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        console.log(entry.target, this.selectedSite);
         this.analytics.track('SiteHappeningsInView', {
           target: entry.target,
           selectedSite: this.selectedSite
@@ -27,6 +26,7 @@ export class SiteHappenings {
       }
     });
   };
+
   private observer = new IntersectionObserver(this.inViewCallback, {
     threshold: 1.0
   });
@@ -51,7 +51,6 @@ export class SiteHappenings {
    * then fetch MP data is applicable
    */
   componentWillLoad() {
-    this.selectedSite = 'Churchwide';
     return Promise.all([this.fetchMpData(), this.fetchContentfulData()]);
   }
 
@@ -148,8 +147,6 @@ export class SiteHappenings {
     tmpSelect.style.webkitAppearance = 'none';
     tmpOption.innerText = text;
     this.host.shadowRoot.appendChild(tmpSelect);
-    console.log(tmpSelect.clientWidth, tmpSelect.offsetWidth, tmpSelect.getBoundingClientRect());
-    // set the parent dropdown's width
     el.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
     this.host.shadowRoot.removeChild(tmpSelect);
   }
