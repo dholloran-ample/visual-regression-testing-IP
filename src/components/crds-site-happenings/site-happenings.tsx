@@ -77,7 +77,7 @@ export class SiteHappenings {
   handleSiteSelection(event) {
     this.selectedSite = event.target.value;
     this.setWidthBasedOnText(event.target, event.target.value);
-    this.analytics.track('HappeningSiteSelected', {
+    this.analytics.track('HappeningSiteFiltered', {
       site: this.selectedSite
     });
   }
@@ -93,7 +93,7 @@ export class SiteHappenings {
     this.defaultToUserSite(this.user.site);
     this.handleClose();
     this.updateUserSite(this.authToken, selectedSiteId);
-    this.analytics.track('HappeningSiteUpdated', {
+    this.analytics.track('HappeningMPSiteUpdated', {
       id: selectedSiteId,
       name: this.selectedSite
     });
