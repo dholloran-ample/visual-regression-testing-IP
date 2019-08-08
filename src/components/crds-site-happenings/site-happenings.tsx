@@ -16,7 +16,7 @@ export class SiteHappenings {
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
   private user: CrdsUser = { name: '', site: '' };
-  private inViewCallback = (entries) => { 
+  private inViewCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         this.analytics.track('HappeningComponentInView', {
@@ -110,16 +110,14 @@ export class SiteHappenings {
       userSite: this.user.site || 'logged out',
       selectedSite: this.selectedSite
     };
+    
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-      this.analytics.track('HappeningCardClicked', {
-        params
-      });
-    } else {
-      this.analytics.track('HappeningCardClicked', {
-        params
-      });
     }
+
+    this.analytics.track('HappeningCardClicked', {
+      params
+    });
   }
 
   /**
