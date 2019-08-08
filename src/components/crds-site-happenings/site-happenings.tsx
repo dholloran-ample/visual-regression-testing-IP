@@ -19,7 +19,7 @@ export class SiteHappenings {
   private inViewCallback = (entries) => { 
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        this.analytics.track('SiteHappeningsInView', {
+        this.analytics.track('HappeningComponentInView', {
           target: entry.target,
           selectedSite: this.selectedSite
         });
@@ -112,11 +112,11 @@ export class SiteHappenings {
     };
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-      this.analytics.track('HappeningClicked', {
+      this.analytics.track('HappeningCardClicked', {
         params
       });
     } else {
-      this.analytics.track('HappeningClicked', {
+      this.analytics.track('HappeningCardClicked', {
         params
       });
     }
