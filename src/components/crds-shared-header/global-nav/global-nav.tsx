@@ -36,6 +36,13 @@ export class GlobalNav {
 
   handleSignOut() {
     this.auth.signOut(this.authChangeCallback.bind(this));
+    if (!this.auth.authenticated) {
+      this.redirectToRoot();
+    }
+  }
+
+  redirectToRoot() {
+    window.location.replace(this.rootURL());
   }
 
   handleProfileClick(event) {

@@ -9,4 +9,13 @@ describe('<global-nav>', () => {
   it('should return root URL', () => {
     expect(this.component.rootURL()).toBe('https://int.crossroads.net');
   });
+
+  it('should redirect users following signout', () => {
+    this.component.auth = {
+      signOut: jest.fn()
+    };
+    const redirectToRoot = (this.component.redirectToRoot = jest.fn());
+    this.component.handleSignOut();
+    expect(redirectToRoot).toBeCalled();
+  });
 });
