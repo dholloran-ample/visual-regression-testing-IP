@@ -16,6 +16,20 @@ export class SiteHappenings {
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
   private user: CrdsUser = { name: '', site: '' };
+  private inViewCallback = entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        this.analytics.track('HappeningComponentInView', {
+          target: entry.target,
+          selectedSite: this.selectedSite
+        });
+      }
+    });
+  };
+
+  private observer = new IntersectionObserver(this.inViewCallback, {
+    threshold: 1.0
+  });
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
@@ -37,16 +51,12 @@ export class SiteHappenings {
    * then fetch MP data is applicable
    */
   componentWillLoad() {
-    this.selectedSite = 'Churchwide';
     return Promise.all([this.fetchMpData(), this.fetchContentfulData()]);
   }
 
   private fetchMpData() {
     if (this.authToken) {
-      return Promise.all([
-        this.fetchSitesData(this.authToken),
-        this.fetchUserData(this.authToken)
-      ]);
+      return Promise.all([this.fetchSitesData(this.authToken), this.fetchUserData(this.authToken)]);
     }
   }
 
@@ -57,6 +67,7 @@ export class SiteHappenings {
   componentDidRender() {
     this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
+    this.observer.observe(this.host);
   }
 
   /**
@@ -66,6 +77,9 @@ export class SiteHappenings {
   handleSiteSelection(event) {
     this.selectedSite = event.target.value;
     this.setWidthBasedOnText(event.target, event.target.value);
+    this.analytics.track('HappeningSiteFiltered', {
+      site: this.selectedSite
+    });
   }
 
   /**
@@ -79,12 +93,11 @@ export class SiteHappenings {
     this.defaultToUserSite(this.user.site);
     this.handleClose();
     this.updateUserSite(this.authToken, selectedSiteId);
-    this.analytics.track('HappeningSiteUpdated', {
+    this.analytics.track('HappeningMPSiteUpdated', {
       id: selectedSiteId,
       name: this.selectedSite
     });
   }
-
   /**
    * Receive input from user clicks on happenings
    * cards
@@ -97,16 +110,14 @@ export class SiteHappenings {
       userSite: this.user.site || 'logged out',
       selectedSite: this.selectedSite
     };
+    
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-      this.analytics.track('HappeningClicked', {
-        params
-      });
-    } else {
-      this.analytics.track('HappeningClicked', {
-        params
-      });
     }
+
+    this.analytics.track('HappeningCardClicked', {
+      params
+    });
   }
 
   /**
@@ -127,11 +138,14 @@ export class SiteHappenings {
     let styles = window.getComputedStyle(el);
     tmpSelect.style.visibility = 'hidden';
     tmpSelect.appendChild(tmpOption);
+    tmpSelect.style.margin = styles.margin;
+    tmpSelect.style.padding = styles.padding;
     tmpSelect.style.fontSize = styles.fontSize;
+    tmpSelect.style.fontFamily = styles.fontFamily;
+    tmpSelect.style.webkitAppearance = 'none';
     tmpOption.innerText = text;
     this.host.shadowRoot.appendChild(tmpSelect);
-    // set the parent dropdown's width
-    el.parentNode.style.width = `${tmpSelect.offsetWidth}px`;
+    el.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
     this.host.shadowRoot.removeChild(tmpSelect);
   }
 
@@ -176,9 +190,7 @@ export class SiteHappenings {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
-        siteName == (null || 'Not site specific') 
-          ? this.renderSetSiteModal() 
-          : this.defaultToUserSite(this.user.site);
+        siteName == (null || 'Not site specific') ? this.renderSetSiteModal() : this.defaultToUserSite(this.user.site);
       });
   }
 
@@ -210,7 +222,7 @@ export class SiteHappenings {
         this.mpSites = success.data.data.sites;
         this.renderSetSiteOptions(this.mpSites);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   /**
@@ -251,7 +263,7 @@ export class SiteHappenings {
   fetchContentfulData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
-      }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
     return axios
       .get(apiUrl, {
         params: {
@@ -311,7 +323,7 @@ export class SiteHappenings {
         </button>
         <div class="text-center push-top w-100">
           <h2 class="component-header flush-bottom">Select your Crossroads location</h2>
-          <p class="flush-top">See what's happening in and around your community.</p>
+          <p class="flush-half-top">See what's happening in and around your community.</p>
           <div class="happenings-dropdown">
             <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
               <option disabled selected>
