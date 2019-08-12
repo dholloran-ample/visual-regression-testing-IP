@@ -36,9 +36,7 @@ export class GlobalNav {
 
   handleSignOut() {
     this.auth.signOut(this.authChangeCallback.bind(this));
-    if (!this.auth.authenticated) {
-      this.redirectToRoot();
-    }
+    this.redirectToRoot();
   }
 
   redirectToRoot() {
