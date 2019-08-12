@@ -110,7 +110,7 @@ export class SiteHappenings {
       userSite: this.user.site || 'logged out',
       selectedSite: this.selectedSite
     };
-    
+
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
     }
@@ -204,7 +204,7 @@ export class SiteHappenings {
         this.gqlUrl,
         {
           query: `
-          { 
+          {
             sites(filter: "Available_Online = 1") {
               name
               id
@@ -324,7 +324,7 @@ export class SiteHappenings {
         <div class="text-center push-top w-100">
           <h2 class="component-header flush-bottom">Select your Crossroads location</h2>
           <p class="flush-half-top">See what's happening in and around your community.</p>
-          <div class="happenings-dropdown">
+          <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
             <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
               <option disabled selected>
                 Choose a site
@@ -433,7 +433,7 @@ export class SiteHappenings {
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
               happening at crossroads
             </h4>
-            <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
+            <div class="happenings-dropdown" data-automation-id="happenings-filter">
               <select
                 class="happenings-dropdown-select font-family-base"
                 onInput={event => this.handleSiteSelection(event)}
