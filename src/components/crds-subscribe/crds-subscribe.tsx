@@ -1,5 +1,5 @@
 import { Component, State, Prop, h } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import Fragment from '../../shared/fragment';
 import iframeResizer from 'iframe-resizer';
 
 @Component({
