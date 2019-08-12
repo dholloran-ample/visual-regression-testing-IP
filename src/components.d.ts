@@ -40,6 +40,9 @@ export namespace Components {
     'env': string;
     'src': string;
   }
+  interface CrdsSiteHappenings {
+    'authToken': string;
+  }
   interface CrdsSnailTrail {
     'env': string;
     'name': string;
@@ -125,6 +128,12 @@ declare global {
     new (): HTMLCrdsSharedHeaderElement;
   };
 
+  interface HTMLCrdsSiteHappeningsElement extends Components.CrdsSiteHappenings, HTMLStencilElement {}
+  var HTMLCrdsSiteHappeningsElement: {
+    prototype: HTMLCrdsSiteHappeningsElement;
+    new (): HTMLCrdsSiteHappeningsElement;
+  };
+
   interface HTMLCrdsSnailTrailElement extends Components.CrdsSnailTrail, HTMLStencilElement {}
   var HTMLCrdsSnailTrailElement: {
     prototype: HTMLCrdsSnailTrailElement;
@@ -189,6 +198,7 @@ declare global {
     'crds-modal': HTMLCrdsModalElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-shared-header': HTMLCrdsSharedHeaderElement;
+    'crds-site-happenings': HTMLCrdsSiteHappeningsElement;
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
@@ -233,6 +243,9 @@ declare namespace LocalJSX {
   interface CrdsSharedHeader extends JSXBase.HTMLAttributes<HTMLCrdsSharedHeaderElement> {
     'env'?: string;
     'src'?: string;
+  }
+  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {
+    'authToken'?: string;
   }
   interface CrdsSnailTrail extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailElement> {
     'env'?: string;
@@ -297,6 +310,7 @@ declare namespace LocalJSX {
     'crds-modal': CrdsModal;
     'crds-shared-footer': CrdsSharedFooter;
     'crds-shared-header': CrdsSharedHeader;
+    'crds-site-happenings': CrdsSiteHappenings;
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;

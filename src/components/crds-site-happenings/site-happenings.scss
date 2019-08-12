@@ -1,0 +1,365 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.relative {
+  position: relative;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.card-skeleton {
+  svg {
+    height: auto;
+    width: 100%;
+  }
+}
+
+.happenings-dropdown-container {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.happenings-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .happenings-dropdown-select {
+    font-size: 19px;
+    position: relative;
+    background: 0;
+    border: 0;
+    margin: 0;
+    color: $cr-cyan;
+    padding: 0.5rem 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      outline: 0;
+    }
+
+    @media (min-width: 480px) {
+      padding: .5rem;
+    }
+  }
+
+  .dropdown-caret {
+    fill: $cr-cyan;
+    position: absolute;
+    width: 0.75rem;
+    right: 0;
+    padding-top: 4px;
+    pointer-events: none; // allow clicks to fall through to select
+
+    @media (min-width: 480px) {
+      right: 6px;
+    }
+  }
+
+  .my-site-label {
+    position: absolute;
+    width: 100%;
+    left: calc(100% + 0.625rem);
+    font-size: 0.875rem;
+    color: $cr-gray-light;
+  }
+}
+
+.site-select-message {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1);
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  z-index: 1;
+
+  .happenings-dropdown {
+    justify-content: center;
+
+    @media (min-width: 768px) {
+      margin: 0 auto;
+      width: 33.333333%;
+    }
+
+    .dropdown {
+      display: inline-block;
+      font-weight: 300;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1;
+      white-space: nowrap;
+      vertical-align: middle;
+      touch-action: manipulation;
+      cursor: pointer;
+      background-image: none;
+      font-size: 16px;
+      line-height: 1.5;
+      border-radius: 4px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      padding: 10px;
+      background: transparent;
+      border: solid 1px $cr-cyan;
+      color: $cr-cyan;
+      -webkit-appearance: none;
+
+      &:focus {
+        outline: 0;
+      }
+
+      @media (max-width: 480px) {
+        width: 100%;
+      }
+    }
+
+    .dropdown-caret {
+      right: 20px;
+    }
+  }
+
+  .close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(187, 187, 187, 0.6);
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-weight: unset;
+    opacity: 1;
+    padding: 0;
+    cursor: pointer;
+    border: 0;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    svg {
+      width: 10px;
+      height: 10px;
+      stroke: white;
+    }
+  }
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+// crds-styles
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid #e7e7e7;
+}
+
+.font-family-base {
+  font-family: 'acumin-pro', helvetica, arial, sans-serif !important;
+  font-weight: 300 !important;
+}
+
+.text-gray-light {
+  color: #979797 !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flush {
+  margin: 0 !important;
+}
+
+.font-size-base {
+  font-size: 16px !important;
+  @media (min-width: 480px) {
+    font-size: 19px !important;
+  }
+}
+
+.flush-bottom {
+  margin-bottom: 0 !important;
+}
+
+.flush-top {
+  margin-top: 0 !important;
+}
+
+.push-half-bottom {
+  margin-bottom: 12px !important;
+}
+
+.push-top {
+  margin-top: 24px;
+}
+
+.card-deck .card {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.card-deck--expanded-layout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: row nowrap;
+  -ms-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+
+  @media (min-width: 768px) {
+    flex-wrap: wrap;
+  }
+
+  .card,
+  .card-skeleton {
+    cursor: auto;
+    -webkit-flex: 1 0 270px;
+    -ms-flex: 1 0 270px;
+    flex: 1 0 270px;
+    flex-basis: 270px;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+    position: relative;
+    max-width: 100%;
+    scroll-snap-align: start;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    @media (min-width: 480px) {
+      max-width: 50%;
+    }
+
+    @media (min-width: 768px) {
+      max-width: 33.333333%;
+    }
+
+    @media (min-width: 960px) {
+      max-width: 25%;
+    }
+
+    & a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .card-text {
+      font-size: 0.9375rem;
+      position: relative;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .card-block {
+      font-family: $base-font-face;
+      padding: 1rem;
+      & .component-header {
+        line-height: 0.95;
+      }
+    }
+  }
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.card-title--overlap {
+  background-color: #fff;
+  display: inline-block;
+  font-family: 'acumin-pro-extra-condensed', sans-serif;
+  font-size: 2.125rem;
+  margin: -2rem -0.5rem 0;
+  padding: 0.25rem 0.5rem;
+  position: relative;
+
+  &::after {
+    color: #979797;
+    content: '\2014';
+    display: block;
+    font-family: 'acumin-pro', helvetica, arial, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 100;
+    line-height: 1.5;
+  }
+}
+
+.card-title {
+  color: #4d4d4d;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.component-header {
+  font-family: 'acumin-pro-extra-condensed', sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.1;
+  text-transform: uppercase;
+}

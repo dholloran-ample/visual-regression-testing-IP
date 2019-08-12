@@ -13,6 +13,7 @@ The following components are made available via this library. Please see the REA
 - [`<crds-shared-header />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-shared-header)
 - [`<crds-snail-trail />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-snail-trail)
 - [`<crds-subscribe />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-subscribe)
+- [`<crds-site-happenings />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-site-happenings)
 
 ## Environments
 
@@ -24,6 +25,7 @@ You need to export following variables when building or running the project...
 | `CONTENTFUL_SPACE_ID`        | Contentful Space ID                           |
 | `CONTENTFUL_ENV`             | Contentful environment (defaults to `master`) |
 | `CRDS_INTERACTIONS_ENDPOINT` | Service endpoint                              |
+| `CRDS_GQL_ENDPOINT`          | GraphQL endpoint                              |
 
 ## License
 

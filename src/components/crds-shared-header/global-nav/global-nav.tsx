@@ -21,6 +21,9 @@ export class GlobalNav {
   @Prop() profileData: JSON;
 
   @State() authenticated: boolean = false;
+  @State() offset: number;
+
+  private element: HTMLElement;
 
   auth: any = {};
 
@@ -28,6 +31,10 @@ export class GlobalNav {
     if (!this.config || this.auth.config) return;
     this.auth = new Auth(Object.assign(this.config, { env: this.env }));
     this.auth.listen(this.authChangeCallback.bind(this));
+  }
+
+  componentDidLoad() {
+    this.offset = this.element.getBoundingClientRect().top + window.scrollY;
   }
 
   authChangeCallback() {
@@ -92,7 +99,11 @@ export class GlobalNav {
 
     return (
       <Fragment>
-        <header class={navIsShowing ? 'nav-is-showing' : ''}>
+        <header
+          ref={el => (this.element = el)}
+          class={navIsShowing ? 'nav-is-showing' : ''}
+          style={{ top: `${this.profileNavIsShowing || this.giveNavIsShowing ? this.offset : 0}px` }}
+        >
           <div>
             <div class="global-nav-items">
               <div class="global-actions">

@@ -11,6 +11,10 @@ header {
 
   &.nav-is-showing {
     position: fixed;
+
+    @supports (position: sticky) {
+      position: sticky;
+    }
   }
 
   > div {
