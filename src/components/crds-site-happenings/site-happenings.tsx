@@ -73,6 +73,10 @@ export class SiteHappenings {
    * modal
    */
   handleSetDefaultSite(event) {
+    console.log(`DEBUG event.target.value ${event.target.value}\nevent.target.selectedIndex ${event.target.selectedIndex}\n
+    event.target.options ${JSON.stringify(event.target.options)}
+    event.target.options[event.target.selectedIndex].text ${event.target.options[event.target.selectedIndex].text}`);//DEBUG
+
     const selectedSiteId = event.target.value;
     this.selectedSite = event.target.options[event.target.selectedIndex].text;
     this.user = { ...this.user, site: this.selectedSite };
@@ -121,7 +125,7 @@ export class SiteHappenings {
    * sizing dropdowns to the largest
    * string in the list
    */
-  setWidthBasedOnText(el, text) {
+  ORIGINALsetWidthBasedOnText(el, text) {
     let tmpSelect = document.createElement('select');
     let tmpOption = document.createElement('option');
     let styles = window.getComputedStyle(el);
@@ -133,6 +137,28 @@ export class SiteHappenings {
     // set the parent dropdown's width
     el.parentNode.style.width = `${tmpSelect.offsetWidth}px`;
     this.host.shadowRoot.removeChild(tmpSelect);
+  }
+
+  setWidthBasedOnText(el, text, parent = this.host.shadowRoot) {
+    console.log('DEBUG using new setWidthBasedOnText with parent given');
+    console.log(`host info ${this.host}`)
+    let tmpOption = document.createElement('option');
+    tmpOption.innerText = text;
+
+    let tmpSelect = document.createElement('select');
+    tmpSelect.style.visibility = 'hidden';
+    tmpSelect.appendChild(tmpOption);
+
+    let styles = window.getComputedStyle(el);
+    tmpSelect.style.fontSize = styles.fontSize;
+
+    console.log(`DEBUG what's offset before shadowrooting? ${tmpSelect.offsetWidth}`);
+    //let parent = this.host.shadowRoot;
+    parent.appendChild(tmpSelect);
+    // set the parent dropdown's width
+    el.parentNode.style.width = `${tmpSelect.offsetWidth}px`;
+    console.log(`DEBUG what's offset after shadowrooting? ${tmpSelect.offsetWidth}`);
+    parent.removeChild(tmpSelect);
   }
 
   /**
@@ -176,10 +202,11 @@ export class SiteHappenings {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
-        siteName == (null || 'Not site specific') 
-          ? this.renderSetSiteModal() 
+        siteName == (null || 'Not site specific')
+          ? this.renderSetSiteModal()
           : this.defaultToUserSite(this.user.site);
-      });
+      })
+      .catch(err => console.log(err));
   }
 
   /**
@@ -192,7 +219,7 @@ export class SiteHappenings {
         this.gqlUrl,
         {
           query: `
-          { 
+          {
             sites(filter: "Available_Online = 1") {
               name
               id
@@ -273,7 +300,8 @@ export class SiteHappenings {
       })
       .then(success => {
         this.setContentfulData(success.data.data.promoCollection.items);
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   /**
