@@ -9,7 +9,7 @@ export interface CrdsLifeStage {
   title: string;
   description: string;
   image: CrdsImage;
-  content: CrdsEntry[];
+  total: number;
 }
 
 export interface CrdsEntry {

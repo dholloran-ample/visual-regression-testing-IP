@@ -60,11 +60,7 @@ export class LifeStages {
                 }
                 description
                 contentCollection{
-                  items {
-                    sys {
-                      id
-                    }
-                  }
+                  total
                 }
               }
             }
