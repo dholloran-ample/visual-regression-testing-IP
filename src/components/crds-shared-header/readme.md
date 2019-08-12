@@ -31,6 +31,7 @@ graph TD;
   crds-shared-header --> nav-ctas
   global-nav --> profile-nav
   global-nav --> give-nav
+  profile-nav --> nav-link
   style crds-shared-header fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
