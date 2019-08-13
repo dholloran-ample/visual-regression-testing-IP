@@ -7,6 +7,7 @@ export interface CrdsUser {
 
 export interface CrdsLifeStage {
   title: string;
+  slug: string;
   description: string;
   image: CrdsImage;
   total: number;
