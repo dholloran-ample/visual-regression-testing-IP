@@ -27,9 +27,12 @@ export class SiteHappenings {
     });
   };
 
-  private observer = new IntersectionObserver(this.inViewCallback, {
-    threshold: 1.0
-  });
+  private observer = {observe(fake){
+    console.log(`faking observer: ${fake}`);
+  }}; //TODO re-add this before commit and figure out how to make it work
+  // new IntersectionObserver(this.inViewCallback, {
+  //   threshold: 1.0
+  // });
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
@@ -190,196 +193,42 @@ export class SiteHappenings {
     this.host.shadowRoot.removeChild(tmpSelect);
   }
 
-  // setWidthBasedOnText(el, text, parent = this.host.shadowRoot) {
-  //   console.log('DEBUG using new setWidthBasedOnText with parent given');
-  //   console.log(`host info ${this.host}`)
-  //   let tmpOption = document.createElement('option');
-  //   tmpOption.innerText = text;
-
-  //   let tmpSelect = document.createElement('select');
-  //   tmpSelect.style.visibility = 'hidden';
-  //   tmpSelect.appendChild(tmpOption);
-
-  //   let styles = window.getComputedStyle(el);
-  //   tmpSelect.style.fontSize = styles.fontSize;
-
-  //   console.log(`DEBUG what's offset before shadowrooting? ${tmpSelect.offsetWidth}`);
-  //   //let parent = this.host.shadowRoot;
-  //   parent.appendChild(tmpSelect);
-  //   // set the parent dropdown's width
-  //   el.parentNode.style.width = `${tmpSelect.offsetWidth}px`;
-  //   console.log(`DEBUG what's offset after shadowrooting? ${tmpSelect.offsetWidth}`);
-  //   parent.removeChild(tmpSelect);
-  // }
-
   /**
    * Update happenings cards to current user's
    * selected site
+   * WARNING this'll trigger a re-render of the component
    */
-  defaultToUserSite(site) {
-    if (site == 'Not site specific' || site == 'I do not attend Crossroads' || site == 'Anywhere' || site == null) {
+  //WAS defaultToUserSite
+  setSelectedSite(siteName) {
+    //was || site == null
+    if (typeof siteName !== "string" || siteName == 'Not site specific' || siteName == 'I do not attend Crossroads' || siteName == 'Anywhere') {
       this.selectedSite = 'Churchwide';
     } else {
-      this.selectedSite = site;
+      this.selectedSite = siteName;
     }
   }
 
   /**
-   * get user info from MP
-   * via graphQL
+   * Stores all promos with audiences
+   * @param promoList
    */
-  fetchUserData(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          {
-            user {
-              site {
-                id
-                name
-              }
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        let mpUser = success.data.data.user;
-        let siteName = mpUser.site && mpUser.site.name;
-        this.user = { ...this.user, site: siteName };
-        siteName == (null || 'Not site specific')
-          ? this.renderSetSiteModal()
-          : this.defaultToUserSite(this.user.site);
-      })
-      .catch(err => console.log(err));
+  setHappenings(promoList) {
+    this.happenings = promoList.filter(promo => promo.targetAudience !== null);
   }
 
   /**
-   * Get sites list from MP
-   * via graphQL
+   * Stores unique contentful sites based on stored happenings
    */
-  fetchSitesData(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          {
-            sites(filter: "Available_Online = 1") {
-              name
-              id
-            }
-          }
-          `
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        this.mpSites = success.data.data.sites;
-        this.renderSetSiteOptions(this.mpSites);
-      })
-      .catch(err => console.error(err));
+  setContentfulSites() {
+    const uniqueAudiences = new Set<string>();
+    this.happenings.forEach(promo => promo.targetAudience.forEach(audience => uniqueAudiences.add(audience)));
+    this.cflSites = Array.from<string>(uniqueAudiences).sort((a, b) => (a > b ? 1 : b > a ? -1 : 0));
   }
-
-  /**
-   * Update a user's site
-   * in MP via graphQL
-   */
-  updateUserSite(token, siteId) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          mutation {
-            setSite(siteId: ${siteId}) {
-              site {
-                id
-                name
-              }
-            }
-          }
-          `
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        console.log('updated site', success);
-      })
-      .catch(err => console.error(err));
-  }
-
-  /**
-   * Get 'promos' content
-   */
-  fetchContentfulData() {
-    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
-      process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
-    return axios
-      .get(apiUrl, {
-        params: {
-          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
-          query: `{
-            promoCollection {
-              items {
-                title
-                image {
-                  url
-                }
-                description
-                targetAudience
-                linkUrl
-              }
-            }
-          }`
-        }
-      })
-      .then(success => {
-        this.setContentfulData(success.data.data.promoCollection.items);
-      })
-      .catch(err => console.error(err));
-  }
-
-  /**
-   * Create cards for each promo
-   */
-  setContentfulData(data) {
-    this.happenings = data.filter(promo => promo.targetAudience !== null);
-    this.renderHappenings(this.happenings);
-    let audiences = [];
-    for (let i = 0; i < this.happenings.length; i += 1) {
-      if (this.happenings[i].targetAudience) {
-        for (let x = 0; x < this.happenings[i].targetAudience.length; x += 1) {
-          audiences.push(this.happenings[i].targetAudience[x]);
-        }
-      }
-    }
-
-    let unique_audiences = audiences.filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
-    this.cflSites = unique_audiences.sort((a, b) => (a > b ? 1 : b > a ? -1 : 0));
-  }
-
 
   /**
    * map list of cards filtered by dropdown
    */
+  //TODO does this really need a parameter? is always using this.happenings?
   renderHappenings(happenings) {
     if (!happenings.length) return this.renderHappeningsSkeleton();
     return happenings
@@ -390,7 +239,7 @@ export class SiteHappenings {
             <img
               alt={obj.title}
               class="img-responsive"
-              src={Utils.imgixify(obj.image.url) + `?auto=format&w=400&h=300&fit=crop`}
+              src={Utils.imgixify(obj.image ? obj.image.url : '') + `?auto=format&w=400&h=300&fit=crop`} //TODO this handles unpublished images. make sure this handles removed images too.
             />
           </a>
           <div class="card-block">
@@ -399,7 +248,7 @@ export class SiteHappenings {
                 {obj.title}
               </a>
             </h4>
-            <div class="card-text" innerHTML={marked(obj.description)} />
+            <div class="card-text" innerHTML={marked(obj.description || '')} />
           </div>
         </div>
       ));
@@ -438,6 +287,15 @@ export class SiteHappenings {
 
   //DEBUG select site methods - user dosn't have site yet
 
+  /**
+   * Set mpSites after sorting and removing invalid/excluded sites
+   * @param sites
+   */
+  //TODO HERE convert fetchSitesData to use this, remove filterAndSortSites and (maybe) fold renderSetSiteOptions into the bigger render f'n
+  setMPSites(sites) {
+    const allowedSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
+    this.mpSites = allowedSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+  }
 
   /**
    * Returns sorted list of sites after removing invalid/excluded sites
@@ -477,7 +335,7 @@ export class SiteHappenings {
     //Update class's values - do these trigger anything?
     this.selectedSite = event.target.options[event.target.selectedIndex].text;
     this.user = { ...this.user, site: this.selectedSite };
-    this.defaultToUserSite(this.user.site); //NOTE: can the first this.selectedSite = ? step be wrapped into this?
+    this.setSelectedSite(this.user.site); //NOTE: can the first this.selectedSite = ? step be wrapped into this?
 
     this.handleSetSiteModalClose();
 
@@ -538,5 +396,141 @@ export class SiteHappenings {
       </div>
     </div>
     );
+  }
+
+
+  //DEBUG I/O via graphql
+/**
+   * get user info from MP
+   * via graphQL
+   */
+  fetchUserData(token) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+          {
+            user {
+              site {
+                id
+                name
+              }
+            }
+          }`
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        let mpUser = success.data.data.user;
+        let siteName = mpUser.site && mpUser.site.name;
+        this.user = { ...this.user, site: siteName };
+        siteName == (null || 'Not site specific')
+          ? this.renderSetSiteModal()
+          : this.setSelectedSite(this.user.site);
+      })
+      .catch(err => console.log(err));
+  }
+
+  /**
+   * Get sites list from MP
+   * via graphQL
+   */
+  fetchSitesData(token) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+          {
+            sites(filter: "Available_Online = 1") {
+              name
+              id
+            }
+          }
+          `
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        this.mpSites = success.data.data.sites;
+        this.renderSetSiteOptions(this.mpSites);
+      })
+      .catch(err => console.error(err));
+  }
+
+  /**
+   * Get 'promos' content
+   */
+  fetchContentfulData() {
+    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
+      process.env.CONTENTFUL_SPACE_ID
+    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+    return axios
+      .get(apiUrl, {
+        params: {
+          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
+          query: `{
+            promoCollection {
+              items {
+                title
+                image {
+                  url
+                }
+                description
+                targetAudience
+                linkUrl
+              }
+            }
+          }`
+        }
+      })
+      .then(success => {
+        const promoList = success.data.data.promoCollection.items;
+        this.setHappenings(promoList);
+        this.setContentfulSites();
+        this.renderHappenings(this.happenings);
+      })
+      .catch(err => console.error(err));
+  }
+
+   /**
+   * Update a user's site
+   * in MP via graphQL
+   */
+  updateUserSite(token, siteId) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+          mutation {
+            setSite(siteId: ${siteId}) {
+              site {
+                id
+                name
+              }
+            }
+          }
+          `
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        console.log('updated site', success);
+      })
+      .catch(err => console.error(err));
   }
 }
