@@ -52,7 +52,7 @@ export class ProfileMenu {
       if (typeof el != 'string')
         return (
           <li class={topLevel.value ? '' : 'top-level'}>
-            <nav-link href={el.href} automation-id={el['automation-id']} onSignOutClicked={e => this.handleClick(e)}>
+            <nav-link href={el.href} automation-id={el['automation-id']} onSignOutClicked={this.handleClick.bind(this)}>
               {el.title}
             </nav-link>
           </li>

@@ -27,9 +27,9 @@ export class NavigationLink {
   })
   signOutClicked: EventEmitter;
 
-  onClick(link: NavigationLink) {
+  onClick() {
     if (this.automationId === 'sh-sign-out') {
-      this.signOutClicked.emit(link);
+      this.signOutClicked.emit(this);
     } else {
       window.location.href = this.href;
     }
@@ -37,7 +37,7 @@ export class NavigationLink {
 
   render() {
     return (
-      <a href={this.href} data-automation-id={this.automationId} onClick={this.onClick.bind(this, this)}>
+      <a href={this.href} data-automation-id={this.automationId} onClick={this.onClick.bind(this)}>
         <slot />
       </a>
     );
