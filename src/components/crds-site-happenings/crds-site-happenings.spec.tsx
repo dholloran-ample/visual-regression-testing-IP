@@ -2,7 +2,7 @@ import { SiteHappenings } from './site-happenings';
 import { newSpecPage } from '@stencil/core/dist/testing';
 
 describe.skip('<crds-site-happenings>', () => {
-  beforeEach(() => { //TODO should this be beforeEach?
+  beforeEach(() => {
     this.happenings = new SiteHappenings();
   });
 
