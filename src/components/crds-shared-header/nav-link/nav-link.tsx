@@ -21,18 +21,23 @@ export class NavigationLink {
 
   @Prop() href: string;
   @Prop() automationId: string;
-  @Event() signOutClicked: EventEmitter;
+  @Event({
+    eventName: 'signOutClicked',
+    bubbles: true
+  })
+  signOutClicked: EventEmitter;
 
-  onClick(e, link: NavigationLink) {
+  onClick(link: NavigationLink) {
     if (this.automationId === 'sh-sign-out') {
       this.signOutClicked.emit(link);
-      e.preventDefault();
+    } else {
+      window.location.href = this.href;
     }
   }
 
   render() {
     return (
-      <a href={this.href} data-automation-id={this.automationId} onClick={this.onClick.bind(this)}>
+      <a href={this.href} data-automation-id={this.automationId} onClick={this.onClick.bind(this, this)}>
         <slot />
       </a>
     );

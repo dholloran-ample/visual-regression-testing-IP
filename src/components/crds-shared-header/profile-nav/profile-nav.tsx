@@ -16,7 +16,6 @@ export class ProfileMenu {
     return `${process.env.CRDS_BASE_URL}${path}`;
   }
 
-  @Listen('signOutClicked')
   handleClick(e) {
     if (typeof this.onSignOut == 'function') {
       this.onSignOut();
@@ -53,7 +52,7 @@ export class ProfileMenu {
       if (typeof el != 'string')
         return (
           <li class={topLevel.value ? '' : 'top-level'}>
-            <nav-link href={el.href} automation-id={el['automation-id']}>
+            <nav-link href={el.href} automation-id={el['automation-id']} onSignOutClicked={e => this.handleClick(e)}>
               {el.title}
             </nav-link>
           </li>
