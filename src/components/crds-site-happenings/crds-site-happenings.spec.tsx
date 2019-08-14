@@ -1,50 +1,12 @@
 import { SiteHappenings } from './site-happenings';
 import { newSpecPage } from '@stencil/core/dist/testing';
 
-describe('<crds-site-happenings>', () => {
+describe.skip('<crds-site-happenings>', () => {
   beforeEach(() => { //TODO should this be beforeEach?
     this.happenings = new SiteHappenings();
   });
 
-//TODO host is the element the component it attached to, but is the component naturally scoped to itself?
-// is there something just within the component class we could reference?
-  describe('Tests things', () => {
-    it('mySpecPage', async () => {
-      const page = await newSpecPage({
-        html: `<crds-site-happenings></crds-site-happenings>`,
-        components: [SiteHappenings],
-        supportsShadowDom: false
-      });
-
-      // page.root.shadowRoot.querySelector('[data-automation-id="happenings-dropdown"] > select');
-
-      expect(page.root).toEqualHtml('<crds-site-happenings></crds-site-happenings>');
-    });
-
-    it.skip('Checks setWidthBasedOnText()', () => {
-      console.log(`spec host info ${this.happenings.host}`)
-      // const elem = this.happenings.host //.querySelector('.happenings-dropdown-select')
-      // // console.log(`parent width ${elem.parentNode.style.width}`);
-      // console.log(`what is? ${Object.keys(elem)}`);
-      const fakeDiv = document.createElement('div');
-      const fakeSelect = document.createElement('select');
-      fakeDiv.appendChild(fakeSelect);
-      console.log(`initial div font ${fakeDiv.style.fontSize}`);
-      console.log(`initial select font ${fakeSelect.style.fontSize}`);
-
-      this.happenings.setWidthBasedOnText(fakeSelect, 'Oakley', document);
-
-      console.log(`initial div font ${fakeDiv.style.fontSize}`);
-      console.log(`initial select font ${fakeSelect.style.fontSize}`);
-    });
-  });
-
-
-  it.skip('should default to Churchwide for logged out users', () => {
-    expect(this.happenings.selectedSite).toEqual('Churchwide');
-    console.log(Object.keys(this.happenings));
-  });
-
+  //Working
   describe.skip('Tests defaultToUserSite()', () => {
     const siteNotSet = ['Not site specific', 'I do not attend Crossroads', 'Anywhere', null, undefined]
     siteNotSet.forEach(site => {
@@ -55,8 +17,10 @@ describe('<crds-site-happenings>', () => {
     });
 
     //TODO - also tests trash values. What happens to other methods if site is trash?
-    const userSiteSet = ['Oakley', 'Downtown Lexington', 'Fake Site', ['Array Site'], { name: 'Object Site' }]
-    userSiteSet.forEach(site => {
+    const realSites = ['Oakley', 'Downtown Lexington']
+    const fakeSites = ['Fake Site', ['Array Site'], { name: 'Object Site' }]
+    const userSites = fakeSites.concat(realSites);
+    userSites.forEach(site => {
       it(`defaultToUserSite(${site}) should set selectedSite to what was given`, () => {
         this.happenings.defaultToUserSite(site);
         expect(this.happenings.selectedSite).toEqual(site);
@@ -64,50 +28,188 @@ describe('<crds-site-happenings>', () => {
     });
   });
 
+  //NOTE graphql returns json, value can be a string in double quotes, or a number, or true or false or null. (or array/object)
+  describe('Tests filterAndSortSites()', () => {
+    it('Checks sites are sorted by name', () => {
+      const given = [
+        { "name": "Oakley", "id": "1" },
+        { "name": "Mason", "id": "100" },
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": "Mason", "id": "6" }
+      ];
 
-  //TODO need to low level first?
-  describe.skip('Tests handleSetDefaultSite()', () => {
-    //Outline - what's used
-    const event = {
-      target: {
-        value: 'something?',
-        selectedIndex: 'int? string?',
-        options: [{ text: 'value?' }]
+      const expected = [
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": "Mason", "id": "100" },
+        { "name": "Mason", "id": "6" },
+        { "name": "Oakley", "id": "1" }
+      ]
+
+      const goodSites = this.happenings.filterAndSortSites(given);
+
+      expect(Array.isArray(goodSites)).toBe(true);
+      expect(goodSites.length).toEqual(expected.length);
+
+      goodSites.forEach(function (site, i) {
+        expect(site.id).toEqual(expected[i].id);
+        expect(site.name).toEqual(expected[i].name);
+      });
+    });
+
+    //null, boolean and int are valid JSON values
+    it("Checks non-string site names are removed", () => {
+      const given = [
+        { "name": "Mason", "id": "6" },
+        { "name": null, "id": "1" },
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": true, "id": "111" },
+        { "name": false, "id": "11" },
+        { "name": 12455, "id": "1111" },
+        { "name": undefined, "id": "1" }
+      ];
+
+      const expected = [
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": "Mason", "id": "6" }
+      ]
+
+      const goodSites = this.happenings.filterAndSortSites(given);
+
+      expect(Array.isArray(goodSites)).toBe(true);
+      expect(goodSites.length).toEqual(expected.length);
+
+      goodSites.forEach(function (site, i) {
+        expect(site.id).toEqual(expected[i].id);
+        expect(site.name).toEqual(expected[i].name);
+      });
+    });
+
+    it("Checks excluded site names are removed", () => {
+      const given = [
+        { "name": "Oakley", "id": "1" },
+        { "name": "Not site specific", "id": "123" },
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": "Xroads Church", "id": "1111" }
+      ];
+
+      const expected = [
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": "Oakley", "id": "1" },
+      ]
+
+      const goodSites = this.happenings.filterAndSortSites(given);
+
+      expect(Array.isArray(goodSites)).toBe(true);
+      expect(goodSites.length).toEqual(expected.length);
+
+      goodSites.forEach(function (site, i) {
+        expect(site.id).toEqual(expected[i].id);
+        expect(site.name).toEqual(expected[i].name);
+      });
+    });
+
+    //Scenario is possible if retrievning MP sites fails
+    it("Checks empty array is returned if given", () => {
+      const given = [];
+      const goodSites = this.happenings.filterAndSortSites(given);
+
+      expect(Array.isArray(goodSites)).toBe(true);
+      expect(goodSites.length).toEqual(0);
+    });
+  });
+
+  describe('Tests renderSetSiteOptions()', () => {
+    const expectedSites = {
+      "data":
+      {
+        "sites":
+          [
+            { "name": "Oakley", "id": "1" },
+            { "name": "I do not attend Crossroads", "id": "2" },
+            { "name": "Mason", "id": "6" },
+            { "name": "Florence", "id": "7" },
+            { "name": "West Side", "id": "8" },
+            { "name": "Uptown", "id": "11" },
+            { "name": "Anywhere", "id": "15" },
+            { "name": "Oxford", "id": "16" },
+            { "name": "East Side", "id": "17" },
+            { "name": "Georgetown", "id": "18" },
+            { "name": "Richmond", "id": "19" },
+            { "name": "Lexington", "id": "21" },
+            { "name": "Dayton", "id": "22" },
+            { "name": "Columbus", "id": "23" },
+            { "name": "Downtown Lexington", "id": "24" }
+          ]
       }
     }
-    //What are valuse whn selecting a real site
-    //What are values when selecting a site that'll default to Churchwide (and does the widgit throw an error?)
-    it('Checks selectedSite ... valid site id', () => {
-      //       event.target.value 1
-      // event.target.selectedIndex 11
 
-      //     event.target.options [object HTMLOptionsCollection]
-      // event.target.options[event.target.selectedIndex].text Oakley
-      //{name: "Oakley", id: "1"}
-      const selectOakley = {
-        target:
-        {
-          value: '1',
-          selectedIndex: 11,
-          options: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, { text: 'Oakley' }]
-        }
-      };
-      this.happenings.handleSetDefaultSite(selectOakley);
-      expect(this.happenings.selectedSite).toEqual('Oakley');
+    //sorts, removes some sites, returns a list of <options>
+    it('Checks options list generated with site names and ids', () => {
+      const given = [
+        { "name": "Mason", "id": "100" },
+        { "name": null, "id": "1" },
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": true, "id": "111" },
+        { "name": false, "id": "11" },
+        { "name": "Mason", "id": "6" },
+        { "name": 12455, "id": "1111" },        ,
+        { "name": "Xroads Church", "id": "1111" },
+        { "name": "Oakley", "id": "1" }
+      ];
+
+      const expected = [
+        { "name": "I do not attend Crossroads", "id": "2" },
+        { "name": "Mason", "id": "100" },
+        { "name": "Mason", "id": "6" },
+        { "name": "Oakley", "id": "1" }
+      ]
+
+      const rendered = this.happenings.renderSetSiteOptions(given);
+
+      expect(Array.isArray(rendered)).toBe(true);
+      expect(rendered.length).toEqual(expected.length);
+
+      rendered.forEach(function (option, i) {
+        let attr = option['$attrs$'];
+        expect(attr.value).toEqual(expected[i].id);
+        expect(attr['data-name']).toEqual(expected[i].name);
+      });
+    });
+
+    //Scenario is possible if retrievning MP sites fails
+    it("Checks options list is empty if no sites exist", () => {
+      const given = [];
+      const goodSites = this.happenings.renderSetSiteOptions(given);
+
+      expect(Array.isArray(goodSites)).toBe(true);
+      expect(goodSites.length).toEqual(0);
     });
   });
-  //These use defaultToUserSite:
-  //fetchUserData, handleSetDefaultSite
-  //change filter - check happenings list lists promos?
 
-  //TODO test renders
-  describe.skip('Test render html', () => {
-    it('Checks renderSetSiteModal', () => {
-      //TODO
-    });
+  //TODO - add this once store selected site testing
+  describe('Tests handleSetSiteInput()', () => {
+
   });
 
-
-
-
+  it.skip('test', () => {
+    console.log(this.happenings.sites);
+  })
+  //NOTE - when rendered without auth, there is no graphql call to get the sites - where does the default list of sites come from? it comes from contentful audiences
+  //The filtered list is retrieved from contentful's target audiences
+  //the mp list where you can select your site is retrieved from MP's sites. The two do not feed into the same dropdowns.
+  //NOTE you can currently select your site as "undefined" and it'll try to send it to MP
+  //TODO can we assume that if a list of sites is seen it is in the correct format? basically could a method be called in a live environment with a bad formatted array of sites?
 });
+
+describe('<crds-site-happenings> GraphQL', () => {
+  beforeEach(() => { //TODO should this be beforeEach?
+    this.happenings = new SiteHappenings();
+  });
+
+  describe('Tests updateUserSite()', () => {
+
+  });
+});
+
+//TODO as e2e or in rendered component:
+//handleSetSiteModalClose
