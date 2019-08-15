@@ -39,7 +39,7 @@ export class GlobalNav {
 
   authChangeCallback() {
     this.authenticated = this.auth.authenticated;
-    if(!this.authenticated) {
+    if (!this.authenticated) {
       this.redirectToRoot();
     }
   }
