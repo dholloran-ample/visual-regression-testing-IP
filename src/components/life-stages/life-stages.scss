@@ -17,6 +17,10 @@ h5 {
   transform: translateY(1rem);
 }
 
+.d-none {
+  display: none;
+}
+
 .component-header {
   font-family: 'acumin-pro-extra-condensed';
   font-size: 2rem; // 32px
@@ -31,7 +35,7 @@ h5 {
 .life-stages {
   background-color: #f0f0f0;
   box-shadow: rgba(0, 0, 0, .15) 0 0 6px;
-  min-height: 580px;
+  min-height: 550px;
   overflow: hidden;
 
   .loading-skeleton {
@@ -59,7 +63,7 @@ h5 {
   grid-gap: 20px;
   grid-template-columns: .375rem;
   overflow-x: scroll;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
   scroll-snap-type: x mandatory;
   scrollbar-base-color: transparent;
 
