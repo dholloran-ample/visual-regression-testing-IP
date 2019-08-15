@@ -10,6 +10,7 @@ export interface CrdsLifeStage {
   slug: string;
   description: string;
   image: CrdsImage;
+  contentCollection: any;
   total: number;
 }
 

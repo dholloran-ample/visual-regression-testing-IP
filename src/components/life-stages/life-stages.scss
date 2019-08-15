@@ -31,7 +31,16 @@ h5 {
 .life-stages {
   background-color: #f0f0f0;
   box-shadow: rgba(0, 0, 0, .15) 0 0 6px;
+  min-height: 580px;
   overflow: hidden;
+
+  .loading-skeleton {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+  }
 
   .life-stages-inner {
     transition: all .45s ease;
