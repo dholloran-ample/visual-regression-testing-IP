@@ -36,7 +36,6 @@
 graph TD;
   global-nav --> profile-nav
   global-nav --> give-nav
-  profile-nav --> nav-link
   crds-shared-header --> global-nav
   style global-nav fill:#f9f,stroke:#333,stroke-width:4px
 ```
