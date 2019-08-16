@@ -32,6 +32,7 @@ You need to export the following variables when running tests on the project...
 | Variable                     | Description                                   |
 | ---------------------------- | --------------------------------------------- |
 | `TEST_SITE_USER_PW`          | Test user's password                          |
+| `CRDS_LOGIN_ENDPOINT`        | Gateway login endpoint                        |
 
 
 ## License
