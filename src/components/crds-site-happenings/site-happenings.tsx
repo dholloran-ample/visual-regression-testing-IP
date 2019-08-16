@@ -54,18 +54,22 @@ export class SiteHappenings {
     }
   }
 
+
   /** Stencil Lifecycle methods **/
+
   componentWillLoad() {
     return Promise.all([this.fetchMpData(), this.fetchContentfulPromoData()]);
   }
 
   componentDidRender() {
-    this.handleSelectorWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
+    this.handleParentElementWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
     this.observer.observe(this.host);
   }
 
+
   /** GraphQL I/O **/
+
   private fetchMpData() {
     if (this.authToken) {
       return Promise.all([
@@ -219,7 +223,7 @@ export class SiteHappenings {
   }
 
   /**
-   * Sets selectdSite to given site name or 'Churchwide' if name meets conditions.
+   * Sets selectdSite to given site name if name meets conditions or 'Churchwide'.
    * This method will trigger a re-render of the component.
    * @param siteName
    */
@@ -231,7 +235,6 @@ export class SiteHappenings {
       this.selectedSite = siteName;
     else {
       this.selectedSite = 'Churchwide';
-      //this.selectedSite = siteName;
     }
   }
 
@@ -253,7 +256,7 @@ export class SiteHappenings {
   }
 
 
-  /** Event handlers/DOM modifiers */
+  /** Event handlers/DOM modifiers **/
 
   /**
      * Update selected site based on selection in dropdown
@@ -264,6 +267,30 @@ export class SiteHappenings {
     this.analytics.track('HappeningSiteFiltered', {
       site: this.selectedSite
     });
+  }
+
+  /**
+  * Override HTML's behavior of
+  * sizing dropdowns to the largest
+  * string in the list
+  */
+  handleParentElementWidthBasedOnText(element, text) {
+    let tmpSelect = document.createElement('select');
+    let styles = window.getComputedStyle(element);
+    tmpSelect.style.visibility = 'hidden';
+    tmpSelect.style.margin = styles.margin;
+    tmpSelect.style.padding = styles.padding;
+    tmpSelect.style.fontSize = styles.fontSize;
+    tmpSelect.style.fontFamily = styles.fontFamily;
+    tmpSelect.style.webkitAppearance = 'none';
+
+    let tmpOption = document.createElement('option');
+    tmpOption.innerText = text;
+    tmpSelect.appendChild(tmpOption);
+
+    this.host.shadowRoot.appendChild(tmpSelect);
+    element.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
+    this.host.shadowRoot.removeChild(tmpSelect);
   }
 
   /**
@@ -309,7 +336,6 @@ export class SiteHappenings {
     });
   }
 
-
   /**
    * Close the site select modal
    */
@@ -317,31 +343,8 @@ export class SiteHappenings {
     this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
 
-  /**
-  * Override HTML's behavior of
-  * sizing dropdowns to the largest
-  * string in the list
-  */
-  handleSelectorWidthBasedOnText(selector, text) {
-    let tmpSelect = document.createElement('select');
-    let styles = window.getComputedStyle(selector);
-    tmpSelect.style.visibility = 'hidden';
-    tmpSelect.style.margin = styles.margin;
-    tmpSelect.style.padding = styles.padding;
-    tmpSelect.style.fontSize = styles.fontSize;
-    tmpSelect.style.fontFamily = styles.fontFamily;
-    tmpSelect.style.webkitAppearance = 'none';
 
-    let tmpOption = document.createElement('option');
-    tmpOption.innerText = text;
-    tmpSelect.appendChild(tmpOption);
-
-    this.host.shadowRoot.appendChild(tmpSelect);
-    selector.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
-    this.host.shadowRoot.removeChild(tmpSelect);
-  }
-
-  /** Render */
+  /** Render **/
 
   render() {
     return (
@@ -405,7 +408,7 @@ export class SiteHappenings {
             <img
               alt={obj.title}
               class="img-responsive"
-              src={Utils.imgixify(obj.image ? obj.image.url : '') + `?auto=format&w=400&h=300&fit=crop`} //TODO this handles unpublished images. make sure this handles removed images too.
+              src={Utils.imgixify(obj.image ? obj.image.url : '') + `?auto=format&w=400&h=300&fit=crop`}
             />
           </a>
           <div class="card-block">
