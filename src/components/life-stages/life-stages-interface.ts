@@ -1,4 +1,5 @@
 import { CrdsImage } from "../crds-site-happenings/site-happenings-interface";
+import { Identifier } from "@babel/types";
 
 export interface CrdsUser {
   name: string;
@@ -6,14 +7,8 @@ export interface CrdsUser {
 }
 
 export interface CrdsLifeStage {
+  id: string;
   title: string;
-  slug: string;
-  description: string;
-  image: CrdsImage;
-  contentCollection: any;
-  total: number;
-}
-
-export interface CrdsEntry {
-  sys: string
+  imageUrl: string;
+  contentTotal: string;
 }
