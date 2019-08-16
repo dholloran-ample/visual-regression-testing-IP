@@ -39,13 +39,13 @@ export class GlobalNav {
 
   authChangeCallback() {
     this.authenticated = this.auth.authenticated;
+    if (!this.authenticated) {
+      this.redirectToRoot();
+    }
   }
 
   handleSignOut() {
     this.auth.signOut(this.authChangeCallback.bind(this));
-    if (!this.auth.authenticated) {
-      this.redirectToRoot();
-    }
   }
 
   redirectToRoot() {

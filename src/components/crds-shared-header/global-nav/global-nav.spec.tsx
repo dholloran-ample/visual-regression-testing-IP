@@ -15,7 +15,7 @@ describe('<global-nav>', () => {
       signOut: jest.fn()
     };
     const redirectToRoot = (this.component.redirectToRoot = jest.fn());
-    this.component.handleSignOut();
+    this.component.authChangeCallback();
     expect(redirectToRoot).toBeCalled();
   });
 });
