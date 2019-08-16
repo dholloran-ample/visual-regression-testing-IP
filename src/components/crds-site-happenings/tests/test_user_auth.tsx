@@ -8,7 +8,7 @@ export const user_with_site = {
 
 export function getSessionID(username, password){
   return axios.post(
-    process.env.CRDS_LOGIN_ENDPOINT,
+    process.env.TEST_CRDS_LOGIN_ENDPOINT,
     { username: username, password: password })
     .then(success => {
       return success.data.userToken;
