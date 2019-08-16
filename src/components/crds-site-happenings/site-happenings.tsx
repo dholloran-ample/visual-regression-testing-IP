@@ -28,8 +28,8 @@ export class SiteHappenings {
     });
   };
 
-  constructor(){
-    if (!('IntersectionObserver' in window)){
+  constructor() {
+    if (!('IntersectionObserver' in window)) {
       //TODO add better fallback if IntersectionObserver not supported
       this.observer = () => { };
     } else {
@@ -49,26 +49,16 @@ export class SiteHappenings {
 
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
-    console.log(`watching authToken change. old val: ${oldValue} vs new val: ${newValue}`);
     if (newValue !== oldValue) {
       this.fetchMpData();
     }
   }
 
   /** Stencil Lifecycle methods **/
-  /**
-   * Check to see if user is authenticated
-   * then fetch MP data is applicable
-   */
-  //What happens if this isn't called when logged out? the skeleton loads and isn't replaced
   componentWillLoad() {
     return Promise.all([this.fetchMpData(), this.fetchContentfulPromoData()]);
   }
 
-  /**
-  * Update the width of the dropdown based
-  * on the current selected site
-  */
   componentDidRender() {
     this.handleSelectorWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
@@ -134,18 +124,10 @@ export class SiteHappenings {
         }
       )
       .then(success => {
-        //Store user's mp site
-        //if selected, display
-        //if not selected, ask
         let mpUser = success.data.data.user;
-        let siteName = mpUser.site && mpUser.site.name; //either the site's name or null
-        //this.user = { ...this.user, site: siteName };
+        let siteName = mpUser.site && mpUser.site.name;
         this.setUserSite(siteName);
-        //If has selectable site, set it
         this.setSelectedSite(this.user.site);
-        // siteName == (null || 'Not site specific')
-        //   ? this.renderSetSiteModal()
-        //   : this.setSelectedSite(this.user.site);
       })
       .catch(err => this.logError(err));
   }
@@ -177,7 +159,7 @@ export class SiteHappenings {
         const promoList = success.data.data.promoCollection.items;
         this.setHappenings(promoList);
         this.setContentfulSites();
-        this.renderHappenings(); //What happens if this isn't here? will skeleton stay forever?
+        this.renderHappenings();
       })
       .catch(err => this.logError(err));
   }
@@ -222,8 +204,8 @@ export class SiteHappenings {
    * @param sites
    */
   setMPSites(sites) {
-    const allowedSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
-    this.mpSites = allowedSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+    const allowedMPSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
+    this.mpSites = allowedMPSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
   }
 
   /**
@@ -272,14 +254,13 @@ export class SiteHappenings {
 
 
   /** Event handlers/DOM modifiers */
+
   /**
      * Update selected site based on selection in dropdown
      * @param event
      */
   handleSiteSelection(event) {
-    // this.selectedSite = event.target.value;
     this.setSelectedSite(event.target.value);
-    // this.setWidthBasedOnText(event.target, event.target.value);
     this.analytics.track('HappeningSiteFiltered', {
       site: this.selectedSite
     });
@@ -309,22 +290,19 @@ export class SiteHappenings {
    * modal
    */
   handleSetSiteInput(event) {
-    //Update class's values - do these trigger anything? yes - selectedSite triggers rerender
+    //Set variables
     const siteName = event.target.options[event.target.selectedIndex].text;
     this.setUserSite(siteName);
     this.setSelectedSite(siteName);
-    //ORIGINAL logic
-    // this.selectedSite = event.target.options[event.target.selectedIndex].text;
-    // this.user = { ...this.user, site: this.selectedSite };
-    // this.setSelectedSite(this.user.site); //NOTE: can the first this.selectedSite = ? step be wrapped into this?
 
+    //Modify DOM
     this.handleSetSiteModalClose();
 
     //Store changes to DB
-    const selectedSiteId = event.target.value; //Note that this is the id from Contentful/Graphql - what if this is invalid?
+    const selectedSiteId = event.target.value;
     this.updateMPUserSite(this.authToken, selectedSiteId);
 
-    //Report analytics
+    //Report to analytics
     this.analytics.track('HappeningSiteUpdated', {
       id: selectedSiteId,
       name: this.selectedSite
@@ -475,7 +453,7 @@ export class SiteHappenings {
 
 
   /**
-   * Returns set site modal if conditions are met
+   * Returns set site modal if conditions are met or empty string
    */
   maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
@@ -487,7 +465,7 @@ export class SiteHappenings {
   }
 
   /**
-   * User selects site if not set
+   * User selects site
    */
   renderSetSiteModal() {
     return (
