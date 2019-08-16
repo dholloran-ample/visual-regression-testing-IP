@@ -19,8 +19,8 @@ else
   cfl_access_token="CONTENTFUL_ACCESS_TOKEN"
   interactions_endpoint="CRDS_INTERACTIONS_ENDPOINT"
   graphql_endpoint="CRDS_GQL_ENDPOINT"
-  test_pwd=""
-  test_login_endpoint=""
+  test_pwd="TEST_SITE_USER_PW"
+  test_login_endpoint="TEST_CRDS_LOGIN_ENDPOINT"
 fi
 
 cat >.env <<EOL
