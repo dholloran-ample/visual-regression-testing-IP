@@ -1,6 +1,8 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import { CrdsUser, CrdsLifeStage } from './life-stages-interface';
+import { Utils } from '../../shared/utils';
 import axios from 'axios';
+import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'life-stages',
@@ -9,156 +11,186 @@ import axios from 'axios';
 })
 export class LifeStages {
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
-  private CrdsUser: CrdsUser = { name: '', lifeStage: '' };
-  private lifeStageContent: [] = [];
+  private user: CrdsUser = { name: '', lifeStage: '' };
+  private recommendedContent: [] = [];
   private lifeStages: CrdsLifeStage[] = [];
+  private lifeStageId: string = null;
 
   @Prop() authToken: string;
-  @State() selectedStage: string = '';
-  @Element() host: HTMLElement;
+  @Element() host: HTMLStencilElement;
 
   @Watch('authToken')
   authTokenHandler() {
-    this.fetchUserLifeStage();
+    this.fetchUser(this.authToken);
   }
 
   componentWillLoad() {
-    // actually need to do a fetch to cosmosDB first
-    // if user already has life stage we just need that single life stages data
-    return Promise.all([this.fetchUserLifeStage(), this.fetchLifeStages()]);
+    this.fetchUser(this.authToken);
   }
 
-  private fetchUserLifeStage() {
-    // reach into cosmos db with user identifier and see if they already have a life stage
-    console.log("fetching user's life stage!");
+  refresh() {
+    console.log('manual re-render');
+    this.host.forceUpdate();
   }
 
-  fetchLifeStages() {
-    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
-      process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+  private fetchUser(token) {
     return axios
-      .get(apiUrl, {
-        params: {
-          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
-          query: `{
-            lifeStageCollection {
-              items {
-                title
-                image {
-                  url
-                }
-                description
-                contentCollection{
-                  total
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+            {
+              user {
+                lifeStage {
+                  title
                 }
               }
+            }`
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        let name = success.data.data.user.lifeStage && success.data.data.user.lifeStage.title;
+        this.lifeStageId = success.data.data.user.lifeStage && success.data.data.user.lifeStage.id;
+        this.user = { ...this.user, lifeStage: name };
+        this.user.lifeStage == null
+          ? this.fetchLifeStages(this.authToken)
+          : this.fetchContent(this.authToken, this.lifeStageId);
+      });
+  }
+
+  private fetchLifeStages(token) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `{
+            lifeStages {
+              id
+              title
+              imageUrl
+              contentTotal
             }
           }`
+        },
+        {
+          headers: {
+            authorization: token
+          }
         }
-      })
+      )
       .then(success => {
-        this.lifeStages = success.data.data.lifeStageCollection.items;
+        this.lifeStages = success.data.data.lifeStages;
+        this.refresh();
       });
   }
 
   /**
    * Get content with set life stages
    */
-  fetchContent() {
-    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
-      process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+  fetchContent(token, lifeStageId) {
+    console.log(token, lifeStageId);
     return axios
-      .get(apiUrl, {
-        params: {
-          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
+      .post(
+        this.gqlUrl,
+        {
           query: `{
-            articleCollection {
-              items {
-                title
-                image {
-                  url
-                }
-                duration
-                body
-                slug
-              }
+            lifeStageContent(id: "${lifeStageId}") {
+              id
+              title
+              slug
+              imageUrl
+              contentType
             }
           }`
+        },
+        {
+          headers: {
+            authorization: token
+          }
         }
-      })
+      )
       .then(success => {
-        let articles = success.data.data.articleCollection.items;
-        // faking the content here
-        this.lifeStageContent = articles.filter(item => item.duration > 550).slice(1, 3);
-        this.lifeStages = [];
-        this.renderCards();
+        this.recommendedContent = success.data.data.lifeStageContent;
+        this.refresh();
       })
       .catch(err => console.error(err));
   }
 
   handleLifeStageClicked(event) {
     const card = event.target;
-    card.classList.toggle('selected');
-    if (this.selectedStage === card.dataset.lifeStage) {
-      this.selectedStage = '';
-    } else {
-      this.selectedStage = card.dataset.lifeStage;
-    }
+    this.lifeStageId = card.dataset.lifeStageId;
+    this.fetchContent(this.authToken, this.lifeStageId);
+    console.log('fire analytics', event);
     // TODO: analytics call here
   }
 
-  handleConfirmClick(event) {
-    this.fetchContent();
-    event;
-    // TODO: analytics call here
-  }
-
-  renderCards() {
-    console.log('rendering cards', this.lifeStageContent, this.lifeStages);
-    const parent = this.host.shadowRoot.querySelector('.cards');
-    let cards: any = this.skeletonCards;
-    if (this.lifeStages !== []) {
-      cards = this.lifeStageCards();
-    }  else {
-      cards = this.contentCards();
-    }
-    return cards;
-  }
-
-  skeletonCards() {
-    return ([1,2,3].map(item => <div class="skeleton-card" key={item}><h1>Loading</h1></div>));
-  }
-
-  lifeStageCards() {
-    return this.lifeStages.map((obj, index) => (
+  renderSkeleton() {
+    return [1, 2, 3, 4, 5].map(() => (
       <div
-        class={`card ${this.selectedStage == obj.title ? 'selected' : ''}`}
-        key={index}
-        style={{
-          bakgroundImage: `url(${obj.image.url})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-        data-life-stage={obj.title}
-        onClick={event => this.handleLifeStageClicked(event)}
+        class={`card-skeleton ${
+          this.recommendedContent.length > 0 || this.lifeStages.length > 0 ? 'fade display-none' : ''
+        }`}
       >
-        <div class="bg-overlay" />
-        <div class="card-content">
-          <h2 class="card-title component-header">{obj.title}</h2>
-          <h3 class="card-subtitle">{`${obj.contentCollection.total} items`}</h3>
+        <div class="content">
+          <div class="text title" />
+          <div class="text subtitle" />
         </div>
       </div>
     ));
   }
 
-  contentCards() {
-    return this.lifeStageContent.map((obj: any, index) => {
+  renderLifeStages() {
+    return this.lifeStages.map((obj, index) => (
+      <div
+        class={`card ${this.recommendedContent.length > 0 ? 'fade display-none' : ''}`}
+        key={index}
+        style={{
+          backgroundImage: `url(${Utils.imgixify(obj.imageUrl)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        data-life-stage-name={obj.title}
+        data-life-stage-id={obj.id}
+        onClick={event => this.handleLifeStageClicked(event)}
+      >
+        <div class="bg-overlay" />
+        <div class="card-content">
+          <h2 class="card-title component-header">{obj.title}</h2>
+          <h3 class="card-subtitle">{`${obj.contentTotal} items`}</h3>
+        </div>
+      </div>
+    ));
+  }
+
+  renderRecommendedContent() {
+    return this.recommendedContent.map((obj: any, index) => (
       <div class="card" key={index}>
-        {obj.title}
-      </div>;
-    });
+        <a class="no-style" href={`/media/${obj.contentType}/${obj.slug}`}>
+          <div
+            class="image"
+            style={{
+              backgroundImage: `url(${Utils.imgixify(obj.imageUrl + '?auto=format&w=400')})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
+            {/* <div class="card-stamp bg-charcoal text-white">
+              <span class="font-size-smallest soft-quarter-right">6 mins 27 sec</span>
+              <svg class="icon" viewBox="0 0 256 256">
+                <use xlink:href="/media/assets/svgs/icons.svg#media-video"></use>
+              </svg>
+            </div> */}
+          </div>
+          <div class="text-gray font-size-smaller font-family-base-mid text-uppercase">{obj.category}</div>
+          <h3 class="component-header">{obj.title}</h3>
+        </a>
+      </div>
+    ));
   }
 
   render() {
@@ -169,19 +201,11 @@ export class LifeStages {
             <h2 class="component-header flush-bottom">Personalize Your Experience</h2>
             <p>Which of these best describes your stage of life? (Pick one)</p>
           </div>
-          <div class="cards">
-            {this.renderCards()}
+          <div class={`cards ${this.recommendedContent.length > 0 ? 'media-cards' : ''}`}>
+            {this.renderSkeleton()}
+            {this.lifeStages.length > 0 ? this.renderLifeStages() : ''}
+            {this.recommendedContent.length > 0 ? this.renderRecommendedContent() : ''}
           </div>
-          <button
-            class="confirm-btn"
-            onClick={event => this.handleConfirmClick(event)}
-            style={{
-              transform: `translateY(${this.selectedStage == '' ? '100%' : 0})`,
-              opacity: `${this.selectedStage == '' ? 0 : 1}`
-            }}
-          >
-            Next
-          </button>
         </div>
       </div>
     );
