@@ -16,6 +16,7 @@ export class SiteHappenings {
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
   private user: CrdsUser = { name: '', site: '' };
+  private observer;
   private inViewCallback = entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -27,14 +28,16 @@ export class SiteHappenings {
     });
   };
 
-  private observer = {
-    observe(fake) {
-      console.log(`faking observer: ${fake}`);
+  constructor(){
+    if (!('IntersectionObserver' in window)){
+      //TODO add better fallback if IntersectionObserver not supported
+      this.observer = () => { };
+    } else {
+      this.observer = new IntersectionObserver(this.inViewCallback, {
+        threshold: 1.0
+      });
     }
-  }; //TODO re-add this before commit and figure out how to make it work
-  // new IntersectionObserver(this.inViewCallback, {
-  //   threshold: 1.0
-  // });
+  }
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';

@@ -1,11 +1,10 @@
 import { SiteHappenings } from '../site-happenings';
 
-describe('<crds-site-happenings>', () => {
+describe('<crds-site-happenings> testing setters', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
   });
 
-  //NOTE graphql returns json, value can be a string in double quotes, or a number, or true or false or null. (or array/object)
   describe('Tests setMPSites()', () => {
     it('Checks sites are sorted by name', () => {
       const given = [
@@ -33,7 +32,6 @@ describe('<crds-site-happenings>', () => {
       });
     });
 
-    //null, boolean and int are valid JSON values
     it("Checks non-string site names are removed", () => {
       const given = [
         { "name": "Mason", "id": "6" },
@@ -92,7 +90,6 @@ describe('<crds-site-happenings>', () => {
     });
   });
 
-
   describe('Tests setUserSite()', () => {
     it('Checks user site is stored', () => {
       expect(this.happenings.user.site).toBe("");
@@ -118,7 +115,6 @@ describe('<crds-site-happenings>', () => {
   });
 
   describe('Tests setSelectedSite()', () => {
-    //TODO - also tests trash values. What happens to other methods if site is trash?
     const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere', "", null, undefined, ['Array Site'], { name: 'Object Site' }]
     notAllowedSiteNames.forEach(siteName => {
       it(`setSelectedSite(${siteName}) should set selectedSite to Churchwide`, () => {

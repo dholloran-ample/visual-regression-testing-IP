@@ -3,13 +3,6 @@ import { SiteHappenings } from '../site-happenings';
 describe('<crds-site-happenings>', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
-    // this.lastAnalytics = { };
-
-    // //Mock analytics call method and store values locally
-    // this.happenings.analytics.track = (name, data) => {
-    //   this.lastAnalytics.name = name;
-    //   this.lastAnalytics.data = data
-    // };
   });
 
 

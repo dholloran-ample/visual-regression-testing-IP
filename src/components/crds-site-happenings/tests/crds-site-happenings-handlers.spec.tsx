@@ -1,5 +1,5 @@
 import { SiteHappenings } from '../site-happenings';
-//TODO handle other analytics tracking?
+
 describe('<crds-site-happenings>', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
@@ -13,6 +13,21 @@ describe('<crds-site-happenings>', () => {
   });
 
   describe('Tests handleSiteSelection()', () => {
+    it('Checks site selected and analytics data sent', () => {
+      expect(this.happenings.selectedSite).toEqual('Churchwide');
+
+      let fakeEvent = { target: { value: "Oakley" } }
+      this.happenings.handleSiteSelection(fakeEvent);
+
+      expect(this.happenings.selectedSite).toEqual('Oakley');
+
+      expect(this.lastAnalytics.name).toBe('HappeningSiteFiltered');
+
+      expect(this.lastAnalytics.data).not.toBeUndefined();
+      const analyticsData = this.lastAnalytics.data;
+      expect(analyticsData.site).not.toBeUndefined();
+    });
+
     const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere']
     notAllowedSiteNames.forEach(siteName => {
       it(`handleSiteSelection targeting ${siteName} should set selectedSite to Churchwide`, () => {
@@ -22,6 +37,9 @@ describe('<crds-site-happenings>', () => {
         this.happenings.handleSiteSelection(fakeEvent);
 
         expect(this.happenings.selectedSite).toEqual('Churchwide');
+
+        const analyticsData = this.lastAnalytics.data;
+        expect(analyticsData.site).toEqual('Churchwide');
       });
     });
 
@@ -34,6 +52,9 @@ describe('<crds-site-happenings>', () => {
         this.happenings.handleSiteSelection(fakeEvent);
 
         expect(this.happenings.selectedSite).toEqual(siteName);
+
+        const analyticsData = this.lastAnalytics.data;
+        expect(analyticsData.site).toEqual(siteName);
       });
     });
   });
@@ -187,7 +208,6 @@ describe('<crds-site-happenings>', () => {
       this.happenings.updateMPUserSite = () => { }; //Requires auth
     });
 
-    //TODO need to test disparity between what sites in cfl, mp and default displayed in dropdown
     it('Checks selected site and user site changed and analytics event send', () => {
       const fakeEvent = {
         target: {
@@ -197,10 +217,6 @@ describe('<crds-site-happenings>', () => {
             { text: 'Oakley' }]
         }
       };
-
-      //Mock methods called by handleSetSiteInput to avoid failures
-      // this.happenings.handleSetSiteModalClose = () => {}; //Interacts with the DOM
-      // this.happenings.updateMPUserSite = () => {}; //Requires auth
 
       expect(this.happenings.selectedSite).toBe('Churchwide');
       expect(this.happenings.user.site).toBe('');
@@ -228,10 +244,6 @@ describe('<crds-site-happenings>', () => {
         }
       };
 
-      //Mock methods called by handleSetSiteInput to avoid failures
-      // this.happenings.handleSetSiteModalClose = () => {}; //Interacts with the DOM
-      // this.happenings.updateMPUserSite = () => {}; //Requires auth
-
       this.happenings.handleSetSiteInput(fakeEvent);
 
       expect(this.lastAnalytics.data).not.toBeUndefined();
@@ -240,7 +252,6 @@ describe('<crds-site-happenings>', () => {
       expect(analyticsData.name).toEqual('Oakley');
     });
 
-    //anywhere, I don't attend
     const displayChurchwideSites = ['Anywhere', 'I do not attend Crossroads'];
     displayChurchwideSites.forEach(siteName => {
       it(`Checks selecting "${siteName}" sets selectedSite to "Churchwide"`, () => {
@@ -255,10 +266,6 @@ describe('<crds-site-happenings>', () => {
           }
         };
 
-        // //Mock methods called by handleSetSiteInput to avoid failures
-        // this.happenings.handleSetSiteModalClose = () => {}; //Interacts with the DOM
-        // this.happenings.updateMPUserSite = () => {}; //Requires auth
-
         expect(this.happenings.selectedSite).toBe('Oakley');
         expect(this.happenings.user.site).toBe('');
 
@@ -269,7 +276,6 @@ describe('<crds-site-happenings>', () => {
       });
     });
 
-    //TODO handle bad values once i/o tested
     const badSelectionData = [{
       value: undefined,
       text: undefined
