@@ -1,10 +1,9 @@
 import { SiteHappenings } from '../site-happenings';
 
-describe('<crds-site-happenings>', () => {
+describe('<crds-site-happenings> Render', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
   });
-
 
   describe('Tests maybeRenderSetSiteModal()', () => {
     it('Checks setSiteModal not returned if not authenticated', () => {
@@ -26,8 +25,10 @@ describe('<crds-site-happenings>', () => {
         this.happenings.authToken = '123'; //Value doesn't matter here
         this.happenings.user.site = site;
 
-        const modal = this.happenings.maybeRenderSetSiteModal();
-        expect(modal).not.toBe('');
+        const render = this.happenings.maybeRenderSetSiteModal();
+
+        expect(render).not.toBe('');
+        expect(render['$attrs$'].class).toEqual('site-select-message');
       });
     });
   });
@@ -48,14 +49,14 @@ describe('<crds-site-happenings>', () => {
         targetAudience: ['Oakley', 'Mason'],
         linkUrl: '123',
         title: 'Oakley happening',
-        image: { url: 'int.crossroads.net'},
+        image: { url: 'int.crossroads.net' },
         description: 'Test promo'
       },
       {
-        targetAudience: ['Florence','Oakley'],
+        targetAudience: ['Florence', 'Oakley'],
         linkUrl: '1234',
         title: 'Oakley happening2',
-        image: { url: 'int.crossroads.net/images'},
+        image: { url: 'int.crossroads.net/images' },
         description: 'Test promo2'
       }]
 
@@ -73,14 +74,14 @@ describe('<crds-site-happenings>', () => {
         targetAudience: ['Oakley'],
         linkUrl: '123',
         title: 'Oakley happening',
-        image: { url: 'int.crossroads.net'},
+        image: { url: 'int.crossroads.net' },
         description: 'Test promo'
       },
       {
         targetAudience: ['Mason'],
         linkUrl: '1234',
         title: 'Oakley happening2',
-        image: { url: 'int.crossroads.net/images'},
+        image: { url: 'int.crossroads.net/images' },
         description: 'Test promo2'
       }]
 

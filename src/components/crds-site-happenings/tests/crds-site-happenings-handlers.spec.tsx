@@ -1,14 +1,15 @@
 import { SiteHappenings } from '../site-happenings';
 
-describe('<crds-site-happenings>', () => {
+describe('<crds-site-happenings> Event handlers', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
-    this.lastAnalytics = {};
+    this.happenings.contentfulSites = ["Churchwide","Columbus","Dayton","Downtown Lexington","East Side","Florence","Georgetown","Lexington","Mason","Oakley","Oxford","Richmond","Uptown","West Side"]
+    this.analyticsEvent = {};
 
     //Mock analytics call method and store values locally
     this.happenings.analytics.track = (name, data) => {
-      this.lastAnalytics.name = name;
-      this.lastAnalytics.data = data
+      this.analyticsEvent.name = name;
+      this.analyticsEvent.data = data
     };
   });
 
@@ -21,16 +22,16 @@ describe('<crds-site-happenings>', () => {
 
       expect(this.happenings.selectedSite).toEqual('Oakley');
 
-      expect(this.lastAnalytics.name).toBe('HappeningSiteFiltered');
+      expect(this.analyticsEvent.name).toBe('HappeningSiteFiltered');
 
-      expect(this.lastAnalytics.data).not.toBeUndefined();
-      const analyticsData = this.lastAnalytics.data;
+      expect(this.analyticsEvent.data).not.toBeUndefined();
+      const analyticsData = this.analyticsEvent.data;
       expect(analyticsData.site).not.toBeUndefined();
     });
 
-    const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere']
+    const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere', 'Fake Site']
     notAllowedSiteNames.forEach(siteName => {
-      it(`handleSiteSelection targeting ${siteName} should set selectedSite to Churchwide`, () => {
+      it(`Checks selecting ${siteName} should set selectedSite to Churchwide`, () => {
         expect(this.happenings.selectedSite).toEqual('Churchwide');
 
         let fakeEvent = { target: { value: siteName } }
@@ -38,14 +39,14 @@ describe('<crds-site-happenings>', () => {
 
         expect(this.happenings.selectedSite).toEqual('Churchwide');
 
-        const analyticsData = this.lastAnalytics.data;
+        const analyticsData = this.analyticsEvent.data;
         expect(analyticsData.site).toEqual('Churchwide');
       });
     });
 
-    const siteNames = ['Oakley', 'Downtown Lexington', 'Fake Site']
+    const siteNames = ['Oakley', 'Downtown Lexington']
     siteNames.forEach(siteName => {
-      it(`setSelectedSite(${siteName}) should set selectedSite to what was given`, () => {
+      it(`Checks selecting ${siteName} should set selectedSite to what was given`, () => {
         expect(this.happenings.selectedSite).toEqual('Churchwide');
 
         let fakeEvent = { target: { value: siteName } }
@@ -53,7 +54,7 @@ describe('<crds-site-happenings>', () => {
 
         expect(this.happenings.selectedSite).toEqual(siteName);
 
-        const analyticsData = this.lastAnalytics.data;
+        const analyticsData = this.analyticsEvent.data;
         expect(analyticsData.site).toEqual(siteName);
       });
     });
@@ -70,15 +71,15 @@ describe('<crds-site-happenings>', () => {
         }
       }
 
-      expect(this.lastAnalytics.name).toBeUndefined();
-      expect(this.lastAnalytics.data).toBeUndefined();
+      expect(this.analyticsEvent.name).toBeUndefined();
+      expect(this.analyticsEvent.data).toBeUndefined();
 
       this.happenings.handleHappeningsClicked(fakeEvent)
 
-      expect(this.lastAnalytics.name).toBe('HappeningCardClicked');
+      expect(this.analyticsEvent.name).toBe('HappeningCardClicked');
 
-      expect(this.lastAnalytics.data).not.toBeUndefined();
-      const analyticsData = this.lastAnalytics.data.params;
+      expect(this.analyticsEvent.data).not.toBeUndefined();
+      const analyticsData = this.analyticsEvent.data.params;
       expect(analyticsData.title).not.toBeUndefined();
       expect(analyticsData.url).not.toBeUndefined();
       expect(analyticsData.userSite).not.toBeUndefined();
@@ -104,7 +105,7 @@ describe('<crds-site-happenings>', () => {
 
       this.happenings.handleHappeningsClicked(fakeEvent)
 
-      const analyticsData = this.lastAnalytics.data.params;
+      const analyticsData = this.analyticsEvent.data.params;
       expect(analyticsData.title).toEqual(expectedAnalytics.title);
       expect(analyticsData.url).toEqual(expectedAnalytics.url);
       expect(analyticsData.userSite).toEqual(expectedAnalytics.userSite);
@@ -133,7 +134,7 @@ describe('<crds-site-happenings>', () => {
 
       this.happenings.handleHappeningsClicked(fakeEvent)
 
-      const analyticsData = this.lastAnalytics.data.params;
+      const analyticsData = this.analyticsEvent.data.params;
       expect(analyticsData.title).toEqual(expectedAnalytics.title);
       expect(analyticsData.url).toEqual(expectedAnalytics.url);
       expect(analyticsData.userSite).toEqual(expectedAnalytics.userSite);
@@ -163,7 +164,7 @@ describe('<crds-site-happenings>', () => {
 
       this.happenings.handleHappeningsClicked(fakeEvent)
 
-      const analyticsData = this.lastAnalytics.data.params;
+      const analyticsData = this.analyticsEvent.data.params;
       expect(analyticsData.userSite).toEqual(expectedAnalytics.userSite);
       expect(analyticsData.title).toEqual(expectedAnalytics.title);
       expect(analyticsData.url).toEqual(expectedAnalytics.url);
@@ -193,7 +194,7 @@ describe('<crds-site-happenings>', () => {
 
       this.happenings.handleHappeningsClicked(fakeEvent)
 
-      const analyticsData = this.lastAnalytics.data.params;
+      const analyticsData = this.analyticsEvent.data.params;
       expect(analyticsData.userSite).toEqual(expectedAnalytics.userSite);
       expect(analyticsData.title).toEqual(expectedAnalytics.title);
       expect(analyticsData.url).toEqual(expectedAnalytics.url);
@@ -208,7 +209,7 @@ describe('<crds-site-happenings>', () => {
       this.happenings.updateMPUserSite = () => { }; //Requires auth
     });
 
-    it('Checks selected site and user site changed and analytics event send', () => {
+    it('Checks selected and user sites changed and analytics event sent', () => {
       const fakeEvent = {
         target: {
           value: '1',
@@ -226,15 +227,15 @@ describe('<crds-site-happenings>', () => {
       expect(this.happenings.selectedSite).toBe('Oakley');
       expect(this.happenings.user.site).toBe('Oakley');
 
-      expect(this.lastAnalytics.name).toBe('HappeningSiteUpdated');
+      expect(this.analyticsEvent.name).toBe('HappeningSiteUpdated');
 
-      expect(this.lastAnalytics.data).not.toBeUndefined();
-      const analyticsData = this.lastAnalytics.data;
+      expect(this.analyticsEvent.data).not.toBeUndefined();
+      const analyticsData = this.analyticsEvent.data;
       expect(analyticsData.id).not.toBeUndefined();
       expect(analyticsData.name).not.toBeUndefined();
     });
 
-    it('Checks expected analytics data sent', () => {
+    it('Checks values sent to analytics', () => {
       const fakeEvent = {
         target: {
           value: '1',
@@ -246,8 +247,8 @@ describe('<crds-site-happenings>', () => {
 
       this.happenings.handleSetSiteInput(fakeEvent);
 
-      expect(this.lastAnalytics.data).not.toBeUndefined();
-      const analyticsData = this.lastAnalytics.data;
+      expect(this.analyticsEvent.data).not.toBeUndefined();
+      const analyticsData = this.analyticsEvent.data;
       expect(analyticsData.id).toEqual('1');
       expect(analyticsData.name).toEqual('Oakley');
     });
@@ -289,7 +290,7 @@ describe('<crds-site-happenings>', () => {
       text: ''
     }]
     badSelectionData.forEach(badData => {
-      it(`Checks bad selection data does not change user site`, () => {
+      it(`Checks invalid selection data does not change user site`, () => {
         this.happenings.selectedSite = "Oakley";
         this.happenings.user.site = "Mason";
 
@@ -310,9 +311,9 @@ describe('<crds-site-happenings>', () => {
         expect(this.happenings.selectedSite).toBe('Churchwide');
         expect(this.happenings.user.site).toBe('Mason');
 
-        expect(this.lastAnalytics.name).toBe('HappeningSiteUpdated');
-        expect(this.lastAnalytics.data).not.toBeUndefined();
-        const analyticsData = this.lastAnalytics.data;
+        expect(this.analyticsEvent.name).toBe('HappeningSiteUpdated');
+        expect(this.analyticsEvent.data).not.toBeUndefined();
+        const analyticsData = this.analyticsEvent.data;
         expect(analyticsData.id).toBe(badData.value);
         expect(analyticsData.name).toEqual('Churchwide');
       });

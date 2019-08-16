@@ -147,7 +147,7 @@ export class SiteHappenings {
         //   ? this.renderSetSiteModal()
         //   : this.setSelectedSite(this.user.site);
       })
-      .catch(err => this.logError(err)); //console.log(err));
+      .catch(err => this.logError(err));
   }
 
   fetchContentfulPromoData() {
@@ -244,8 +244,12 @@ export class SiteHappenings {
   setSelectedSite(siteName) {
     if (typeof siteName !== "string" || siteName === 'Not site specific' || siteName === 'I do not attend Crossroads' || siteName === 'Anywhere' || siteName === '') {
       this.selectedSite = 'Churchwide';
-    } else {
+    }
+    else if (this.contentfulSites.includes(siteName))
       this.selectedSite = siteName;
+    else {
+      this.selectedSite = 'Churchwide';
+      //this.selectedSite = siteName;
     }
   }
 
@@ -305,10 +309,6 @@ export class SiteHappenings {
    * modal
    */
   handleSetSiteInput(event) {
-    // console.log(`DEBUG event.target.value ${event.target.value}\nevent.target.selectedIndex ${event.target.selectedIndex}\n
-    // event.target.options ${JSON.stringify(event.target.options)}
-    // event.target.options[event.target.selectedIndex].text ${event.target.options[event.target.selectedIndex].text}`);//DEBUG
-
     //Update class's values - do these trigger anything? yes - selectedSite triggers rerender
     const siteName = event.target.options[event.target.selectedIndex].text;
     this.setUserSite(siteName);

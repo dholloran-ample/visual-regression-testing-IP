@@ -1,8 +1,9 @@
 import { SiteHappenings } from '../site-happenings';
 
-describe('<crds-site-happenings> testing setters', () => {
+describe('<crds-site-happenings> Setters', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
+    this.happenings.contentfulSites = ["Churchwide","Columbus","Dayton","Downtown Lexington","East Side","Florence","Georgetown","Lexington","Mason","Oakley","Oxford","Richmond","Uptown","West Side"]
   });
 
   describe('Tests setMPSites()', () => {
@@ -115,17 +116,25 @@ describe('<crds-site-happenings> testing setters', () => {
   });
 
   describe('Tests setSelectedSite()', () => {
-    const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere', "", null, undefined, ['Array Site'], { name: 'Object Site' }]
+    const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere']
     notAllowedSiteNames.forEach(siteName => {
-      it(`setSelectedSite(${siteName}) should set selectedSite to Churchwide`, () => {
+      it(`Checks selectedSite is set to "Churchwide" given "${siteName}"`, () => {
         this.happenings.setSelectedSite(siteName);
         expect(this.happenings.selectedSite).toEqual('Churchwide');
       });
     });
 
-    const siteNames = ['Oakley', 'Downtown Lexington', 'Fake Site']
+    const invalidSiteNames = ["", null, undefined, ['Array Site'], { name: 'Object Site' }, 'Fake Site', 't+auto+fake+congregation']
+    invalidSiteNames.forEach(siteName => {
+      it(`Checks selectedSite is set to "Churchwide" given "${siteName}"`, () => {
+        this.happenings.setSelectedSite(siteName);
+        expect(this.happenings.selectedSite).toEqual('Churchwide');
+      });
+    });
+
+    const siteNames = ['Oakley', 'Downtown Lexington']
     siteNames.forEach(siteName => {
-      it(`setSelectedSite(${siteName}) should set selectedSite to what was given`, () => {
+      it(`Checks selectedSite is set to "${siteName}"`, () => {
         this.happenings.setSelectedSite(siteName);
         expect(this.happenings.selectedSite).toEqual(siteName);
       });
@@ -138,15 +147,14 @@ describe('<crds-site-happenings> testing setters', () => {
         {
           "title": "Worship Training",
           "image": null,
-          "description": "We believe that everyone has the potential to be great. Whether a musician or technician, you’ll get reps on our stages with our gear and training from our team. __[Learn more and sign up.](https://www.crossroads.net/worshiptraining)__\n",
+          "description": "We believe everyone",
           "targetAudience": ["Dayton"],
           "linkUrl": "https://int.crossroads.net/worshiptraining"
         },
         {
-          "title": "Lead a Group",
           "image":
-            { "url": "https://images.ctfassets.net/y3a9myzsdjan/5Q4VLfl6taIAKMsoKwCoI0/83a11ed394b74eb253903625d035794d/crossroads-groups.jpg" },
-          "description": "Leading a group is a big deal. You’re moving people closer to God with the vision he’s given you for your group, and by caring about each person you lead. You don’t have to be a spiritual guru, just interested in following God yourself and helping others do the same. [__Apply to lead a group here.__](https://www.crossroads.net/groups/leader-overview/)",
+            { "url": "https://images.ctfassets.net/groups.jpg" },
+          "description": "Leading a group is a big deal.",
           "targetAudience": ["Oxford"],
           "linkUrl": "https://int.crossroads.net/groups/leader-overview/"
         }
@@ -162,15 +170,15 @@ describe('<crds-site-happenings> testing setters', () => {
         {
           "title": "Worship Training",
           "image": null,
-          "description": "We believe that everyone has the potential to be great. Whether a musician or technician, you’ll get reps on our stages with our gear and training from our team. __[Learn more and sign up.](https://www.crossroads.net/worshiptraining)__\n",
+          "description": "We believe everyone",
           "targetAudience": ["Dayton"],
           "linkUrl": "https://int.crossroads.net/worshiptraining"
         },
         {
           "title": "Lead a Group",
           "image":
-            { "url": "https://images.ctfassets.net/y3a9myzsdjan/5Q4VLfl6taIAKMsoKwCoI0/83a11ed394b74eb253903625d035794d/crossroads-groups.jpg" },
-          "description": "Leading a group is a big deal. You’re moving people closer to God with the vision he’s given you for your group, and by caring about each person you lead. You don’t have to be a spiritual guru, just interested in following God yourself and helping others do the same. [__Apply to lead a group here.__](https://www.crossroads.net/groups/leader-overview/)",
+            { "url": "https://images.ctfassets.net/groups.jpg" },
+          "description": "Leading a group is a big deal.",
           "targetAudience": null,
           "linkUrl": "https://int.crossroads.net/groups/leader-overview/"
         }
@@ -180,7 +188,7 @@ describe('<crds-site-happenings> testing setters', () => {
       expect(this.happenings.happenings).toHaveLength(1);
     });
 
-    it('Checks does not break if given an empty list', () => {
+    it('Checks setHappenings does not break if given an empty list', () => {
       this.happenings.setHappenings([]);
       expect(this.happenings.happenings).toHaveLength(0);
     });
@@ -219,7 +227,7 @@ describe('<crds-site-happenings> testing setters', () => {
       expect(this.happenings.contentfulSites).toEqual(["Dayton", "Florence", "Oakley"]);
     });
 
-    it('Checks does not break if happenings list is empty', () => {
+    it('Checks setContentfulSites does not break if happenings list is empty', () => {
       this.happenings.happenings = []
       this.happenings.setContentfulSites();
       expect(this.happenings.contentfulSites).toHaveLength(0);
