@@ -81,7 +81,7 @@ describe('<crds-site-happenings> Setters', () => {
       });
     });
 
-    //Scenario is possible if retrievning MP sites fails
+    //Scenario is possible if retrieving MP sites fails
     it("Checks empty array is returned if given", () => {
       const given = [];
 
