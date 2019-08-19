@@ -16,28 +16,6 @@ export class SiteHappenings {
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
   private user: CrdsUser = { name: '', site: '' };
-  private observer;
-  private inViewCallback = entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        this.analytics.track('HappeningComponentInView', {
-          target: entry.target,
-          selectedSite: this.selectedSite
-        });
-      }
-    });
-  };
-
-  constructor() {
-    if (!('IntersectionObserver' in window)) {
-      //TODO add better fallback if IntersectionObserver not supported
-      this.observer = () => { };
-    } else {
-      this.observer = new IntersectionObserver(this.inViewCallback, {
-        threshold: 1.0
-      });
-    }
-  }
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
@@ -54,6 +32,9 @@ export class SiteHappenings {
     }
   }
 
+  public getSelectedSite(): {} {
+    return { selectedSite: this.selectedSite };
+  };
 
   /** Stencil Lifecycle methods **/
 
@@ -64,9 +45,8 @@ export class SiteHappenings {
   componentDidRender() {
     this.handleParentElementWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
-    this.observer.observe(this.host);
+    Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite)
   }
-
 
   /** GraphQL I/O **/
 
