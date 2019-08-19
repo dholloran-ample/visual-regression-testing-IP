@@ -7,7 +7,7 @@ import decode from 'unescape';
   shadow: true
 })
 export class NavCtas {
-  @Prop() href: string;
+  @Prop() href: string; //TODO this is never used?
   @Prop() active: string;
   @Prop() data: string;
 

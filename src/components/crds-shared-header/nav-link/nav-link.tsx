@@ -10,14 +10,9 @@ export class NavigationLink {
   /**
    * Print log messages?
    */
-  private debug: boolean = true;
+  private debug: boolean = true; //TODO is anything being done with this?
   private console: Logger;
   private config: Config;
-
-  public componentWillLoad() {
-    this.console = new Logger(this.debug);
-    this.config = new Config();
-  }
 
   @Prop() href: string;
   @Prop() automationId: string;
@@ -27,8 +22,13 @@ export class NavigationLink {
   })
   signOutClicked: EventEmitter;
 
+  public componentWillLoad() {
+    this.console = new Logger(this.debug);
+    this.config = new Config();
+  }
+
   onClick() {
-    if (this.automationId === 'sh-sign-out') {
+    if (this.automationId === 'sh-sign-out') { //TODO I'm not liking the automation id's used for this (though it is guaranteed...)
       this.signOutClicked.emit(this);
     } else {
       window.location.href = this.href;
