@@ -3,7 +3,6 @@ import { SiteHappenings } from '../site-happenings';
 describe('<crds-site-happenings> Setters', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
-    this.happenings.contentfulSites = ["Churchwide","Columbus","Dayton","Downtown Lexington","East Side","Florence","Georgetown","Lexington","Mason","Oakley","Oxford","Richmond","Uptown","West Side"]
   });
 
   describe('Tests setMPSites()', () => {
@@ -116,6 +115,10 @@ describe('<crds-site-happenings> Setters', () => {
   });
 
   describe('Tests setSelectedSite()', () => {
+    beforeEach(() => {
+      this.happenings.contentfulSites = ["Churchwide","Columbus","Dayton","Downtown Lexington","East Side","Florence","Georgetown","Lexington","Mason","Oakley","Oxford","Richmond","Uptown","West Side"]
+    });
+
     const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere']
     notAllowedSiteNames.forEach(siteName => {
       it(`Checks selectedSite is set to "Churchwide" given "${siteName}"`, () => {
