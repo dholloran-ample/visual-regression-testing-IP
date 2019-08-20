@@ -1,5 +1,5 @@
 import { Component, Prop, State, h } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import Fragment from '../../../shared/fragment';
 
 import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
@@ -39,10 +39,17 @@ export class GlobalNav {
 
   authChangeCallback() {
     this.authenticated = this.auth.authenticated;
+    if (!this.authenticated) {
+      this.redirectToRoot();
+    }
   }
 
   handleSignOut() {
     this.auth.signOut(this.authChangeCallback.bind(this));
+  }
+
+  redirectToRoot() {
+    window.location.replace(this.rootURL());
   }
 
   handleProfileClick(event) {
@@ -68,6 +75,10 @@ export class GlobalNav {
     let classes = ['give-container'];
     if (this.giveNavIsShowing) classes.push('nav-is-showing');
     return classes.join(' ');
+  }
+
+  rootURL() {
+    return `https://${Utils.getSubdomain(this.env)}.crossroads.net`;
   }
 
   render() {
@@ -113,12 +124,7 @@ export class GlobalNav {
                 </a>
               </div>
 
-              <a
-                href={`https://${Utils.getSubdomain(this.env)}.crossroads.net`}
-                data-automation-id="sh-logo"
-                class="logo"
-                innerHTML={logo}
-              />
+              <a href={this.rootURL()} data-automation-id="sh-logo" class="logo" innerHTML={logo} />
 
               <div class="user-actions">
                 <a
@@ -133,7 +139,7 @@ export class GlobalNav {
                 </a>
 
                 <a
-                  href={`https://${Utils.getSubdomain(this.env)}.crossroads.net/signin`}
+                  href={`${this.rootURL()}/signin`}
                   class={this.profileClasses()}
                   onClick={event => this.handleProfileClick(event)}
                   data-automation-id="sh-profile"

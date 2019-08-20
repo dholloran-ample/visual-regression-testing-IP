@@ -66,7 +66,7 @@
     }
 
     @media (min-width: 480px) {
-      padding: 0.5rem;
+      padding: .5rem;
     }
   }
 
@@ -74,12 +74,12 @@
     fill: $cr-cyan;
     position: absolute;
     width: 0.75rem;
-    right: 10px;
+    right: 0;
     padding-top: 4px;
     pointer-events: none; // allow clicks to fall through to select
 
     @media (min-width: 480px) {
-      right: 0;
+      right: 6px;
     }
   }
 
@@ -255,6 +255,7 @@ hr {
   -webkit-flex-flow: row nowrap;
   -ms-flex-flow: row nowrap;
   flex-flow: row nowrap;
+  -webkit-overflow-scrolling: touch;
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
 

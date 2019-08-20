@@ -16,9 +16,11 @@ export class ProfileMenu {
     return `${process.env.CRDS_BASE_URL}${path}`;
   }
 
-  @Listen('click')
-  handleClick(event) {
-    event.stopPropagation();
+  handleClick(e) {
+    if (typeof this.onSignOut == 'function') {
+      this.onSignOut();
+      e.preventDefault();
+    }
   }
 
   renderSections = payload => {
@@ -50,15 +52,9 @@ export class ProfileMenu {
       if (typeof el != 'string')
         return (
           <li class={topLevel.value ? '' : 'top-level'}>
-            <a
-              href={el.href}
-              data-automation-id={el['automation-id']}
-              onClick={e => {
-                if (el['sign-out']) this.onSignOut(e);
-              }}
-            >
+            <nav-link href={el.href} automation-id={el['automation-id']} onSignOutClicked={this.handleClick.bind(this)}>
               {el.title}
-            </a>
+            </nav-link>
           </li>
         );
     });
