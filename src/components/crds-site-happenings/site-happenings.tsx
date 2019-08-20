@@ -51,7 +51,7 @@ export class SiteHappenings {
    * on the current selected site
    */
   componentDidRender() {
-    this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
+    this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), () => { this.getSelectedSite(); });
     document.dispatchEvent(this.renderedEvent);
     Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite)
   }
@@ -459,7 +459,7 @@ export class SiteHappenings {
   }
 
   public getSelectedSite(): {} {
-    return { selectedSite: this.selectedSite};
+    return { selectedSite: this.selectedSite };
   };
 
 }
