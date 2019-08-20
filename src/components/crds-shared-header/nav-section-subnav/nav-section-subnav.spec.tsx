@@ -1,6 +1,6 @@
 import { NavSectionSubnav } from "./nav-section-subnav";
 
-describe('<nav-link>', () => {
+describe('<nav-section-subnav>', () => {
   beforeEach(() => {
     this.component = new NavSectionSubnav();
   });
