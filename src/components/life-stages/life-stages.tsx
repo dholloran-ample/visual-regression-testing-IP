@@ -10,6 +10,7 @@ import { HTMLStencilElement } from '@stencil/core/internal';
   shadow: true
 })
 export class LifeStages {
+  private analytics = window['analytics'] || {};
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   private user: CrdsUser = { name: '', lifeStage: '' };
   private recommendedContent: [] = [];
@@ -26,6 +27,10 @@ export class LifeStages {
 
   componentWillLoad() {
     this.fetchUser(this.authToken);
+  }
+
+  componentDidRender() {
+    Utils.trackInView(this.host, 'LifeStafeComponent', this.getLifeStageId.bind(this))
   }
 
   refresh() {
@@ -124,6 +129,9 @@ export class LifeStages {
   handleLifeStageClicked(event) {
     const card = event.target;
     this.lifeStageId = card.dataset.lifeStageId;
+    this.analytics.track('LifeStageUpdated', {
+      lifeStageId: this.lifeStageId,
+    });
     this.fetchContent(this.authToken, this.lifeStageId);
     console.log('fire analytics', event);
     // TODO: analytics call here
@@ -209,5 +217,9 @@ export class LifeStages {
         </div>
       </div>
     );
+  }
+
+  getLifeStageId() {
+    return this.lifeStageId;
   }
 }
