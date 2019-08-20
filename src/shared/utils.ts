@@ -68,6 +68,7 @@ export class Utils {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          dataFetch();
           window['analytics'].track(`${componentName}InView`, {
             target: entry.target,
             data: dataFetch()
