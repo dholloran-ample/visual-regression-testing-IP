@@ -80,6 +80,10 @@ export namespace Components {
     'data': string;
     'href': string;
   }
+  interface NavLink {
+    'automationId': string;
+    'href': string;
+  }
   interface NavSection {
     'activeSection': any;
     'isActive': boolean;
@@ -175,6 +179,12 @@ declare global {
     new (): HTMLNavCtasElement;
   };
 
+  interface HTMLNavLinkElement extends Components.NavLink, HTMLStencilElement {}
+  var HTMLNavLinkElement: {
+    prototype: HTMLNavLinkElement;
+    new (): HTMLNavLinkElement;
+  };
+
   interface HTMLNavSectionElement extends Components.NavSection, HTMLStencilElement {}
   var HTMLNavSectionElement: {
     prototype: HTMLNavSectionElement;
@@ -205,6 +215,7 @@ declare global {
     'global-nav': HTMLGlobalNavElement;
     'life-stages': HTMLLifeStagesElement;
     'nav-ctas': HTMLNavCtasElement;
+    'nav-link': HTMLNavLinkElement;
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'profile-nav': HTMLProfileNavElement;
@@ -283,6 +294,11 @@ declare namespace LocalJSX {
     'data'?: string;
     'href'?: string;
   }
+  interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
+    'automationId'?: string;
+    'href'?: string;
+    'onSignOutClicked'?: (event: CustomEvent<any>) => void;
+  }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'activeSection'?: any;
     'isActive'?: boolean;
@@ -315,6 +331,7 @@ declare namespace LocalJSX {
     'global-nav': GlobalNav;
     'life-stages': LifeStages;
     'nav-ctas': NavCtas;
+    'nav-link': NavLink;
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
     'profile-nav': ProfileNav;

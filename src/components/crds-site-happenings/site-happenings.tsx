@@ -37,16 +37,12 @@ export class SiteHappenings {
    * then fetch MP data is applicable
    */
   componentWillLoad() {
-    this.selectedSite = 'Churchwide';
     return Promise.all([this.fetchMpData(), this.fetchContentfulData()]);
   }
 
   private fetchMpData() {
     if (this.authToken) {
-      return Promise.all([
-        this.fetchSitesData(this.authToken),
-        this.fetchUserData(this.authToken)
-      ]);
+      return Promise.all([this.fetchSitesData(this.authToken), this.fetchUserData(this.authToken)]);
     }
   }
 
@@ -57,6 +53,7 @@ export class SiteHappenings {
   componentDidRender() {
     this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
+    Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite.bind(this))
   }
 
   /**
@@ -66,6 +63,9 @@ export class SiteHappenings {
   handleSiteSelection(event) {
     this.selectedSite = event.target.value;
     this.setWidthBasedOnText(event.target, event.target.value);
+    this.analytics.track('HappeningSiteFiltered', {
+      site: this.selectedSite
+    });
   }
 
   /**
@@ -79,12 +79,11 @@ export class SiteHappenings {
     this.defaultToUserSite(this.user.site);
     this.handleClose();
     this.updateUserSite(this.authToken, selectedSiteId);
-    this.analytics.track('HappeningSiteUpdated', {
+    this.analytics.track('HappeningMPSiteUpdated', {
       id: selectedSiteId,
       name: this.selectedSite
     });
   }
-
   /**
    * Receive input from user clicks on happenings
    * cards
@@ -97,16 +96,14 @@ export class SiteHappenings {
       userSite: this.user.site || 'logged out',
       selectedSite: this.selectedSite
     };
+
     if (target.tagName !== 'A') {
       params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-      this.analytics.track('HappeningClicked', {
-        params
-      });
-    } else {
-      this.analytics.track('HappeningClicked', {
-        params
-      });
     }
+
+    this.analytics.track('HappeningCardClicked', {
+      params
+    });
   }
 
   /**
@@ -127,11 +124,14 @@ export class SiteHappenings {
     let styles = window.getComputedStyle(el);
     tmpSelect.style.visibility = 'hidden';
     tmpSelect.appendChild(tmpOption);
+    tmpSelect.style.margin = styles.margin;
+    tmpSelect.style.padding = styles.padding;
     tmpSelect.style.fontSize = styles.fontSize;
+    tmpSelect.style.fontFamily = styles.fontFamily;
+    tmpSelect.style.webkitAppearance = 'none';
     tmpOption.innerText = text;
     this.host.shadowRoot.appendChild(tmpSelect);
-    // set the parent dropdown's width
-    el.parentNode.style.width = `${tmpSelect.offsetWidth}px`;
+    el.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
     this.host.shadowRoot.removeChild(tmpSelect);
   }
 
@@ -176,9 +176,7 @@ export class SiteHappenings {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.user = { ...this.user, site: siteName };
-        siteName == (null || 'Not site specific') 
-          ? this.renderSetSiteModal() 
-          : this.defaultToUserSite(this.user.site);
+        siteName == (null || 'Not site specific') ? this.renderSetSiteModal() : this.defaultToUserSite(this.user.site);
       });
   }
 
@@ -192,7 +190,7 @@ export class SiteHappenings {
         this.gqlUrl,
         {
           query: `
-          { 
+          {
             sites(filter: "Available_Online = 1") {
               name
               id
@@ -210,7 +208,7 @@ export class SiteHappenings {
         this.mpSites = success.data.data.sites;
         this.renderSetSiteOptions(this.mpSites);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   /**
@@ -311,8 +309,8 @@ export class SiteHappenings {
         </button>
         <div class="text-center push-top w-100">
           <h2 class="component-header flush-bottom">Select your Crossroads location</h2>
-          <p class="flush-top">See what's happening in and around your community.</p>
-          <div class="happenings-dropdown">
+          <p class="flush-half-top">See what's happening in and around your community.</p>
+          <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
             <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
               <option disabled selected>
                 Choose a site
@@ -421,7 +419,7 @@ export class SiteHappenings {
             <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
               happening at crossroads
             </h4>
-            <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
+            <div class="happenings-dropdown" data-automation-id="happenings-filter">
               <select
                 class="happenings-dropdown-select font-family-base"
                 onInput={event => this.handleSiteSelection(event)}
@@ -459,4 +457,9 @@ export class SiteHappenings {
       </div>
     );
   }
+
+  public getSelectedSite(): {} {
+    return { selectedSite: this.selectedSite };
+  };
+
 }
