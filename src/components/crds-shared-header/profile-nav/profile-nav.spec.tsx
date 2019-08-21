@@ -31,7 +31,7 @@ const stringPayload = {
   ]
 }
 
-describe('<nav-link>', () => {
+describe('<profile-nav>', () => {
   beforeEach(() => {
     this.component = new ProfileMenu();
   });
