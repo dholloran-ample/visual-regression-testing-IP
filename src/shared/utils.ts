@@ -81,22 +81,4 @@ export class Utils {
 
     observer.observe(host);
   }
-
-  /**
-   * Formats duration string to human friendly time
-   * @param {String} s
-   */
-  public static formatTime(s) {
-    let seconds = Number(s) % 60;
-    let minutes = Math.floor(Number(s) / 60);
-    if (minutes >= 60 && seconds !== 0) {
-      let hours = minutes / 60;
-      minutes = minutes % 60;
-      return minutes == 0 ? `${hours} hr ${seconds} sec` : `${hours} hr ${minutes} min ${seconds} sec`;
-    } else if (seconds !== 0) {
-      return `${minutes} min ${seconds} sec`;
-    } else {
-      return `${minutes} min`;
-    }
-  }
 }

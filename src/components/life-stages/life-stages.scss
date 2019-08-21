@@ -9,19 +9,15 @@ h5 {
   margin: 0;
 }
 
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
 .life-stages {
   background-color: #f0f0f0;
   box-shadow: rgba(0, 0, 0, .15) 0 0 6px;
-  min-height: 500px;
   overflow: hidden;
-
-  .loading-skeleton {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    width: 100%;
-  }
 
   .life-stages-inner {
     transition: all .45s ease;
@@ -37,19 +33,24 @@ h5 {
   grid-auto-columns: 180px;
   grid-auto-flow: column;
   grid-column: 1 / -1;
-  grid-gap: 20px;
+  grid-gap: 1.5rem;
   grid-template-columns: .375rem;
   overflow-x: scroll;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
   scroll-snap-type: x mandatory;
   scrollbar-base-color: transparent;
 
   &.media-cards {
-    grid-auto-columns: 400px;
+    grid-auto-columns: 262px;
   }
 
   @media (min-width: 768px) {
     grid-auto-columns: 220px;
+    grid-gap: 1rem;
+
+    &.media-cards {
+      grid-auto-columns: 400px;
+    }
   }
 
   // creates the ability to overscroll
@@ -66,11 +67,15 @@ h5 {
   .card,
   .card-skeleton {
     cursor: pointer;
-    height: 400px;
+    height: 320px;
     overflow: hidden;
     position: relative;
     scroll-snap-align: center;
     transition: all .35s ease;
+
+    @media (min-width: 768px) {
+      height: 400px;
+    }
 
     &:hover {
       cursor: pointer;
@@ -174,6 +179,33 @@ h5 {
       height: 16px;
       width: 55%;
     }
+  }
+}
+
+.fadeout,
+.fadein {
+  animation-fill-mode: forwards;
+}
+
+.fadeout {
+  animation: .35s ease-in-out fadeout;
+}
+
+.fadein {
+  animation: .35s ease-in-out fadein;
+}
+
+@keyframes fadeout {
+  to {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+@keyframes fadein {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
