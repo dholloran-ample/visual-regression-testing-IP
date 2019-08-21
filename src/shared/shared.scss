@@ -15,6 +15,10 @@
   display: flex;
 }
 
+.d-block {
+  display: block;
+}
+
 .align-items-center {
   align-items: center;
 }
@@ -32,15 +36,14 @@
 
 a.no-style {
   color: inherit;
-  cursor: auto;
   text-decoration: inherit;
 }
 
 hr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
   border: 0;
   border-top: 1px solid #e7e7e7;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .font-family-base {
@@ -52,8 +55,29 @@ hr {
   color: #979797 !important;
 }
 
+.text-gray {
+  color: #737373 !important;
+}
+
 .text-center {
   text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+ 
+  &.font-size-smaller {
+    font-size: 13px !important;
+    letter-spacing: .5px;
+  }
+}
+
+.text-white {
+  color: #fff;
+}
+
+.bg-charcoal {
+  background-color: #171717;
 }
 
 .flush {
@@ -65,6 +89,14 @@ hr {
   @media (min-width: 480px) {
     font-size: 19px !important;
   }
+}
+
+.font-size-smallest {
+  font-size: 10px;
+}
+
+.font-weight-mid {
+  font-weight: 500;
 }
 
 .flush-bottom {
@@ -107,9 +139,29 @@ hr {
   font-family: 'acumin-pro-extra-condensed';
   font-size: 2rem; // 32px
   font-weight: 500;
+  line-height: .95;
   text-transform: uppercase;
 
   @media (min-width: 480px) {
     font-size: 2.125rem; // 34px
+  }
+}
+
+// Media Label
+.media-label {
+  display: flex;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 6px 8px;
+
+  >*:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  .icon {
+    height: 16px;
+    width: 12px;
+    fill: #fff;
   }
 }
