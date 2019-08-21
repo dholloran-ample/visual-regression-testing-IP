@@ -1,6 +1,3 @@
-import { CrdsImage } from "../crds-site-happenings/site-happenings-interface";
-import { Identifier } from "@babel/types";
-
 export interface CrdsUser {
   name: string;
   lifeStage: string;
@@ -11,4 +8,5 @@ export interface CrdsLifeStage {
   title: string;
   imageUrl: string;
   contentTotal: string;
+  description: string;
 }
