@@ -16,20 +16,6 @@ export class SiteHappenings {
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
   private user: CrdsUser = { name: '', site: '' };
-  private inViewCallback = entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        this.analytics.track('HappeningComponentInView', {
-          target: entry.target,
-          selectedSite: this.selectedSite
-        });
-      }
-    });
-  };
-
-  private observer = new IntersectionObserver(this.inViewCallback, {
-    threshold: 1.0
-  });
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
@@ -67,7 +53,7 @@ export class SiteHappenings {
   componentDidRender() {
     this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
-    this.observer.observe(this.host);
+    Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite.bind(this))
   }
 
   /**
@@ -263,7 +249,7 @@ export class SiteHappenings {
   fetchContentfulData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
-    }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
+      }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
     return axios
       .get(apiUrl, {
         params: {
@@ -471,4 +457,9 @@ export class SiteHappenings {
       </div>
     );
   }
+
+  public getSelectedSite(): {} {
+    return { selectedSite: this.selectedSite };
+  };
+
 }
