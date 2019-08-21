@@ -9,17 +9,17 @@ import axios from 'axios';
   styleUrl: 'life-stages.scss',
   shadow: true
 })
-
 export class LifeStages {
   private analytics = window['analytics'] || {};
+  private imgix = window['imgix'] || {};
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   private user: CrdsUser = { name: '', lifeStage: '' };
   private recommendedContent: [] = [];
   private lifeStages: CrdsLifeStage[] = [];
   private lifeStageId: string = null;
 
-  @Prop() authToken: string;
-  @Element() host: HTMLStencilElement;
+  @Prop() public authToken: string;
+  @Element() public host: HTMLStencilElement;
 
   @Watch('authToken')
   authTokenHandler() {
@@ -30,13 +30,14 @@ export class LifeStages {
     detail: this.host
   });
 
-  componentWillLoad() {
+  public componentWillLoad() {
     this.fetchUser(this.authToken);
   }
 
-  componentDidRender() {
+  public componentDidRender() {
     document.dispatchEvent(this.renderedEvent);
-    Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this))
+    this.imgixRefresh();
+    Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
   private refresh() {
@@ -44,11 +45,15 @@ export class LifeStages {
     this.host.forceUpdate();
   }
 
+  private imgixRefresh() {
+    this.imgix.init({ force: true });
+  }
+
   private getLifeStageId() {
     return this.lifeStageId;
   }
 
-  private fetchUser(token) {
+  public fetchUser(token) {
     return axios
       .post(
         this.gqlUrl,
@@ -78,7 +83,7 @@ export class LifeStages {
       });
   }
 
-  private fetchLifeStages(token) {
+  public fetchLifeStages(token) {
     return axios
       .post(
         this.gqlUrl,
@@ -89,6 +94,7 @@ export class LifeStages {
               title
               imageUrl
               contentTotal
+              description
             }
           }`
         },
@@ -99,7 +105,6 @@ export class LifeStages {
         }
       )
       .then(success => {
-        console.log(success, 'yah');
         this.lifeStages = success.data.data.lifeStages;
         this.refresh();
       });
@@ -108,7 +113,7 @@ export class LifeStages {
   /**
    * Get content with set life stages
    */
-  private fetchContent(token, lifeStageId) {
+  public fetchContent(token, lifeStageId) {
     return axios
       .post(
         this.gqlUrl,
@@ -117,12 +122,16 @@ export class LifeStages {
             lifeStageContent(id: "${lifeStageId}") {
               id
               title
-              slug
-              imageUrl
-              contentType
+              authors {
+                fullName
+                qualifiedUrl
+              }
               duration
-              authors
+              contentType
               category
+              slug
+              qualifiedUrl
+              imageUrl
             }
           }`
         },
@@ -134,19 +143,24 @@ export class LifeStages {
       )
       .then(success => {
         this.recommendedContent = success.data.data.lifeStageContent;
+        // scroll this container left to make sure content starts at the beginning
+        this.host.shadowRoot.querySelector('.cards').scrollLeft = 0;
         this.refresh();
       })
       .catch(err => console.error(err));
   }
 
-    /**
+  /**
    * Get content with set life stages
    */
-  private setLifeStage(token, lifeStageId?, lifeStageName?) {
-    const obj = lifeStageId ? {
-      id: lifeStageId,
-      title: lifeStageName
-    } : null;
+  public setLifeStage(token, lifeStageId?, lifeStageName?) {
+    const obj = lifeStageId
+      ? {
+          id: lifeStageId,
+          title: lifeStageName
+        }
+      : null;
+    console.log('attempting to set life stage', JSON.stringify(obj));
     return axios
       .post(
         this.gqlUrl,
@@ -175,19 +189,22 @@ export class LifeStages {
 
   private handleLifeStageClicked(event) {
     const card = event.target;
+    const cards = this.host.shadowRoot.querySelectorAll('[data-life-stage-id]');
+    cards.forEach(card => card.classList.add('disabled'));
     this.lifeStageId = card.dataset.lifeStageId;
-    this.analytics.track('LifeStageUpdated', {
-      lifeStageId: this.lifeStageId,
-    });
+    const lifeStageName = card.dataset.lifeStageName;
+    // this.analytics.track('LifeStageUpdated', {
+    //   lifeStageId: this.lifeStageId,
+    // });
     this.fetchContent(this.authToken, this.lifeStageId);
-    this.setLifeStage(this.authToken, this.lifeStageId)
+    this.setLifeStage(this.authToken, this.lifeStageId, lifeStageName);
   }
 
-  private renderSkeleton() {
+  private renderCardSkeleton() {
     return [1, 2, 3, 4, 5].map(() => (
       <div
         class={`card-skeleton ${
-          this.recommendedContent.length > 0 || this.lifeStages.length > 0 ? 'fade display-none' : ''
+          this.recommendedContent.length > 0 || this.lifeStages.length > 0 ? 'display-none' : ''
         }`}
       >
         <div class="content">
@@ -201,10 +218,10 @@ export class LifeStages {
   private renderLifeStages() {
     return this.lifeStages.map((obj, index) => (
       <div
-        class={`card ${this.recommendedContent.length > 0 ? 'fade display-none' : ''}`}
+        class={`card ${this.recommendedContent.length > 0 ? 'display-none' : ''}`}
         key={index}
         style={{
-          backgroundImage: `url(${Utils.imgixify(obj.imageUrl)})`,
+          backgroundImage: `url(${Utils.imgixify(obj.imageUrl + '?auto=format&h=400')}`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -226,11 +243,7 @@ export class LifeStages {
     if (type !== 'podcast' || type !== 'series') {
       return (
         <div class="media-label bg-charcoal text-white align-items-center">
-          {duration !== null ? (
-            <span class="font-size-smallest soft-quarter-right">{Utils.formatTime(duration)}</span>
-          ) : (
-            ''
-          )}
+          {duration !== null ? <span class="font-size-smallest soft-quarter-right">{duration}</span> : ''}
           {this.renderIcon(type)}
         </div>
       );
@@ -275,36 +288,30 @@ export class LifeStages {
   }
 
   private renderRecommendedContent() {
+    const imgixParams =
+      window.innerWidth > 767 ? '?auto=format&w=400&h=225&fit=crop' : '?auto=format&w=262&h=196.5&fit=crop';
     return this.recommendedContent.map((obj: any, index) => (
       <div class="card" key={index}>
-        <a
-          class="no-style relative d-block"
-          href={`/media/${obj.contentType}/${obj.slug}`}
-          style={{
-            height: '56.25%', // 16x9 aspect
-            width: '100%',
-            marginBottom: '.5rem'
-          }}
-        >
+        <a class="relative d-block" href={`/media/${obj.contentType}/${obj.slug}`}>
           {this.renderMediaLabel(obj.contentType, obj.duration)}
-          <div
-            class="image"
-            style={{
-              backgroundImage: `url(${Utils.imgixify(obj.imageUrl + '?auto=format&w=400')})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              height: '100%'
-            }}
-          />
+          <img src={obj.imageUrl + imgixParams} class="img-responsive" />
         </a>
-        <a class="no-style" href={`/media/${obj.contentType}/${obj.slug}`}>
-          <h4 class="text-gray font-size-smaller font-weight-mid text-uppercase">{obj.category}</h4>
+        <a href={`/media/${obj.contentType}/${obj.slug}`}>
+          <h4 class="text-gray font-size-smaller font-weight-mid text-uppercase soft-quarter-top">{obj.category}</h4>
           <h3 class="component-header">{obj.title}</h3>
           {obj.authors && (
             <p class="card-text soft-quarter-top">
               {obj.authors.map(author => (
-                <a class="text-gray-light font-size-smaller" href="/authors/">
-                  {author}
+                <a
+                  class="text-gray-light font-size-smaller"
+                  href="/authors/"
+                  style={{
+                    color: 'inherit',
+                    display: 'block',
+                    textDecoration: 'none'
+                  }}
+                >
+                  {author.fullName}
                 </a>
               ))}
             </p>
@@ -314,16 +321,32 @@ export class LifeStages {
     ));
   }
 
-  render() {
+  private renderText() {
+    const selectedLifeStage: any = this.lifeStages.filter(stage => stage.id === this.lifeStageId)[0];
+    return (
+      <div>
+        <h2 class="component-header flush-bottom">
+          {this.recommendedContent.length > 0 ? selectedLifeStage.title : 'Personalize Your Experience'}
+        </h2>
+        <p class="push-half-top">
+          {this.recommendedContent.length > 0
+            ? selectedLifeStage.description
+            : 'Which of these best describes your stage of life? (Pick one)'}
+        </p>
+      </div>
+    );
+  }
+
+  public render() {
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
           <div class="life-stages-header">
-            <h2 class="component-header flush-bottom">Personalize Your Experience</h2>
-            <p>Which of these best describes your stage of life? (Pick one)</p>
+            {this.renderText()}
+            <div class="recommended-icon" />
           </div>
           <div class={`cards ${this.recommendedContent.length > 0 ? 'media-cards' : ''}`}>
-            {this.renderSkeleton()}
+            {this.renderCardSkeleton()}
             {this.lifeStages.length > 0 ? this.renderLifeStages() : ''}
             {this.recommendedContent.length > 0 ? this.renderRecommendedContent() : ''}
           </div>
