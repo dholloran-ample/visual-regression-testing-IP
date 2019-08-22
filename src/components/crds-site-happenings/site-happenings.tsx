@@ -45,7 +45,7 @@ export class SiteHappenings {
   componentDidRender() {
     this.handleParentElementWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
-    Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite)
+    Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite.bind(this))
   }
 
   /** GraphQL I/O **/
