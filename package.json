@@ -61,5 +61,7 @@
     "url": "^0.11.0"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "stringify-object": "^3.3.0"
+  }
 }
