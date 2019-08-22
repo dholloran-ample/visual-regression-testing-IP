@@ -6,5 +6,7 @@ export class Auth {
     this.config = config;
   }
 
-  listen(callback) { }
+  listen(callback) {
+    const fake = callback; //Needed to keep the storybook from complaining
+  }
 }
