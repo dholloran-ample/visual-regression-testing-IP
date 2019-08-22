@@ -17,7 +17,6 @@ export class ProfileMenu {
   }
 
   handleClick(e) {
-    console.log(`DEBUG profile nave typeof onSignOut is ${typeof this.onSignOut}`)
     if (typeof this.onSignOut == 'function') {
       this.onSignOut();
       e.preventDefault();
