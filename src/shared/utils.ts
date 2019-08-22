@@ -60,7 +60,7 @@ export class Utils {
 
   /**
    *  Adds tracking analytics for when the component comes in view
-   *  @param {HTMLElement} host 
+   *  @param {HTMLElement} host
    *  @param {string} componentName
    *  @param {function} dataFetch
    */

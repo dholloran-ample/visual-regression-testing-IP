@@ -17,7 +17,7 @@ The following components are made available via this library. Please see the REA
 
 ## Environments
 
-You need to export following variables when building or running the project...
+You need to export the following variables when building or running the project...
 
 | Variable                     | Description                                   |
 | ---------------------------- | --------------------------------------------- |
@@ -26,6 +26,14 @@ You need to export following variables when building or running the project...
 | `CONTENTFUL_ENV`             | Contentful environment (defaults to `master`) |
 | `CRDS_INTERACTIONS_ENDPOINT` | Service endpoint                              |
 | `CRDS_GQL_ENDPOINT`          | GraphQL endpoint                              |
+
+You need to export the following variables when running tests on the project...
+
+| Variable                     | Description                                   |
+| ---------------------------- | --------------------------------------------- |
+| `TEST_SITE_USER_PW`          | Test user's password                          |
+| `TEST_CRDS_LOGIN_ENDPOINT`   | Gateway login endpoint                        |
+
 
 ## License
 
