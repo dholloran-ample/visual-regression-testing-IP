@@ -32,8 +32,8 @@ describe('<give-nav>', () => {
     it('Checks element has title', () => {
       const rendered = this.component.renderSections(payload);
 
-      expect(rendered['$children$'][0]['$children$'][0]['$text$']).toMatch(/\W?Give\W?/);
-      expect(rendered['$children$']).toHaveLength(3);
+      expect(rendered.$children$[0].$children$[0].$text$).toMatch(/\W?Give\W?/);
+      expect(rendered.$children$).toHaveLength(3);
     });
 
     it('Checks element has no sub-elements if payload has no children', () => {
@@ -45,7 +45,7 @@ describe('<give-nav>', () => {
 
       const rendered = this.component.renderSections(noChildren);
 
-      expect(rendered['$children$']).toHaveLength(1);
+      expect(rendered.$children$).toHaveLength(1);
     });
 
     it('Checks element has expected sub-element if payload only has object children', () => {
@@ -73,10 +73,10 @@ describe('<give-nav>', () => {
       const rendered = this.component.renderSections(objectChildren);
 
       [0,1].forEach(elementIndex => {
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$attrs$'].class).toBe('top-level');
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$attrs$']['data-automation-id']).toBe(objectChildren.children[0][elementIndex]['automation-id']);
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$attrs$'].href).toBe(objectChildren.children[0][elementIndex].href);
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$children$'][0]['$text$']).toBe(objectChildren.children[0][elementIndex].title);
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$attrs$.class).toBe('top-level');
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$children$[0].$attrs$['data-automation-id']).toBe(objectChildren.children[0][elementIndex]['automation-id']);
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$children$[0].$attrs$.href).toBe(objectChildren.children[0][elementIndex].href);
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$children$[0].$children$[0].$text$).toBe(objectChildren.children[0][elementIndex].title);
       });
     });
 
@@ -91,20 +91,20 @@ describe('<give-nav>', () => {
 
       const rendered = this.component.renderSections(stringChildren);
 
-      expect(rendered['$children$'][1]['$children$'][0]['$children$'][0]['$text$']).toBe(stringChildren.children[0]);
+      expect(rendered.$children$[1].$children$[0].$children$[0].$text$).toBe(stringChildren.children[0]);
     });
 
     it('Checks element has expected sub-elements if payload has string and object children', () => {
       const rendered = this.component.renderSections(payload);
 
       [0,1].forEach(elementIndex => {
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$attrs$'].class).toBe('top-level');
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$attrs$']['data-automation-id']).toBe(payload.children[0][elementIndex]['automation-id']);
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$attrs$'].href).toBe(payload.children[0][elementIndex]['href']);
-        expect(rendered['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$children$'][0]['$text$']).toBe(payload.children[0][elementIndex]['title']);
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$attrs$.class).toBe('top-level');
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$children$[0].$attrs$['data-automation-id']).toBe(payload.children[0][elementIndex]['automation-id']);
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$children$[0].$attrs$.href).toBe(payload.children[0][elementIndex]['href']);
+        expect(rendered.$children$[1].$children$[0].$children$[elementIndex].$children$[0].$children$[0].$text$).toBe(payload.children[0][elementIndex]['title']);
       });
 
-      expect(rendered['$children$'][2]['$children$'][0]['$children$'][0]['$text$']).toBe(payload.children[1]);
+      expect(rendered.$children$[2].$children$[0].$children$[0].$text$).toBe(payload.children[1]);
     });
   });
 
@@ -122,7 +122,7 @@ describe('<give-nav>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$attrs$'].class).toBe('give-nav');
+      expect(rendered.$attrs$.class).toBe('give-nav');
     });
 
     it('Checks give nav contains expected child elements in order', () => {
@@ -130,17 +130,17 @@ describe('<give-nav>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$children$'][0]['$children$'][0]['$children$'][0]['$text$']).toMatch(/\W?Give\W?/);
-      expect(rendered['$children$'][0]['$children$']).toHaveLength(3);
+      expect(rendered.$children$[0].$children$[0].$children$[0].$text$).toMatch(/\W?Give\W?/);
+      expect(rendered.$children$[0].$children$).toHaveLength(3);
 
       [0,1].forEach(elementIndex => {
-        expect(rendered['$children$'][0]['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$attrs$'].class).toBe('top-level');
-        expect(rendered['$children$'][0]['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$attrs$']['data-automation-id']).toBe(payload.children[0][elementIndex]['automation-id']);
-        expect(rendered['$children$'][0]['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$attrs$'].href).toBe(payload.children[0][elementIndex]['href']);
-        expect(rendered['$children$'][0]['$children$'][1]['$children$'][0]['$children$'][elementIndex]['$children$'][0]['$children$'][0]['$text$']).toBe(payload.children[0][elementIndex]['title']);
+        expect(rendered.$children$[0].$children$[1].$children$[0].$children$[elementIndex].$attrs$.class).toBe('top-level');
+        expect(rendered.$children$[0].$children$[1].$children$[0].$children$[elementIndex].$children$[0].$attrs$['data-automation-id']).toBe(payload.children[0][elementIndex]['automation-id']);
+        expect(rendered.$children$[0].$children$[1].$children$[0].$children$[elementIndex].$children$[0].$attrs$.href).toBe(payload.children[0][elementIndex]['href']);
+        expect(rendered.$children$[0].$children$[1].$children$[0].$children$[elementIndex].$children$[0].$children$[0].$text$).toBe(payload.children[0][elementIndex]['title']);
       });
 
-      expect(rendered['$children$'][0]['$children$'][2]['$children$'][0]['$children$'][0]['$text$']).toBe(payload.children[1]);
+      expect(rendered.$children$[0].$children$[2].$children$[0].$children$[0].$text$).toBe(payload.children[1]);
     });
 
     it('Checks an error is thrown if background_image is not defined', () => {

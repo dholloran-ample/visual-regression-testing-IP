@@ -1,5 +1,4 @@
 jest.mock('../../../shared/auth');
-
 import { GlobalNav } from './global-nav';
 
 describe('<global-nav>', () => {
@@ -38,10 +37,11 @@ describe('<global-nav>', () => {
 
     it('Checks auth is initialized', () => {
       this.component.config = {};
+      expect(this.component.auth).toEqual({})
 
       this.component.initAuth();
 
-      expect(this.component.auth).not.toBeUndefined();
+      expect(this.component.auth).not.toEqual({})
     });
   });
 
@@ -202,5 +202,16 @@ describe('<global-nav>', () => {
     });
   });
 
-  //TODO verify render in e2e
+  //TODO verify render more thoroughly in e2e
+  describe('Tests render()', () => {
+    it('Checks auth is initialized', () => {
+      this.component.config = {};
+
+      expect(this.component.auth).toEqual({});
+
+      this.component.render();
+
+      expect(this.component.auth).not.toEqual({});
+    });
+  });
 });

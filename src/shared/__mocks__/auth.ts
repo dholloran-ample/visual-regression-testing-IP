@@ -1,7 +1,9 @@
 //Mock auth class available for use by Jest tests
 export class Auth {
+  config: any;
+
   constructor(config: any = {}) {
-    console.log(`in mocked auth using config ${config}`);
+    this.config = config;
   }
 
   listen(callback) { }

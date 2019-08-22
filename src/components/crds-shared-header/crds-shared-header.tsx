@@ -26,7 +26,7 @@ export class SharedHeader {
 
   public componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
-    axios.get(url).then(response => (this.data = response.data));
+    return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
   }
 
   componentDidLoad() {

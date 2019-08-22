@@ -42,7 +42,7 @@ describe('<nav-link>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$attrs$'].href).toBe('https://int.crossroads.net/prayer');
+      expect(rendered.$attrs$.href).toBe('https://int.crossroads.net/prayer');
     });
 
     it('Checks element returned has data-automation-id', () => {
@@ -50,13 +50,13 @@ describe('<nav-link>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$attrs$']['data-automation-id']).toBe('sh-signin');
+      expect(rendered.$attrs$['data-automation-id']).toBe('sh-signin');
     });
 
     it('Checks element returned has onClick', () => {
       const rendered = this.component.render();
 
-      expect(typeof rendered['$attrs$'].onClick).toBe('function');
+      expect(typeof rendered.$attrs$.onClick).toBe('function');
     });
 
     it('Checks element onClick event bound to expected method', () => {
@@ -65,7 +65,7 @@ describe('<nav-link>', () => {
       this.component.href = 'https://int.crossroads.net/prayer';
 
       const rendered = this.component.render();
-      rendered['$attrs$'].onClick();
+      rendered.$attrs$.onClick();
 
       expect(window.location.href).toBe('https://int.crossroads.net/prayer')
     });

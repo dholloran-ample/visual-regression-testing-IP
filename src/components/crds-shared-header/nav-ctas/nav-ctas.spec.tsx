@@ -42,7 +42,7 @@ describe('<nav-ctas>', () => {
 
       const rendered = this.component.render();
       expect(rendered).not.toBeNull();
-      expect(rendered['$attrs$'].class).toEqual('ctas');
+      expect(rendered.$attrs$.class).toEqual('ctas');
     });
 
     it('Checks component has no CTAs if not given data', () => {
@@ -51,8 +51,8 @@ describe('<nav-ctas>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$attrs$'].class).toEqual('ctas');
-      expect(rendered['$attrs$'].innerHTML).toEqual('');
+      expect(rendered.$attrs$.class).toEqual('ctas');
+      expect(rendered.$attrs$.innerHTML).toEqual('');
     });
 
     it('Checks component has CTAs if not given data', () => {
@@ -61,8 +61,8 @@ describe('<nav-ctas>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$attrs$'].class).toEqual('ctas');
-      expect(rendered['$attrs$'].innerHTML).toEqual('<h3>More About Crossroads (INT)</h3>');
+      expect(rendered.$attrs$.class).toEqual('ctas');
+      expect(rendered.$attrs$.innerHTML).toEqual('<h3>More About Crossroads (INT)</h3>');
     });
   });
 });

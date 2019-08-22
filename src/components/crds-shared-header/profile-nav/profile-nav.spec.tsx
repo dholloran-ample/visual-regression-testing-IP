@@ -64,9 +64,9 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.renderSections(payload);
 
-      expect(rendered['$children$'].length).toBeGreaterThanOrEqual(1);
-      const titleElement = rendered['$children$'][0]['$children$'][0];
-      expect(titleElement['$text$']).toMatch(/\W?Hello Ben\W?/);
+      expect(rendered.$children$.length).toBeGreaterThanOrEqual(1);
+      const titleElement = rendered.$children$[0].$children$[0];
+      expect(titleElement.$text$).toMatch(/\W?Hello Ben\W?/);
     });
 
     it("Checks title is empty string if user name doesn't exist", () => {
@@ -74,9 +74,9 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.renderSections(payload);
 
-      expect(rendered['$children$'].length).toBeGreaterThanOrEqual(1);
-      const titleElement = rendered['$children$'][0]['$children$'][0];
-      expect(titleElement['$text$']).toMatch(/\W?Hello\W+/);
+      expect(rendered.$children$.length).toBeGreaterThanOrEqual(1);
+      const titleElement = rendered.$children$[0].$children$[0];
+      expect(titleElement.$text$).toMatch(/\W?Hello\W+/);
     });
 
     [undefined, null].forEach(currentUser => {
@@ -92,8 +92,8 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.renderSections(payload);
 
-      const payloadElements = rendered['$children$'][1];
-      expect(payloadElements['$children$'][0]['$children$'][0]['$children$'][0]['$attrs$']['automation-id']).toEqual(payload.children[0][0]['automation-id']);
+      const payloadElements = rendered.$children$[1];
+      expect(payloadElements.$children$[0].$children$[0].$children$[0].$attrs$['automation-id']).toEqual(payload.children[0][0]['automation-id']);
     });
 
     it('Checks element has expected children if given payload with strings', () => {
@@ -102,8 +102,8 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.renderSections(stringPayload);
 
-      const payloadElements = rendered['$children$'][1];
-      expect(payloadElements['$children$'][0]['$children$'][0]['$text$']).toEqual(stringPayload.children[0]);
+      const payloadElements = rendered.$children$[1];
+      expect(payloadElements.$children$[0].$children$[0].$text$).toEqual(stringPayload.children[0]);
     });
   });
 
@@ -113,30 +113,30 @@ describe('<profile-nav>', () => {
       it(`Checks element has header if given child is a string and topLevel.value = ${value}`, () => {
         const rendered = this.component.renderChild('A Title', { value: value });
 
-        const renderedElement = rendered['$children$'][0];
+        const renderedElement = rendered.$children$[0];
 
-        expect(renderedElement['$tag$']).toEqual('h4');
-        expect(renderedElement['$children$'][0]['$text$']).toEqual('A Title');
-        expect(renderedElement['$tag$']).not.toEqual('ul');
+        expect(renderedElement.$tag$).toEqual('h4');
+        expect(renderedElement.$children$[0].$text$).toEqual('A Title');
+        expect(renderedElement.$tag$).not.toEqual('ul');
       });
 
       it(`Checks element has list with expected contents if given child is not a string and topLevel.value = ${value}`, () => {
         const rendered = this.component.renderChild(payload.children[0], { value: value });
 
-        const renderedElement = rendered['$children$'][0];
+        const renderedElement = rendered.$children$[0];
 
-        expect(renderedElement['$tag$']).toEqual('ul');
-        expect(renderedElement['$tag$']).not.toEqual('h4');
-        expect(renderedElement['$children$'][0]['$children$'][0]['$attrs$']['automation-id']).toEqual(payload.children[0][0]['automation-id']);
+        expect(renderedElement.$tag$).toEqual('ul');
+        expect(renderedElement.$tag$).not.toEqual('h4');
+        expect(renderedElement.$children$[0].$children$[0].$attrs$['automation-id']).toEqual(payload.children[0][0]['automation-id']);
       });
 
       it(`Checks element has list if given child is an empty array and topLevel.value = ${value}`, () => {
         const rendered = this.component.renderChild([], { value: value });
 
-        const renderedElement = rendered['$children$'][0];
+        const renderedElement = rendered.$children$[0];
 
-        expect(renderedElement['$tag$']).toEqual('ul');
-        expect(renderedElement['$tag$']).not.toEqual('h4');
+        expect(renderedElement.$tag$).toEqual('ul');
+        expect(renderedElement.$tag$).not.toEqual('h4');
       });
     });
   });
@@ -168,7 +168,7 @@ describe('<profile-nav>', () => {
       const rendered = this.component.renderChildHTML(childConfig, {value: false});
       const renderedChildren = rendered[0];
 
-      expect(renderedChildren['$attrs$'].class).toEqual('top-level');
+      expect(renderedChildren.$attrs$.class).toEqual('top-level');
     });
 
     it('Checks list does not have top-level in class', () => {
@@ -181,7 +181,7 @@ describe('<profile-nav>', () => {
       const rendered = this.component.renderChildHTML(childConfig, {value: true});
       const renderedChildren = rendered[0];
 
-      expect(renderedChildren['$attrs$'].class).toEqual('');
+      expect(renderedChildren.$attrs$.class).toEqual('');
     });
 
     //TODO how are these values passed down to nav-link class?
@@ -194,16 +194,16 @@ describe('<profile-nav>', () => {
       }];
 
       const rendered = this.component.renderChildHTML(childConfig, {});
-      const renderedChildren = rendered[0]['$children$'];
+      const renderedChildren = rendered[0].$children$;
       expect(renderedChildren.length).toBeGreaterThanOrEqual(1);
 
       const renderedElement = renderedChildren[0]
 
-      expect(renderedElement['$attrs$']['automation-id']).toBe(childConfig[0]['automation-id']);
-      expect(renderedElement['$attrs$']['href']).toBe(childConfig[0]['href']);
-      expect(renderedElement['$children$'][0]['$text$']).toBe(childConfig[0]['title']);
-      expect(renderedElement['$tag$']).toBe('nav-link');
-      expect(typeof renderedElement['$attrs$']['onSignOutClicked']).toBe('function');
+      expect(renderedElement.$attrs$['automation-id']).toBe(childConfig[0]['automation-id']);
+      expect(renderedElement.$attrs$['href']).toBe(childConfig[0]['href']);
+      expect(renderedElement.$children$[0].$text$).toBe(childConfig[0]['title']);
+      expect(renderedElement.$tag$).toBe('nav-link');
+      expect(typeof renderedElement.$attrs$['onSignOutClicked']).toBe('function');
     });
 
     it('Checks signout is handled if element should signout', () => {
@@ -219,9 +219,9 @@ describe('<profile-nav>', () => {
       this.component.onSignOut = jest.fn();
 
       const rendered = this.component.renderChildHTML(childConfig, {});
-      const renderedElement = rendered[0]['$children$'][0];
+      const renderedElement = rendered[0].$children$[0];
 
-      renderedElement['$attrs$'].onSignOutClicked(fakeEvent);
+      renderedElement.$attrs$.onSignOutClicked(fakeEvent);
 
       expect(this.component.onSignOut).toBeCalledTimes(1);
       expect(fakeEvent.preventDefault).toBeCalledTimes(1);
@@ -238,9 +238,9 @@ describe('<profile-nav>', () => {
       };
 
       const rendered = this.component.renderChildHTML(childConfig, {});
-      const renderedElement = rendered[0]['$children$'][0];
+      const renderedElement = rendered[0].$children$[0];
 
-      renderedElement['$attrs$'].onSignOutClicked(fakeEvent);
+      renderedElement.$attrs$.onSignOutClicked(fakeEvent);
 
       expect(fakeEvent.preventDefault).not.toBeCalled();
     });
@@ -262,7 +262,7 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$attrs$'].class).toBe('profile-nav');
+      expect(rendered.$attrs$.class).toBe('profile-nav');
     });
 
     it('Checks profile nav contains user avatar', () => {
@@ -271,7 +271,7 @@ describe('<profile-nav>', () => {
       this.component.data = payload;
 
       const rendered = this.component.render();
-      const renderedNavImage = rendered['$children$'][0]['$attrs$'];
+      const renderedNavImage = rendered.$children$[0].$attrs$;
 
       expect(renderedNavImage.class).toBe('profile-nav-img');
       expect(renderedNavImage.style.backgroundImage).toMatch(/.*url\('https:\/\/int.crossroads.net\/proxy\/gateway\/api\/image\/profile\/7772248'\).*/);
@@ -284,20 +284,20 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered['$children$']).toHaveLength(2);
+      expect(rendered.$children$).toHaveLength(2);
 
-      expect(rendered['$children$'][0]['$attrs$'].class).toBe('profile-nav-img');
+      expect(rendered.$children$[0].$attrs$.class).toBe('profile-nav-img');
 
-      const renderedName = rendered['$children$'][1]['$children$'][0]['$children$'][0];
-      expect(renderedName['$children$'][0]['$text$']).toMatch(/\W?Hello Ben\W?/);
+      const renderedName = rendered.$children$[1].$children$[0].$children$[0];
+      expect(renderedName.$children$[0].$text$).toMatch(/\W?Hello Ben\W?/);
 
-      const renderedNavLinks = rendered['$children$'][1]['$children$'][0]['$children$'][1]['$children$'][0]['$children$'];
+      const renderedNavLinks = rendered.$children$[1].$children$[0].$children$[1].$children$[0].$children$;
       [0,1,2].forEach(navLinkIndex => {
-        expect(renderedNavLinks[navLinkIndex]['$children$'][0]['$attrs$']['automation-id']).toEqual(payload.children[0][navLinkIndex]['automation-id'])
+        expect(renderedNavLinks[navLinkIndex].$children$[0].$attrs$['automation-id']).toEqual(payload.children[0][navLinkIndex]['automation-id'])
       })
 
-      const renderedHeader = rendered['$children$'][1]['$children$'][0]['$children$'][2];
-      expect(renderedHeader['$children$'][0]['$children$'][0]['$text$']).toEqual(payload.children[1]);
+      const renderedHeader = rendered.$children$[1].$children$[0].$children$[2];
+      expect(renderedHeader.$children$[0].$children$[0].$text$).toEqual(payload.children[1]);
     });
 
 
