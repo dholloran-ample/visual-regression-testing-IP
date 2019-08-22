@@ -14,6 +14,7 @@ export class LifeStages {
   private analytics = window['analytics'] || {};
   private imgix = window['imgix'] || {};
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
+  private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
 
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @State() lifeStages: CrdsLifeStage[] = [];
@@ -37,7 +38,7 @@ export class LifeStages {
 
   public componentDidRender() {
     document.dispatchEvent(this.renderedEvent);
-    this.imgixRefresh();
+    // this.imgixRefresh();
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
@@ -138,8 +139,6 @@ export class LifeStages {
       .then(success => {
         console.log(success);
         this.recommendedContent = success.data.data.lifeStageContent;
-        // scroll this container left to make sure content starts at the beginning
-        this.host.shadowRoot.querySelector('.cards').scrollLeft = 0;
       })
       .catch(err => console.error(err));
   }
@@ -184,14 +183,16 @@ export class LifeStages {
   private handleLifeStageClicked(event) {
     const card = event.target;
     const cards = this.host.shadowRoot.querySelectorAll('[data-life-stage-id]');
+    console.log(cards);
     cards.forEach(card => card.classList.add('disabled'));
     this.user.lifeStage.id = card.dataset.lifeStageId;
-    const lifeStageName = card.dataset.lifeStageName;
+    this.user.lifeStage.title = card.dataset.lifeStageName;
     // this.analytics.track('LifeStageUpdated', {
     //   lifeStageId: this.user.lifeStage.id,
+    //     lifeStageName: this.user.lifeStage.title
     // });
     this.fetchContent(this.authToken, this.user.lifeStage.id);
-    this.setLifeStage(this.authToken, this.user.lifeStage.id, lifeStageName);
+    this.setLifeStage(this.authToken, this.user.lifeStage.id, this.user.lifeStage.title);
   }
 
   private renderCardSkeleton() {
@@ -292,9 +293,9 @@ export class LifeStages {
       <div class="card" key={index}>
         <a class="relative d-block" href={`/media/${obj.contentType}/${obj.slug}`}>
           {this.renderMediaLabel(obj.contentType, obj.duration)}
-          <img src={obj.imageUrl + imgixParams} class="img-responsive" />
+          <img src={(obj.imageUrl || this.crdsDefaultImg)+ imgixParams} class="img-responsive" />
         </a>
-        <a href={`/media/${obj.contentType}/${obj.slug}`}>
+        <a href={obj.qualifiedUrl}>
           <h4 class="text-gray font-size-smaller font-weight-mid text-uppercase soft-quarter-top">{obj.category}</h4>
           <h3 class="component-header">{obj.title}</h3>
           {obj.authors && (
