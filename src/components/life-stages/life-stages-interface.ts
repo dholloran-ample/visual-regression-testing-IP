@@ -1,6 +1,9 @@
 export interface CrdsUser {
   name: string;
-  lifeStage: string;
+  lifeStage: {
+    id: string;
+    title: string;
+  };
 }
 
 export interface CrdsLifeStage {

@@ -3,6 +3,7 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 import { CrdsUser, CrdsLifeStage } from './life-stages-interface';
 import { Utils } from '../../shared/utils';
 import axios from 'axios';
+import stringifyObject from 'stringify-object';
 
 @Component({
   tag: 'life-stages',
@@ -13,11 +14,10 @@ export class LifeStages {
   private analytics = window['analytics'] || {};
   private imgix = window['imgix'] || {};
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
-  private user: CrdsUser = { name: '', lifeStage: '' };
-  private recommendedContent: [] = [];
-  private lifeStages: CrdsLifeStage[] = [];
-  private lifeStageId: string = null;
 
+  @State() user: CrdsUser = { name: '', lifeStage: null };
+  @State() lifeStages: CrdsLifeStage[] = [];
+  @State() recommendedContent: [] = [];
   @Prop() public authToken: string;
   @Element() public host: HTMLStencilElement;
 
@@ -31,6 +31,7 @@ export class LifeStages {
   });
 
   public componentWillLoad() {
+    this.fetchLifeStages(this.authToken);
     this.fetchUser(this.authToken);
   }
 
@@ -40,17 +41,12 @@ export class LifeStages {
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
-  private refresh() {
-    console.log('manual re-render');
-    this.host.forceUpdate();
-  }
-
   private imgixRefresh() {
     this.imgix.init({ force: true });
   }
 
-  private getLifeStageId() {
-    return this.lifeStageId;
+  public getLifeStageId() {
+    return this.user.lifeStage.id;
   }
 
   public fetchUser(token) {
@@ -62,6 +58,7 @@ export class LifeStages {
             {
               user {
                 lifeStage {
+                  id
                   title
                 }
               }
@@ -74,12 +71,10 @@ export class LifeStages {
         }
       )
       .then(success => {
-        let name = success.data.data.user.lifeStage && success.data.data.user.lifeStage.title;
-        this.lifeStageId = success.data.data.user.lifeStage && success.data.data.user.lifeStage.id;
-        this.user = { ...this.user, lifeStage: name };
-        this.user.lifeStage == null
-          ? this.fetchLifeStages(this.authToken)
-          : this.fetchContent(this.authToken, this.lifeStageId);
+        const name = success.data.data.user.lifeStage && success.data.data.user.lifeStage.title;
+        const id = success.data.data.user.lifeStage && success.data.data.user.lifeStage.id;
+        this.user = { ...this.user, lifeStage: { id: id, title: name } };
+        if (this.user.lifeStage.id !== null) this.fetchContent(this.authToken, this.user.lifeStage.id);
       });
   }
 
@@ -106,7 +101,6 @@ export class LifeStages {
       )
       .then(success => {
         this.lifeStages = success.data.data.lifeStages;
-        this.refresh();
       });
   }
 
@@ -142,10 +136,10 @@ export class LifeStages {
         }
       )
       .then(success => {
+        console.log(success);
         this.recommendedContent = success.data.data.lifeStageContent;
         // scroll this container left to make sure content starts at the beginning
         this.host.shadowRoot.querySelector('.cards').scrollLeft = 0;
-        this.refresh();
       })
       .catch(err => console.error(err));
   }
@@ -153,21 +147,21 @@ export class LifeStages {
   /**
    * Get content with set life stages
    */
-  public setLifeStage(token, lifeStageId?, lifeStageName?) {
+  public setLifeStage(token, lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
           id: lifeStageId,
           title: lifeStageName
         }
       : null;
-    console.log('attempting to set life stage', JSON.stringify(obj));
     return axios
       .post(
         this.gqlUrl,
         {
           query: `
           mutation {
-            setLifeStage(lifeStage: ${JSON.stringify(obj)}) {
+            setLifeStage(lifeStage: ${stringifyObject(obj, { singleQuotes: false })}) 
+            {
               lifeStage {
                 title
                 id
@@ -191,13 +185,13 @@ export class LifeStages {
     const card = event.target;
     const cards = this.host.shadowRoot.querySelectorAll('[data-life-stage-id]');
     cards.forEach(card => card.classList.add('disabled'));
-    this.lifeStageId = card.dataset.lifeStageId;
+    this.user.lifeStage.id = card.dataset.lifeStageId;
     const lifeStageName = card.dataset.lifeStageName;
     // this.analytics.track('LifeStageUpdated', {
-    //   lifeStageId: this.lifeStageId,
+    //   lifeStageId: this.user.lifeStage.id,
     // });
-    this.fetchContent(this.authToken, this.lifeStageId);
-    this.setLifeStage(this.authToken, this.lifeStageId, lifeStageName);
+    this.fetchContent(this.authToken, this.user.lifeStage.id);
+    this.setLifeStage(this.authToken, this.user.lifeStage.id, lifeStageName);
   }
 
   private renderCardSkeleton() {
@@ -209,6 +203,15 @@ export class LifeStages {
         </div>
       </div>
     ));
+  }
+
+  private renderTextSkeleton() {
+    return (
+      <div class="text-skeleton">
+        <div class="title" />
+        <div class="subtitle" />
+      </div>
+    );
   }
 
   private renderLifeStages() {
@@ -240,7 +243,9 @@ export class LifeStages {
         {duration && <span class="font-size-smallest">{duration}</span>}
         {this.renderIcon(type)}
       </div>
-    ) : ('');
+    ) : (
+      ''
+    );
   }
 
   private renderIcon(type) {
@@ -315,11 +320,13 @@ export class LifeStages {
   }
 
   private renderText() {
-    const selectedLifeStage: any = this.lifeStages.filter(stage => stage.id === this.lifeStageId)[0];
+    const selectedLifeStage: any = this.lifeStages.find(
+      stage => stage.id === (this.user.lifeStage && this.user.lifeStage.id)
+    );
     return (
       <div>
         <h2 class="component-header flush-bottom">
-          {this.recommendedContent.length > 0 ? selectedLifeStage.title : 'Personalize Your Experience'}
+          {this.recommendedContent.length > 0 ? this.user.lifeStage.title : 'Personalize Your Experience'}
         </h2>
         <p class="push-half-top">
           {this.recommendedContent.length > 0
@@ -331,15 +338,25 @@ export class LifeStages {
   }
 
   public render() {
+    const renderLifeStages = this.lifeStages.length && this.user.lifeStage && !this.user.lifeStage.id;
+    const renderRecommendedContent = this.recommendedContent.length;
     const cardsClasses = `cards ${this.recommendedContent.length > 0 ? 'media-cards' : ''}`;
+    console.log(renderLifeStages, renderRecommendedContent);
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
-          <div class="life-stages-header">{this.renderText()}</div>
+          <div class="life-stages-header">
+            {(() => {
+              if (renderLifeStages || renderRecommendedContent) return this.renderText();
+              return this.renderTextSkeleton();
+            })()}
+          </div>
           <div class={cardsClasses}>
-            {this.renderCardSkeleton()}
-            {this.lifeStages.length > 0 ? this.renderLifeStages() : ''}
-            {this.recommendedContent.length > 0 ? this.renderRecommendedContent() : ''}
+            {(() => {
+              if (renderLifeStages) return this.renderLifeStages();
+              if (renderRecommendedContent) return this.renderRecommendedContent();
+              return this.renderCardSkeleton();
+            })()}
           </div>
         </div>
       </div>
