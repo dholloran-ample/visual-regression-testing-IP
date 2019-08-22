@@ -85,17 +85,6 @@ h5 {
       opacity: .75;
     }
 
-    // use this for the select icon
-    &.selected::before {
-      content: '';
-      z-index: 1;
-    }
-
-    &.selected .bg-overlay {
-      background: #0095d9;
-      opacity: .75;
-    }
-
     .bg-overlay,
     .card-content {
       bottom: 0;
@@ -160,8 +149,8 @@ h5 {
         background-image: linear-gradient(
           100deg,
           rgb(240, 240, 240) 20%,
-          rgba(255, 255, 255, .3) 30%,
-          rgba(255, 255, 255, .7) 40%,
+          rgba(255, 255, 255, 0.3) 30%,
+          rgba(255, 255, 255, 0.7) 40%,
           rgb(240, 240, 240) 50%
         );
         animation: shimmer 1.5s infinite;
@@ -179,33 +168,6 @@ h5 {
       height: 16px;
       width: 55%;
     }
-  }
-}
-
-.fadeout,
-.fadein {
-  animation-fill-mode: forwards;
-}
-
-.fadeout {
-  animation: .35s ease-in-out fadeout;
-}
-
-.fadein {
-  animation: .35s ease-in-out fadein;
-}
-
-@keyframes fadeout {
-  to {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-}
-
-@keyframes fadein {
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 

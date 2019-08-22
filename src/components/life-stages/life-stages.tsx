@@ -202,11 +202,7 @@ export class LifeStages {
 
   private renderCardSkeleton() {
     return [1, 2, 3, 4, 5].map(() => (
-      <div
-        class={`card-skeleton ${
-          this.recommendedContent.length > 0 || this.lifeStages.length > 0 ? 'display-none' : ''
-        }`}
-      >
+      <div class={`card-skeleton ${this.recommendedContent.length > 0 || this.lifeStages.length > 0 ? 'd-none' : ''}`}>
         <div class="content">
           <div class="text title" />
           <div class="text subtitle" />
@@ -218,7 +214,7 @@ export class LifeStages {
   private renderLifeStages() {
     return this.lifeStages.map((obj, index) => (
       <div
-        class={`card ${this.recommendedContent.length > 0 ? 'display-none' : ''}`}
+        class={`card ${this.recommendedContent.length > 0 ? 'd-none' : ''}`}
         key={index}
         style={{
           backgroundImage: `url(${Utils.imgixify(obj.imageUrl + '?auto=format&h=400')}`,
@@ -239,15 +235,12 @@ export class LifeStages {
   }
 
   private renderMediaLabel(type, duration) {
-    console.log(type);
-    if (type !== 'podcast' || type !== 'series') {
-      return (
-        <div class="media-label bg-charcoal text-white align-items-center">
-          {duration !== null ? <span class="font-size-smallest soft-quarter-right">{duration}</span> : ''}
-          {this.renderIcon(type)}
-        </div>
-      );
-    }
+    return type != 'podcast' || type != 'series' ? (
+      <div class="media-label bg-charcoal text-white align-items-center">
+        {duration && <span class="font-size-smallest">{duration}</span>}
+        {this.renderIcon(type)}
+      </div>
+    ) : ('');
   }
 
   private renderIcon(type) {
@@ -300,7 +293,7 @@ export class LifeStages {
           <h4 class="text-gray font-size-smaller font-weight-mid text-uppercase soft-quarter-top">{obj.category}</h4>
           <h3 class="component-header">{obj.title}</h3>
           {obj.authors && (
-            <p class="card-text soft-quarter-top">
+            <p class="soft-quarter-top">
               {obj.authors.map(author => (
                 <a
                   class="text-gray-light font-size-smaller"
@@ -338,14 +331,12 @@ export class LifeStages {
   }
 
   public render() {
+    const cardsClasses = `cards ${this.recommendedContent.length > 0 ? 'media-cards' : ''}`;
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
-          <div class="life-stages-header">
-            {this.renderText()}
-            <div class="recommended-icon" />
-          </div>
-          <div class={`cards ${this.recommendedContent.length > 0 ? 'media-cards' : ''}`}>
+          <div class="life-stages-header">{this.renderText()}</div>
+          <div class={cardsClasses}>
             {this.renderCardSkeleton()}
             {this.lifeStages.length > 0 ? this.renderLifeStages() : ''}
             {this.recommendedContent.length > 0 ? this.renderRecommendedContent() : ''}
