@@ -1,6 +1,6 @@
 import { Component, Element, Prop, State, h } from '@stencil/core';
 import axios from 'axios';
-import Fragment from 'stencil-fragment';
+import Fragment from '../../shared/fragment';
 
 @Component({
   tag: 'crds-snail-trail',
