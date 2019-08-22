@@ -12,8 +12,6 @@ describe('<nav-link>', () => {
       this.component.signOutClicked.emit = jest.fn();
     });
 
-    //TODO why is int/prod diff from demo when signing out? Will either work?
-
     it('Checks sign out event emitted if this matches the sign-out link', () => {
       const windowsLocation = window.location.href;
 

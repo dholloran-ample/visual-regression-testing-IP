@@ -155,7 +155,7 @@ describe('<profile-nav>', () => {
 
       const rendered = this.component.renderChildHTML(child, {});
 
-      expect(rendered).toEqual([undefined, undefined, undefined]); //TODO kinda don't think this is what they want
+      expect(rendered).toEqual([undefined, undefined, undefined]);
     });
 
     it('Checks list has top-level in class', () => {
@@ -184,8 +184,6 @@ describe('<profile-nav>', () => {
       expect(renderedChildren.$attrs$.class).toEqual('');
     });
 
-    //TODO how are these values passed down to nav-link class?
-    //TODO can we remove the malformed automation-id here? just needs to be in the subclass
     it('Checks list of elements is returned if child list contains expected objects', () => {
       const childConfig = [{
         "title": "My profile",

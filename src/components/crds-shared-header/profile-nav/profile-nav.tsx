@@ -7,17 +7,16 @@ import { Component, Prop, Listen, h } from '@stencil/core';
 })
 export class ProfileMenu {
   @Prop() config: any;
-  @Prop() currentUser: any; //TODO should this have a type or have default val?
+  @Prop() currentUser: any;
   @Prop() onSignOut: Function;
   @Prop() profileNavIsShowing: boolean = true;
   @Prop() data: JSON;
 
-  //TODO is this ever used?
   envUrl(path) {
     return `${process.env.CRDS_BASE_URL}${path}`;
   }
 
-  handleClick(e) { //TODO would this be better specifically "handle signout"?
+  handleClick(e) {
     console.log(`DEBUG profile nave typeof onSignOut is ${typeof this.onSignOut}`)
     if (typeof this.onSignOut == 'function') {
       this.onSignOut();
@@ -26,7 +25,7 @@ export class ProfileMenu {
   }
 
   renderSections = payload => {
-    let topLevel = { value: false }; //TODO should topLevel just be a boolean?
+    let topLevel = { value: false };
 
     const title = unescape(payload.title.replace('%user_name%', this.currentUser.name || ''));
 
@@ -39,7 +38,7 @@ export class ProfileMenu {
   };
 
   renderChild = (child, topLevel) => {
-    topLevel.value = topLevel.value || typeof child == 'string'; //TODO does this need to be evaluated here or below?
+    topLevel.value = topLevel.value || typeof child == 'string';
 
     return (
       <div style={{ padding: '0' }}>
@@ -72,7 +71,7 @@ export class ProfileMenu {
           style={{
             backgroundImage: `linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%),url('${
               this.currentUser.avatarUrl
-            }')`
+              }')`
           }}
         />
         <div>{this.renderSections(this.data)}</div>

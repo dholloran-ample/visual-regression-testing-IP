@@ -42,14 +42,12 @@ describe('<crds-shared-header>', () => {
       expect(Array.isArray(this.component.data)).toBeFalsy();
       expect(this.component.data['config']).not.toBeUndefined();
     });
-    //TODO neg tests?
   });
 
   describe('Tests componentDidLoad()', () => {
     it('Checks element is required', () => {
       expect(() => this.component.componentDidLoad()).toThrow();
     });
-    //TODO checks parent element of class is changed in e2e
   });
 
   describe('Tests onClick()', () => {
@@ -74,7 +72,6 @@ describe('<crds-shared-header>', () => {
       expect(rendered).toBeNull();
     });
 
-    //TODO move to e2e?
     it('Checks list of nav-section are returned for each entry in the payload', () => {
       const rendered = this.component.renderSections(navPayload);
 
@@ -119,7 +116,6 @@ describe('<crds-shared-header>', () => {
       expect(rendered).toBeNull();
     });
 
-    //TODO move to e2e?
     it('Checks list of nav-section-subnav are returned for each entry in the payload', () => {
       this.component.active = 'sh-nav'
 
@@ -553,5 +549,4 @@ describe('<crds-shared-header>', () => {
       expect(this.fakeEvent.preventDefault).not.toBeCalled();
     });
   });
-//TODO e2e for render
 });

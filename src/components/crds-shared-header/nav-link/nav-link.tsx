@@ -10,7 +10,7 @@ export class NavigationLink {
   /**
    * Print log messages?
    */
-  private debug: boolean = true; //TODO is anything being done with this?
+  private debug: boolean = true;
   private console: Logger;
   private config: Config;
 
@@ -28,7 +28,7 @@ export class NavigationLink {
   }
 
   onClick() {
-    if (this.automationId === 'sh-sign-out') { //TODO I'm not liking the automation id's used for this (though it is guaranteed...)
+    if (this.automationId === 'sh-sign-out') {
       this.signOutClicked.emit(this);
     } else {
       window.location.href = this.href;
