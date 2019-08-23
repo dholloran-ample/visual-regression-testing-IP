@@ -44,7 +44,11 @@ export class LifeStages {
   }
 
   private imgixRefresh() {
-    this.imgix.init({ force: true });
+    try {
+      this.imgix.init({ force: true });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   public getLifeStageId() {
@@ -186,11 +190,15 @@ export class LifeStages {
     cards.forEach(card => card.classList.add('disabled'));
     this.user.lifeStage.id = card.dataset.lifeStageId;
     this.user.lifeStage.title = card.dataset.lifeStageName;
-    this.analytics.track('LifeStageUpdated', {
-      event: event,
-      lifeStageId: this.user.lifeStage.id,
-      lifeStageName: this.user.lifeStage.title
-    });
+    try {
+      this.analytics.track('LifeStageUpdated', {
+        event: event,
+        lifeStageId: this.user.lifeStage.id,
+        lifeStageName: this.user.lifeStage.title
+      });
+    } catch (error) {
+      console.error(error);
+    }
     this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
       card.parentNode.scrollLeft = 0;
       return cards.forEach(card => card.classList.remove('disabled'));
@@ -364,7 +372,9 @@ export class LifeStages {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
-            <div class="life-stages-avatar" innerHTML={SvgSrc.accountThinIcon()}></div>
+            <div class="life-stages-avatar">
+              {SvgSrc.bullseyeIcon('30px', '30px', '#C05C04')}
+            </div>
           </div>
           <div class={cardsClasses}>
             {(() => {
