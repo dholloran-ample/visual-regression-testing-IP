@@ -302,7 +302,7 @@ export class LifeStages {
               {obj.authors.map(author => (
                 <a
                   class="text-gray-light font-size-smaller"
-                  href="/authors/"
+                  href={author.qualifiedUrl}
                   style={{
                     color: 'inherit',
                     display: 'block',
