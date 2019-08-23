@@ -17,7 +17,7 @@ h5 {
 .life-stages {
   background-color: #f0f0f0;
   box-shadow: rgba(0, 0, 0, .15) 0 0 6px;
-  min-height: 500px;
+  min-height: 300px;
   overflow: hidden;
 
   .life-stages-inner {
@@ -37,6 +37,7 @@ h5 {
       height: 48px;
       justify-content: center;
       margin-left: auto;
+      min-width: 48px;
       width: 48px;
     }
   }
@@ -67,7 +68,6 @@ h5 {
     }
   }
 
-  // creates the ability to overscroll
   &::before,
   &::after {
     content: '';
@@ -85,7 +85,6 @@ h5 {
     overflow: hidden;
     position: relative;
     scroll-snap-align: center;
-    // transition: all .45s ease;
 
     @media (min-width: 768px) {
       height: 400px;
