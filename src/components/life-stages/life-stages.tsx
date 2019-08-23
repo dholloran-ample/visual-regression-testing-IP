@@ -46,9 +46,8 @@ export class LifeStages {
   private imgixRefresh() {
     try {
       this.imgix.init({ force: true });
-    }
-    catch(error) {
-      console.error(error)
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -197,7 +196,7 @@ export class LifeStages {
         lifeStageId: this.user.lifeStage.id,
         lifeStageName: this.user.lifeStage.title
       });
-    } catch(error) {
+    } catch (error) {
       console.error(error);
     }
     this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
@@ -373,7 +372,9 @@ export class LifeStages {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
-            <div class="life-stages-avatar" innerHTML={SvgSrc.accountThinIcon()}></div>
+            <div class="life-stages-avatar">
+              {SvgSrc.bullseyeIcon('30px', '30px', '#C05C04')}
+            </div>
           </div>
           <div class={cardsClasses}>
             {(() => {
