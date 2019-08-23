@@ -129,7 +129,6 @@ export class LifeStages {
               duration
               contentType
               category
-              slug
               qualifiedUrl
               imageUrl
             }
@@ -291,7 +290,7 @@ export class LifeStages {
       window.innerWidth > 767 ? '?auto=format&w=400&h=225&fit=crop' : '?auto=format&w=262&h=196.5&fit=crop';
     return this.recommendedContent.map((obj: any, index) => (
       <div class="card" key={index}>
-        <a class="relative d-block" href={`/media/${obj.contentType}/${obj.slug}`}>
+        <a class="relative d-block" href={obj.qualifiedUrl}>
           {this.renderMediaLabel(obj.contentType, obj.duration)}
           <img src={(obj.imageUrl || this.crdsDefaultImg) + imgixParams} class="img-responsive" />
         </a>
