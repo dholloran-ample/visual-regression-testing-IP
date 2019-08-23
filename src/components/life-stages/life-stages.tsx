@@ -364,9 +364,7 @@ export class LifeStages {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
-            <div class="life-stages-avatar">
-              {SvgSrc.accountThinIcon()}
-            </div>
+            <div class="life-stages-avatar" innerHTML={SvgSrc.accountThinIcon()}></div>
           </div>
           <div class={cardsClasses}>
             {(() => {
