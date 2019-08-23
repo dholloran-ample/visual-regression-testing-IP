@@ -38,7 +38,7 @@ export class LifeStages {
 
   public componentDidRender() {
     document.dispatchEvent(this.renderedEvent);
-    // this.imgixRefresh();
+    this.imgixRefresh();
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
@@ -137,7 +137,6 @@ export class LifeStages {
         }
       )
       .then(success => {
-        console.log(success);
         this.recommendedContent = success.data.data.lifeStageContent;
       })
       .catch(err => console.error(err));
@@ -183,21 +182,24 @@ export class LifeStages {
   private handleLifeStageClicked(event) {
     const card = event.target;
     const cards = this.host.shadowRoot.querySelectorAll('[data-life-stage-id]');
-    console.log(cards);
     cards.forEach(card => card.classList.add('disabled'));
     this.user.lifeStage.id = card.dataset.lifeStageId;
     this.user.lifeStage.title = card.dataset.lifeStageName;
     // this.analytics.track('LifeStageUpdated', {
+    //   event: event,
     //   lifeStageId: this.user.lifeStage.id,
-    //     lifeStageName: this.user.lifeStage.title
+    //   lifeStageName: this.user.lifeStage.title
     // });
-    this.fetchContent(this.authToken, this.user.lifeStage.id);
+    this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
+      card.parentNode.scrollLeft = 0;
+      return cards.forEach(card => card.classList.remove('disabled'));
+    });
     this.setLifeStage(this.authToken, this.user.lifeStage.id, this.user.lifeStage.title);
   }
 
   private renderCardSkeleton() {
     return [1, 2, 3, 4, 5].map(() => (
-      <div class={`card-skeleton ${this.recommendedContent.length > 0 || this.lifeStages.length > 0 ? 'd-none' : ''}`}>
+      <div class={`card-skeleton ${this.recommendedContent.length || this.lifeStages.length ? 'd-none' : ''}`}>
         <div class="content">
           <div class="text title" />
           <div class="text subtitle" />
@@ -218,7 +220,7 @@ export class LifeStages {
   private renderLifeStages() {
     return this.lifeStages.map((obj, index) => (
       <div
-        class={`card ${this.recommendedContent.length > 0 ? 'd-none' : ''}`}
+        class={`card ${this.recommendedContent.length ? 'd-none' : ''}`}
         key={index}
         style={{
           backgroundImage: `url(${Utils.imgixify(obj.imageUrl + '?auto=format&h=400')}`,
@@ -239,18 +241,17 @@ export class LifeStages {
   }
 
   private renderMediaLabel(type, duration) {
-    return type != 'podcast' || type != 'series' ? (
-      <div class="media-label bg-charcoal text-white align-items-center">
-        {duration && <span class="font-size-smallest">{duration}</span>}
-        {this.renderIcon(type)}
-      </div>
-    ) : (
-      ''
-    );
+    if (type !== 'series') {
+      return (
+        <div class="media-label bg-charcoal text-white align-items-center">
+          {duration && <span class="font-size-smallest">{duration}</span>}
+          {this.renderIcon(type)}
+        </div>
+      );
+    }
   }
 
   private renderIcon(type) {
-    console.log(type);
     let src;
     switch (type) {
       case 'video':
@@ -293,7 +294,7 @@ export class LifeStages {
       <div class="card" key={index}>
         <a class="relative d-block" href={`/media/${obj.contentType}/${obj.slug}`}>
           {this.renderMediaLabel(obj.contentType, obj.duration)}
-          <img src={(obj.imageUrl || this.crdsDefaultImg)+ imgixParams} class="img-responsive" />
+          <img src={(obj.imageUrl || this.crdsDefaultImg) + imgixParams} class="img-responsive" />
         </a>
         <a href={obj.qualifiedUrl}>
           <h4 class="text-gray font-size-smaller font-weight-mid text-uppercase soft-quarter-top">{obj.category}</h4>
@@ -320,17 +321,38 @@ export class LifeStages {
     ));
   }
 
+  public handleBackClick(event) {
+    this.recommendedContent = [];
+    this.user.lifeStage.id = null;
+    this.user.lifeStage.title = null;
+    event.target.parentNode.scrollLeft = 0;
+  }
+
   private renderText() {
     const selectedLifeStage: any = this.lifeStages.find(
       stage => stage.id === (this.user.lifeStage && this.user.lifeStage.id)
     );
     return (
       <div>
-        <h2 class="component-header flush-bottom">
-          {this.recommendedContent.length > 0 ? this.user.lifeStage.title : 'Personalize Your Experience'}
-        </h2>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline'
+          }}
+        >
+          <h2 class="component-header flush-bottom">
+            {this.recommendedContent.length ? this.user.lifeStage.title : 'Personalize Your Experience'}
+          </h2>
+          {this.recommendedContent.length ? (
+            <a class="back-btn" onClick={event => this.handleBackClick(event)}>
+              change
+            </a>
+          ) : (
+            ''
+          )}
+        </div>
         <p class="push-half-top">
-          {this.recommendedContent.length > 0
+          {this.recommendedContent.length
             ? selectedLifeStage.description
             : 'Which of these best describes your stage of life? (Pick one)'}
         </p>
@@ -341,7 +363,7 @@ export class LifeStages {
   public render() {
     const renderLifeStages = this.lifeStages.length && this.user.lifeStage && !this.user.lifeStage.id;
     const renderRecommendedContent = this.recommendedContent.length;
-    const cardsClasses = `cards ${this.recommendedContent.length > 0 ? 'media-cards' : ''}`;
+    const cardsClasses = `cards ${this.recommendedContent.length ? 'media-cards' : ''}`;
     console.log(renderLifeStages, renderRecommendedContent);
     return (
       <div class="life-stages">
@@ -351,6 +373,13 @@ export class LifeStages {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
+            <div class="life-stages-avatar">
+              <svg id="account-thin" width="36" height="36" viewBox="0 0 256 256" fill="#c0c0c0">
+                <g>
+                  <path d="M128,10 C62.8145161,10 10,62.8145161 10,128 C10,193.185484 62.8145161,246 128,246 C193.185484,246 246,193.185484 246,128 C246,62.8145161 193.185484,10 128,10 Z M188.903226,210.6 C171.821774,223.208871 150.791129,230.774194 128,230.774194 C105.208871,230.774194 84.1782258,223.208871 67.0967742,210.6 L67.0967742,204.129032 C67.0967742,187.333065 80.7524194,173.677419 97.5483871,173.677419 C102.829839,173.677419 110.633065,179.101613 128,179.101613 C145.414516,179.101613 153.122581,173.677419 158.451613,173.677419 C175.247581,173.677419 188.903226,187.333065 188.903226,204.129032 L188.903226,210.6 Z M203.462903,197.515323 C200.227419,175.437903 181.433065,158.451613 158.451613,158.451613 C148.697581,158.451613 143.987097,163.875806 128,163.875806 C112.012903,163.875806 107.35,158.451613 97.5483871,158.451613 C74.5669355,158.451613 55.7725806,175.437903 52.5370968,197.515323 C35.6459677,179.196774 25.2258065,154.835484 25.2258065,128 C25.2258065,71.3314516 71.3314516,25.2258065 128,25.2258065 C184.668548,25.2258065 230.774194,71.3314516 230.774194,128 C230.774194,154.835484 220.354032,179.196774 203.462903,197.515323 Z M128,63.2903226 C104.875806,63.2903226 86.1290323,82.0370968 86.1290323,105.16129 C86.1290323,128.285484 104.875806,147.032258 128,147.032258 C151.124194,147.032258 169.870968,128.285484 169.870968,105.16129 C169.870968,82.0370968 151.124194,63.2903226 128,63.2903226 Z M128,131.806452 C113.297581,131.806452 101.354839,119.86371 101.354839,105.16129 C101.354839,90.458871 113.297581,78.516129 128,78.516129 C142.702419,78.516129 154.645161,90.458871 154.645161,105.16129 C154.645161,119.86371 142.702419,131.806452 128,131.806452 Z" />
+                </g>
+              </svg>
+            </div>
           </div>
           <div class={cardsClasses}>
             {(() => {

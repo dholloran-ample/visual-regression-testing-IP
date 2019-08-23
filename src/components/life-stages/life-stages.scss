@@ -25,7 +25,20 @@ h5 {
   }
 
   .life-stages-header {
+    display: flex;
     padding: 1.5rem;
+
+    .life-stages-avatar {
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #efefef;
+      border-radius: 50%;
+      display: flex;
+      height: 48px;
+      justify-content: center;
+      margin-left: auto;
+      width: 48px;
+    }
   }
 }
 
@@ -72,7 +85,7 @@ h5 {
     overflow: hidden;
     position: relative;
     scroll-snap-align: center;
-    transition: all .35s ease;
+    // transition: all .45s ease;
 
     @media (min-width: 768px) {
       height: 400px;
@@ -83,7 +96,7 @@ h5 {
     }
 
     &:hover .bg-overlay {
-      opacity: 75;
+      opacity: .75;
     }
 
     .bg-overlay,
@@ -97,7 +110,7 @@ h5 {
     .bg-overlay {
       background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 50%);
       height: 100%;
-      transition: all 35s ease;
+      transition: all .45s ease;
     }
 
     .card-content {
@@ -172,7 +185,19 @@ h5 {
   }
 }
 
+.back-btn {
+  color: #0095D9;
+  display: block;
+  font-size: .875rem;
+  margin-left: .5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .text-skeleton {
+  width: 100%;
   .title,
   .subtitle {
     background-color: #fff;
