@@ -186,11 +186,11 @@ export class LifeStages {
     cards.forEach(card => card.classList.add('disabled'));
     this.user.lifeStage.id = card.dataset.lifeStageId;
     this.user.lifeStage.title = card.dataset.lifeStageName;
-    // this.analytics.track('LifeStageUpdated', {
-    //   event: event,
-    //   lifeStageId: this.user.lifeStage.id,
-    //   lifeStageName: this.user.lifeStage.title
-    // });
+    this.analytics.track('LifeStageUpdated', {
+      event: event,
+      lifeStageId: this.user.lifeStage.id,
+      lifeStageName: this.user.lifeStage.title
+    });
     this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
       card.parentNode.scrollLeft = 0;
       return cards.forEach(card => card.classList.remove('disabled'));
