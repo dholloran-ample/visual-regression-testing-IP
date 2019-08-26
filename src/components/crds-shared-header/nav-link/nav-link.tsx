@@ -1,7 +1,7 @@
 import { Component, Prop, Event, EventEmitter, h } from '@stencil/core';
 import { Logger } from '../../../shared/logger';
 import { Config } from '../../../shared/config';
-
+//TODO update components
 @Component({
   tag: 'nav-link',
   shadow: false
@@ -16,23 +16,29 @@ export class NavigationLink {
 
   @Prop() href: string;
   @Prop() automationId: string;
-  @Event({
-    eventName: 'signOutClicked',
-    bubbles: true
-  })
-  signOutClicked: EventEmitter;
+  @Prop() handleSignOut: Function;
 
   public componentWillLoad() {
     this.console = new Logger(this.debug);
     this.config = new Config();
   }
 
-  onClick() {
-    if (this.automationId === 'sh-sign-out') { //TODO I'm not liking the automation id's used for this (though it is guaranteed...)
-      this.signOutClicked.emit(this);
-    } else {
-      window.location.href = this.href;
+  onClick(event) {
+    console.log('DEBUG Handling click in nav-link');
+    if(this.isSignOutLink()) {
+      if(typeof this.handleSignOut === 'function'){
+        this.handleSignOut();
+        event.preventDefault();
+      }
     }
+    else {
+      window.location.href = this.href;
+      event.stopPropagation();
+    }
+  }
+
+  isSignOutLink(){
+    return this.automationId === 'sh-sign-out';
   }
 
   render() {

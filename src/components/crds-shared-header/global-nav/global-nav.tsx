@@ -1,8 +1,10 @@
 import { Component, Prop, State, h } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
 
-import { Auth } from '../../../shared/auth';
+// import { Auth } from '../../../shared/auth'; //this is the real auth
 import { Utils } from '../../../shared/utils';
+
+import { Auth } from '../../../shared/__mocks__/auth';
 
 @Component({
   tag: 'global-nav',
@@ -162,7 +164,7 @@ export class GlobalNav {
 
             <profile-nav
               profileNavIsShowing={this.profileNavIsShowing && this.authenticated}
-              onSignOut={this.handleSignOut.bind(this)}
+              handleSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
               data={this.profileData}
             />

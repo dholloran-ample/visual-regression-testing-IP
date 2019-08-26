@@ -1,12 +1,40 @@
-//Mock auth class available for use by Jest tests
+//Mock auth class available for use by Jest tests.
+//If used instead of the real Auth in global-nav, will allow profile menu to behave as if logged in
 export class Auth {
+  authenticated: boolean = true;
   config: any;
+  token: any;
+  currentUser: object;
 
   constructor(config: any = {}) {
     this.config = config;
+    this.updateCurrentUser();
   }
 
   listen(callback) {
-    const fake = callback; //Needed to keep the storybook from complaining
+    const token = '123'; //pretend we're signed in < may change
+    console.log('DEBUG in fake auth, listen hit');
+
+    if (!token) return (this.authenticated = false);
+    this.authenticated = true;
+    this.token = token;
+    this.updateCurrentUser();
+    callback(this);
+  }
+
+  signOut(callback) {
+    this.authenticated = false;
+    this.updateCurrentUser();
+    console.log('DEBUG user is signed out!');
+    callback(this);
+  }
+
+  private updateCurrentUser() {
+    if (!this.authenticated) return (this.currentUser = null);
+    return (this.currentUser = {
+      id: '4488274',
+      name: 'Ben',
+      avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248'
+    });
   }
 }

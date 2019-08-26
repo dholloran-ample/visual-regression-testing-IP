@@ -1,77 +1,36 @@
 import { Component, Prop, Listen, h } from '@stencil/core';
+import { SimpleNavHelper } from './simple-nav-helper';
 
 @Component({
   tag: 'give-nav',
   styleUrl: 'profile-nav.scss',
   shadow: true
 })
-export class GiveMenu {
+export class GiveMenu{
   @Prop() giveNavIsShowing: boolean = true;
   @Prop() data: JSON;
+  private simpleNav: SimpleNavHelper;
 
-  @Listen('click')
-  handleClick(event) {
-    console.log(`handling click in give-nav. Current Target was: ${JSON.stringify(event.currentTarget)}. Target was: ${JSON.stringify(event.target)}. Type was ${JSON.stringify(event.type)}`)
-    event.stopPropagation();
+  constructor() {
+    this.simpleNav = new SimpleNavHelper();
   }
 
-  private isObjectTruthyNonArray(maybeObject) {
-    return maybeObject && typeof maybeObject === 'object' && !Array.isArray(maybeObject);
+  private navTitle() {
+    const data = (this.data as any)
+    return (data && data.title) || '';
   }
 
-  maybeRenderListEntry(data, isTopLevel) {
-    //data.top_level value overrides isTopLevel
-    const isReallyTopLevel = () => {
-      return typeof data.top_level === 'boolean' ?
-        data.top_level : isTopLevel;
-    };
-
-    return this.isObjectTruthyNonArray(data) && (
-      <li class={isReallyTopLevel() ? 'top-level' : ''}>
-        <a href={data.href} data-automation-id={data['automation-id']}>
-          {data.title}
-        </a>
-      </li>
-    );
+  private backgroundImageURL(data) {
+    return data.background_img || '';
   }
-
-  maybeRenderList(data, isTopLevel) {
-    if (!Array.isArray(data))
-      return false;
-
-    const listElements = data.map(child => this.maybeRenderListEntry(child, isTopLevel)).filter(entry => entry);
-    return listElements.length > 0 && (
-    <ul>
-      {listElements}
-    </ul>)
-  }
-
-  renderSections(giveNavData) {
-    let makeNextListTopLevel = true;
-
-    return (
-      <div>
-        <h2> {giveNavData.title} </h2>
-        {giveNavData.children && giveNavData.children.map(child => {
-          let isSubHeader = typeof child === 'string'
-          let renderThis = isSubHeader ? <h4>{child}</h4> : this.maybeRenderList(child, makeNextListTopLevel);
-          makeNextListTopLevel = !isSubHeader;
-
-          return renderThis && (
-            <div style={{ padding: '0' }}>
-              {renderThis}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
 
   render() {
-    if(!this.giveNavIsShowing || !this.isObjectTruthyNonArray(this.data)) return null;
+    console.log('DEBUG give-nav render')
+    if(!this.giveNavIsShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
+
     return (
-      <div class="give-nav" style={{ backgroundImage: `url(${(this.data as any).background_img})` }}>
-        {this.renderSections(this.data)}
+      <div class="give-nav" style={{ backgroundImage: `url(${this.backgroundImageURL(this.data)})` }}>
+        {this.simpleNav.renderSections(this.data, this.navTitle())}
       </div>
     );
   }
