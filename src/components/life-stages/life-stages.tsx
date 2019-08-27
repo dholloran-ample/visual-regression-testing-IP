@@ -13,7 +13,6 @@ import stringifyObject from 'stringify-object';
 })
 export class LifeStages {
   private analytics = window['analytics'] || {};
-  private imgix = window['imgix'] || {};
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
 
@@ -39,20 +38,11 @@ export class LifeStages {
 
   public componentDidRender() {
     document.dispatchEvent(this.renderedEvent);
-    this.imgixRefresh();
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
-  private imgixRefresh() {
-    try {
-      this.imgix.init({ force: true });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   public getLifeStageId() {
-    return this.user.lifeStage.id;
+    return this.user.lifeStage && this.user.lifeStage.id;
   }
 
   public fetchUser(token) {
@@ -362,7 +352,6 @@ export class LifeStages {
     const renderLifeStages = this.lifeStages.length && this.user.lifeStage && !this.user.lifeStage.id;
     const renderRecommendedContent = this.recommendedContent.length;
     const cardsClasses = `cards ${this.recommendedContent.length ? 'media-cards' : ''}`;
-    console.log(renderLifeStages, renderRecommendedContent);
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
