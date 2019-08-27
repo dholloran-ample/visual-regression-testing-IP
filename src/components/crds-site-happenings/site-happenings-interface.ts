@@ -5,15 +5,12 @@ export interface CrdsUser {
 
 export interface CrdsHappening {
   targetAudience: string[];
-  linkUrl: string;
+  imageUrl: string;
   title: string;
-  image: CrdsImage;
   description: string;
+  qualifiedUrl: string;
 }
 
-export interface CrdsImage {
-  url: string;
-}
 
 export interface MpCongregation {
   id: string;

@@ -5,6 +5,9 @@ import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
 import axios from 'axios';
 import stringifyObject from 'stringify-object';
+import ApolloClient from 'apollo-client';
+import { CrdsApollo } from '../../shared/apollo';
+import { GET_USER, GET_LIFESTAGES, GET_LIFESTAGE_CONTENT, SET_LIFESTAGE } from './life-stages.graphql';
 
 @Component({
   tag: 'life-stages',
@@ -13,7 +16,7 @@ import stringifyObject from 'stringify-object';
 })
 export class LifeStages {
   private analytics = window['analytics'] || {};
-  private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
+  private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
 
   @State() user: CrdsUser = { name: '', lifeStage: null };
@@ -23,8 +26,11 @@ export class LifeStages {
   @Element() public host: HTMLStencilElement;
 
   @Watch('authToken')
-  authTokenHandler() {
-    this.fetchUser(this.authToken);
+  authTokenHandler(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.apolloClient = CrdsApollo(newValue);
+      this.fetchUser();
+    }
   }
 
   renderedEvent = new CustomEvent('component rendered', {
@@ -32,8 +38,9 @@ export class LifeStages {
   });
 
   public componentWillLoad() {
-    this.fetchLifeStages(this.authToken);
-    this.fetchUser(this.authToken);
+    this.apolloClient = CrdsApollo(this.authToken);
+    this.fetchLifeStages();
+    this.fetchUser();
   }
 
   public componentDidRender() {
@@ -45,93 +52,35 @@ export class LifeStages {
     return this.user.lifeStage && this.user.lifeStage.id;
   }
 
-  public fetchUser(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-            {
-              user {
-                lifeStage {
-                  id
-                  title
-                }
-              }
-            }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
+  public fetchUser() {
+    if(!this.authToken) return null;
+    return this.apolloClient.query({ query: GET_USER })
       .then(success => {
-        const name = success.data.data.user.lifeStage && success.data.data.user.lifeStage.title;
-        const id = success.data.data.user.lifeStage && success.data.data.user.lifeStage.id;
+        const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
+        const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
         this.user = { ...this.user, lifeStage: { id: id, title: name } };
-        if (this.user.lifeStage.id !== null) this.fetchContent(this.authToken, this.user.lifeStage.id);
+        if (this.user.lifeStage.id !== null) this.fetchContent(this.user.lifeStage.id);
       });
   }
 
-  public fetchLifeStages(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `{
-            lifeStages {
-              id
-              title
-              imageUrl
-              contentTotal
-              description
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
+  public fetchLifeStages() {
+    return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
-        this.lifeStages = success.data.data.lifeStages;
+        this.lifeStages = success.data.lifeStages;
       });
   }
 
   /**
    * Get content with set life stages
    */
-  public fetchContent(token, lifeStageId) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `{
-            lifeStageContent(id: "${lifeStageId}") {
-              id
-              title
-              authors {
-                fullName
-                qualifiedUrl
-              }
-              duration
-              contentType
-              category
-              qualifiedUrl
-              imageUrl
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
+  public fetchContent(lifeStageId) {
+    return this.apolloClient.query(
+      {
+        variables: { id: lifeStageId },
+        query: GET_LIFESTAGE_CONTENT
+      })
       .then(success => {
-        this.recommendedContent = success.data.data.lifeStageContent;
+        this.recommendedContent = success.data.lifeStageContent;
       })
       .catch(err => console.error(err));
   }
@@ -139,36 +88,17 @@ export class LifeStages {
   /**
    * Get content with set life stages
    */
-  public setLifeStage(token, lifeStageId, lifeStageName?) {
+  public setLifeStage(lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
-          id: lifeStageId,
-          title: lifeStageName
-        }
+        id: lifeStageId,
+        title: lifeStageName
+      }
       : null;
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          mutation {
-            setLifeStage(lifeStage: ${stringifyObject(obj, { singleQuotes: false })}) 
-            {
-              lifeStage {
-                title
-                id
-              }
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        console.log('updated user life stage', success);
+    return this.apolloClient.mutate(
+      {
+        variables: { lifeStage: obj },
+        mutation: SET_LIFESTAGE
       })
       .catch(err => console.error(err));
   }
@@ -188,11 +118,11 @@ export class LifeStages {
     } catch (error) {
       console.error(error);
     }
-    this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
+    this.fetchContent(this.user.lifeStage.id).then(() => {
       card.parentNode.scrollLeft = 0;
       return cards.forEach(card => card.classList.remove('disabled'));
     });
-    this.setLifeStage(this.authToken, this.user.lifeStage.id, this.user.lifeStage.title);
+    this.setLifeStage(this.user.lifeStage.id, this.user.lifeStage.title);
   }
 
   private renderCardSkeleton() {
@@ -336,8 +266,8 @@ export class LifeStages {
               change
             </a>
           ) : (
-            ''
-          )}
+              ''
+            )}
         </div>
         <p class="push-half-top">
           {this.recommendedContent.length
