@@ -23,15 +23,14 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.happenings.mpSites.length).toBeGreaterThan(0);
     });
 
-    it('Checks MP sites are not stored if not authenticated', async () => {
+    it('Checks MP sites are stored if not authenticated', async () => {
       expect(this.happenings.mpSites).toHaveLength(0);
       expect(this.lastError.error).toBeUndefined();
 
       const fakeAuthToken = '';
       await this.happenings.fetchMPSitesData(fakeAuthToken);
 
-      expect(this.happenings.mpSites).toHaveLength(0);
-      expect(this.lastError.error).not.toBeUndefined();
+      expect(this.happenings.mpSites.length).toBeGreaterThan(0);
     });
   });
 
@@ -82,7 +81,6 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
 
       const authToken = '';
       await this.happenings.updateMPUserSite(authToken, user_with_site.site_id);
-
       expect(this.lastError.error).not.toBeUndefined();
     });
 
