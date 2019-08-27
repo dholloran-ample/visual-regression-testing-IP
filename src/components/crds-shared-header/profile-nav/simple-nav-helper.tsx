@@ -3,7 +3,7 @@ import { h } from '@stencil/core';
 export class SimpleNavHelper {
   private handleSignOut: Function
 
-  constructor(signOutCB=undefined){
+  constructor(signOutCB = undefined) {
     this.handleSignOut = signOutCB;
   }
 
@@ -28,7 +28,7 @@ export class SimpleNavHelper {
     );
   };
 
-  renderSubHeader(data){
+  renderSubHeader(data) {
     return <h4>{data}</h4>
   }
 
@@ -53,12 +53,11 @@ export class SimpleNavHelper {
     );
   }
 
-   //data.top_level value overrides isTopLevel
-   private topLevelClassValue(data, calcTopLevel) {
-    const isTopLevel =  typeof data.top_level === 'boolean' ?
-    data.top_level : calcTopLevel;
+  private topLevelClassValue(data, isTopLevel) {
+    const topLevel = typeof data.top_level === 'boolean' ?
+      data.top_level : isTopLevel;
 
-    return isTopLevel ? 'top-level' : '';
+    return topLevel ? 'top-level' : '';
   }
 
   //TODO this may be valuable as a Util function
