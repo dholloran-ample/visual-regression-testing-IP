@@ -39,31 +39,31 @@ export class SharedHeader {
    * @param e Event
    * @param id string
    */
-  protected onClick(e, id) {
-    e.preventDefault();
-    this.active = id;
-  }
+  // protected onClick(e, id) {
+  //   e.preventDefault();
+  //   this.active = id;
+  // }
 
   /**
    * Renders all sections from payload
    */
-  private renderSections(payload) {
-    if (!payload) return null;
-    return payload.map(section => {
-      const id = Utils.parameterize(section.title);
-      return (
-        <nav-section slug={id} onActivate={this.onClick.bind(this)} isActive={this.active == id}>
-          <h2>{section.title}</h2>
-          <p>{section.description}</p>
-        </nav-section>
-      );
-    });
-  }
+  // private renderSections(payload) {
+  //   if (!payload) return null;
+  //   return payload.map(section => {
+  //     const id = Utils.parameterize(section.title);
+  //     return (
+  //       <nav-section slug={id} onActivate={this.onClick.bind(this)} isActive={this.active == id}>
+  //         <h2>{section.title}</h2>
+  //         <p>{section.description}</p>
+  //       </nav-section>
+  //     );
+  //   });
+  // }
 
-  handleBackClick(event) {
-    event.preventDefault();
-    this.active = null;
-  }
+  // handleBackClick(event) {
+  //   event.preventDefault();
+  //   this.active = null;
+  // }
   /**
    * Returns all subnav elements
    * @param payload
@@ -72,53 +72,53 @@ export class SharedHeader {
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
 
-  private renderSubnavs(payload) {
-    if (!payload) return null;
-    const sections = payload.map(section => {
-      return (
-        <nav-section-subnav
-          onBack={this.handleBackClick.bind(this)}
-          active={this.active}
-          slug={Utils.parameterize(section.title)}
-        >
-          {this.renderChildren(section)}
-        </nav-section-subnav>
-      );
-    });
-    return <div class="subnavigation">{sections}</div>;
-  }
+  // private renderSubnavs(payload) {
+  //   if (!payload) return null;
+  //   const sections = payload.map(section => {
+  //     return (
+  //       <nav-section-subnav
+  //         onBack={this.handleBackClick.bind(this)}
+  //         active={this.active}
+  //         slug={Utils.parameterize(section.title)}
+  //       >
+  //         {this.renderChildren(section)}
+  //       </nav-section-subnav>
+  //     );
+  //   });
+  //   return <div class="subnavigation">{sections}</div>;
+  // }
 
   /**
    * Returns header or unordered list
    * @param section
    */
 
-  private renderChildren(section) {
-    const sectionChildren = section.children.map(child => {
-      if (typeof child == 'string') {
-        return <h4>{child}</h4>;
-      } else {
-        const listItems = child.map(link => {
-          return (
-            <li class={link.top_level ? 'top-level' : null}>
-              <a href={link.href || '#'} data-automation-id={link['automation-id']}>
-                {link.title}
-              </a>
-            </li>
-          );
-        });
+  // private renderChildren(section) {
+  //   const sectionChildren = section.children.map(child => {
+  //     if (typeof child == 'string') {
+  //       return <h4>{child}</h4>;
+  //     } else {
+  //       const listItems = child.map(link => {
+  //         return (
+  //           <li class={link.top_level ? 'top-level' : null}>
+  //             <a href={link.href || '#'} data-automation-id={link['automation-id']}>
+  //               {link.title}
+  //             </a>
+  //           </li>
+  //         );
+  //       });
 
-        return <ul>{listItems}</ul>;
-      }
-    });
+  //       return <ul>{listItems}</ul>;
+  //     }
+  //   });
 
-    return (
-      <Fragment>
-        <h2>{section.title}</h2>
-        {sectionChildren}
-      </Fragment>
-    );
-  }
+  //   return (
+  //     <Fragment>
+  //       <h2>{section.title}</h2>
+  //       {sectionChildren}
+  //     </Fragment>
+  //   );
+  // }
 
   toggleMenu(event, navType) {
     event.preventDefault();
@@ -158,13 +158,14 @@ export class SharedHeader {
     return document.body.setAttribute('style', 'overflow: scroll;');
   }
 
-  navClasses() {
-    let classes = [];
-    if (this.mainNavIsShowing) classes.push('is-showing');
-    if (this.active) classes.push(`section--${this.active}`);
-    if (this.profileNavIsShowing || this.giveNavIsShowing) classes = [];
-    return classes.join(' ');
-  }
+
+  // navClasses() {
+  //   let classes = [];
+  //   if (this.mainNavIsShowing) classes.push('is-showing');
+  //   if (this.active) classes.push(`section--${this.active}`);
+  //   if (this.profileNavIsShowing || this.giveNavIsShowing) classes = [];
+  //   return classes.join(' ');
+  // }
 
   navCloseClasses() {
     let classes = ['close'];
@@ -197,19 +198,27 @@ export class SharedHeader {
           config={this.data.config}
           env={this.env}
         />
-        <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
-          <div class="content">
-            <div class="navigation">
-              <ul>{this.renderSections(this.data.nav)}</ul>
-            </div>
-            {this.renderSubnavs(this.data.nav)}
-            <nav-ctas active={this.active} data={this.data.promos} />
-          </div>
-        </nav>
+
+        <main-nav
+          mainNavIsShowing={this.mainNavIsShowing}
+          data={this.data.nav}
+          promoData={this.data.promos}
+        />
+
         <div class={this.navCloseClasses()}>
           <div class="close-icon" innerHTML={close} onClick={this.closeMenus.bind(this)} />
         </div>
       </Fragment>
     );
   }
+  //was
+  // <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
+  //         <div class="content">
+  //           <div class="navigation">
+  //             <ul>{this.renderSections(this.data.nav)}</ul>
+  //           </div>
+  //           {this.renderSubnavs(this.data.nav)}
+  //           <nav-ctas active={this.active} data={this.data.promos} />
+  //         </div>
+  //       </nav>
 }

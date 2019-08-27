@@ -9,7 +9,7 @@ import decode from 'unescape';
 export class NavCtas {
   @Prop() href: string;
   @Prop() active: string;
-  @Prop() data: string;
+  @Prop() data: string; //TODO whyyyyyyy?
 
   decodedData() {
     return decode(this.data || '');

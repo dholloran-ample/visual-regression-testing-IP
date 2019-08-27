@@ -18,7 +18,7 @@
 
 ### Depends on
 
-- [crds-subscribe](../crds-subscribe)
+- [crds-subscribe](..\crds-subscribe)
 - [crds-snail-trail-link](crds-snail-trail-link)
 
 ### Graph

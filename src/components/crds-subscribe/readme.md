@@ -17,11 +17,11 @@
 
 ### Used by
 
- - [crds-snail-trail](../crds-snail-trail)
+ - [crds-snail-trail](..\crds-snail-trail)
 
 ### Depends on
 
-- [crds-modal](../crds-modal)
+- [crds-modal](..\crds-modal)
 
 ### Graph
 ```mermaid

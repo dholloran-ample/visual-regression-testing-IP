@@ -18,7 +18,7 @@
 
 ### Used by
 
- - [crds-subscribe](../crds-subscribe)
+ - [crds-subscribe](..\crds-subscribe)
 
 ### Graph
 ```mermaid

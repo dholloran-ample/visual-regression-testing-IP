@@ -75,6 +75,11 @@ export namespace Components {
   interface LifeStages {
     'authToken': string;
   }
+  interface MainNav {
+    'data': JSON;
+    'mainNavIsShowing': boolean;
+    'promoData': JSON;
+  }
   interface NavCtas {
     'active': string;
     'data': string;
@@ -173,6 +178,12 @@ declare global {
     new (): HTMLLifeStagesElement;
   };
 
+  interface HTMLMainNavElement extends Components.MainNav, HTMLStencilElement {}
+  var HTMLMainNavElement: {
+    prototype: HTMLMainNavElement;
+    new (): HTMLMainNavElement;
+  };
+
   interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
   var HTMLNavCtasElement: {
     prototype: HTMLNavCtasElement;
@@ -214,6 +225,7 @@ declare global {
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'life-stages': HTMLLifeStagesElement;
+    'main-nav': HTMLMainNavElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-link': HTMLNavLinkElement;
     'nav-section': HTMLNavSectionElement;
@@ -289,6 +301,11 @@ declare namespace LocalJSX {
   interface LifeStages extends JSXBase.HTMLAttributes<HTMLLifeStagesElement> {
     'authToken'?: string;
   }
+  interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {
+    'data'?: JSON;
+    'mainNavIsShowing'?: boolean;
+    'promoData'?: JSON;
+  }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'active'?: string;
     'data'?: string;
@@ -329,6 +346,7 @@ declare namespace LocalJSX {
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'life-stages': LifeStages;
+    'main-nav': MainNav;
     'nav-ctas': NavCtas;
     'nav-link': NavLink;
     'nav-section': NavSection;
