@@ -12,7 +12,7 @@ import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-inter
 export class SiteHappenings {
   private analytics = window['analytics'] || {};
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
-  private sites: string[] = [];
+  private contentfulSites: string[] = [];
   private mpSites: MpCongregation[] = [];
   private happenings: CrdsHappening[] = [];
   private user: CrdsUser = { name: '', site: '' };
@@ -32,126 +32,61 @@ export class SiteHappenings {
     }
   }
 
-  /**
-   * Check to see if user is authenticated
-   * then fetch MP data is applicable
-   */
+  public getSelectedSite(): {} {
+    return { selectedSite: this.selectedSite };
+  };
+
+  /** Stencil Lifecycle methods **/
+
   componentWillLoad() {
-    return Promise.all([this.fetchMpData(), this.fetchContentfulData()]);
+    return Promise.all([this.fetchMpData(), this.fetchContentfulPromoData()]);
   }
 
-  private fetchMpData() {
-    if (this.authToken) {
-      return Promise.all([this.fetchSitesData(this.authToken), this.fetchUserData(this.authToken)]);
-    }
-  }
-
-  /**
-   * Update the width of the dropdown based
-   * on the current selected site
-   */
   componentDidRender() {
-    this.setWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
+    this.handleParentElementWidthBasedOnText(this.host.shadowRoot.querySelector('.happenings-dropdown-select'), this.selectedSite);
     document.dispatchEvent(this.renderedEvent);
     Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite.bind(this))
   }
 
-  /**
-   * Update selected site state
-   * from dropdown
-   */
-  handleSiteSelection(event) {
-    this.selectedSite = event.target.value;
-    this.setWidthBasedOnText(event.target, event.target.value);
-    this.analytics.track('HappeningSiteFiltered', {
-      site: this.selectedSite
-    });
-  }
+  /** GraphQL I/O **/
 
-  /**
-   * Receive user input from the select site
-   * modal
-   */
-  handleSetDefaultSite(event) {
-    const selectedSiteId = event.target.value;
-    this.selectedSite = event.target.options[event.target.selectedIndex].text;
-    this.user = { ...this.user, site: this.selectedSite };
-    this.defaultToUserSite(this.user.site);
-    this.handleClose();
-    this.updateUserSite(this.authToken, selectedSiteId);
-    this.analytics.track('HappeningMPSiteUpdated', {
-      id: selectedSiteId,
-      name: this.selectedSite
-    });
-  }
-  /**
-   * Receive input from user clicks on happenings
-   * cards
-   */
-  handleHappeningsClicked(event) {
-    let target = event.target;
-    let params = {
-      title: target.innerText.toLowerCase(),
-      url: target.href,
-      userSite: this.user.site || 'logged out',
-      selectedSite: this.selectedSite
-    };
-
-    if (target.tagName !== 'A') {
-      params = { ...params, title: target.alt.toLowerCase(), url: target.parentNode.href };
-    }
-
-    this.analytics.track('HappeningCardClicked', {
-      params
-    });
-  }
-
-  /**
-   * Close the site select modal
-   */
-  handleClose() {
-    this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
-  }
-
-  /**
-   * Override HTML's behavior of
-   * sizing dropdowns to the largest
-   * string in the list
-   */
-  setWidthBasedOnText(el, text) {
-    let tmpSelect = document.createElement('select');
-    let tmpOption = document.createElement('option');
-    let styles = window.getComputedStyle(el);
-    tmpSelect.style.visibility = 'hidden';
-    tmpSelect.appendChild(tmpOption);
-    tmpSelect.style.margin = styles.margin;
-    tmpSelect.style.padding = styles.padding;
-    tmpSelect.style.fontSize = styles.fontSize;
-    tmpSelect.style.fontFamily = styles.fontFamily;
-    tmpSelect.style.webkitAppearance = 'none';
-    tmpOption.innerText = text;
-    this.host.shadowRoot.appendChild(tmpSelect);
-    el.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
-    this.host.shadowRoot.removeChild(tmpSelect);
-  }
-
-  /**
-   * Update happenings cards to current user's
-   * selected site
-   */
-  defaultToUserSite(site) {
-    if (site == 'Not site specific' || site == 'I do not attend Crossroads' || site == 'Anywhere' || site == null) {
-      this.selectedSite = 'Churchwide';
-    } else {
-      this.selectedSite = site;
+  private fetchMpData() {
+    if (this.authToken) {
+      return Promise.all([
+        this.fetchMPSitesData(this.authToken),
+        this.fetchMPUserData(this.authToken)
+      ]);
     }
   }
 
-  /**
-   * get user info from MP
-   * via graphQL
-   */
-  fetchUserData(token) {
+  fetchMPSitesData(token) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+          {
+            sites(filter: "Available_Online = 1") {
+              name
+              id
+            }
+          }
+          `
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      .then(success => {
+        const siteList = success.data.data.sites;
+        this.setMPSites(siteList);
+      })
+      .catch(err => this.logError(err));
+  }
+
+  fetchMPUserData(token) {
     return axios
       .post(
         this.gqlUrl,
@@ -175,78 +110,13 @@ export class SiteHappenings {
       .then(success => {
         let mpUser = success.data.data.user;
         let siteName = mpUser.site && mpUser.site.name;
-        this.user = { ...this.user, site: siteName };
-        siteName == (null || 'Not site specific') ? this.renderSetSiteModal() : this.defaultToUserSite(this.user.site);
-      });
-  }
-
-  /**
-   * Get sites list from MP
-   * via graphQL
-   */
-  fetchSitesData(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          {
-            sites(filter: "Available_Online = 1") {
-              name
-              id
-            }
-          }
-          `
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        this.mpSites = success.data.data.sites;
-        this.renderSetSiteOptions(this.mpSites);
+        this.setUserSite(siteName);
+        this.setSelectedSite(this.user.site);
       })
-      .catch(err => console.error(err));
+      .catch(err => this.logError(err));
   }
 
-  /**
-   * Update a user's site
-   * in MP via graphQL
-   */
-  updateUserSite(token, siteId) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          mutation {
-            setSite(siteId: ${siteId}) {
-              site {
-                id
-                name
-              }
-            }
-          }
-          `
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        console.log('updated site', success);
-      })
-      .catch(err => console.error(err));
-  }
-
-  /**
-   * Get 'promos' content
-   */
-  fetchContentfulData() {
+  fetchContentfulPromoData() {
     let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
       process.env.CONTENTFUL_SPACE_ID
       }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
@@ -270,92 +140,247 @@ export class SiteHappenings {
         }
       })
       .then(success => {
-        this.setContentfulData(success.data.data.promoCollection.items);
-      });
+        const promoList = success.data.data.promoCollection.items;
+        this.setHappenings(promoList);
+        this.setContentfulSites();
+        this.renderHappenings();
+      })
+      .catch(err => this.logError(err));
   }
 
-  /**
-   * Create cards for each promo
-   */
-  setContentfulData(data) {
-    this.happenings = data.filter(promo => promo.targetAudience !== null);
-    this.renderHappenings(this.happenings);
-    let audiences = [];
-    for (let i = 0; i < this.happenings.length; i += 1) {
-      if (this.happenings[i].targetAudience) {
-        for (let x = 0; x < this.happenings[i].targetAudience.length; x += 1) {
-          audiences.push(this.happenings[i].targetAudience[x]);
+  updateMPUserSite(token, siteId) {
+    return axios
+      .post(
+        this.gqlUrl,
+        {
+          query: `
+          mutation {
+            setSite(siteId: ${siteId}) {
+              site {
+                id
+                name
+              }
+            }
+          }
+          `
+        },
+        {
+          headers: {
+            authorization: token
+          }
         }
-      }
-    }
+      )
+      .then(success => {
+        console.log('updated site', success.statusText);
+      })
+      .catch(err => this.logError(err));
+  }
 
-    let unique_audiences = audiences.filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
-    this.sites = unique_audiences.sort((a, b) => (a > b ? 1 : b > a ? -1 : 0));
+  // This lets unit tests capture and confirm errors rather than listening in on console.error
+  private logError(err) {
+    console.error(err);
+  }
+
+  /** Setters **/
+
+  /**
+   * Set mpSites after sorting and removing invalid/excluded sites
+   * @param sites
+   */
+  setMPSites(sites) {
+    const allowedMPSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
+    this.mpSites = allowedMPSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
   }
 
   /**
-   * Create cards for each promo
+   * Sets user's site if new site is a non-empty string
+   * @param siteName
    */
-  renderSetSiteModal() {
+  setUserSite(siteName) {
+    if (typeof siteName === 'string' && siteName !== '') {
+      this.user = { ...this.user, site: siteName };
+    }
+  }
+
+  /**
+   * Sets selectdSite to given site name if name meets conditions or 'Churchwide'.
+   * This method will trigger a re-render of the component.
+   * @param siteName
+   */
+  setSelectedSite(siteName) {
+    if (typeof siteName !== "string" || siteName === 'Not site specific' || siteName === 'I do not attend Crossroads' || siteName === 'Anywhere' || siteName === '') {
+      this.selectedSite = 'Churchwide';
+    }
+    else if (this.contentfulSites.includes(siteName))
+      this.selectedSite = siteName;
+    else {
+      this.selectedSite = 'Churchwide';
+    }
+  }
+
+  /**
+  * Sets happenings to a list of Contentful promos with audiences
+  * @param promoList
+  */
+  setHappenings(promoList) {
+    this.happenings = promoList.filter(promo => promo.targetAudience !== null);
+  }
+
+  /**
+   * Sets contentfulSites to unique contentful sites currently in happenings
+   */
+  setContentfulSites() {
+    const uniqueAudiences = new Set<string>();
+    this.happenings.forEach(promo => promo.targetAudience.forEach(audience => uniqueAudiences.add(audience)));
+    this.contentfulSites = Array.from<string>(uniqueAudiences).sort((a, b) => (a > b ? 1 : b > a ? -1 : 0));
+  }
+
+
+  /** Event handlers/DOM modifiers **/
+
+  /**
+     * Update selected site based on selection in dropdown
+     * @param event
+     */
+  handleSiteSelection(event) {
+    this.setSelectedSite(event.target.value);
+    this.analytics.track('HappeningSiteFiltered', {
+      site: this.selectedSite
+    });
+  }
+
+  /**
+  * Override HTML's behavior of
+  * sizing dropdowns to the largest
+  * string in the list
+  */
+  handleParentElementWidthBasedOnText(element, text) {
+    let tmpSelect = document.createElement('select');
+    let styles = window.getComputedStyle(element);
+    tmpSelect.style.visibility = 'hidden';
+    tmpSelect.style.margin = styles.margin;
+    tmpSelect.style.padding = styles.padding;
+    tmpSelect.style.fontSize = styles.fontSize;
+    tmpSelect.style.fontFamily = styles.fontFamily;
+    tmpSelect.style.webkitAppearance = 'none';
+
+    let tmpOption = document.createElement('option');
+    tmpOption.innerText = text;
+    tmpSelect.appendChild(tmpOption);
+
+    this.host.shadowRoot.appendChild(tmpSelect);
+    element.parentNode.style.width = `${tmpSelect.offsetWidth + 12}px`;
+    this.host.shadowRoot.removeChild(tmpSelect);
+  }
+
+  /**
+   * Report data to analytics when happenings card clicked
+   * @param event
+   */
+  handleHappeningsClicked(event) {
+    let target = event.target;
+
+    let params = {
+      title: target.tagName === 'A' ? target.innerText.toLowerCase() : target.alt.toLowerCase(),
+      url: target.tagName === 'A' ? target.href : target.parentNode.href,
+      userSite: this.user.site || 'logged out',
+      selectedSite: this.selectedSite
+    };
+
+    this.analytics.track('HappeningCardClicked', {
+      params
+    });
+  }
+
+  /**
+   * Receive user input from the select site
+   * modal
+   */
+  handleSetSiteInput(event) {
+    //Set variables
+    const siteName = event.target.options[event.target.selectedIndex].text;
+    this.setUserSite(siteName);
+    this.setSelectedSite(siteName);
+
+    //Modify DOM
+    this.handleSetSiteModalClose();
+
+    //Store changes to DB
+    const selectedSiteId = event.target.value;
+    this.updateMPUserSite(this.authToken, selectedSiteId);
+
+    //Report to analytics
+    this.analytics.track('HappeningSiteUpdated', {
+      id: selectedSiteId,
+      name: this.selectedSite
+    });
+  }
+
+  /**
+   * Close the site select modal
+   */
+  handleSetSiteModalClose() {
+    this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
+  }
+
+
+  /** Render **/
+
+  render() {
     return (
-      <div class="site-select-message">
-        <button type="button" class="close" aria-label="Close" onClick={() => this.handleClose()}>
-          <svg xmlns="http://www.w3.org/2000/svg">
-            <line x1="1" y1="10" x2="10" y2="1" stroke="#fff" strokeWidth="2" />
-            <line x1="1" y1="1" x2="10" y2="10" stroke="#fff" strokeWidth="2" />
-          </svg>
-        </button>
-        <div class="text-center push-top w-100">
-          <h2 class="component-header flush-bottom">Select your Crossroads location</h2>
-          <p class="flush-half-top">See what's happening in and around your community.</p>
-          <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
-            <select class="dropdown w-100" onInput={event => this.handleSetDefaultSite(event)}>
-              <option disabled selected>
-                Choose a site
-              </option>
-              {this.renderSetSiteOptions(this.mpSites)}
-            </select>
-            <svg
-              class="dropdown-caret icon icon-1 pull-right push-left"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 237 152"
-            >
-              <path
-                d="M200.731 135.586L92.136 244.182c-1.854 1.853-4.05 2.78-6.587 2.78s-4.731-.927-6.586-2.78l-24.295-24.295c-1.854-1.854-2.781-4.05-2.781-6.587s.927-4.732 2.78-6.586L132.385 129 54.669 51.285c-1.854-1.853-2.781-4.05-2.781-6.586 0-2.537.927-4.732 2.78-6.587l24.296-24.295c1.854-1.853 4.05-2.78 6.586-2.78 2.537 0 4.732.927 6.587 2.78L200.73 122.414c1.854 1.853 2.781 4.049 2.781 6.586s-.927 4.732-2.78 6.586z"
-                transform="translate(-9 -53) rotate(90 127.7 129)"
-              />
-            </svg>
+      <div class="container push-top">
+        <div class="relative">
+          {this.maybeRenderSetSiteModal()}
+          <hr class="push-half-bottom" />
+          <div class="happenings-dropdown-container push-half-bottom">
+            <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
+              happening at crossroads
+            </h4>
+            <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
+              <select
+                class="happenings-dropdown-select font-family-base"
+                onInput={event => this.handleSiteSelection(event)}
+              >
+                {this.contentfulSites.map(siteName => (
+                  <option value={siteName} selected={this.selectedSite === siteName}>
+                    {siteName}
+                  </option>
+                ))}
+              </select>
+              <svg
+                class="dropdown-caret icon icon-1 pull-right push-left"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 237 152"
+              >
+                <path
+                  d="M200.731 135.586L92.136 244.182c-1.854 1.853-4.05 2.78-6.587 2.78s-4.731-.927-6.586-2.78l-24.295-24.295c-1.854-1.854-2.781-4.05-2.781-6.587s.927-4.732 2.78-6.586L132.385 129 54.669 51.285c-1.854-1.853-2.781-4.05-2.781-6.586 0-2.537.927-4.732 2.78-6.587l24.296-24.295c1.854-1.853 4.05-2.78 6.586-2.78 2.537 0 4.732.927 6.587 2.78L200.73 122.414c1.854 1.853 2.781 4.049 2.781 6.586s-.927 4.732-2.78 6.586z"
+                  transform="translate(-9 -53) rotate(90 127.7 129)"
+                />
+              </svg>
+              {this.selectedSite === this.user.site ? <span class="my-site-label">(my site)</span> : ''}
+            </div>
           </div>
-          <p>
-            <small>*This will update the site field in your profile</small>
-          </p>
+          <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
+            <div
+              id="section-what-s-happening"
+              class="feature-cards card-deck--expanded-layout carousel"
+              data-automation-id="happenings-cards"
+              data-crds-carousel="mobile-scroll"
+            >
+              {this.renderHappenings()}
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   /**
-   * Map crds sites to dropdown
+   * Display happenings cards filtered by dropdown
    */
-  renderSetSiteOptions(mpSites) {
-    return mpSites
-      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-      .filter(site => site.name !== 'Not site specific' && site.name !== 'Xroads Church')
-      .map(site => (
-        <option value={site.id} data-name={site.name}>
-          {site.name}
-        </option>
-      ));
-  }
-
-  /**
-   * map list of cards filtered by dropdown
-   */
-  renderHappenings(happenings) {
-    if (!happenings.length) return this.renderHappeningsSkeleton();
-    return happenings
+  renderHappenings() {
+    if (!this.happenings.length) return this.renderHappeningsSkeleton();
+    return this.happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
         <div class="card carousel-cell" key={index}>
@@ -363,7 +388,7 @@ export class SiteHappenings {
             <img
               alt={obj.title}
               class="img-responsive"
-              src={Utils.imgixify(obj.image.url) + `?auto=format&w=400&h=300&fit=crop`}
+              src={Utils.imgixify(obj.image ? obj.image.url : '') + `?auto=format&w=400&h=300&fit=crop`}
             />
           </a>
           <div class="card-block">
@@ -372,7 +397,7 @@ export class SiteHappenings {
                 {obj.title}
               </a>
             </h4>
-            <div class="card-text" innerHTML={marked(obj.description)} />
+            <div class="card-text" innerHTML={marked(obj.description || '')} />
           </div>
         </div>
       ));
@@ -409,57 +434,61 @@ export class SiteHappenings {
     ));
   }
 
-  render() {
+
+  /**
+   * Returns set site modal if conditions are met or empty string
+   */
+  maybeRenderSetSiteModal() {
+    if (!this.authToken) return '';
+
+    if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
+      return this.renderSetSiteModal();
+    else
+      return '';
+  }
+
+  /**
+   * User selects site
+   */
+  renderSetSiteModal() {
     return (
-      <div class="container push-top">
-        <div class="relative">
-          {this.user.site == 'Not site specific' || this.user.site == null ? this.renderSetSiteModal() : ''}
-          <hr class="push-half-bottom" />
-          <div class="happenings-dropdown-container push-half-bottom">
-            <h4 id="happening-filter-label" class="flush font-size-base font-family-base text-gray-light">
-              happening at crossroads
-            </h4>
-            <div class="happenings-dropdown" data-automation-id="happenings-filter">
-              <select
-                class="happenings-dropdown-select font-family-base"
-                onInput={event => this.handleSiteSelection(event)}
-              >
-                {this.sites.map(site => (
-                  <option value={site} selected={this.selectedSite === site}>
-                    {site}
-                  </option>
-                ))}
-              </select>
-              <svg
-                class="dropdown-caret icon icon-1 pull-right push-left"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 237 152"
-              >
-                <path
-                  d="M200.731 135.586L92.136 244.182c-1.854 1.853-4.05 2.78-6.587 2.78s-4.731-.927-6.586-2.78l-24.295-24.295c-1.854-1.854-2.781-4.05-2.781-6.587s.927-4.732 2.78-6.586L132.385 129 54.669 51.285c-1.854-1.853-2.781-4.05-2.781-6.586 0-2.537.927-4.732 2.78-6.587l24.296-24.295c1.854-1.853 4.05-2.78 6.586-2.78 2.537 0 4.732.927 6.587 2.78L200.73 122.414c1.854 1.853 2.781 4.049 2.781 6.586s-.927 4.732-2.78 6.586z"
-                  transform="translate(-9 -53) rotate(90 127.7 129)"
-                />
-              </svg>
-              {this.selectedSite === this.user.site ? <span class="my-site-label">(my site)</span> : ''}
-            </div>
-          </div>
-          <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
-            <div
-              id="section-what-s-happening"
-              class="feature-cards card-deck--expanded-layout carousel"
-              data-automation-id="happenings-cards"
-              data-crds-carousel="mobile-scroll"
+      <div class="site-select-message">
+        <button type="button" class="close" aria-label="Close" onClick={() => this.handleSetSiteModalClose()}>
+          <svg xmlns="http://www.w3.org/2000/svg">
+            <line x1="1" y1="10" x2="10" y2="1" stroke="#fff" strokeWidth="2" />
+            <line x1="1" y1="1" x2="10" y2="10" stroke="#fff" strokeWidth="2" />
+          </svg>
+        </button>
+        <div class="text-center push-top w-100">
+          <h2 class="component-header flush-bottom">Select your Crossroads location</h2>
+          <p class="flush-half-top">See what's happening in and around your community.</p>
+          <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
+            <select class="dropdown w-100" onInput={event => this.handleSetSiteInput(event)}>
+              <option disabled selected>
+                Choose a site
+            </option>
+              {this.mpSites.map(site => (
+                <option value={site.id} data-name={site.name}>
+                  {site.name}
+                </option>
+              ))}
+            </select>
+            <svg
+              class="dropdown-caret icon icon-1 pull-right push-left"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 237 152"
             >
-              {this.renderHappenings(this.happenings)}
-            </div>
+              <path
+                d="M200.731 135.586L92.136 244.182c-1.854 1.853-4.05 2.78-6.587 2.78s-4.731-.927-6.586-2.78l-24.295-24.295c-1.854-1.854-2.781-4.05-2.781-6.587s.927-4.732 2.78-6.586L132.385 129 54.669 51.285c-1.854-1.853-2.781-4.05-2.781-6.586 0-2.537.927-4.732 2.78-6.587l24.296-24.295c1.854-1.853 4.05-2.78 6.586-2.78 2.537 0 4.732.927 6.587 2.78L200.73 122.414c1.854 1.853 2.781 4.049 2.781 6.586s-.927 4.732-2.78 6.586z"
+                transform="translate(-9 -53) rotate(90 127.7 129)"
+              />
+            </svg>
           </div>
+          <p>
+            <small>*This will update the site field in your profile</small>
+          </p>
         </div>
       </div>
     );
   }
-
-  public getSelectedSite(): {} {
-    return { selectedSite: this.selectedSite };
-  };
-
 }
