@@ -42,7 +42,7 @@ export class LifeStages {
   }
 
   public getLifeStageId() {
-    return this.user.lifeStage.id;
+    return this.user.lifeStage && this.user.lifeStage.id;
   }
 
   public fetchUser(token) {
@@ -352,7 +352,6 @@ export class LifeStages {
     const renderLifeStages = this.lifeStages.length && this.user.lifeStage && !this.user.lifeStage.id;
     const renderRecommendedContent = this.recommendedContent.length;
     const cardsClasses = `cards ${this.recommendedContent.length ? 'media-cards' : ''}`;
-    console.log(renderLifeStages, renderRecommendedContent);
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
