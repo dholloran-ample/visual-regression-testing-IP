@@ -10,7 +10,7 @@ export class NavigationLink {
   /**
    * Print log messages?
    */
-  private debug: boolean = true; //TODO is anything being done with this?
+  private debug: boolean = true;
   private console: Logger;
   private config: Config;
 

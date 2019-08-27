@@ -9,7 +9,7 @@ import { Config } from '../../../shared/config';
 })
 export class NavigationSection {
   @Prop() public slug: string;
-  @Prop({ mutable: true }) public activeSection: any; //TODO what is this being used for?
+  @Prop({ mutable: true }) public activeSection: any;
   @Prop() public isActive: boolean = false;
   @Prop() public onActivate: any;
 

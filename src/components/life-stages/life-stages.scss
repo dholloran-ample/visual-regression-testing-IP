@@ -20,6 +20,10 @@ h5 {
   min-height: 300px;
   overflow: hidden;
 
+  @media (min-width: 768px) {
+    min-height: 540px;
+  }
+
   .life-stages-inner {
     transition: all .45s ease;
   }
@@ -50,6 +54,7 @@ h5 {
   grid-column: 1 / -1;
   grid-gap: 1.5rem;
   grid-template-columns: .375rem;
+  -webkit-overflow-scrolling: touch;
   overflow-x: scroll;
   padding-bottom: 1.5rem;
   scroll-snap-type: x mandatory;

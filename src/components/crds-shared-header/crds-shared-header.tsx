@@ -44,7 +44,7 @@ export class SharedHeader {
    * @param e Event
    * @param id string
    */
-  protected onClick(e, id) { //TODO think this is slug of nav?
+  protected onClick(e, id) {
     e.preventDefault();
     this.active = id;
   }

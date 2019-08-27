@@ -202,7 +202,6 @@ describe('<global-nav>', () => {
     });
   });
 
-  //TODO verify render more thoroughly in e2e
   describe('Tests render()', () => {
     it('Checks auth is initialized', () => {
       this.component.config = {};
