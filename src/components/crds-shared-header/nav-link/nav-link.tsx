@@ -1,7 +1,7 @@
-import { Component, Prop, Event, EventEmitter, h } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { Logger } from '../../../shared/logger';
 import { Config } from '../../../shared/config';
-//TODO update components
+
 @Component({
   tag: 'nav-link',
   shadow: false
@@ -24,11 +24,13 @@ export class NavigationLink {
   }
 
   onClick(event) {
-    console.log('DEBUG Handling click in nav-link');
     if(this.isSignOutLink()) {
       if(typeof this.handleSignOut === 'function'){
         this.handleSignOut();
         event.preventDefault();
+      }
+      else {
+        console.error('Function to handle sign out not provided');
       }
     }
     else {

@@ -8,19 +8,19 @@ export class SimpleNavHelper {
   }
 
   renderSections(data, menuTitle) {
-    let makeNextListTopLevel = true;
+    let isTopLevelClass = true;
 
     return (
       <div>
         <h2> {menuTitle} </h2>
         {Array.isArray(data.children) && data.children.map(child => {
           let isSubHeader = typeof child === 'string'
-          let renderThis = isSubHeader ? this.renderSubHeader(child) : this.maybeRenderList(child, makeNextListTopLevel);
-          makeNextListTopLevel = !isSubHeader;
+          let element = isSubHeader ? this.renderSubHeader(child) : this.maybeRenderList(child, isTopLevelClass);
+          isTopLevelClass = !isSubHeader; //Toggle if next rendered element should be top-level
 
-          return renderThis && (
+          return element && (
             <div style={{ padding: '0' }}>
-              {renderThis}
+              {element}
             </div>
           );
         })}

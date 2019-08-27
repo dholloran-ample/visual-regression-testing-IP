@@ -3,9 +3,6 @@ import axios from 'axios';
 import { Utils } from '../../shared/utils';
 import Fragment from '../../shared/fragment';
 
-import { testPayload } from './test_sh_data';//TODO test data
-
-
 @Component({
   tag: 'crds-shared-header',
   styleUrl: 'crds-shared-header.scss',
@@ -19,7 +16,7 @@ export class SharedHeader {
   @State() mainNavIsShowing: boolean = false;
   @State() profileNavIsShowing: boolean = false;
   @State() giveNavIsShowing: boolean = false;
-  @State() data: any = []; //TODO should this be object?
+  @State() data: any = [];
 
   @Element() element: HTMLElement;
 
@@ -28,10 +25,8 @@ export class SharedHeader {
    */
 
   public componentWillLoad() {
-    this.data = testPayload;
-//TODO below is real
-    // const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
-    // return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
+    const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
   }
 
   componentDidLoad() {

@@ -14,7 +14,6 @@ describe('<nav-link>', () => {
         stopPropagation: jest.fn()
       }
     });
-    //TODO why is int/prod diff from demo when signing out? Will either work?
 
     it('Checks handleSignOut to be called if is sign-out link and handleSignOut function defined', () => {
       const ogWindowsLocation = window.location.href;

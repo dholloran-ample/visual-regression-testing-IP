@@ -7,12 +7,6 @@ import { SimpleNavHelper } from './simple-nav-helper';
   shadow: true
 })
 export class ProfileMenu {
-<<<<<<< HEAD
-=======
-  @Prop() config: any;
-  @Prop() currentUser: any;
-  @Prop() onSignOut: Function;
->>>>>>> development
   @Prop() profileNavIsShowing: boolean = true;
   @Prop() data: JSON;
   @Prop() currentUser: any;

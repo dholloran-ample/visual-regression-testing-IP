@@ -1,10 +1,8 @@
 import { Component, Prop, State, h } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
 
-// import { Auth } from '../../../shared/auth'; //this is the real auth
+import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
-
-import { Auth } from '../../../shared/__mocks__/auth';
 
 @Component({
   tag: 'global-nav',

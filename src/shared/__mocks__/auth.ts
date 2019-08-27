@@ -12,8 +12,8 @@ export class Auth {
   }
 
   listen(callback) {
-    const token = '123'; //pretend we're signed in < may change
-    console.log('DEBUG in fake auth, listen hit');
+    const token = '123'; //pretend we're signed in?
+    console.log('DEBUG in fake auth auth changed');
 
     if (!token) return (this.authenticated = false);
     this.authenticated = true;
