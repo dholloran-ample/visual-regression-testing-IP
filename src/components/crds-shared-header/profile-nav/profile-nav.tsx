@@ -70,7 +70,7 @@ export class ProfileMenu {
           style={{
             backgroundImage: `linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%),url('${
               this.currentUser.avatarUrl
-            }')`
+              }')`
           }}
         />
         <div>{this.renderSections(this.data)}</div>
