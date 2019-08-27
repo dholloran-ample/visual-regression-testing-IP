@@ -14,6 +14,8 @@ The following components are made available via this library. Please see the REA
 - [`<crds-snail-trail />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-snail-trail)
 - [`<crds-subscribe />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-subscribe)
 - [`<crds-site-happenings />`](https://github.com/crdschurch/crds-components/tree/master/src/components/crds-site-happenings)
+- [`<life-stages />`](https://github.com/crdschurch/crds-components/tree/master/src/components/life-stages)
+- [`<greeting-component />`](https://github.com/crdschurch/crds-components/tree/master/src/components/greeting-component)
 
 ## Environments
 
