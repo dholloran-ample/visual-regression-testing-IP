@@ -299,17 +299,18 @@ export class LifeStages {
           <h3 class="component-header">{obj.title}</h3>
           {obj.authors && (
             <p class="soft-quarter-top">
-              {obj.authors.map(author => (
+              {obj.authors.map((author, index) => (
                 <a
                   class="text-gray-light font-size-smaller"
                   href={author.qualifiedUrl}
                   style={{
                     color: 'inherit',
-                    display: 'block',
+                    display: 'inline-block',
                     textDecoration: 'none'
                   }}
                 >
                   {author.fullName}
+                  {index < obj.authors.length - 1 ? <span>,&nbsp;</span> : ''}
                 </a>
               ))}
             </p>
@@ -332,23 +333,9 @@ export class LifeStages {
     );
     return (
       <div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline'
-          }}
-        >
-          <h2 class="component-header flush-bottom">
-            {this.recommendedContent.length ? this.user.lifeStage.title : 'Personalize Your Experience'}
-          </h2>
-          {this.recommendedContent.length ? (
-            <a class="back-btn" onClick={event => this.handleBackClick(event)}>
-              change
-            </a>
-          ) : (
-            ''
-          )}
-        </div>
+        <h2 class="component-header flush-bottom">
+          {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
+        </h2>
         <p class="push-half-top">
           {this.recommendedContent.length
             ? selectedLifeStage.description
@@ -370,9 +357,16 @@ export class LifeStages {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
-            {/* <div class="life-stages-avatar">
-              {SvgSrc.bullseyeIcon('30px', '30px', '#C05C04')}
-            </div> */}
+            {this.recommendedContent.length > 0 && (
+              <div class="life-stage-selected">
+                <a
+                  class="btn btn-gray-light btn-outline btn-sm back-btn"
+                  onClick={event => this.handleBackClick(event)}
+                >
+                  change
+                </a>
+              </div>
+            )}
           </div>
           <div class={cardsClasses}>
             {(() => {
