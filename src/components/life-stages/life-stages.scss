@@ -21,7 +21,7 @@ h5 {
   overflow: hidden;
 
   @media (min-width: 768px) {
-    min-height: 540px;
+    min-height: 528px;
   }
 
   .life-stages-inner {
@@ -32,17 +32,9 @@ h5 {
     display: flex;
     padding: 1.5rem;
 
-    .life-stages-avatar {
-      align-items: center;
-      background-color: #fff;
-      border: 1px solid #efefef;
-      border-radius: 50%;
-      display: flex;
-      height: 48px;
-      justify-content: center;
+    .life-stage-selected {
+      font-size: .875rem;
       margin-left: auto;
-      min-width: 48px;
-      width: 48px;
     }
   }
 }
@@ -66,7 +58,6 @@ h5 {
 
   @media (min-width: 768px) {
     grid-auto-columns: 220px;
-    grid-gap: 1rem;
 
     &.media-cards {
       grid-auto-columns: 400px;
