@@ -51,11 +51,11 @@ export class LifeStages {
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
-  public getLifeStageId() {
+  private getLifeStageId() {
     return this.user.lifeStage && this.user.lifeStage.id;
   }
 
-  public getUser() {
+  private getUser() {
     if (!this.authToken) return null;
     return this.apolloClient.query({ query: GET_USER })
       .then(success => {
@@ -65,7 +65,7 @@ export class LifeStages {
       });
   }
 
-  public getLifeStages() {
+  private getLifeStages() {
     return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
         this.lifeStages = success.data.lifeStages;
@@ -75,14 +75,14 @@ export class LifeStages {
   /**
    * Get content with set life stages
    */
-  public filterContent(lifeStageId) {
+  private filterContent(lifeStageId) {
     this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   /**
    * Get content with set life stages
    */
-  public setLifeStage(lifeStageId, lifeStageName?) {
+  private setLifeStage(lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
         id: lifeStageId,
