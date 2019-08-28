@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, h } from '@stencil/core';
+import { Component, Prop, State, h } from '@stencil/core';
 import axios from 'axios';
 import { GreetingUser } from './greeting-component-interface';
 
@@ -8,7 +8,7 @@ import { GreetingUser } from './greeting-component-interface';
   shadow: true
 })
 
-export class Greeting {
+export class GreetingComponent {
   private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
 
   @State() user: GreetingUser = null;

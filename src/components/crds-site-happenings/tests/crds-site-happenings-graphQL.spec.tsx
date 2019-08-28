@@ -1,5 +1,5 @@
 import { SiteHappenings } from '../site-happenings';
-import { getSessionID, user_with_site } from './test_user_auth';
+import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
 
 describe('<crds-site-happenings> GraphQL I/O', () => {
   beforeEach(async () => {
