@@ -59,7 +59,7 @@ describe('<main-nav>', () => {
     scenarios.forEach(navCombo => {
       it(`Checks class string matches ${navCombo.className} given main-nav "${navCombo.mainNav}" and active section "${navCombo.activeSection}"`, () => {
         this.component.mainNavIsShowing = navCombo.mainNav;
-        this.component.active = navCombo.activeSection;
+        this.component.activeSection = navCombo.activeSection;
 
         const classes = this.component.navClasses();
 
@@ -68,19 +68,18 @@ describe('<main-nav>', () => {
     });
   });
 
-
-  describe('Tests renderSections()', () => {
+  describe('Tests maybeRenderSections()', () => {
     it('Checks null is returned if payload missing', () => {
-      const rendered = this.component.renderSections(undefined);
+      const rendered = this.component.maybeRenderSections(undefined);
 
-      expect(rendered).toBeNull();
+      expect(rendered).toBeFalsy();
     });
 
     it('Checks list of nav-section are returned for each entry in the payload', () => {
-      const rendered = this.component.renderSections(navPayload);
+      const rendered = this.component.maybeRenderSections(navPayload);
 
-      expect(rendered[0].$attrs$.slug).toBe('watch-listen-read');
-      expect(rendered[1].$attrs$.slug).toBe('get-connected');
+      expect(rendered[0].$attrs$.sectionName).toBe('watch-listen-read');
+      expect(rendered[1].$attrs$.sectionName).toBe('get-connected');
 
       [0,1].forEach(elementIndex => {
         expect(rendered[elementIndex].$attrs$.isActive).toBe(false);
@@ -91,145 +90,55 @@ describe('<main-nav>', () => {
     });
 
     it('Checks expected nav-section is marked active', () => {
-      this.component.active = 'get-connected'
-      const rendered = this.component.renderSections(navPayload);
+      this.component.activeSection = 'get-connected'
+      const rendered = this.component.maybeRenderSections(navPayload);
 
       expect(rendered[0].$attrs$.isActive).toBe(false);
       expect(rendered[1].$attrs$.isActive).toBe(true);
     });
   });
 
-
-  describe('Tests renderChildren()', () => {
-    it('Checks empty list is returned if child list is empty', () => {
-      const section = {title: 'Section title', children: []}
-
-      const rendered = this.component.renderChildren(section, {});
-
-      expect(rendered[0].$children$[0].$text$).toBe(section.title);
-      expect(rendered[0].$tag$).toBe('h2');
-      expect(rendered).toHaveLength(1);
-    });
-
-    it('Checks empty list is returned if child list contains only strings', () => {
-      const section = {title: 'Section title', children: ['One string', 'Two strings', 'Three strings']}
-
-      const rendered = this.component.renderChildren(section);
-
-      expect(rendered[0].$children$[0].$text$).toBe(section.title);
-      expect(rendered[0].$tag$).toBe('h2');
-
-      [1,2,3].forEach(elementIndex => {
-        expect(rendered[elementIndex].$children$[0].$text$).toBe(section.children[elementIndex - 1]);
-      });
-    });
-
-    it('Checks list has top-level in class', () => {
-      const section = {title: 'Section title', children: [[{
-        "title": "My profile",
-        "automation-id": "sh-my-profile",
-        "href": "https://int.crossroads.net/profile/personal",
-        "top_level": true
-      }]]}
-
-      const rendered = this.component.renderChildren(section);
-
-      expect(rendered[1].$children$[0].$attrs$.class).toEqual('top-level');
-    });
-
-    it('Checks list does not have top-level in class', () => {
-      const section = {title: 'Section title', children: [[{
-        "title": "My profile",
-        "automation-id": "sh-my-profile",
-        "href": "https://int.crossroads.net/profile/personal",
-        "top_level": false
-      }]]}
-
-      const rendered = this.component.renderChildren(section);
-
-      expect(rendered[1].$children$[0].$attrs$.class).toBeNull();
-    });
-
-    it('Checks list does not have top-level in class if not property in child', () => {
-      const section = {title: 'Section title', children: [[{
-        "title": "My profile",
-        "automation-id": "sh-my-profile",
-        "href": "https://int.crossroads.net/profile/personal"
-      }]]}
-
-      const rendered = this.component.renderChildren(section);
-
-      expect(rendered[1].$children$[0].$attrs$.class).toBeNull();
-    });
-
-    it('Checks list has # as href if not given href in child', () => {
-      const section = {title: 'Section title', children: [[{
-        "title": "My profile",
-        "automation-id": "sh-my-profile"
-      }]]}
-
-      const rendered = this.component.renderChildren(section);
-
-      expect(rendered[1].$children$[0].$children$[0].$attrs$['href']).toBe('#');
-    });
-
-    it('Checks list of elements is returned if child list contains expected objects', () => {
-      const section = {title: 'Section title', children: [[{
-        "title": "My profile",
-        "automation-id": "sh-my-profile",
-        "href": "https://int.crossroads.net/profile/personal",
-        "top_level": false
-      }]]}
-
-      const rendered = this.component.renderChildren(section);
-      const renderedElement = rendered[1].$children$[0].$children$[0];
-
-      expect(renderedElement.$attrs$['data-automation-id']).toBe(section.children[0][0]['automation-id']);
-      expect(renderedElement.$attrs$['href']).toBe(section.children[0][0]['href']);
-      expect(renderedElement.$children$[0].$text$).toBe(section.children[0][0]['title']);
-      expect(renderedElement.$tag$).toBe('a');
-    });
-  });
-
-  describe('Tests renderSubnavs()', () => {
+  describe('Tests maybeRenderSubnavs()', () => {
     it('Checks null is returned if payload missing', () => {
-      const rendered = this.component.renderSubnavs(undefined);
+      const rendered = this.component.maybeRenderSubnavs(undefined);
 
-      expect(rendered).toBeNull();
+      expect(rendered).toBeFalsy();
     });
 
     it('Checks list of nav-section-subnav are returned for each entry in the payload', () => {
-      this.component.active = 'sh-nav'
+      this.component.activeSection = 'sh-nav'
 
-      const rendered = this.component.renderSubnavs(navPayload);
+      const rendered = this.component.maybeRenderSubnavs(navPayload);
 
-      expect(rendered.$attrs$.class).toBe('subnavigation');
+      expect(rendered[0].$attrs$.subNavName).toBe('watch-listen-read');
+      expect(rendered[0].$children$[0].$tag$).toBe('h2');
+      expect(rendered[0].$children$[0].$children$[0].$text$).toBe(navPayload[0].title);
+      expect(rendered[0].$children$[1].$tag$).toBe('ul');
 
-      expect(rendered.$children$[0].$attrs$.slug).toBe('watch-listen-read');
-      expect(rendered.$children$[1].$attrs$.slug).toBe('get-connected');
+      expect(rendered[1].$attrs$.subNavName).toBe('get-connected');
 
       [0,1].forEach(elementIndex => {
-        expect(rendered.$children$[elementIndex].$tag$).toBe('nav-section-subnav');
+        expect(rendered[elementIndex].$tag$).toBe('nav-section-subnav');
 
-        expect(rendered.$children$[elementIndex].$attrs$.active).toBe('sh-nav');
-        expect(typeof rendered.$children$[elementIndex].$attrs$.onBack).toEqual('function');
-        expect(rendered.$children$[elementIndex].$children$[0].$children$[0].$text$).toBe(navPayload[elementIndex].title);
+        expect(rendered[elementIndex].$attrs$.isActive).toBe(false);
+        expect(typeof rendered[elementIndex].$attrs$.handleBackClick).toEqual('function');
+        expect(rendered[elementIndex].$children$[0].$children$[0].$text$).toBe(navPayload[elementIndex].title);
       });
     });
   });
 
-  describe('Tests onClick()', () => {
+  describe('Tests handleSectionClick()', () => {
     it('Checks active is set to given value', () => {
       const fakeEvent = {
         preventDefault: jest.fn()
       };
 
-      expect(this.component.active).toBeUndefined();
+      expect(this.component.activeSection).toBeUndefined();
 
-      this.component.onClick(fakeEvent, 'sh-nav');
+      this.component.handleSectionClick(fakeEvent, 'sh-nav');
 
       expect(fakeEvent.preventDefault).toBeCalled();
-      expect(this.component.active).toBe('sh-nav');
+      expect(this.component.activeSection).toBe('sh-nav');
     });
   });
 
@@ -238,12 +147,66 @@ describe('<main-nav>', () => {
       const fakeEvent = {
         preventDefault: jest.fn()
       };
-      this.component.active = 'sh-nav';
+      this.component.activeSection = 'sh-nav';
 
       this.component.handleBackClick(fakeEvent);
 
       expect(fakeEvent.preventDefault).toBeCalled();
-      expect(this.component.active).toBeNull();
+      expect(this.component.activeSection).toBeNull();
+    });
+  });
+
+  describe('Tests render()', () => {
+    it('Checks null is returned if main nav is not showing', () => {
+      this.component.mainNavIsShowing = false;
+
+      const rendered = this.component.render();
+
+      expect(rendered).toBeNull();
+    });
+
+    const invalidData = [undefined, true, false, "String", null];
+    invalidData.forEach(badValue => {
+      it(`Checks null is returned if main component's data is "${badValue}"`, () => {
+        this.component.mainNavIsShowing = true;
+        this.component.data = badValue;
+
+        const rendered = this.component.render();
+
+        expect(rendered).toBeNull();
+      });
+    });
+
+    it('Checks main nav element is returned', () => {
+      this.component.mainNavIsShowing = true;
+      this.component.data = navPayload;
+
+      const rendered = this.component.render();
+
+      expect(rendered.$attrs$.class).toBe('is-showing');
+    });
+
+    it('Checks main nav contains expected child elements in order', () => {
+      this.component.mainNavIsShowing = true;
+      this.component.data = navPayload;
+
+      const rendered = this.component.render();
+
+      expect(rendered.$tag$).toBe('nav');
+
+      expect(rendered.$children$[0].$tag$).toBe('div');
+      expect(rendered.$children$[0].$attrs$.class).toBe('content');
+
+      expect(rendered.$children$[0].$children$[0].$tag$).toBe('div');
+      expect(rendered.$children$[0].$children$[0].$attrs$.class).toBe('navigation');
+      expect(rendered.$children$[0].$children$[0].$children$[0].$tag$).toBe('ul');
+      expect(rendered.$children$[0].$children$[0].$children$[0].$children$[0].$tag$).toBe('nav-section');
+
+      expect(rendered.$children$[0].$children$[1].$tag$).toBe('div');
+      expect(rendered.$children$[0].$children$[1].$attrs$.class).toBe('subnavigation');
+      expect(rendered.$children$[0].$children$[1].$children$[0].$tag$).toBe('nav-section-subnav');
+
+      expect(rendered.$children$[0].$children$[2].$tag$).toBe('nav-ctas');
     });
   });
 });

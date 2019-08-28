@@ -8,8 +8,12 @@ describe('<nav-section>', () => {
   });
 
   describe('Tests render()', () => {
+    beforeEach(() => {
+      this.component.handleClick = jest.fn();
+    });
+
     it('Checks element returned has data-automation-id', () => {
-      this.component.slug = 'watch-listen-read';
+      this.component.sectionName = 'watch-listen-read';
 
       const rendered = this.component.render();
       const renderedElement = rendered.$children$[0]
@@ -42,14 +46,33 @@ describe('<nav-section>', () => {
       expect(typeof renderedElement.$attrs$.onClick).toBe('function');
     });
 
-    it('Checks element onClick event can be bound to function', () => {
-      this.component.onActivate = jest.fn();
+    // it('Checks element onClick event can be bound to function', () => {
+    //   // this.component.handleClick = jest.fn();
 
-      const rendered = this.component.render();
-      const renderedElement = rendered.$children$[0]
-      renderedElement.$attrs$.onClick();
+    //   const rendered = this.component.render();
+    //   // const renderedElement = rendered.$children$[0]
+    //   // renderedElement.$attrs$.onClick();
 
-      expect(this.component.onActivate).toBeCalledTimes(1);
+    //   // expect(this.component.handleClick).toBeCalledTimes(1);
+
+    //   expect(typeof rendered.$children$[0].$attrs$.onClick).toBe('function');
+    // });
+  });
+
+  describe('Tests onClick()', () => {
+    it('Checks handleClick function is called on click', () => {
+      const fakeEvent = {
+        preventDefault: jest.fn()
+      }
+      this.component.handleClick = jest.fn();
+
+      this.component.onClick(fakeEvent);
+
+      expect(this.component.handleClick).toBeCalledTimes(1);
+    });
+
+    it('Checks error is thrown if handleClick is not set', () => {
+//TODO
     });
   });
 

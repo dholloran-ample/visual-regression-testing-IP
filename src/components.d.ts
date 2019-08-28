@@ -78,12 +78,12 @@ export namespace Components {
   interface MainNav {
     'data': JSON;
     'mainNavIsShowing': boolean;
-    'promoData': JSON;
+    'promoData': string;
   }
   interface NavCtas {
-    'active': string;
     'data': string;
     'href': string;
+    'isActive': boolean;
   }
   interface NavLink {
     'automationId': string;
@@ -91,15 +91,14 @@ export namespace Components {
     'href': string;
   }
   interface NavSection {
-    'activeSection': any;
+    'handleClick': Function;
     'isActive': boolean;
-    'onActivate': any;
-    'slug': string;
+    'sectionName': string;
   }
   interface NavSectionSubnav {
-    'active': string;
-    'onBack': Function;
-    'slug': string;
+    'handleBackClick': Function;
+    'isActive': boolean;
+    'subNavName': string;
   }
   interface ProfileNav {
     'currentUser': any;
@@ -304,12 +303,12 @@ declare namespace LocalJSX {
   interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {
     'data'?: JSON;
     'mainNavIsShowing'?: boolean;
-    'promoData'?: JSON;
+    'promoData'?: string;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
-    'active'?: string;
     'data'?: string;
     'href'?: string;
+    'isActive'?: boolean;
   }
   interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
     'automationId'?: string;
@@ -317,15 +316,14 @@ declare namespace LocalJSX {
     'href'?: string;
   }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
-    'activeSection'?: any;
+    'handleClick'?: Function;
     'isActive'?: boolean;
-    'onActivate'?: any;
-    'slug'?: string;
+    'sectionName'?: string;
   }
   interface NavSectionSubnav extends JSXBase.HTMLAttributes<HTMLNavSectionSubnavElement> {
-    'active'?: string;
-    'onBack'?: Function;
-    'slug'?: string;
+    'handleBackClick'?: Function;
+    'isActive'?: boolean;
+    'subNavName'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
     'currentUser'?: any;

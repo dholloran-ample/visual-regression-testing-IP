@@ -7,16 +7,16 @@ import { Config } from '../../../shared/config';
   shadow: false
 })
 export class NavigationLink {
+  @Prop() href: string;
+  @Prop() automationId: string;
+  @Prop() handleSignOut: Function;
+
   /**
    * Print log messages?
    */
   private debug: boolean = true;
   private console: Logger;
   private config: Config;
-
-  @Prop() href: string;
-  @Prop() automationId: string;
-  @Prop() handleSignOut: Function;
 
   public componentWillLoad() {
     this.console = new Logger(this.debug);
@@ -45,7 +45,7 @@ export class NavigationLink {
 
   render() {
     return (
-      <a href={this.href} data-automation-id={this.automationId} onClick={this.onClick.bind(this)}>
+      <a href={this.href || "#"} data-automation-id={this.automationId} onClick={this.onClick.bind(this)}>
         <slot />
       </a>
     );

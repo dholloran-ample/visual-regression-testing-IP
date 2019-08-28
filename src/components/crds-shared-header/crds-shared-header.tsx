@@ -2,6 +2,7 @@ import { Component, Element, Prop, State, Listen, h } from '@stencil/core';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
 import Fragment from '../../shared/fragment';
+import { testPayload } from './test_sh_data';
 
 @Component({
   tag: 'crds-shared-header',
@@ -25,100 +26,16 @@ export class SharedHeader {
    */
 
   public componentWillLoad() {
-    const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
-    return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
+    this.data = testPayload;
+    //TODO below is real
+    // const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    // return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
   }
 
   componentDidLoad() {
     this.element.parentElement.classList.add('shared-header');
     this.element.parentElement.classList.remove('shared-header-skeleton');
   }
-
-  /**
-   * Section onClick event handler
-   * @param e Event
-   * @param id string
-   */
-  // protected onClick(e, id) {
-  //   e.preventDefault();
-  //   this.active = id;
-  // }
-
-  /**
-   * Renders all sections from payload
-   */
-  // private renderSections(payload) {
-  //   if (!payload) return null;
-  //   return payload.map(section => {
-  //     const id = Utils.parameterize(section.title);
-  //     return (
-  //       <nav-section slug={id} onActivate={this.onClick.bind(this)} isActive={this.active == id}>
-  //         <h2>{section.title}</h2>
-  //         <p>{section.description}</p>
-  //       </nav-section>
-  //     );
-  //   });
-  // }
-
-  // handleBackClick(event) {
-  //   event.preventDefault();
-  //   this.active = null;
-  // }
-  /**
-   * Returns all subnav elements
-   * @param payload
-   */
-  // TODO: refactor renderSubnavs to work with
-  // nav-section-subnav, profile nav, and give nav
-  // ------------------------------------------------------
-
-  // private renderSubnavs(payload) {
-  //   if (!payload) return null;
-  //   const sections = payload.map(section => {
-  //     return (
-  //       <nav-section-subnav
-  //         onBack={this.handleBackClick.bind(this)}
-  //         active={this.active}
-  //         slug={Utils.parameterize(section.title)}
-  //       >
-  //         {this.renderChildren(section)}
-  //       </nav-section-subnav>
-  //     );
-  //   });
-  //   return <div class="subnavigation">{sections}</div>;
-  // }
-
-  /**
-   * Returns header or unordered list
-   * @param section
-   */
-
-  // private renderChildren(section) {
-  //   const sectionChildren = section.children.map(child => {
-  //     if (typeof child == 'string') {
-  //       return <h4>{child}</h4>;
-  //     } else {
-  //       const listItems = child.map(link => {
-  //         return (
-  //           <li class={link.top_level ? 'top-level' : null}>
-  //             <a href={link.href || '#'} data-automation-id={link['automation-id']}>
-  //               {link.title}
-  //             </a>
-  //           </li>
-  //         );
-  //       });
-
-  //       return <ul>{listItems}</ul>;
-  //     }
-  //   });
-
-  //   return (
-  //     <Fragment>
-  //       <h2>{section.title}</h2>
-  //       {sectionChildren}
-  //     </Fragment>
-  //   );
-  // }
 
   toggleMenu(event, navType) {
     event.preventDefault();
@@ -158,15 +75,6 @@ export class SharedHeader {
     return document.body.setAttribute('style', 'overflow: scroll;');
   }
 
-
-  // navClasses() {
-  //   let classes = [];
-  //   if (this.mainNavIsShowing) classes.push('is-showing');
-  //   if (this.active) classes.push(`section--${this.active}`);
-  //   if (this.profileNavIsShowing || this.giveNavIsShowing) classes = [];
-  //   return classes.join(' ');
-  // }
-
   navCloseClasses() {
     let classes = ['close'];
     if (this.mainNavIsShowing || this.profileNavIsShowing || this.giveNavIsShowing) classes.push('is-showing');
@@ -198,27 +106,15 @@ export class SharedHeader {
           config={this.data.config}
           env={this.env}
         />
-
         <main-nav
           mainNavIsShowing={this.mainNavIsShowing}
           data={this.data.nav}
           promoData={this.data.promos}
         />
-
         <div class={this.navCloseClasses()}>
           <div class="close-icon" innerHTML={close} onClick={this.closeMenus.bind(this)} />
         </div>
       </Fragment>
     );
   }
-  //was
-  // <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
-  //         <div class="content">
-  //           <div class="navigation">
-  //             <ul>{this.renderSections(this.data.nav)}</ul>
-  //           </div>
-  //           {this.renderSubnavs(this.data.nav)}
-  //           <nav-ctas active={this.active} data={this.data.promos} />
-  //         </div>
-  //       </nav>
 }
