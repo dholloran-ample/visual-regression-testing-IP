@@ -7,16 +7,13 @@ import decode from 'unescape';
   shadow: true
 })
 export class NavCtas {
-  @Prop() href: string;
-  @Prop() isActive: boolean = false;
-  @Prop() data: string; //TODO whyyyyyyy?
+  @Prop() data: string;
 
   decodedData() {
     return decode(this.data || '');
   }
 
   render() {
-    if (this.isActive) return null;
     return <div class="ctas" innerHTML={this.decodedData()} />;
   }
 }

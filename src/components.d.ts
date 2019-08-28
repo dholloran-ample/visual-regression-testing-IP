@@ -82,8 +82,6 @@ export namespace Components {
   }
   interface NavCtas {
     'data': string;
-    'href': string;
-    'isActive': boolean;
   }
   interface NavLink {
     'automationId': string;
@@ -307,8 +305,6 @@ declare namespace LocalJSX {
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
-    'href'?: string;
-    'isActive'?: boolean;
   }
   interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
     'automationId'?: string;

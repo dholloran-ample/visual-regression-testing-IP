@@ -2,7 +2,6 @@ import { Component, Element, Prop, State, Listen, h } from '@stencil/core';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
 import Fragment from '../../shared/fragment';
-import { testPayload } from './test_sh_data';
 
 @Component({
   tag: 'crds-shared-header',
@@ -26,10 +25,8 @@ export class SharedHeader {
    */
 
   public componentWillLoad() {
-    this.data = testPayload;
-    //TODO below is real
-    // const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
-    // return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
+    const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
   }
 
   componentDidLoad() {

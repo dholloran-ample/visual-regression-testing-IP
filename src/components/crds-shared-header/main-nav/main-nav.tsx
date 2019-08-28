@@ -1,13 +1,11 @@
 import { Component, Prop, h, State } from '@stencil/core';
 import { Utils } from '../../../shared/utils';
-import Fragment from '../../../shared/fragment'; //TODO what are these needed for?
 import { SimpleNavHelper } from '../profile-nav/simple-nav-helper';
 
 @Component({
   tag: 'main-nav'
 })
 export class MainMenu {
-  //TODO need to add these to component interface class
   @Prop() mainNavIsShowing: boolean = true;
   @Prop() data: JSON;
   @Prop() promoData: string;
@@ -82,7 +80,13 @@ export class MainMenu {
     });
   }
 
-  //TODO cleanup nav-ctas
+  maybeRenderCtas() {
+    if (this.activeSection) return;
+    return (
+      <nav-ctas data={this.promoData} />
+    )
+  }
+
   render() {
     if (!this.mainNavIsShowing || !Array.isArray(this.data)) return null;
 
@@ -95,9 +99,9 @@ export class MainMenu {
             <div class="subnavigation">
               {this.maybeRenderSubnavs(this.data)}
             </div>
-            <nav-ctas isActive={this.activeSection ? true : false} data={this.promoData} />
+            {this.maybeRenderCtas()}
           </div>
         </nav>
-        )
+    )
   }
 }

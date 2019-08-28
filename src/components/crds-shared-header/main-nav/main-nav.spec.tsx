@@ -208,5 +208,28 @@ describe('<main-nav>', () => {
 
       expect(rendered.$children$[0].$children$[2].$tag$).toBe('nav-ctas');
     });
+
+    it('Checks main nav does not contains cta element if subsection is opened', () => {
+      this.component.data = navPayload;
+      this.component.activeSection = 'sh-subsection';
+
+      const rendered = this.component.render();
+
+      expect(rendered.$tag$).toBe('nav');
+
+      expect(rendered.$children$[0].$tag$).toBe('div');
+      expect(rendered.$children$[0].$attrs$.class).toBe('content');
+
+      expect(rendered.$children$[0].$children$[0].$tag$).toBe('div');
+      expect(rendered.$children$[0].$children$[0].$attrs$.class).toBe('navigation');
+      expect(rendered.$children$[0].$children$[0].$children$[0].$tag$).toBe('ul');
+      expect(rendered.$children$[0].$children$[0].$children$[0].$children$[0].$tag$).toBe('nav-section');
+
+      expect(rendered.$children$[0].$children$[1].$tag$).toBe('div');
+      expect(rendered.$children$[0].$children$[1].$attrs$.class).toBe('subnavigation');
+      expect(rendered.$children$[0].$children$[1].$children$[0].$tag$).toBe('nav-section-subnav');
+
+      expect(rendered.$children$[0].$children$[2]).toBeUndefined();
+    });
   });
 });
