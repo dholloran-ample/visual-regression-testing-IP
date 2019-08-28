@@ -1,10 +1,10 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
-import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-interface';
+import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
 import { CrdsApollo } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
-import { GET_SITES, GET_USER_DATA, SET_SITE, GET_PROMOS } from './site-happenings.graphql';
+import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS } from './site-happenings.graphql';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -13,7 +13,7 @@ import { GET_SITES, GET_USER_DATA, SET_SITE, GET_PROMOS } from './site-happening
 export class SiteHappenings {
   private analytics = window['analytics'] || {};
   private contentfulSites: string[] = [];
-  private mpSites: MpCongregation[] = [];
+  private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
   private apolloClient: ApolloClient<{}>;
   private user: CrdsUser = { name: '', site: '' };
@@ -42,12 +42,12 @@ export class SiteHappenings {
 
   componentWillRender() {
     if (this.authToken && !this.user.site)
-      return this.fetchMPUserData()
+      return this.getUser()
   }
 
   componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    return Promise.all([this.fetchMpData(), this.fetchContentfulPromoData()]);
+    return Promise.all([this.init(), this.getPromos()]);
   }
 
   componentDidRender() {
@@ -58,42 +58,40 @@ export class SiteHappenings {
 
   /** GraphQL I/O **/
 
-  private fetchMpData() {
-    var promises = [this.fetchMPSitesData()];
+  private init() {
+    var promises = [this.getSites()];
     if (this.authToken)
-      promises.push(this.fetchMPUserData());
+      promises.push(this.getUser());
 
     return Promise.all(promises);
   }
 
-  fetchMPSitesData() {
+  getSites() {
     return this.apolloClient.query({ query: GET_SITES })
       .then(response => {
         const siteList = response.data.sites;
-        this.setMPSites(siteList);
+        this.validateSites(siteList);
       })
       .catch(err => {
         this.logError(err)
       });
   }
 
-  fetchMPUserData() {
+  getUser() {
     if (!this.authToken) return null;
-    return this.apolloClient.query({ query: GET_USER_DATA })
+    return this.apolloClient.query({ query: GET_USER })
       .then(response => {
-        console.log(response);
-        let mpUser = response.data.user;
-        let siteName = mpUser.site && mpUser.site.name;
-        this.setUserSite(siteName);
+        let user = response.data.user;
+        let siteName = user.site && user.site.name;
+        this.validateUserSite(siteName);
         this.setSelectedSite(this.user.site);
         return;
       })
       .catch(err => { 
-        console.log(err);
         this.logError(err)});
   }
 
-  fetchContentfulPromoData() {
+  getPromos() {
     return this.apolloClient.query({ query: GET_PROMOS })
       .then(response => {
         const promoList = response.data.promos;
@@ -105,7 +103,7 @@ export class SiteHappenings {
       .catch(err => this.logError(err));
   }
 
-  updateMPUserSite(siteId) {
+  setUserSite(siteId) {
     return this.apolloClient.mutate({
       variables: { siteId: siteId },
       mutation: SET_SITE
@@ -126,16 +124,16 @@ export class SiteHappenings {
    * Set mpSites after sorting and removing invalid/excluded sites
    * @param sites
    */
-  setMPSites(sites) {
-    const allowedMPSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
-    this.mpSites = allowedMPSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+  validateSites(sites) {
+    const allowedSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
+    this.sites = allowedSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
   }
 
   /**
    * Sets user's site if new site is a non-empty string
    * @param siteName
    */
-  setUserSite(siteName) {
+  validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
       this.user = { ...this.user, site: siteName };
     }
@@ -238,7 +236,7 @@ export class SiteHappenings {
   handleSetSiteInput(event) {
     //Set variables
     const siteName = event.target.options[event.target.selectedIndex].text;
-    this.setUserSite(siteName);
+    this.validateUserSite(siteName);
     this.setSelectedSite(siteName);
 
     //Modify DOM
@@ -246,7 +244,7 @@ export class SiteHappenings {
 
     //Store changes to DB
     const selectedSiteId = event.target.value;
-    this.updateMPUserSite(selectedSiteId);
+    this.setUserSite(selectedSiteId);
 
     //Report to analytics
     this.analytics.track('HappeningSiteUpdated', {
@@ -406,7 +404,7 @@ export class SiteHappenings {
               <option disabled selected>
                 Choose a site
             </option>
-              {this.mpSites.map(site => (
+              {this.sites.map(site => (
                 <option value={site.id} data-name={site.name}>
                   {site.name}
                 </option>

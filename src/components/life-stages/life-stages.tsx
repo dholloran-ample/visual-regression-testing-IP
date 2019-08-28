@@ -27,7 +27,7 @@ export class LifeStages {
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
-      this.fetchUser();
+      this.getUser();
     }
   }
 
@@ -37,8 +37,10 @@ export class LifeStages {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    Promise.all([this.fetchLifeStages(),
-    this.fetchUser()]).then(() => {
+    Promise.all([
+      this.getLifeStages(),
+      this.getUser()
+    ]).then(() => {
       if (this.user.lifeStage.id !== null)
         this.filterContent(this.user.lifeStage.id);
     })
@@ -53,7 +55,7 @@ export class LifeStages {
     return this.user.lifeStage && this.user.lifeStage.id;
   }
 
-  public fetchUser() {
+  public getUser() {
     if (!this.authToken) return null;
     return this.apolloClient.query({ query: GET_USER })
       .then(success => {
@@ -63,7 +65,7 @@ export class LifeStages {
       });
   }
 
-  public fetchLifeStages() {
+  public getLifeStages() {
     return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
         this.lifeStages = success.data.lifeStages;

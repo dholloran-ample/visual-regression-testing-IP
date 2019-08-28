@@ -7,7 +7,7 @@ export const GET_SITES = gql`{
   }
 `;
 
-export const GET_USER_DATA = gql`
+export const GET_USER = gql`
     {
         user {
             site {

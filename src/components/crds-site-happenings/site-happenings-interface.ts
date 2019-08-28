@@ -12,7 +12,7 @@ export interface CrdsHappening {
 }
 
 
-export interface MpCongregation {
+export interface Site {
   id: string;
   name: string;
 }
