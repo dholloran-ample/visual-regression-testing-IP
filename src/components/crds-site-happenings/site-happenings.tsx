@@ -1,9 +1,10 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
-import axios from 'axios';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
-import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-interface';
-
+import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
+import { CrdsApollo } from '../../shared/apollo';
+import ApolloClient from 'apollo-client';
+import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS } from './site-happenings.graphql';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -11,14 +12,15 @@ import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-inter
 })
 export class SiteHappenings {
   private analytics = window['analytics'] || {};
-  private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
   private contentfulSites: string[] = [];
-  private mpSites: MpCongregation[] = [];
+  private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
+  private apolloClient: ApolloClient<{}>;
   private user: CrdsUser = { name: '', site: '' };
 
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
+
   @Element() host: HTMLElement;
 
   renderedEvent = new CustomEvent('component rendered', {
@@ -28,7 +30,7 @@ export class SiteHappenings {
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.fetchMpData();
+      this.apolloClient = CrdsApollo(newValue);
     }
   }
 
@@ -38,8 +40,14 @@ export class SiteHappenings {
 
   /** Stencil Lifecycle methods **/
 
+  componentWillRender() {
+    if (this.authToken && !this.user.site)
+      return this.getUser()
+  }
+
   componentWillLoad() {
-    return Promise.all([this.fetchMpData(), this.fetchContentfulPromoData()]);
+    this.apolloClient = CrdsApollo(this.authToken);
+    return this.init();
   }
 
   componentDidRender() {
@@ -50,130 +58,59 @@ export class SiteHappenings {
 
   /** GraphQL I/O **/
 
-  private fetchMpData() {
-    if (this.authToken) {
-      return Promise.all([
-        this.fetchMPSitesData(this.authToken),
-        this.fetchMPUserData(this.authToken)
-      ]);
-    }
+  private init() {
+    var promises = [this.getSites(), this.getPromos()];
+    if (this.authToken)
+      promises.push(this.getUser());
+
+    return Promise.all(promises);
   }
 
-  fetchMPSitesData(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          {
-            sites(filter: "Available_Online = 1") {
-              name
-              id
-            }
-          }
-          `
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        const siteList = success.data.data.sites;
-        this.setMPSites(siteList);
+  getSites() {
+    return this.apolloClient.query({ query: GET_SITES })
+      .then(response => {
+        const siteList = response.data.sites;
+        this.validateSites(siteList);
       })
-      .catch(err => this.logError(err));
+      .catch(err => {
+        this.logError(err)
+      });
   }
 
-  fetchMPUserData(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          {
-            user {
-              site {
-                id
-                name
-              }
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        let mpUser = success.data.data.user;
-        let siteName = mpUser.site && mpUser.site.name;
-        this.setUserSite(siteName);
-        this.setSelectedSite(this.user.site);
+  getUser() {
+    if (!this.authToken) return null;
+    return this.apolloClient.query({ query: GET_USER })
+      .then(response => {
+        let user = response.data.user;
+        let siteName = user.site && user.site.name;
+        this.validateUserSite(siteName);
+        this.validateSelectedSite(this.user.site);
+        return;
       })
-      .catch(err => this.logError(err));
+      .catch(err => { 
+        this.logError(err)});
   }
 
-  fetchContentfulPromoData() {
-    let apiUrl = `https://graphql.contentful.com/content/v1/spaces/${
-      process.env.CONTENTFUL_SPACE_ID
-      }/environments/${process.env.CONTENTFUL_ENV || 'master'}`;
-    return axios
-      .get(apiUrl, {
-        params: {
-          access_token: process.env.CONTENTFUL_ACCESS_TOKEN,
-          query: `{
-            promoCollection {
-              items {
-                title
-                image {
-                  url
-                }
-                description
-                targetAudience
-                linkUrl
-              }
-            }
-          }`
-        }
-      })
-      .then(success => {
-        const promoList = success.data.data.promoCollection.items;
+  getPromos() {
+    return this.apolloClient.query({ query: GET_PROMOS })
+      .then(response => {
+        const promoList = response.data.promos;
         this.setHappenings(promoList);
         this.setContentfulSites();
         this.renderHappenings();
+        return;
       })
       .catch(err => this.logError(err));
   }
 
-  updateMPUserSite(token, siteId) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          mutation {
-            setSite(siteId: ${siteId}) {
-              site {
-                id
-                name
-              }
-            }
-          }
-          `
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        console.log('updated site', success.statusText);
-      })
-      .catch(err => this.logError(err));
+  setUserSite(siteId) {
+    return this.apolloClient.mutate({
+      variables: { siteId: siteId },
+      mutation: SET_SITE
+    })
+      .catch(err => {
+        this.logError(err)
+      });
   }
 
   // This lets unit tests capture and confirm errors rather than listening in on console.error
@@ -184,19 +121,19 @@ export class SiteHappenings {
   /** Setters **/
 
   /**
-   * Set mpSites after sorting and removing invalid/excluded sites
+   * Set sites after sorting and removing invalid/excluded sites
    * @param sites
    */
-  setMPSites(sites) {
-    const allowedMPSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
-    this.mpSites = allowedMPSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+  validateSites(sites) {
+    const allowedSites = sites.filter(site => typeof site.name === 'string' && site.name !== 'Not site specific' && site.name !== 'Xroads Church');
+    this.sites = allowedSites.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
   }
 
   /**
    * Sets user's site if new site is a non-empty string
    * @param siteName
    */
-  setUserSite(siteName) {
+  validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
       this.user = { ...this.user, site: siteName };
     }
@@ -207,7 +144,7 @@ export class SiteHappenings {
    * This method will trigger a re-render of the component.
    * @param siteName
    */
-  setSelectedSite(siteName) {
+  validateSelectedSite(siteName) {
     if (typeof siteName !== "string" || siteName === 'Not site specific' || siteName === 'I do not attend Crossroads' || siteName === 'Anywhere' || siteName === '') {
       this.selectedSite = 'Churchwide';
     }
@@ -243,7 +180,7 @@ export class SiteHappenings {
      * @param event
      */
   handleSiteSelection(event) {
-    this.setSelectedSite(event.target.value);
+    this.validateSelectedSite(event.target.value);
     this.analytics.track('HappeningSiteFiltered', {
       site: this.selectedSite
     });
@@ -299,15 +236,15 @@ export class SiteHappenings {
   handleSetSiteInput(event) {
     //Set variables
     const siteName = event.target.options[event.target.selectedIndex].text;
-    this.setUserSite(siteName);
-    this.setSelectedSite(siteName);
+    this.validateUserSite(siteName);
+    this.validateSelectedSite(siteName);
 
     //Modify DOM
     this.handleSetSiteModalClose();
 
     //Store changes to DB
     const selectedSiteId = event.target.value;
-    this.updateMPUserSite(this.authToken, selectedSiteId);
+    this.setUserSite(selectedSiteId);
 
     //Report to analytics
     this.analytics.track('HappeningSiteUpdated', {
@@ -384,16 +321,16 @@ export class SiteHappenings {
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
         <div class="card carousel-cell" key={index}>
-          <a class="relative" href={obj.linkUrl} onClick={event => this.handleHappeningsClicked(event)}>
+          <a class="relative" href={obj.qualifiedUrl} onClick={event => this.handleHappeningsClicked(event)}>
             <img
               alt={obj.title}
               class="img-responsive"
-              src={Utils.imgixify(obj.image ? obj.image.url : '') + `?auto=format&w=400&h=300&fit=crop`}
+              src={Utils.imgixify(obj.imageUrl) + `?auto=format&w=400&h=300&fit=crop`}
             />
           </a>
           <div class="card-block">
             <h4 class="card-title card-title--overlap text-uppercase">
-              <a href={obj.linkUrl} onClick={event => this.handleHappeningsClicked(event)}>
+              <a href={obj.qualifiedUrl} onClick={event => this.handleHappeningsClicked(event)}>
                 {obj.title}
               </a>
             </h4>
@@ -467,7 +404,7 @@ export class SiteHappenings {
               <option disabled selected>
                 Choose a site
             </option>
-              {this.mpSites.map(site => (
+              {this.sites.map(site => (
                 <option value={site.id} data-name={site.name}>
                   {site.name}
                 </option>
