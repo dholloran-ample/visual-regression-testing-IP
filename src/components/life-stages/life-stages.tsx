@@ -3,8 +3,6 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 import { CrdsUser, CrdsLifeStage } from './life-stages-interface';
 import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
-import axios from 'axios';
-import stringifyObject from 'stringify-object';
 import ApolloClient from 'apollo-client';
 import { CrdsApollo } from '../../shared/apollo';
 import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './life-stages.graphql';
