@@ -47,7 +47,7 @@ export class SiteHappenings {
 
   componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    return Promise.all([this.init(), this.getPromos()]);
+    return this.init();
   }
 
   componentDidRender() {
@@ -59,7 +59,7 @@ export class SiteHappenings {
   /** GraphQL I/O **/
 
   private init() {
-    var promises = [this.getSites()];
+    var promises = [this.getSites(), this.getPromos()];
     if (this.authToken)
       promises.push(this.getUser());
 
