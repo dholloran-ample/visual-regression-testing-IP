@@ -12,4 +12,5 @@ export interface CrdsLifeStage {
   imageUrl: string;
   contentTotal: string;
   description: string;
+  content: any;
 }

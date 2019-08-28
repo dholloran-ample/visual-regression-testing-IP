@@ -3,8 +3,9 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 import { CrdsUser, CrdsLifeStage } from './life-stages-interface';
 import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
-import axios from 'axios';
-import stringifyObject from 'stringify-object';
+import ApolloClient from 'apollo-client';
+import { CrdsApollo } from '../../shared/apollo';
+import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './life-stages.graphql';
 
 @Component({
   tag: 'life-stages',
@@ -13,18 +14,21 @@ import stringifyObject from 'stringify-object';
 })
 export class LifeStages {
   private analytics = window['analytics'] || {};
-  private gqlUrl = process.env.CRDS_GQL_ENDPOINT;
+  private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
+  private recommendedContent: [] = [];
 
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @State() lifeStages: CrdsLifeStage[] = [];
-  @State() recommendedContent: [] = [];
   @Prop() public authToken: string;
   @Element() public host: HTMLStencilElement;
 
   @Watch('authToken')
-  authTokenHandler() {
-    this.fetchUser(this.authToken);
+  authTokenHandler(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.apolloClient = CrdsApollo(newValue);
+      this.getUser();
+    }
   }
 
   renderedEvent = new CustomEvent('component rendered', {
@@ -32,8 +36,14 @@ export class LifeStages {
   });
 
   public componentWillLoad() {
-    this.fetchLifeStages(this.authToken);
-    this.fetchUser(this.authToken);
+    this.apolloClient = CrdsApollo(this.authToken);
+    Promise.all([
+      this.getLifeStages(),
+      this.getUser()
+    ]).then(() => {
+      if (this.user.lifeStage.id !== null)
+        this.filterContent(this.user.lifeStage.id);
+    })
   }
 
   public componentDidRender() {
@@ -45,130 +55,44 @@ export class LifeStages {
     return this.user.lifeStage && this.user.lifeStage.id;
   }
 
-  public fetchUser(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-            {
-              user {
-                lifeStage {
-                  id
-                  title
-                }
-              }
-            }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
+  public getUser() {
+    if (!this.authToken) return null;
+    return this.apolloClient.query({ query: GET_USER })
       .then(success => {
-        const name = success.data.data.user.lifeStage && success.data.data.user.lifeStage.title;
-        const id = success.data.data.user.lifeStage && success.data.data.user.lifeStage.id;
+        const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
+        const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
         this.user = { ...this.user, lifeStage: { id: id, title: name } };
-        if (this.user.lifeStage.id !== null) this.fetchContent(this.authToken, this.user.lifeStage.id);
       });
   }
 
-  public fetchLifeStages(token) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `{
-            lifeStages {
-              id
-              title
-              imageUrl
-              contentTotal
-              description
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
+  public getLifeStages() {
+    return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
-        this.lifeStages = success.data.data.lifeStages;
+        this.lifeStages = success.data.lifeStages;
       });
   }
 
   /**
    * Get content with set life stages
    */
-  public fetchContent(token, lifeStageId) {
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `{
-            lifeStageContent(id: "${lifeStageId}") {
-              id
-              title
-              authors {
-                fullName
-                qualifiedUrl
-              }
-              duration
-              contentType
-              category
-              qualifiedUrl
-              imageUrl
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        this.recommendedContent = success.data.data.lifeStageContent;
-      })
-      .catch(err => console.error(err));
+  public filterContent(lifeStageId) {
+    this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   /**
    * Get content with set life stages
    */
-  public setLifeStage(token, lifeStageId, lifeStageName?) {
+  public setLifeStage(lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
-          id: lifeStageId,
-          title: lifeStageName
-        }
+        id: lifeStageId,
+        title: lifeStageName
+      }
       : null;
-    return axios
-      .post(
-        this.gqlUrl,
-        {
-          query: `
-          mutation {
-            setLifeStage(lifeStage: ${stringifyObject(obj, { singleQuotes: false })}) 
-            {
-              lifeStage {
-                title
-                id
-              }
-            }
-          }`
-        },
-        {
-          headers: {
-            authorization: token
-          }
-        }
-      )
-      .then(success => {
-        console.log('updated user life stage', success);
+    return this.apolloClient.mutate(
+      {
+        variables: { lifeStage: obj },
+        mutation: SET_LIFESTAGE
       })
       .catch(err => console.error(err));
   }
@@ -177,8 +101,7 @@ export class LifeStages {
     const card = event.target;
     const cards = this.host.shadowRoot.querySelectorAll('[data-life-stage-id]');
     cards.forEach(card => card.classList.add('disabled'));
-    this.user.lifeStage.id = card.dataset.lifeStageId;
-    this.user.lifeStage.title = card.dataset.lifeStageName;
+    this.user = { ...this.user, lifeStage: { id: card.dataset.lifeStageId, title: card.dataset.lifeStageName } };
     try {
       this.analytics.track('LifeStageUpdated', {
         event: event,
@@ -188,11 +111,10 @@ export class LifeStages {
     } catch (error) {
       console.error(error);
     }
-    this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
-      card.parentNode.scrollLeft = 0;
-      return cards.forEach(card => card.classList.remove('disabled'));
-    });
-    this.setLifeStage(this.authToken, this.user.lifeStage.id, this.user.lifeStage.title);
+    this.filterContent(this.user.lifeStage.id);
+    card.parentNode.scrollLeft = 0;
+    cards.forEach(card => card.classList.remove('disabled'));
+    this.setLifeStage(this.user.lifeStage.id, this.user.lifeStage.title);
   }
 
   private renderCardSkeleton() {
@@ -275,11 +197,21 @@ export class LifeStages {
     );
   }
 
+  handleContentClicked(event) {
+    this.analytics.track('RecommendedContentClicked', {
+      parent: this.host.tagName,
+      title: event.currentTarget.querySelector('.component-header').innerText,
+      targetUrl: event.target.parentElement.href,
+      lifeStageId: this.user.lifeStage.id,
+      lifeStageName: this.user.lifeStage.title
+    });
+  }
+
   private renderRecommendedContent() {
     const imgixParams =
       window.innerWidth > 767 ? '?auto=format&w=400&h=225&fit=crop' : '?auto=format&w=262&h=196.5&fit=crop';
     return this.recommendedContent.map((obj: any, index) => (
-      <div class="card" key={index}>
+      <div class="card" key={index} onClick={event => this.handleContentClicked(event)}>
         <a class="relative d-block" href={obj.qualifiedUrl}>
           {this.renderMediaLabel(obj.contentType, obj.duration)}
           <img src={(obj.imageUrl || this.crdsDefaultImg) + imgixParams} class="img-responsive" />
@@ -289,17 +221,18 @@ export class LifeStages {
           <h3 class="component-header">{obj.title}</h3>
           {obj.authors && (
             <p class="soft-quarter-top">
-              {obj.authors.map(author => (
+              {obj.authors.map((author, index) => (
                 <a
                   class="text-gray-light font-size-smaller"
                   href={author.qualifiedUrl}
                   style={{
                     color: 'inherit',
-                    display: 'block',
+                    display: 'inline-block',
                     textDecoration: 'none'
                   }}
                 >
                   {author.fullName}
+                  {index < obj.authors.length - 1 ? <span>,&nbsp;</span> : ''}
                 </a>
               ))}
             </p>
@@ -311,8 +244,7 @@ export class LifeStages {
 
   public handleBackClick(event) {
     this.recommendedContent = [];
-    this.user.lifeStage.id = null;
-    this.user.lifeStage.title = null;
+    this.user = { ...this.user, lifeStage: { id: null, title: null } };
     event.target.parentNode.scrollLeft = 0;
   }
 
@@ -322,23 +254,9 @@ export class LifeStages {
     );
     return (
       <div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline'
-          }}
-        >
-          <h2 class="component-header flush-bottom">
-            {this.recommendedContent.length ? this.user.lifeStage.title : 'Personalize Your Experience'}
-          </h2>
-          {this.recommendedContent.length ? (
-            <a class="back-btn" onClick={event => this.handleBackClick(event)}>
-              change
-            </a>
-          ) : (
-            ''
-          )}
-        </div>
+        <h2 class="component-header flush-bottom">
+          {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
+        </h2>
         <p class="push-half-top">
           {this.recommendedContent.length
             ? selectedLifeStage.description
@@ -360,9 +278,16 @@ export class LifeStages {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
-            <div class="life-stages-avatar">
-              {SvgSrc.bullseyeIcon('30px', '30px', '#C05C04')}
-            </div>
+            {this.recommendedContent.length > 0 && (
+              <div class="life-stage-selected">
+                <a
+                  class="btn btn-gray-light btn-outline btn-sm back-btn"
+                  onClick={event => this.handleBackClick(event)}
+                >
+                  change
+                </a>
+              </div>
+            )}
           </div>
           <div class={cardsClasses}>
             {(() => {
