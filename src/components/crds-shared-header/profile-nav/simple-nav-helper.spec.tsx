@@ -5,13 +5,13 @@ describe('simple-nav-helper', () => {
     this.helper = new SimpleNavHelper();
   });
 
-  describe('Tests renderMenu()', () => {
+  describe('Tests renderNav()', () => {
     it('Checks element has title', () => {
       const emptyPayload = {
         "title": "Give",
         "children": []
       };
-      const rendered = this.helper.renderMenu(emptyPayload, emptyPayload.title);
+      const rendered = this.helper.renderNav(emptyPayload, emptyPayload.title);
 
       expect(rendered.$children$[0].$children$[0].$text$).toMatch(/\W?Give\W?/);
     });
@@ -24,7 +24,7 @@ describe('simple-nav-helper', () => {
           "children": badChild
         };
 
-        const rendered = this.helper.renderMenu(children, children.title);
+        const rendered = this.helper.renderNav(children, children.title);
 
         expect(rendered.$children$).toHaveLength(1); //Only title should render
         expect(rendered.$children$[0].$children$[0].$text$).toMatch(/\W?Give Cookies\W?/);
@@ -36,7 +36,7 @@ describe('simple-nav-helper', () => {
         "title": "Give Children"
       };
 
-      const rendered = this.helper.renderMenu(noChildren, noChildren.title);
+      const rendered = this.helper.renderNav(noChildren, noChildren.title);
 
       expect(rendered.$children$).toHaveLength(1); //Only title should render
       expect(rendered.$children$[0].$children$[0].$text$).toMatch(/\W?Give Children\W?/);
@@ -46,7 +46,7 @@ describe('simple-nav-helper', () => {
       const missingTitle = {
         "children": ['subHeader']
       };
-      const rendered = this.helper.renderMenu(missingTitle, missingTitle['title']);
+      const rendered = this.helper.renderNav(missingTitle, missingTitle['title']);
 
       expect(rendered.$children$[0].$children$).toBeNull();
       expect(rendered.$children$[0].$tag$).toBe('h2');
@@ -54,18 +54,18 @@ describe('simple-nav-helper', () => {
     });
   });
 
-  describe('Tests maybeRenderMenuEntries()', () => {
+  describe('Tests maybeRenderNavEntries()', () => {
     const nonArrays = ['string', {}, null, undefined]
     nonArrays.forEach(badData => {
       it(`Checks falsy is returned if given non-array "${badData}"`, () => {
-        const rendered = this.helper.maybeRenderMenuEntries(badData);
+        const rendered = this.helper.maybeRenderNavEntries(badData);
 
         expect(rendered).toBeFalsy();
       });
     });
 
     it(`Checks falsy is returned if given empty array`, () => {
-      const rendered = this.helper.maybeRenderMenuEntries([]);
+      const rendered = this.helper.maybeRenderNavEntries([]);
 
       expect(rendered).toBeFalsy();
     });
@@ -90,7 +90,7 @@ describe('simple-nav-helper', () => {
             ]
           ];
 
-        const rendered = this.helper.maybeRenderMenuEntries(objectChildren);
+        const rendered = this.helper.maybeRenderNavEntries(objectChildren);
 
         const firstChild = rendered[0].$children$[0];
         expect(firstChild.$children$[0].$text$).toBe(objectChildren[0]);
@@ -125,7 +125,7 @@ describe('simple-nav-helper', () => {
             ]
           ];
 
-        const rendered = this.helper.maybeRenderMenuEntries(objectChildren);
+        const rendered = this.helper.maybeRenderNavEntries(objectChildren);
 
         const firstChild = rendered[0].$children$[0].$children$[0];
         expect(firstChild.$attrs$.class).toBe('top-level');
@@ -154,7 +154,7 @@ describe('simple-nav-helper', () => {
             ]
           ];
 
-        const rendered = this.helper.maybeRenderMenuEntries(objectChildren);
+        const rendered = this.helper.maybeRenderNavEntries(objectChildren);
 
         const firstChild = rendered[0].$children$[0].$children$[0];
         expect(firstChild.$attrs$.class).toBe('');

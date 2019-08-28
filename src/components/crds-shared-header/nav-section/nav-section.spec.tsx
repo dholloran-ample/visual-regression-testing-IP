@@ -45,18 +45,6 @@ describe('<nav-section>', () => {
 
       expect(typeof renderedElement.$attrs$.onClick).toBe('function');
     });
-
-    // it('Checks element onClick event can be bound to function', () => {
-    //   // this.component.handleClick = jest.fn();
-
-    //   const rendered = this.component.render();
-    //   // const renderedElement = rendered.$children$[0]
-    //   // renderedElement.$attrs$.onClick();
-
-    //   // expect(this.component.handleClick).toBeCalledTimes(1);
-
-    //   expect(typeof rendered.$children$[0].$attrs$.onClick).toBe('function');
-    // });
   });
 
   describe('Tests onClick()', () => {
@@ -69,10 +57,6 @@ describe('<nav-section>', () => {
       this.component.onClick(fakeEvent);
 
       expect(this.component.handleClick).toBeCalledTimes(1);
-    });
-
-    it('Checks error is thrown if handleClick is not set', () => {
-//TODO
     });
   });
 

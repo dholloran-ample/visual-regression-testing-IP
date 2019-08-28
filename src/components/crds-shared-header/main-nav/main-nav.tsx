@@ -74,7 +74,7 @@ export class MainMenu {
       return (
         <nav-section-subnav subNavName={subNavName} handleBackClick={this.handleBackClick.bind(this)} isActive={this.activeSection === subNavName}>
           {this.simpleNav.formatMenuTitle(section.title)}
-          {this.simpleNav.maybeRenderMenuEntries(section.children)}
+          {this.simpleNav.maybeRenderNavEntries(section.children)}
         </nav-section-subnav>
       );
     });

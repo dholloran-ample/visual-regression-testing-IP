@@ -7,11 +7,11 @@ export class SimpleNavHelper {
     this.handleSignOut = signOutCB;
   }
 
-  renderMenu(data, menuTitle) {
+  renderNav(data, menuTitle) {
     return (
       <div>
         {this.formatMenuTitle(menuTitle)}
-        {this.maybeRenderMenuEntries(data.children)}
+        {this.maybeRenderNavEntries(data.children)}
       </div>
     );
   };
@@ -45,7 +45,7 @@ export class SimpleNavHelper {
     </li>)
   }
 
-  maybeRenderMenuEntries(data){
+  maybeRenderNavEntries(data){
     if (!Array.isArray(data))
       return;
 
