@@ -47,16 +47,16 @@ describe('<crds-site-happenings> Render', () => {
       this.happenings.selectedSite = 'Oakley';
       this.happenings.happenings = [{
         targetAudience: ['Oakley', 'Mason'],
-        linkUrl: '123',
+        qualifiedUrl: '123',
         title: 'Oakley happening',
-        image: { url: 'int.crossroads.net' },
+        imageUrl: 'int.crossroads.net',
         description: 'Test promo'
       },
       {
         targetAudience: ['Florence', 'Oakley'],
-        linkUrl: '1234',
+        qualifiedUrl: '1234',
         title: 'Oakley happening2',
-        image: { url: 'int.crossroads.net/images' },
+        imageUrl: 'int.crossroads.net/images',
         description: 'Test promo2'
       }]
 
@@ -72,16 +72,16 @@ describe('<crds-site-happenings> Render', () => {
       this.happenings.selectedSite = 'Oakley';
       this.happenings.happenings = [{
         targetAudience: ['Oakley'],
-        linkUrl: '123',
+        qualifiedUrl: '123',
         title: 'Oakley happening',
-        image: { url: 'int.crossroads.net' },
+        imageUrl: 'int.crossroads.net',
         description: 'Test promo'
       },
       {
         targetAudience: ['Mason'],
-        linkUrl: '1234',
+        qualifiedUrl: '1234',
         title: 'Oakley happening2',
-        image: { url: 'int.crossroads.net/images' },
+        imageUrl: 'int.crossroads.net/images',
         description: 'Test promo2'
       }]
 

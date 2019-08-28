@@ -5,7 +5,7 @@ describe('<crds-site-happenings> Setters', () => {
     this.happenings = new SiteHappenings();
   });
 
-  describe('Tests setMPSites()', () => {
+  describe('Tests validateSites()', () => {
     it('Checks sites are sorted by name', () => {
       const given = [
         { "name": "Oakley", "id": "1" },
@@ -21,12 +21,12 @@ describe('<crds-site-happenings> Setters', () => {
         { "name": "Oakley", "id": "1" }
       ]
 
-      expect(this.happenings.mpSites).toHaveLength(0);
-      this.happenings.setMPSites(given);
+      expect(this.happenings.sites).toHaveLength(0);
+      this.happenings.validateSites(given);
 
-      expect(this.happenings.mpSites).toHaveLength(expected.length);
+      expect(this.happenings.sites).toHaveLength(expected.length);
 
-      this.happenings.mpSites.forEach(function (site, i) {
+      this.happenings.sites.forEach(function (site, i) {
         expect(site.id).toEqual(expected[i].id);
         expect(site.name).toEqual(expected[i].name);
       });
@@ -48,11 +48,11 @@ describe('<crds-site-happenings> Setters', () => {
         { "name": "Mason", "id": "6" }
       ]
 
-      this.happenings.setMPSites(given);
+      this.happenings.validateSites(given);
 
-      expect(this.happenings.mpSites).toHaveLength(expected.length);
+      expect(this.happenings.sites).toHaveLength(expected.length);
 
-      this.happenings.mpSites.forEach(function (site, i) {
+      this.happenings.sites.forEach(function (site, i) {
         expect(site.id).toEqual(expected[i].id);
         expect(site.name).toEqual(expected[i].name);
       });
@@ -71,31 +71,31 @@ describe('<crds-site-happenings> Setters', () => {
         { "name": "Oakley", "id": "1" },
       ]
 
-      this.happenings.setMPSites(given);
+      this.happenings.validateSites(given);
 
-      expect(this.happenings.mpSites).toHaveLength(expected.length);
+      expect(this.happenings.sites).toHaveLength(expected.length);
 
-      this.happenings.mpSites.forEach(function (site, i) {
+      this.happenings.sites.forEach(function (site, i) {
         expect(site.id).toEqual(expected[i].id);
         expect(site.name).toEqual(expected[i].name);
       });
     });
 
-    //Scenario is possible if retrieving MP sites fails
+    //Scenario is possible if retrieving sites fails
     it("Checks empty array is returned if given", () => {
       const given = [];
 
-      this.happenings.setMPSites(given);
-      expect(this.happenings.mpSites).toHaveLength(0);
+      this.happenings.validateSites(given);
+      expect(this.happenings.sites).toHaveLength(0);
     });
   });
 
-  describe('Tests setUserSite()', () => {
+  describe('Tests validateUserSite()', () => {
     it('Checks user site is stored', () => {
       expect(this.happenings.user.site).toBe("");
 
       const validSite = "Oakley";
-      this.happenings.setUserSite(validSite);
+      this.happenings.validateUserSite(validSite);
 
       expect(this.happenings.user.site).toBe(validSite);
     });
@@ -107,14 +107,14 @@ describe('<crds-site-happenings> Setters', () => {
         this.happenings.user.site = oldSite;
         expect(this.happenings.user.site).toBe(oldSite);
 
-        this.happenings.setUserSite(badSite);
+        this.happenings.validateUserSite(badSite);
 
         expect(this.happenings.user.site).toBe(oldSite);
       });
     });
   });
 
-  describe('Tests setSelectedSite()', () => {
+  describe('Tests validateSelectedSite()', () => {
     beforeEach(() => {
       this.happenings.contentfulSites = ["Churchwide","Columbus","Dayton","Downtown Lexington","East Side","Florence","Georgetown","Lexington","Mason","Oakley","Oxford","Richmond","Uptown","West Side"]
     });
@@ -122,7 +122,7 @@ describe('<crds-site-happenings> Setters', () => {
     const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere']
     notAllowedSiteNames.forEach(siteName => {
       it(`Checks selectedSite is set to "Churchwide" given "${siteName}"`, () => {
-        this.happenings.setSelectedSite(siteName);
+        this.happenings.validateSelectedSite(siteName);
         expect(this.happenings.selectedSite).toEqual('Churchwide');
       });
     });
@@ -130,7 +130,7 @@ describe('<crds-site-happenings> Setters', () => {
     const invalidSiteNames = ["", null, undefined, ['Array Site'], { name: 'Object Site' }, 'Fake Site', 't+auto+fake+congregation']
     invalidSiteNames.forEach(siteName => {
       it(`Checks selectedSite is set to "Churchwide" given "${siteName}"`, () => {
-        this.happenings.setSelectedSite(siteName);
+        this.happenings.validateSelectedSite(siteName);
         expect(this.happenings.selectedSite).toEqual('Churchwide');
       });
     });
@@ -138,7 +138,7 @@ describe('<crds-site-happenings> Setters', () => {
     const siteNames = ['Oakley', 'Downtown Lexington']
     siteNames.forEach(siteName => {
       it(`Checks selectedSite is set to "${siteName}"`, () => {
-        this.happenings.setSelectedSite(siteName);
+        this.happenings.validateSelectedSite(siteName);
         expect(this.happenings.selectedSite).toEqual(siteName);
       });
     });
