@@ -84,7 +84,7 @@ export class SiteHappenings {
         let user = response.data.user;
         let siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
-        this.setSelectedSite(this.user.site);
+        this.validateSelectedSite(this.user.site);
         return;
       })
       .catch(err => { 
@@ -121,7 +121,7 @@ export class SiteHappenings {
   /** Setters **/
 
   /**
-   * Set mpSites after sorting and removing invalid/excluded sites
+   * Set sites after sorting and removing invalid/excluded sites
    * @param sites
    */
   validateSites(sites) {
@@ -144,7 +144,7 @@ export class SiteHappenings {
    * This method will trigger a re-render of the component.
    * @param siteName
    */
-  setSelectedSite(siteName) {
+  validateSelectedSite(siteName) {
     if (typeof siteName !== "string" || siteName === 'Not site specific' || siteName === 'I do not attend Crossroads' || siteName === 'Anywhere' || siteName === '') {
       this.selectedSite = 'Churchwide';
     }
@@ -180,7 +180,7 @@ export class SiteHappenings {
      * @param event
      */
   handleSiteSelection(event) {
-    this.setSelectedSite(event.target.value);
+    this.validateSelectedSite(event.target.value);
     this.analytics.track('HappeningSiteFiltered', {
       site: this.selectedSite
     });
@@ -237,7 +237,7 @@ export class SiteHappenings {
     //Set variables
     const siteName = event.target.options[event.target.selectedIndex].text;
     this.validateUserSite(siteName);
-    this.setSelectedSite(siteName);
+    this.validateSelectedSite(siteName);
 
     //Modify DOM
     this.handleSetSiteModalClose();

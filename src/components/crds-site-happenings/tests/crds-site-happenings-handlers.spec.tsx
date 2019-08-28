@@ -206,7 +206,7 @@ describe('<crds-site-happenings> Event handlers', () => {
     beforeEach(() => {
       //Mock methods called by handleSetSiteInput to avoid failures
       this.happenings.handleSetSiteModalClose = () => { }; //Interacts with the DOM
-      this.happenings.updateMPUserSite = () => { }; //Requires auth
+      this.happenings.setUserSite = () => { }; //Requires auth
     });
 
     it('Checks selected and user sites changed and analytics event sent', () => {
