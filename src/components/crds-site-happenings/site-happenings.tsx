@@ -415,7 +415,6 @@ export class SiteHappenings {
               happening at crossroads
             </h4>
             <div class="happenings-dropdown" data-automation-id="happenings-dropdown">
-              {this.getContentBlock('SiteHappeningsPrompt')}
               <select
                 class="happenings-dropdown-select font-family-base"
                 onInput={event => this.handleSiteSelection(event)}
