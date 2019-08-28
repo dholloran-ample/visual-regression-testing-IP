@@ -81,6 +81,7 @@ export class SiteHappenings {
     if (!this.authToken) return null;
     return this.apolloClient.query({ query: GET_USER_DATA })
       .then(response => {
+        console.log(response);
         let mpUser = response.data.user;
         let siteName = mpUser.site && mpUser.site.name;
         this.setUserSite(siteName);
@@ -88,6 +89,7 @@ export class SiteHappenings {
         return;
       })
       .catch(err => { 
+        console.log(err);
         this.logError(err)});
   }
 

@@ -76,7 +76,6 @@ export class LifeStages {
    * Get content with set life stages
    */
   public filterContent(lifeStageId) {
-    console.log(this.lifeStages);
     this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 

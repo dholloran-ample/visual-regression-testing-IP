@@ -9,12 +9,10 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
 
     //Mock error logger method and store values locally
     this.happenings.logError = (err) => {
-      console.log(err);
       this.lastError.error = err;
     };
-
-    this.authToken = await getSessionID(user_with_site.email, user_with_site.password);
-    this.happenings.apolloClient = CrdsApollo(this.authToken);
+    this.happenings.authToken = await getSessionID(user_with_site.email, user_with_site.password);
+    this.happenings.apolloClient = CrdsApollo(this.happenings.authToken);
   });
 
   describe('Tests fetchMPSitesData()', () => {
@@ -40,24 +38,23 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
   describe('Tests fetchMPUserData()', () => {
     it("Checks that user's site is set", async () => {
       expect(this.happenings.user.site).toBe("");
-      console.log(this.authToken);
 
       await this.happenings.fetchMPUserData();
 
       expect(this.happenings.user.site).not.toBe("");
     });
 
-    // it("Checks that user's site is not stored if not authenticated", async () => {
-    //   expect(this.happenings.user.site).toBe("");
-    //   expect(this.lastError.error).toBeUndefined();
+    it("Checks that user's site is not stored if not authenticated", async () => {
+      expect(this.happenings.user.site).toBe("");
+      expect(this.lastError.error).toBeUndefined();
 
-    //   const authToken = '';
-    //   this.happenings.apolloClient = CrdsApollo(authToken);
-    //   await this.happenings.fetchMPUserData();
+      const authToken = '';
+      this.happenings.apolloClient = CrdsApollo(authToken);
+      await this.happenings.fetchMPUserData();
 
-    //   expect(this.happenings.user.site).toBe("");
-    //   expect(this.lastError.error).not.toBeUndefined();
-    // });
+      expect(this.happenings.user.site).toBe("");
+      expect(this.lastError.error).not.toBeUndefined();
+    });
   });
 
   describe('Tests fetchContentfulPromoData()', () => {

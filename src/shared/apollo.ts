@@ -5,8 +5,6 @@ import { createHttpLink } from 'apollo-link-http';
 import * as fetch from 'node-fetch';
 
 export function CrdsApollo(authToken: string): ApolloClient<{}> {
-
-    var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
     const defaultOptions: DefaultOptions = {
         watchQuery: {
             fetchPolicy: 'no-cache',
@@ -17,7 +15,7 @@ export function CrdsApollo(authToken: string): ApolloClient<{}> {
     }
     const httpLink = createHttpLink({
         uri: process.env.CRDS_GQL_ENDPOINT,
-        ...(!isBrowser && {fetch: fetch})
+        ...(!isBrowser() && {fetch: fetch})
     });
 
     const authLink = setContext((_, { headers }) => {
@@ -35,4 +33,9 @@ export function CrdsApollo(authToken: string): ApolloClient<{}> {
         cache: new InMemoryCache()
     });
 }
+
+function isBrowser() {
+    try {return this===window;}catch(e){ return false;}
+}
+
 
