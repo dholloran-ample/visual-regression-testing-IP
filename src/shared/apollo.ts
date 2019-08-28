@@ -3,6 +3,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { createHttpLink } from 'apollo-link-http';
 import * as fetch from 'node-fetch';
+import isNode from 'detect-node';
 
 export function CrdsApollo(authToken: string): ApolloClient<{}> {
     const defaultOptions: DefaultOptions = {
@@ -13,10 +14,12 @@ export function CrdsApollo(authToken: string): ApolloClient<{}> {
             fetchPolicy: 'no-cache',
         },
     }
-    const httpLink = createHttpLink({
+    var obj = {
         uri: process.env.CRDS_GQL_ENDPOINT,
-        ...(!isBrowser() && {fetch: fetch})
-    });
+        ...(isNode && { fetch: fetch })
+    };
+    console.log(obj);
+    const httpLink = createHttpLink(obj);
 
     const authLink = setContext((_, { headers }) => {
         return {
@@ -33,9 +36,3 @@ export function CrdsApollo(authToken: string): ApolloClient<{}> {
         cache: new InMemoryCache()
     });
 }
-
-function isBrowser() {
-    try {return this===window;}catch(e){ return false;}
-}
-
-
