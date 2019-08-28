@@ -14,12 +14,11 @@ export function CrdsApollo(authToken: string): ApolloClient<{}> {
             fetchPolicy: 'no-cache',
         },
     }
-    var obj = {
+    
+    const httpLink = createHttpLink({
         uri: process.env.CRDS_GQL_ENDPOINT,
         ...(isNode && { fetch: fetch })
-    };
-    console.log(obj);
-    const httpLink = createHttpLink(obj);
+    });
 
     const authLink = setContext((_, { headers }) => {
         return {
