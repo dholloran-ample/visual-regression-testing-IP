@@ -41,15 +41,13 @@ export class SiteHappenings {
 
   /** Stencil Lifecycle methods **/
 
-  public componentWillRender() {
-    var promises = [this.getCopy()];
-    if (this.authToken && !this.user.site) promises.push(this.getUser());
-    return Promise.all(promises);
-  }
-
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     return this.init();
+  }
+
+  public componentWillRender() {
+    if (this.authToken && !this.user.site) return this.getUser();
   }
 
   public componentDidRender() {
@@ -64,7 +62,7 @@ export class SiteHappenings {
   /** GraphQL I/O **/
 
   private init() {
-    var promises = [this.getSites(), this.getPromos()];
+    var promises = [this.getSites(), this.getPromos(), this.getCopy()];
     if (this.authToken) promises.push(this.getUser());
 
     return Promise.all(promises);
