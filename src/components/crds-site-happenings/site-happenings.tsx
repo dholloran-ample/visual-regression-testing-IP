@@ -1,5 +1,4 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
-import axios from 'axios';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
 import { CrdsUser, CrdsHappening, MpCongregation } from './site-happenings-interface';
@@ -73,7 +72,9 @@ export class SiteHappenings {
         const siteList = response.data.sites;
         this.setMPSites(siteList);
       })
-      .catch(err => this.logError(err));
+      .catch(err => {
+        this.logError(err)
+      });
   }
 
   fetchMPUserData() {
@@ -84,8 +85,10 @@ export class SiteHappenings {
         let siteName = mpUser.site && mpUser.site.name;
         this.setUserSite(siteName);
         this.setSelectedSite(this.user.site);
+        return;
       })
-      .catch(err => this.logError(err));
+      .catch(err => { 
+        this.logError(err)});
   }
 
   fetchContentfulPromoData() {
@@ -95,6 +98,7 @@ export class SiteHappenings {
         this.setHappenings(promoList);
         this.setContentfulSites();
         this.renderHappenings();
+        return;
       })
       .catch(err => this.logError(err));
   }

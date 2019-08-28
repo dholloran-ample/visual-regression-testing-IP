@@ -7,7 +7,7 @@ import axios from 'axios';
 import stringifyObject from 'stringify-object';
 import ApolloClient from 'apollo-client';
 import { CrdsApollo } from '../../shared/apollo';
-import { GET_USER, GET_LIFESTAGES, GET_LIFESTAGE_CONTENT, SET_LIFESTAGE } from './life-stages.graphql';
+import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './life-stages.graphql';
 
 @Component({
   tag: 'life-stages',
@@ -18,10 +18,10 @@ export class LifeStages {
   private analytics = window['analytics'] || {};
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
+  private recommendedContent: [] = [];
 
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @State() lifeStages: CrdsLifeStage[] = [];
-  @State() recommendedContent: [] = [];
   @Prop() public authToken: string;
   @Element() public host: HTMLStencilElement;
 
@@ -39,8 +39,11 @@ export class LifeStages {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    this.fetchLifeStages();
-    this.fetchUser();
+    Promise.all([this.fetchLifeStages(),
+    this.fetchUser()]).then(() => {
+      if (this.user.lifeStage.id !== null)
+        this.filterContent(this.user.lifeStage.id);
+    })
   }
 
   public componentDidRender() {
@@ -53,13 +56,12 @@ export class LifeStages {
   }
 
   public fetchUser() {
-    if(!this.authToken) return null;
+    if (!this.authToken) return null;
     return this.apolloClient.query({ query: GET_USER })
       .then(success => {
         const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
         const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
         this.user = { ...this.user, lifeStage: { id: id, title: name } };
-        if (this.user.lifeStage.id !== null) this.fetchContent(this.user.lifeStage.id);
       });
   }
 
@@ -73,16 +75,9 @@ export class LifeStages {
   /**
    * Get content with set life stages
    */
-  public fetchContent(lifeStageId) {
-    return this.apolloClient.query(
-      {
-        variables: { id: lifeStageId },
-        query: GET_LIFESTAGE_CONTENT
-      })
-      .then(success => {
-        this.recommendedContent = success.data.lifeStageContent;
-      })
-      .catch(err => console.error(err));
+  public filterContent(lifeStageId) {
+    console.log(this.lifeStages);
+    this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   /**
@@ -107,8 +102,7 @@ export class LifeStages {
     const card = event.target;
     const cards = this.host.shadowRoot.querySelectorAll('[data-life-stage-id]');
     cards.forEach(card => card.classList.add('disabled'));
-    this.user.lifeStage.id = card.dataset.lifeStageId;
-    this.user.lifeStage.title = card.dataset.lifeStageName;
+    this.user = { ...this.user, lifeStage: { id: card.dataset.lifeStageId, title: card.dataset.lifeStageName } };
     try {
       this.analytics.track('LifeStageUpdated', {
         event: event,
@@ -118,10 +112,9 @@ export class LifeStages {
     } catch (error) {
       console.error(error);
     }
-    this.fetchContent(this.user.lifeStage.id).then(() => {
-      card.parentNode.scrollLeft = 0;
-      return cards.forEach(card => card.classList.remove('disabled'));
-    });
+    this.filterContent(this.user.lifeStage.id);
+    card.parentNode.scrollLeft = 0;
+    cards.forEach(card => card.classList.remove('disabled'));
     this.setLifeStage(this.user.lifeStage.id, this.user.lifeStage.title);
   }
 
@@ -241,8 +234,7 @@ export class LifeStages {
 
   public handleBackClick(event) {
     this.recommendedContent = [];
-    this.user.lifeStage.id = null;
-    this.user.lifeStage.title = null;
+    this.user = { ...this.user, lifeStage: { id: null, title: null } };
     event.target.parentNode.scrollLeft = 0;
   }
 

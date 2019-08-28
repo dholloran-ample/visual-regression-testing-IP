@@ -13,32 +13,28 @@ export const GET_USER = gql`
 
 export const GET_LIFESTAGES = gql`
 {
-    lifeStages {
-      id
-      title
-      imageUrl
-      contentTotal
-      description
-    }
-}
-`;
-
-export const GET_LIFESTAGE_CONTENT = gql`
-query lifeStageContent($id: String)
-{
-    lifeStageContent(id: $id) {
-      id
-      title
-      authors {
-        fullName
+  lifeStages{
+    title
+    description
+    id
+    imageUrl
+    contentType
+    contentTotal
+    content {
+        id
+        title
+        authors {
+            fullName
+            qualifiedUrl
+        }
+        duration
+        contentType
+        category
+        slug
         qualifiedUrl
-      }
-      duration
-      contentType
-      category
-      qualifiedUrl
-      imageUrl
+        imageUrl
     }
+  }
 }
 `;
 
