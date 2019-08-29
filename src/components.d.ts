@@ -85,6 +85,7 @@ export namespace Components {
   }
   interface NavLink {
     'automationId': string;
+    'handleSignOut': Function;
     'href': string;
   }
   interface NavSection {
@@ -99,10 +100,9 @@ export namespace Components {
     'slug': string;
   }
   interface ProfileNav {
-    'config': any;
     'currentUser': any;
     'data': JSON;
-    'onSignOut': Function;
+    'handleSignOut': Function;
     'profileNavIsShowing': boolean;
   }
 }
@@ -309,8 +309,8 @@ declare namespace LocalJSX {
   }
   interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
     'automationId'?: string;
+    'handleSignOut'?: Function;
     'href'?: string;
-    'onSignOutClicked'?: (event: CustomEvent<any>) => void;
   }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'activeSection'?: any;
@@ -324,10 +324,9 @@ declare namespace LocalJSX {
     'slug'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
-    'config'?: any;
     'currentUser'?: any;
     'data'?: JSON;
-    'onSignOut'?: Function;
+    'handleSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }
 

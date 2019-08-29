@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, h } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { Logger } from '../../../shared/logger';
 import { Config } from '../../../shared/config';
 
@@ -16,23 +16,31 @@ export class NavigationLink {
 
   @Prop() href: string;
   @Prop() automationId: string;
-  @Event({
-    eventName: 'signOutClicked',
-    bubbles: true
-  })
-  signOutClicked: EventEmitter;
+  @Prop() handleSignOut: Function;
 
   public componentWillLoad() {
     this.console = new Logger(this.debug);
     this.config = new Config();
   }
 
-  onClick() {
-    if (this.automationId === 'sh-sign-out') {
-      this.signOutClicked.emit(this);
-    } else {
-      window.location.href = this.href;
+  onClick(event) {
+    if(this.isSignOutLink()) {
+      if(typeof this.handleSignOut === 'function'){
+        this.handleSignOut();
+        event.preventDefault();
+      }
+      else {
+        console.error('Function to handle sign out not provided');
+      }
     }
+    else {
+      window.location.href = this.href;
+      event.stopPropagation();
+    }
+  }
+
+  isSignOutLink(){
+    return this.automationId === 'sh-sign-out';
   }
 
   render() {

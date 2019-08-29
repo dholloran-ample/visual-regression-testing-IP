@@ -87,7 +87,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.lastError.error).not.toBeUndefined();
     });
 
-    const badSiteIds = ['-1', '1000000000', 'Oakley', null, undefined];
+    const badSiteIds = ['-1', '1000000000', 'Oakley',null, undefined];
     badSiteIds.forEach(badId => {
       it(`Checks that error message is logged if given invalid siteId ${badId}`, async () => {
         expect(this.lastError.error).toBeUndefined();

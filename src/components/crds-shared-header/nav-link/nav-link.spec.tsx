@@ -9,28 +9,63 @@ describe('<nav-link>', () => {
 
   describe('Tests onClick()', () => {
     beforeEach(() => {
-      this.component.signOutClicked.emit = jest.fn();
+      this.fakeEvent = {
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn()
+      }
     });
 
-    it('Checks sign out event emitted if this matches the sign-out link', () => {
-      const windowsLocation = window.location.href;
+    it('Checks handleSignOut to be called if is sign-out link and handleSignOut function defined', () => {
+      const ogWindowsLocation = window.location.href;
 
       this.component.automationId = 'sh-sign-out';
+      this.component.handleSignOut = jest.fn();
 
-      this.component.onClick();
+      this.component.onClick(this.fakeEvent);
 
-      expect(this.component.signOutClicked.emit).toBeCalledTimes(1);
-      expect(window.location.href).toBe(windowsLocation);
+      expect(this.component.handleSignOut).toBeCalledTimes(1);
+      expect(window.location.href).toBe(ogWindowsLocation);
+    });
+
+    it('Checks windows.location is not changed if is sign-out link but has no handleSignOut function', () => {
+      const ogWindowsLocation = window.location.href;
+
+      this.component.automationId = 'sh-sign-out';
+      this.component.handleSignOut = undefined;
+
+      this.component.onClick(this.fakeEvent);
+
+      expect(window.location.href).toBe(ogWindowsLocation);
     });
 
     it('Checks window.location is set to current nav href if not sign-out link', () => {
       expect(window.location.href).not.toBe('https://int.crossroads.net/prayer');
 
+      this.component.automationId = 'sh-prayer';
       this.component.href = 'https://int.crossroads.net/prayer';
-      this.component.onClick();
+      this.component.handleSignOut = jest.fn();
+      this.component.onClick(this.fakeEvent);
 
       expect(window.location.href).toBe('https://int.crossroads.net/prayer');
-      expect(this.component.signOutClicked.emit).not.toBeCalled();
+      expect(this.component.handleSignOut).not.toBeCalled();
+    });
+  });
+
+  describe('Tests isSignOutLink()', () => {
+    it('Checks true is returned if automation id matches known signout id', () => {
+      this.component.automationId = 'sh-sign-out';
+
+      const isSignOut = this.component.isSignOutLink();
+
+      expect(isSignOut).toBe(true);
+    });
+
+    it('Checks false is returned if automation id is not known signout id', () => {
+      this.component.automationId = 'other-sign-out';
+
+      const isSignOut = this.component.isSignOutLink();
+
+      expect(isSignOut).toBe(false);
     });
   });
 
@@ -63,7 +98,7 @@ describe('<nav-link>', () => {
       this.component.href = 'https://int.crossroads.net/prayer';
 
       const rendered = this.component.render();
-      rendered.$attrs$.onClick();
+      rendered.$attrs$.onClick(this.fakeEvent);
 
       expect(window.location.href).toBe('https://int.crossroads.net/prayer')
     });
