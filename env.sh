@@ -13,6 +13,7 @@ if [ "$TRAVIS" = "true" ]; then
   graphql_endpoint="${env_name}_CRDS_GQL_ENDPOINT"
   test_pwd="${env_name}_TEST_SITE_USER_PW"
   test_login_endpoint="${env_name}_TEST_CRDS_LOGIN_ENDPOINT"
+  test_generic_user_pw="${env_name}_TEST_GENERIC_USER_PW"
 else
   cfl_space_id="CONTENTFUL_SPACE_ID"
   cfl_env="CONTENTFUL_ENV"
@@ -21,6 +22,7 @@ else
   graphql_endpoint="CRDS_GQL_ENDPOINT"
   test_pwd="TEST_SITE_USER_PW"
   test_login_endpoint="TEST_CRDS_LOGIN_ENDPOINT"
+  test_generic_user_pw="TEST_GENERIC_USER_PW"
 fi
 
 cat >.env <<EOL
@@ -31,4 +33,5 @@ CRDS_INTERACTIONS_ENDPOINT=${!interactions_endpoint}
 CRDS_GQL_ENDPOINT=${!graphql_endpoint}
 TEST_SITE_USER_PW=${!test_pwd}
 TEST_CRDS_LOGIN_ENDPOINT=${!test_login_endpoint}
+EST_GENERIC_USER_PW=${!test_generic_user_pw}
 EOL
