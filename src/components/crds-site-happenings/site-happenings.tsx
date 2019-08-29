@@ -284,8 +284,9 @@ export class SiteHappenings {
   }
 
   private getContentBlock(slug: string) {
-    const content = this.copy.find(c => c.slug === slug).content;
-    return <div innerHTML={content.toString()} />;
+    const contentBlock = this.copy.find(c => c.slug === slug)
+    if(!contentBlock) return;
+    return <div innerHTML={contentBlock.content.toString()} />;
   }
 
   /**
