@@ -1,24 +1,25 @@
 import { GreetingComponent } from '../greeting-component';
 import { getSessionID, user_with_nickname, user_without_nickname } from '../../../shared/test_users_auth';
+import { CrdsApollo } from '../../../shared/apollo';
 
 describe('<greeting-component> GraphQL', () => {
   beforeEach(async () => {
-    this.greeting = new GreetingComponent();
+    this.greetingComponent = new GreetingComponent();
+    this.lastError = {};
 
-    // Waiting on JJ refactor
-    // this.nickNameToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
-    // this.firstNameToken = await getSessionID(user_without_nickname.email, user_without_nickname.password);
-  })
+    this.greetingComponent.logError = err => {
+      this.lastError.error = err;
+    };
+    this.greetingComponent.authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
+    this.greetingComponent.apolloClient = CrdsApollo(this.greetingComponent.authToken);
+  });
 
-  describe('Tests fetchUser()', () => {
-    it('checks that first name and nickname of user without nickname set are the same', () => {
-      expect(this.greeting.user).toBeNull();
-      //TODO
-    })
-
-    it('checks that first name and nickname of user with set nickname are different', () => {
-      expect(this.greeting.user).toBeNull();
-      //TODO
-    })
-  })
-})
+  describe('Tests getUserName() with nickname', () => {
+    it('checks that first name and nickname of user without nickname set are different', async () => {
+      expect(this.greetingComponent.user).toBeUndefined();
+      await this.greetingComponent.getUserName();
+      expect(this.greetingComponent.user.contact.firstName).toBe('Leia');
+      expect(this.greetingComponent.user.contact.nickName).toBe('Princess');
+    });
+  });
+});
