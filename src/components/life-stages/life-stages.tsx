@@ -42,7 +42,7 @@ export class LifeStages {
       this.getUser()
     ]).then(() => {
       if (this.user.lifeStage.id !== null)
-        this.filterContent(this.user.lifeStage.id);
+        this.filterContent(this.user.lifeStage && this.user.lifeStage.id);
     })
   }
 
@@ -62,6 +62,7 @@ export class LifeStages {
         const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
         const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
         this.user = { ...this.user, lifeStage: { id: id, title: name } };
+        return;
       });
   }
 
@@ -69,6 +70,7 @@ export class LifeStages {
     return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
         this.lifeStages = success.data.lifeStages;
+        return;
       });
   }
 
