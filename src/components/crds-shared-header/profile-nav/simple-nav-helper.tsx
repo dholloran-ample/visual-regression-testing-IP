@@ -33,10 +33,9 @@ export class SimpleNavHelper {
   }
 
   maybeRenderList(data, isTopLevel) {
-    if (!Array.isArray(data))
-      return;
+    if (!Array.isArray(data)) return;
 
-    const listElements = data.map(child => this.maybeRenderListEntry(child, isTopLevel)).filter(entry => entry);
+    const listElements = data.map(child => this.maybeRenderListEntry(child, isTopLevel)).filter(Boolean);
     return listElements.length > 0 && (
       <ul>
         {listElements}
