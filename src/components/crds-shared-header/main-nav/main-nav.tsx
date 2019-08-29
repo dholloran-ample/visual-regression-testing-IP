@@ -44,8 +44,7 @@ export class MainMenu {
    * Renders all sections from payload
    */
   private maybeRenderSections(data) {
-    if(!Array.isArray(data))
-      return;
+    if(!Array.isArray(data)) return;
 
     return data.map(section => {
       const sectionName = Utils.parameterize(section.title);
@@ -66,8 +65,7 @@ export class MainMenu {
   // nav-section-subnav, profile nav, and give nav
   // ------------------------------------------------------
   private maybeRenderSubnavs(data) {
-    if(!Array.isArray(data))
-      return;
+    if(!Array.isArray(data)) return;
 
     return data.map(section => {
       const subNavName = Utils.parameterize(section.title);

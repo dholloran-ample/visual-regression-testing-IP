@@ -46,8 +46,7 @@ export class SimpleNavHelper {
   }
 
   maybeRenderNavEntries(data){
-    if (!Array.isArray(data))
-      return;
+    if (!Array.isArray(data)) return;
 
       let isTopLevelClass = true;
 
