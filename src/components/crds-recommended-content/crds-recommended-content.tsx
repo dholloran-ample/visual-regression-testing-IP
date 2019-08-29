@@ -1,18 +1,18 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import { CrdsUser, CrdsLifeStage } from './life-stages-interface';
+import { CrdsUser, CrdsLifeStage } from './crds-recommended-content-interface';
 import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
 import ApolloClient from 'apollo-client';
 import { CrdsApollo } from '../../shared/apollo';
-import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './life-stages.graphql';
+import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './crds-recommended-content.graphql';
 
 @Component({
-  tag: 'life-stages',
-  styleUrl: 'life-stages.scss',
+  tag: 'crds-recommended-content',
+  styleUrl: 'crds-recommended-content.scss',
   shadow: true
 })
-export class LifeStages {
+export class CrdsRecommendedContent {
   private analytics = window['analytics'] || {};
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
@@ -42,7 +42,7 @@ export class LifeStages {
       this.getUser()
     ]).then(() => {
       if (this.user.lifeStage.id !== null)
-        this.filterContent(this.user.lifeStage.id);
+        this.filterContent(this.user.lifeStage && this.user.lifeStage.id);
     })
   }
 
@@ -51,38 +51,40 @@ export class LifeStages {
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
-  public getLifeStageId() {
+  private getLifeStageId() {
     return this.user.lifeStage && this.user.lifeStage.id;
   }
 
-  public getUser() {
+  private getUser() {
     if (!this.authToken) return null;
     return this.apolloClient.query({ query: GET_USER })
       .then(success => {
         const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
         const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
         this.user = { ...this.user, lifeStage: { id: id, title: name } };
+        return;
       });
   }
 
-  public getLifeStages() {
+  private getLifeStages() {
     return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
         this.lifeStages = success.data.lifeStages;
+        return;
       });
   }
 
   /**
    * Get content with set life stages
    */
-  public filterContent(lifeStageId) {
+  private filterContent(lifeStageId) {
     this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   /**
    * Get content with set life stages
    */
-  public setLifeStage(lifeStageId, lifeStageName?) {
+  private setLifeStage(lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
         id: lifeStageId,
@@ -104,7 +106,6 @@ export class LifeStages {
     this.user = { ...this.user, lifeStage: { id: card.dataset.lifeStageId, title: card.dataset.lifeStageName } };
     try {
       this.analytics.track('LifeStageUpdated', {
-        event: event,
         lifeStageId: this.user.lifeStage.id,
         lifeStageName: this.user.lifeStage.title
       });
@@ -198,13 +199,17 @@ export class LifeStages {
   }
 
   handleContentClicked(event) {
-    this.analytics.track('RecommendedContentClicked', {
-      parent: this.host.tagName,
-      title: event.currentTarget.querySelector('.component-header').innerText,
-      targetUrl: event.target.parentElement.href,
-      lifeStageId: this.user.lifeStage.id,
-      lifeStageName: this.user.lifeStage.title
-    });
+    try {
+      this.analytics.track('RecommendedContentClicked', {
+        parent: this.host.tagName,
+        title: event.currentTarget.querySelector('.component-header').innerText,
+        targetUrl: event.target.parentElement.href,
+        lifeStageId: this.user.lifeStage.id,
+        lifeStageName: this.user.lifeStage.title
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private renderRecommendedContent() {

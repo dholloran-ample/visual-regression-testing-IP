@@ -3,7 +3,7 @@ import { h } from '@stencil/core';
 export class SimpleNavHelper {
   private handleSignOut: Function
 
-  constructor(signOutCB = undefined) {
+  constructor(signOutCB?: Function) {
     this.handleSignOut = signOutCB;
   }
 
@@ -62,8 +62,7 @@ export class SimpleNavHelper {
   }
 
   maybeRenderList(data, isTopLevel) {
-    if (!Array.isArray(data))
-      return;
+    if (!Array.isArray(data)) return;
 
     const listElements = data.map(child => this.maybeRenderListEntry(child, isTopLevel)).filter(entry => entry);
     return listElements.length > 0 && this.formatList(listElements);

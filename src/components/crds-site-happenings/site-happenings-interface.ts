@@ -16,3 +16,8 @@ export interface Site {
   id: string;
   name: string;
 }
+
+export interface ContentBlock { 
+  slug: string
+  content: string
+}

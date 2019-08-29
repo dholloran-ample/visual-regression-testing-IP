@@ -1,7 +1,9 @@
 import { SiteHappenings } from '../site-happenings';
+import { CrdsApollo } from '../../../shared/apollo';
+import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
 
 describe('<crds-site-happenings> Render', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     this.happenings = new SiteHappenings();
   });
 
@@ -19,7 +21,7 @@ describe('<crds-site-happenings> Render', () => {
       expect(modal).toBe('');
     });
 
-    const userSiteNotSelected = ['Not site specific', null, '']
+    const userSiteNotSelected = ['Not site specific', null, ''];
     userSiteNotSelected.forEach(site => {
       it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, () => {
         this.happenings.authToken = '123'; //Value doesn't matter here
@@ -45,20 +47,22 @@ describe('<crds-site-happenings> Render', () => {
 
     it('Checks card carousel is returned if there are happenings', () => {
       this.happenings.selectedSite = 'Oakley';
-      this.happenings.happenings = [{
-        targetAudience: ['Oakley', 'Mason'],
-        qualifiedUrl: '123',
-        title: 'Oakley happening',
-        imageUrl: 'int.crossroads.net',
-        description: 'Test promo'
-      },
-      {
-        targetAudience: ['Florence', 'Oakley'],
-        qualifiedUrl: '1234',
-        title: 'Oakley happening2',
-        imageUrl: 'int.crossroads.net/images',
-        description: 'Test promo2'
-      }]
+      this.happenings.happenings = [
+        {
+          targetAudience: ['Oakley', 'Mason'],
+          qualifiedUrl: '123',
+          title: 'Oakley happening',
+          imageUrl: 'int.crossroads.net',
+          description: 'Test promo'
+        },
+        {
+          targetAudience: ['Florence', 'Oakley'],
+          qualifiedUrl: '1234',
+          title: 'Oakley happening2',
+          imageUrl: 'int.crossroads.net/images',
+          description: 'Test promo2'
+        }
+      ];
 
       const render = this.happenings.renderHappenings();
 
@@ -70,21 +74,22 @@ describe('<crds-site-happenings> Render', () => {
 
     it('Checks card carousel contains only happenings for selected site', () => {
       this.happenings.selectedSite = 'Oakley';
-      this.happenings.happenings = [{
-        targetAudience: ['Oakley'],
-        qualifiedUrl: '123',
-        title: 'Oakley happening',
-        imageUrl: 'int.crossroads.net',
-        description: 'Test promo'
-      },
-      {
-        targetAudience: ['Mason'],
-        qualifiedUrl: '1234',
-        title: 'Oakley happening2',
-        imageUrl: 'int.crossroads.net/images',
-        description: 'Test promo2'
-      }]
-
+      this.happenings.happenings = [
+        {
+          targetAudience: ['Oakley'],
+          qualifiedUrl: '123',
+          title: 'Oakley happening',
+          imageUrl: 'int.crossroads.net',
+          description: 'Test promo'
+        },
+        {
+          targetAudience: ['Mason'],
+          qualifiedUrl: '1234',
+          title: 'Oakley happening2',
+          imageUrl: 'int.crossroads.net/images',
+          description: 'Test promo2'
+        }
+      ];
 
       const render = this.happenings.renderHappenings();
 

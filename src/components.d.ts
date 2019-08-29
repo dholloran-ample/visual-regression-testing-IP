@@ -9,6 +9,9 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
+  interface CrdsGreeting {
+    'authToken': string;
+  }
   interface CrdsHeartButton {
     /**
     * Unique identifier for likeable resource
@@ -31,6 +34,9 @@ export namespace Components {
     'isActive': boolean;
     'label': string;
     'onModalClose': Function;
+  }
+  interface CrdsRecommendedContent {
+    'authToken': string;
   }
   interface CrdsSharedFooter {
     'env': string;
@@ -72,9 +78,6 @@ export namespace Components {
     'profileData': JSON;
     'profileNavIsShowing': boolean;
   }
-  interface LifeStages {
-    'authToken': string;
-  }
   interface MainNav {
     'data': JSON;
     'mainNavIsShowing': boolean;
@@ -109,6 +112,12 @@ export namespace Components {
 declare global {
 
 
+  interface HTMLCrdsGreetingElement extends Components.CrdsGreeting, HTMLStencilElement {}
+  var HTMLCrdsGreetingElement: {
+    prototype: HTMLCrdsGreetingElement;
+    new (): HTMLCrdsGreetingElement;
+  };
+
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
   var HTMLCrdsHeartButtonElement: {
     prototype: HTMLCrdsHeartButtonElement;
@@ -119,6 +128,12 @@ declare global {
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
     new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsRecommendedContentElement extends Components.CrdsRecommendedContent, HTMLStencilElement {}
+  var HTMLCrdsRecommendedContentElement: {
+    prototype: HTMLCrdsRecommendedContentElement;
+    new (): HTMLCrdsRecommendedContentElement;
   };
 
   interface HTMLCrdsSharedFooterElement extends Components.CrdsSharedFooter, HTMLStencilElement {}
@@ -169,12 +184,6 @@ declare global {
     new (): HTMLGlobalNavElement;
   };
 
-  interface HTMLLifeStagesElement extends Components.LifeStages, HTMLStencilElement {}
-  var HTMLLifeStagesElement: {
-    prototype: HTMLLifeStagesElement;
-    new (): HTMLLifeStagesElement;
-  };
-
   interface HTMLMainNavElement extends Components.MainNav, HTMLStencilElement {}
   var HTMLMainNavElement: {
     prototype: HTMLMainNavElement;
@@ -211,8 +220,10 @@ declare global {
     new (): HTMLProfileNavElement;
   };
   interface HTMLElementTagNameMap {
+    'crds-greeting': HTMLCrdsGreetingElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
+    'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-shared-header': HTMLCrdsSharedHeaderElement;
     'crds-site-happenings': HTMLCrdsSiteHappeningsElement;
@@ -221,7 +232,6 @@ declare global {
     'crds-subscribe': HTMLCrdsSubscribeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
-    'life-stages': HTMLLifeStagesElement;
     'main-nav': HTMLMainNavElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-link': HTMLNavLinkElement;
@@ -232,6 +242,9 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
+    'authToken'?: string;
+  }
   interface CrdsHeartButton extends JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement> {
     /**
     * Unique identifier for likeable resource
@@ -254,6 +267,9 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
     'label'?: string;
     'onModalClose'?: Function;
+  }
+  interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {
+    'authToken'?: string;
   }
   interface CrdsSharedFooter extends JSXBase.HTMLAttributes<HTMLCrdsSharedFooterElement> {
     'env'?: string;
@@ -295,9 +311,6 @@ declare namespace LocalJSX {
     'profileData'?: JSON;
     'profileNavIsShowing'?: boolean;
   }
-  interface LifeStages extends JSXBase.HTMLAttributes<HTMLLifeStagesElement> {
-    'authToken'?: string;
-  }
   interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {
     'data'?: JSON;
     'mainNavIsShowing'?: boolean;
@@ -329,8 +342,10 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'crds-greeting': CrdsGreeting;
     'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
+    'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
     'crds-shared-header': CrdsSharedHeader;
     'crds-site-happenings': CrdsSiteHappenings;
@@ -339,7 +354,6 @@ declare namespace LocalJSX {
     'crds-subscribe': CrdsSubscribe;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
-    'life-stages': LifeStages;
     'main-nav': MainNav;
     'nav-ctas': NavCtas;
     'nav-link': NavLink;
