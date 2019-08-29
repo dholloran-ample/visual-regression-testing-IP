@@ -6,6 +6,16 @@ export const user_with_site = {
   site_id: 5
 }
 
+export const user_with_nickname = {
+  email: 'mpcrds+auto+child2@gmail.com',
+  password: process.env.TEST_GENERIC_USER_PW,
+}
+
+export const user_without_nickname = {
+  email: 'mpcrds+auto+child1@gmail.com',
+  password: process.env.TEST_GENERIC_USER_PW,
+}
+
 export function getSessionID(username, password){
   return axios.post(
     process.env.TEST_CRDS_LOGIN_ENDPOINT,

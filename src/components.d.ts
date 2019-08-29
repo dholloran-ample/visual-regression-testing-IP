@@ -72,6 +72,9 @@ export namespace Components {
     'profileData': JSON;
     'profileNavIsShowing': boolean;
   }
+  interface GreetingComponent {
+    'authToken': string;
+  }
   interface LifeStages {
     'authToken': string;
   }
@@ -167,6 +170,12 @@ declare global {
     new (): HTMLGlobalNavElement;
   };
 
+  interface HTMLGreetingComponentElement extends Components.GreetingComponent, HTMLStencilElement {}
+  var HTMLGreetingComponentElement: {
+    prototype: HTMLGreetingComponentElement;
+    new (): HTMLGreetingComponentElement;
+  };
+
   interface HTMLLifeStagesElement extends Components.LifeStages, HTMLStencilElement {}
   var HTMLLifeStagesElement: {
     prototype: HTMLLifeStagesElement;
@@ -213,6 +222,7 @@ declare global {
     'crds-subscribe': HTMLCrdsSubscribeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
+    'greeting-component': HTMLGreetingComponentElement;
     'life-stages': HTMLLifeStagesElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-link': HTMLNavLinkElement;
@@ -286,6 +296,9 @@ declare namespace LocalJSX {
     'profileData'?: JSON;
     'profileNavIsShowing'?: boolean;
   }
+  interface GreetingComponent extends JSXBase.HTMLAttributes<HTMLGreetingComponentElement> {
+    'authToken'?: string;
+  }
   interface LifeStages extends JSXBase.HTMLAttributes<HTMLLifeStagesElement> {
     'authToken'?: string;
   }
@@ -329,6 +342,7 @@ declare namespace LocalJSX {
     'crds-subscribe': CrdsSubscribe;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
+    'greeting-component': GreetingComponent;
     'life-stages': LifeStages;
     'nav-ctas': NavCtas;
     'nav-link': NavLink;
