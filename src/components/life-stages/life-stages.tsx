@@ -179,18 +179,18 @@ export class LifeStages {
     cards.forEach(card => card.classList.add('disabled'));
     this.user.lifeStage.id = card.dataset.lifeStageId;
     this.user.lifeStage.title = card.dataset.lifeStageName;
-
-    this.analytics.track('LifeStageUpdated', {
-      event: event,
-      lifeStageId: this.user.lifeStage.id,
-      lifeStageName: this.user.lifeStage.title
-    });
-
+    try {
+      this.analytics.track('LifeStageUpdated', {
+        lifeStageId: this.user.lifeStage.id,
+        lifeStageName: this.user.lifeStage.title
+      });
+    } catch (error) {
+      console.error(error);
+    }
     this.fetchContent(this.authToken, this.user.lifeStage.id).then(() => {
       card.parentNode.scrollLeft = 0;
       return cards.forEach(card => card.classList.remove('disabled'));
     });
-    
     this.setLifeStage(this.authToken, this.user.lifeStage.id, this.user.lifeStage.title);
   }
 
@@ -275,13 +275,17 @@ export class LifeStages {
   }
 
   handleContentClicked(event) {
-    this.analytics.track('RecommendedContentClicked', {
-      parent: this.host.tagName,
-      title: event.currentTarget.querySelector('.component-header').innerText,
-      targetUrl: event.target.parentElement.href,
-      lifeStageId: this.user.lifeStage.id,
-      lifeStageName: this.user.lifeStage.title
-    });
+    try {
+      this.analytics.track('RecommendedContentClicked', {
+        parent: this.host.tagName,
+        title: event.currentTarget.querySelector('.component-header').innerText,
+        targetUrl: event.target.parentElement.href,
+        lifeStageId: this.user.lifeStage.id,
+        lifeStageName: this.user.lifeStage.title
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private renderRecommendedContent() {
