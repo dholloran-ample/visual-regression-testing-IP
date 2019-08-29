@@ -14,11 +14,6 @@ export class NavigationLink {
   private console: Logger;
   private config: Config;
 
-  public componentWillLoad() {
-    this.console = new Logger(this.debug);
-    this.config = new Config();
-  }
-
   @Prop() href: string;
   @Prop() automationId: string;
   @Event({
@@ -26,6 +21,11 @@ export class NavigationLink {
     bubbles: true
   })
   signOutClicked: EventEmitter;
+
+  public componentWillLoad() {
+    this.console = new Logger(this.debug);
+    this.config = new Config();
+  }
 
   onClick() {
     if (this.automationId === 'sh-sign-out') {
