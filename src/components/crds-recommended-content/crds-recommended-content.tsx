@@ -42,7 +42,7 @@ export class CrdsRecommendedContent {
       this.getUser()
     ]).then(() => {
       if (this.user.lifeStage.id !== null)
-        this.filterContent(this.user.lifeStage.id);
+        this.filterContent(this.user.lifeStage && this.user.lifeStage.id);
     })
   }
 
@@ -51,38 +51,40 @@ export class CrdsRecommendedContent {
     Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
   }
 
-  public getLifeStageId() {
+  private getLifeStageId() {
     return this.user.lifeStage && this.user.lifeStage.id;
   }
 
-  public getUser() {
+  private getUser() {
     if (!this.authToken) return null;
     return this.apolloClient.query({ query: GET_USER })
       .then(success => {
         const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
         const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
         this.user = { ...this.user, lifeStage: { id: id, title: name } };
+        return;
       });
   }
 
-  public getLifeStages() {
+  private getLifeStages() {
     return this.apolloClient.query({ query: GET_LIFESTAGES })
       .then(success => {
         this.lifeStages = success.data.lifeStages;
+        return;
       });
   }
 
   /**
    * Get content with set life stages
    */
-  public filterContent(lifeStageId) {
+  private filterContent(lifeStageId) {
     this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   /**
    * Get content with set life stages
    */
-  public setLifeStage(lifeStageId, lifeStageName?) {
+  private setLifeStage(lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
         id: lifeStageId,
