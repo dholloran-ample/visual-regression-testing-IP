@@ -3,7 +3,7 @@ import { h } from '@stencil/core';
 export class SimpleNavHelper {
   private handleSignOut: Function
 
-  constructor(signOutCB: Function) {
+  constructor(signOutCB?: Function) {
     this.handleSignOut = signOutCB;
   }
 
