@@ -9,7 +9,6 @@ import { CrdsApollo } from '../../shared/apollo';
   styleUrl: 'greeting-component.scss',
   shadow: true
 })
-
 export class GreetingComponent {
   private apolloClient: ApolloClient<{}>;
 
@@ -27,6 +26,21 @@ export class GreetingComponent {
     return this.init();
   }
 
+  public init() {
+    if (this.authToken) return Promise.all([this.getUserName()]);
+  }
+
+  public getUserName() {
+    return this.apolloClient
+      .query({ query: GET_NAMES })
+      .then(success => {
+        this.user = success.data.user;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
+  }
+
   public renderGreeting() {
     if (this.user) {
       const greeting = `Welcome ${this.user.contact.nickName || this.user.contact.firstName || 'patron'}`;
@@ -34,28 +48,8 @@ export class GreetingComponent {
     }
   }
 
-  public init() {
-    if(this.authToken)
-      return Promise.all([this.getUserName()]);
-  }
-
-  // This lets unit tests capture and confirm errors rather than listening in on console.error
   private logError(err) {
     console.error(err);
-  }
-
-  /** GraphQL I/O **/
-
-  public getUserName() {
-    return this.apolloClient
-      .query({ query: GET_NAMES })
-      .then(success => {
-        console.log(success);
-        this.user = success.data.data.user;
-      })
-      .catch(err => {
-        this.logError(err);
-      });
   }
 
   public render() {
