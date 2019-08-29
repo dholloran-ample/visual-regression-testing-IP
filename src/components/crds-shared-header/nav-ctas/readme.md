@@ -9,21 +9,19 @@
 
 | Property | Attribute | Description | Type     | Default     |
 | -------- | --------- | ----------- | -------- | ----------- |
-| `active` | `active`  |             | `string` | `undefined` |
 | `data`   | `data`    |             | `string` | `undefined` |
-| `href`   | `href`    |             | `string` | `undefined` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [crds-shared-header](..)
+ - [main-nav](..\main-nav)
 
 ### Graph
 ```mermaid
 graph TD;
-  crds-shared-header --> nav-ctas
+  main-nav --> nav-ctas
   style nav-ctas fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

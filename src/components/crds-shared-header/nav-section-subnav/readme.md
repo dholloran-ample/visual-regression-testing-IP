@@ -7,23 +7,23 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type       | Default     |
-| -------- | --------- | ----------- | ---------- | ----------- |
-| `active` | `active`  |             | `string`   | `undefined` |
-| `onBack` | --        |             | `Function` | `undefined` |
-| `slug`   | `slug`    |             | `string`   | `undefined` |
+| Property          | Attribute      | Description | Type       | Default     |
+| ----------------- | -------------- | ----------- | ---------- | ----------- |
+| `handleBackClick` | --             |             | `Function` | `undefined` |
+| `isActive`        | `is-active`    |             | `boolean`  | `false`     |
+| `subNavName`      | `sub-nav-name` |             | `string`   | `undefined` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [crds-shared-header](..)
+ - [main-nav](..\main-nav)
 
 ### Graph
 ```mermaid
 graph TD;
-  crds-shared-header --> nav-section-subnav
+  main-nav --> nav-section-subnav
   style nav-section-subnav fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

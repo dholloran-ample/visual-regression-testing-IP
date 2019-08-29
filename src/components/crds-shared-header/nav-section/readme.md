@@ -7,24 +7,23 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type      | Default     |
-| --------------- | ---------------- | ----------- | --------- | ----------- |
-| `activeSection` | `active-section` |             | `any`     | `undefined` |
-| `isActive`      | `is-active`      |             | `boolean` | `false`     |
-| `onActivate`    | `on-activate`    |             | `any`     | `undefined` |
-| `slug`          | `slug`           |             | `string`  | `undefined` |
+| Property      | Attribute      | Description | Type       | Default     |
+| ------------- | -------------- | ----------- | ---------- | ----------- |
+| `handleClick` | --             |             | `Function` | `undefined` |
+| `isActive`    | `is-active`    |             | `boolean`  | `false`     |
+| `sectionName` | `section-name` |             | `string`   | `undefined` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [crds-shared-header](..)
+ - [main-nav](..\main-nav)
 
 ### Graph
 ```mermaid
 graph TD;
-  crds-shared-header --> nav-section
+  main-nav --> nav-section
   style nav-section fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
