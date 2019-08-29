@@ -4,7 +4,7 @@ import { withKnobs, text } from '@storybook/addon-knobs';
 const stories = storiesOf('Personalization', module);
 stories
   .addDecorator(withKnobs)
-  .add('<life-stages />', () => {
+  .add('<crds-greeting />', () => {
     const token = text('sessionId', '');
-    return `<life-stages auth-token=${token}></life-stages>`;
+    return `<crds-greeting auth-token=${token}></crds-greeting>`;
   });

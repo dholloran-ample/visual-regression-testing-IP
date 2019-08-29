@@ -1,18 +1,18 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import { CrdsUser, CrdsLifeStage } from './life-stages-interface';
+import { CrdsUser, CrdsLifeStage } from './crds-recommended-content-interface';
 import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
 import ApolloClient from 'apollo-client';
 import { CrdsApollo } from '../../shared/apollo';
-import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './life-stages.graphql';
+import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './crds-recommended-content.graphql';
 
 @Component({
-  tag: 'life-stages',
-  styleUrl: 'life-stages.scss',
+  tag: 'crds-recommended-content',
+  styleUrl: 'crds-recommended-content.scss',
   shadow: true
 })
-export class LifeStages {
+export class CrdsRecommendedContent {
   private analytics = window['analytics'] || {};
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';

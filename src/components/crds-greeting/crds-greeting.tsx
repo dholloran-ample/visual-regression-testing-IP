@@ -1,15 +1,15 @@
 import { Component, Prop, State, h } from '@stencil/core';
-import { GreetingUser } from './greeting-component-interface';
-import { GET_NAMES } from './greeting-component.graphql';
+import { GreetingUser } from './crds-greeting-interface';
+import { GET_NAMES } from './crds-greeting.graphql';
 import ApolloClient from 'apollo-client';
 import { CrdsApollo } from '../../shared/apollo';
 
 @Component({
-  tag: 'greeting-component',
-  styleUrl: 'greeting-component.scss',
+  tag: 'crds-greeting',
+  styleUrl: 'crds-greeting.scss',
   shadow: true
 })
-export class GreetingComponent {
+export class CrdsGreeting {
   private apolloClient: ApolloClient<{}>;
 
   @State() user: GreetingUser;

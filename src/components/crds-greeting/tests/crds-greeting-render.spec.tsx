@@ -1,8 +1,8 @@
-import { GreetingComponent } from '../greeting-component';
+import { CrdsGreeting } from '../crds-greeting';
 
 describe('<greeting-component> Render', () => {
   beforeEach(() => {
-    this.greeting = new GreetingComponent();
+    this.greeting = new CrdsGreeting();
   });
 
   describe('Tests renderGreeting()', () => {
