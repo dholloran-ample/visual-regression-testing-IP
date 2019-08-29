@@ -106,7 +106,6 @@ export class CrdsRecommendedContent {
     this.user = { ...this.user, lifeStage: { id: card.dataset.lifeStageId, title: card.dataset.lifeStageName } };
     try {
       this.analytics.track('LifeStageUpdated', {
-        event: event,
         lifeStageId: this.user.lifeStage.id,
         lifeStageName: this.user.lifeStage.title
       });
@@ -200,13 +199,17 @@ export class CrdsRecommendedContent {
   }
 
   handleContentClicked(event) {
-    this.analytics.track('RecommendedContentClicked', {
-      parent: this.host.tagName,
-      title: event.currentTarget.querySelector('.component-header').innerText,
-      targetUrl: event.target.parentElement.href,
-      lifeStageId: this.user.lifeStage.id,
-      lifeStageName: this.user.lifeStage.title
-    });
+    try {
+      this.analytics.track('RecommendedContentClicked', {
+        parent: this.host.tagName,
+        title: event.currentTarget.querySelector('.component-header').innerText,
+        targetUrl: event.target.parentElement.href,
+        lifeStageId: this.user.lifeStage.id,
+        lifeStageName: this.user.lifeStage.title
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private renderRecommendedContent() {
