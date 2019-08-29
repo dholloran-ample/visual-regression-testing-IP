@@ -1,10 +1,10 @@
-import { GreetingComponent } from '../greeting-component';
-import { getSessionID, user_with_nickname, user_without_nickname } from '../../../shared/test_users_auth';
+import { CrdsGreeting } from '../crds-greeting';
+import { getSessionID, user_with_nickname } from '../../../shared/test_users_auth';
 import { CrdsApollo } from '../../../shared/apollo';
 
 describe('<greeting-component> GraphQL', () => {
   beforeEach(async () => {
-    this.greetingComponent = new GreetingComponent();
+    this.greetingComponent = new CrdsGreeting();
     this.lastError = {};
 
     this.greetingComponent.logError = err => {
