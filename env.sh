@@ -33,5 +33,5 @@ CRDS_INTERACTIONS_ENDPOINT=${!interactions_endpoint}
 CRDS_GQL_ENDPOINT=${!graphql_endpoint}
 TEST_SITE_USER_PW=${!test_pwd}
 TEST_CRDS_LOGIN_ENDPOINT=${!test_login_endpoint}
-EST_GENERIC_USER_PW=${!test_generic_user_pw}
+TEST_GENERIC_USER_PW=${!test_generic_user_pw}
 EOL
