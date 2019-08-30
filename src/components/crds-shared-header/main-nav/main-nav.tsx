@@ -3,7 +3,9 @@ import { Utils } from '../../../shared/utils';
 import { SimpleNavHelper } from '../profile-nav/simple-nav-helper';
 
 @Component({
-  tag: 'main-nav'
+  tag: 'main-nav',
+  styleUrl: 'main-nav.scss',
+  shadow: true
 })
 export class MainMenu {
   @Prop() mainNavIsShowing: boolean = true;
