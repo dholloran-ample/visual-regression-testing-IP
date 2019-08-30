@@ -41,14 +41,14 @@ export class CrdsRecommendedContent {
       this.getLifeStages(),
       this.getUser()
     ]).then(() => {
-      if (this.user.lifeStage.id !== null)
-        this.filterContent(this.user.lifeStage && this.user.lifeStage.id);
+      if (this.user.lifeStage && this.user.lifeStage.id !== null)
+        this.filterContent(this.user.lifeStage.id);
     })
   }
 
   public componentDidRender() {
     document.dispatchEvent(this.renderedEvent);
-    Utils.trackInView(this.host, 'LifeStageComponent', this.getLifeStageId.bind(this));
+    Utils.trackInView(this.host, 'RecommendedContentComponent', this.getLifeStageId.bind(this));
   }
 
   private getLifeStageId() {
