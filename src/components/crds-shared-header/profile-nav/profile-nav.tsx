@@ -7,7 +7,7 @@ import { SimpleNavHelper } from './simple-nav-helper';
   shadow: true
 })
 export class ProfileMenu {
-  @Prop() profileNavIsShowing: boolean = true;
+  @Prop() isNavShowing: boolean = true;
   @Prop() data: JSON;
   @Prop() currentUser: any;
   @Prop() handleSignOut: Function;
@@ -28,7 +28,7 @@ export class ProfileMenu {
   }
 
   render() {
-    if (!this.profileNavIsShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
+    if (!this.isNavShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
 
     return (
       <div class="profile-nav">

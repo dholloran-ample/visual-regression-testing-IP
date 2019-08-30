@@ -170,3 +170,48 @@ $has-close-button: (
     }
   }
 }
+
+// OG shared header
+.close-nav {
+  $padding: 22px;
+
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .9) 100%);
+  bottom: 0;
+  display: none;
+  height: $close-container-height;
+  padding-left: $padding;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+
+  &.is-showing {
+    @media (max-width: $screen-md) {
+      display: block;
+    }
+  }
+
+  &-icon {
+    $circle-size: 64px;
+
+    background-color: $cr-cyan;
+    border-radius: 50%;
+    bottom: $padding;
+    box-shadow: 0 5px 24px -5px rgba(0, 0, 0, .75);
+    cursor: pointer;
+    height: $circle-size;
+    position: absolute;
+    width: $circle-size;
+  }
+
+  svg {
+    $size: 30px;
+
+    fill: $cr-white;
+    height: $size;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: $size;
+  }
+}

@@ -7,7 +7,7 @@ import { SimpleNavHelper } from './simple-nav-helper';
   shadow: true
 })
 export class GiveMenu {
-  @Prop() giveNavIsShowing: boolean = true;
+  @Prop() isNavShowing: boolean = true;
   @Prop() data: JSON;
   private simpleNav: SimpleNavHelper;
 
@@ -25,7 +25,7 @@ export class GiveMenu {
   }
 
   render() {
-    if (!this.giveNavIsShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
+    if (!this.isNavShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
 
     return (
       <div class="give-nav" style={{ backgroundImage: `url(${this.backgroundImageURL(this.data)})` }}>

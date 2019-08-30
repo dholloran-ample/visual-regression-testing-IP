@@ -1,4 +1,4 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Component, Prop, State, h, Listen } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
 
 // import { Auth } from '../../../shared/auth';
@@ -13,36 +13,50 @@ import { Auth } from '../../../shared/__mocks__/auth';
 export class GlobalNav {
   @Prop() config: Object;
   @Prop() env: string;
-  @Prop() giveNavIsShowing: boolean = false;
-  @Prop() href: string;
-  @Prop() mainNavIsShowing: boolean = false;
-  @Prop() navClickHandler: Function;
-  @Prop() profileNavIsShowing: boolean = false;
-  // @Prop() giveData.give: JSON;
-  // @Prop() profileData: JSON;
-
   @Prop() data: JSON;
 
-  @State() authenticated: boolean = false;
+  @State() openNavName: string = '';
+
+  // @State() profileNavIsShowing: boolean = false;
+  // @State() giveNavIsShowing: boolean = false;
+  // @State() mainNavIsShowing: boolean = false;
+
+  @State() isAuthenticated: boolean = false;
   @State() offset: number;
 
   private element: HTMLElement;
+  private navNames = ['main-nav', 'give-nav', 'profile-nav'];
 
   auth: any = {};
 
+  componentDidLoad() {
+    this.offset = this.element.getBoundingClientRect().top + window.scrollY;
+  }
+
+  handleProfileClick(event) {
+    if (!this.auth.authenticated) return event.stopPropagation();
+    return this.toggleMenu(event, 'profile-nav');
+  }
+
+  @Listen('click', { target: 'window' })
+  handleScroll(event) {
+    //if (this.mainNavIsShowing || this.giveNavIsShowing || this.profileNavIsShowing) {
+    if(this.navNames.includes(this.openNavName)){
+      return document.body.setAttribute('style', 'overflow: scroll;'), this.closeNav(event);
+    }
+  }
+
+  //concerned with auth
+  //TODO should this be in 'before load'? not called each time render is called?
   initAuth() {
     if (!this.config || this.auth.config) return;
     this.auth = new Auth(Object.assign(this.config, { env: this.env }));
     this.auth.listen(this.authChangeCallback.bind(this));
   }
 
-  componentDidLoad() {
-    this.offset = this.element.getBoundingClientRect().top + window.scrollY;
-  }
-
   authChangeCallback() {
-    this.authenticated = this.auth.authenticated;
-    if (!this.authenticated) {
+    this.isAuthenticated = this.auth.authenticated;
+    if (!this.isAuthenticated) {
       this.redirectToRoot();
     }
   }
@@ -55,34 +69,85 @@ export class GlobalNav {
     window.location.replace(this.rootURL());
   }
 
-  handleProfileClick(event) {
-    if (!this.auth.authenticated) return event.stopPropagation();
-    return this.navClickHandler(event, 'profile-nav');
+  rootURL() {
+    return `https://${Utils.getSubdomain(this.env)}.crossroads.net`;
   }
+
+
+  //Handles icon state
 
   // TODO: consoliate menuClasses, profileClasses, and  giveClasses
   // ------------------------------------------------------
   menuClasses() {
     let classes = ['menu-container'];
-    if (this.mainNavIsShowing) classes.push('nav-is-showing');
+    //if (this.mainNavIsShowing)
+    if (this.openNavName === 'main-nav') classes.push('nav-is-showing');
     return classes.join(' ');
   }
 
   profileClasses() {
     let classes = ['profile-container'];
-    if (this.profileNavIsShowing && this.authenticated) classes.push('nav-is-showing');
+    // if (this.profileNavIsShowing && this.isAuthenticated)
+    if (this.openNavName === 'profile-nav' && this.isAuthenticated) classes.push('nav-is-showing');
     return classes.join(' ');
   }
 
   giveClasses() {
     let classes = ['give-container'];
-    if (this.giveNavIsShowing) classes.push('nav-is-showing');
+    // if (this.giveNavIsShowing)
+    if (this.openNavName === 'give-nav') classes.push('nav-is-showing');
     return classes.join(' ');
   }
 
-  rootURL() {
-    return `https://${Utils.getSubdomain(this.env)}.crossroads.net`;
+
+  navCloseClasses() {
+    let classes = ['close-nav'];
+    // if (this.mainNavIsShowing || this.profileNavIsShowing || this.giveNavIsShowing)
+    if(this.navNames.includes(this.openNavName)) classes.push('is-showing');
+    return classes.join(' ');
   }
+
+  //handles menu state
+  closeNav(event) {
+    event.preventDefault();
+    // this.giveNavIsShowing = false;
+    // this.mainNavIsShowing = false;
+    // this.profileNavIsShowing = false;
+
+    this.openNavName = null;
+    return document.body.setAttribute('style', 'overflow: scroll;');
+  }
+
+
+  toggleMenu(event, navName) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.openNavName = this.openNavName === navName ? '' : navName;
+
+
+    // if (navName == 'main-nav') {
+    //   this.giveNavIsShowing = false;
+    //   this.mainNavIsShowing = !this.mainNavIsShowing;
+    //   this.profileNavIsShowing = false;
+    // } else if (navName == 'profile-nav') {
+    //   this.giveNavIsShowing = false;
+    //   this.mainNavIsShowing = false;
+    //   this.profileNavIsShowing = !this.profileNavIsShowing;
+    // } else if (navName == 'give-nav') {
+    //   this.giveNavIsShowing = !this.giveNavIsShowing;
+    //   this.mainNavIsShowing = false;
+    //   this.profileNavIsShowing = false;
+    // }
+
+    //if (this.giveNavIsShowing || this.mainNavIsShowing || this.profileNavIsShowing) {
+    if(this.navNames.includes(this.openNavName)) {
+      document.body.setAttribute('style', 'overflow: hidden; position: absolute; width: 100vw;');
+    } else {
+      document.body.setAttribute('style', 'overflow: scroll;');
+    }
+  }
+
 
   render() {
     this.initAuth();
@@ -100,14 +165,14 @@ export class GlobalNav {
     let close =
       '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="times" class="svg-inline--fa fa-times fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"></path></svg>';
 
-    const navIsShowing = this.mainNavIsShowing || this.profileNavIsShowing || this.giveNavIsShowing;
+    const navIsShowing = this.navNames.includes(this.openNavName); //this.mainNavIsShowing || this.profileNavIsShowing || this.giveNavIsShowing;
 
     return (
       <Fragment>
         <header
           ref={el => (this.element = el)}
           class={navIsShowing ? 'nav-is-showing' : ''}
-          style={{ top: `${this.profileNavIsShowing || this.giveNavIsShowing ? this.offset : 0}px` }}
+          style={{ top: `${this.openNavName === 'profile-nav' || this.openNavName === 'give-nav' ? this.offset : 0}px` }}
         >
           <div>
             <div class="global-nav-items">
@@ -117,7 +182,7 @@ export class GlobalNav {
                   data-automation-id="sh-menu"
                   data-label="menu"
                   class={this.menuClasses()}
-                  onClick={event => this.navClickHandler(event, 'main-nav')}
+                  onClick={event => this.toggleMenu(event, 'main-nav')}
                 >
                   <div class="menu" innerHTML={menu} />
                   <div class="close" innerHTML={close} />
@@ -135,7 +200,7 @@ export class GlobalNav {
                   data-automation-id="sh-give"
                   data-label="give"
                   class={this.giveClasses()}
-                  onClick={event => this.navClickHandler(event, 'give-nav')}
+                  onClick={event => this.toggleMenu(event, 'give-nav')}
                 >
                   <div class="donate" innerHTML={give} />
                   <div class="close" innerHTML={close} />
@@ -146,9 +211,9 @@ export class GlobalNav {
                   class={this.profileClasses()}
                   onClick={event => this.handleProfileClick(event)}
                   data-automation-id="sh-profile"
-                  data-label={this.authenticated ? 'my account' : 'sign in'}
+                  data-label={this.isAuthenticated ? 'my account' : 'sign in'}
                 >
-                  {this.authenticated ? (
+                  {this.isAuthenticated ? (
                     <div class="account">
                       <div
                         class="account-authenticated"
@@ -162,9 +227,9 @@ export class GlobalNav {
                 </a>
               </div>
             </div>
-            <give-nav data={(this.data as any).give} giveNavIsShowing={this.giveNavIsShowing} />
+            <give-nav isNavShowing={this.openNavName === 'give-nav'} data={(this.data as any).give} />
             <profile-nav
-              profileNavIsShowing={this.profileNavIsShowing && this.authenticated}
+              isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
               handleSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
               data={(this.data as any).profile}
@@ -172,11 +237,16 @@ export class GlobalNav {
           </div>
         </header>
         <main-nav
-          mainNavIsShowing={this.mainNavIsShowing}
+          isNavShowing={this.openNavName === 'main-nav'}
           data={(this.data as any).nav}
           promoData={(this.data as any).promos}
         />
+
+        <div class={this.navCloseClasses()}>
+          <div class="close-nav-icon" innerHTML={close} onClick={this.closeNav.bind(this)} />
+        </div>
       </Fragment>
-    ); //<give-nav data={(this.data as any).give} giveNavIsShowing={this.giveNavIsShowing} />
+    );
   }
+  //TODO if profile picture set, changing the size of the dev tools shrinks the picture - this doesn't happen with give. Prevent this from happening. This is an existing bug.
 }

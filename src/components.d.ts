@@ -65,21 +65,16 @@ export namespace Components {
   }
   interface GiveNav {
     'data': JSON;
-    'giveNavIsShowing': boolean;
+    'isNavShowing': boolean;
   }
   interface GlobalNav {
     'config': Object;
     'data': JSON;
     'env': string;
-    'giveNavIsShowing': boolean;
-    'href': string;
-    'mainNavIsShowing': boolean;
-    'navClickHandler': Function;
-    'profileNavIsShowing': boolean;
   }
   interface MainNav {
     'data': JSON;
-    'mainNavIsShowing': boolean;
+    'isNavShowing': boolean;
     'promoData': string;
   }
   interface NavCtas {
@@ -104,7 +99,7 @@ export namespace Components {
     'currentUser': any;
     'data': JSON;
     'handleSignOut': Function;
-    'profileNavIsShowing': boolean;
+    'isNavShowing': boolean;
   }
 }
 
@@ -297,21 +292,16 @@ declare namespace LocalJSX {
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: JSON;
-    'giveNavIsShowing'?: boolean;
+    'isNavShowing'?: boolean;
   }
   interface GlobalNav extends JSXBase.HTMLAttributes<HTMLGlobalNavElement> {
     'config'?: Object;
     'data'?: JSON;
     'env'?: string;
-    'giveNavIsShowing'?: boolean;
-    'href'?: string;
-    'mainNavIsShowing'?: boolean;
-    'navClickHandler'?: Function;
-    'profileNavIsShowing'?: boolean;
   }
   interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {
     'data'?: JSON;
-    'mainNavIsShowing'?: boolean;
+    'isNavShowing'?: boolean;
     'promoData'?: string;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
@@ -336,7 +326,7 @@ declare namespace LocalJSX {
     'currentUser'?: any;
     'data'?: JSON;
     'handleSignOut'?: Function;
-    'profileNavIsShowing'?: boolean;
+    'isNavShowing'?: boolean;
   }
 
   interface IntrinsicElements {

@@ -8,7 +8,7 @@ import { SimpleNavHelper } from '../profile-nav/simple-nav-helper';
   shadow: true
 })
 export class MainMenu {
-  @Prop() mainNavIsShowing: boolean = true;
+  @Prop() isNavShowing: boolean = true;
   @Prop() data: JSON;
   @Prop() promoData: string;
 
@@ -22,7 +22,7 @@ export class MainMenu {
 
   navClasses() {
     let classes = [];
-    if (this.mainNavIsShowing) classes.push('is-showing');
+    if (this.isNavShowing) classes.push('is-showing');
     if (this.activeSection) classes.push(`section--${this.activeSection}`);
     return classes.join(' ');
   }
@@ -88,7 +88,7 @@ export class MainMenu {
   }
 
   render() {
-    if (!this.mainNavIsShowing || !Array.isArray(this.data)) return null;
+    if (!this.isNavShowing || !Array.isArray(this.data)) return null;
 
     return (
       <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>

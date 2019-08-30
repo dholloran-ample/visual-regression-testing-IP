@@ -58,7 +58,7 @@ describe('<main-nav>', () => {
 
     scenarios.forEach(navCombo => {
       it(`Checks class string matches ${navCombo.className} given main-nav "${navCombo.mainNav}" and active section "${navCombo.activeSection}"`, () => {
-        this.component.mainNavIsShowing = navCombo.mainNav;
+        this.component.isNavShowing = navCombo.mainNav;
         this.component.activeSection = navCombo.activeSection;
 
         const classes = this.component.navClasses();
@@ -158,7 +158,7 @@ describe('<main-nav>', () => {
 
   describe('Tests render()', () => {
     it('Checks null is returned if main nav is not showing', () => {
-      this.component.mainNavIsShowing = false;
+      this.component.isNavShowing = false;
 
       const rendered = this.component.render();
 
@@ -168,7 +168,7 @@ describe('<main-nav>', () => {
     const invalidData = [undefined, true, false, "String", null];
     invalidData.forEach(badValue => {
       it(`Checks null is returned if main component's data is "${badValue}"`, () => {
-        this.component.mainNavIsShowing = true;
+        this.component.isNavShowing = true;
         this.component.data = badValue;
 
         const rendered = this.component.render();
@@ -178,7 +178,7 @@ describe('<main-nav>', () => {
     });
 
     it('Checks main nav element is returned', () => {
-      this.component.mainNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.data = navPayload;
 
       const rendered = this.component.render();
@@ -187,7 +187,7 @@ describe('<main-nav>', () => {
     });
 
     it('Checks main nav contains expected child elements in order', () => {
-      this.component.mainNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.data = navPayload;
 
       const rendered = this.component.render();

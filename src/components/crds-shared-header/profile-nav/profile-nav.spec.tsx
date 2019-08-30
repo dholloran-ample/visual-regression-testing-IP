@@ -90,7 +90,7 @@ describe('<profile-nav>', () => {
 
   describe('Tests render()', () => {
     it('Checks null is returned if profile nav is not showing', () => {
-      this.component.profileNavIsShowing = false;
+      this.component.isNavShowing = false;
 
       const rendered = this.component.render();
 
@@ -100,7 +100,7 @@ describe('<profile-nav>', () => {
     const invalidData = [undefined, [], true, false, "String", null];
     invalidData.forEach(badValue => {
       it(`Checks null is returned if profile component's data is "${badValue}"`, () => {
-        this.component.profileNavIsShowing = true;
+        this.component.isNavShowing = true;
         this.component.data = badValue;
 
         const rendered = this.component.render();
@@ -110,7 +110,7 @@ describe('<profile-nav>', () => {
     });
 
     it('Checks profile nav element is returned', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.currentUser = { avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
       this.component.data = profileNav;
 
@@ -120,7 +120,7 @@ describe('<profile-nav>', () => {
     });
 
     it('Checks profile nav contains user avatar', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.currentUser = { avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
       this.component.data = profileNav;
 
@@ -132,7 +132,7 @@ describe('<profile-nav>', () => {
     });
 
     it('Checks profile nav contains expected child elements in order', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.currentUser = { name: 'Ben', avatarUrl: 'fakeUrl' };
       this.component.data = profileNav;
 

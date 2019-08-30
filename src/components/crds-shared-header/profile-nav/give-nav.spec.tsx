@@ -90,7 +90,7 @@ describe('<give-nav>', () => {
 
   describe('Tests render()', () => {
     it('Checks null is returned if give nav is not showing', () => {
-      this.component.giveNavIsShowing = false;
+      this.component.isNavShowing = false;
 
       const rendered = this.component.render();
 
@@ -100,7 +100,7 @@ describe('<give-nav>', () => {
     const invalidData = [undefined, [], true, false, "String", null];
     invalidData.forEach(badValue => {
       it(`Checks null is returned if give component's data is "${badValue}"`, () => {
-        this.component.giveNavIsShowing = true;
+        this.component.isNavShowing = true;
         this.component.data = badValue;
 
         const rendered = this.component.render();
