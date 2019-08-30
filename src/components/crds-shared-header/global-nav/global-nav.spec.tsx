@@ -205,12 +205,37 @@ describe('<global-nav>', () => {
   describe('Tests render()', () => {
     it('Checks auth is initialized', () => {
       this.component.config = {};
+      this.component.data = {give: {}, profile: {}};
 
       expect(this.component.auth).toEqual({});
 
       this.component.render();
 
       expect(this.component.auth).not.toEqual({});
+    });
+
+    it('Checks element returned has main-nav', () => {
+      this.component.data = {give: {}, profile: {}};
+
+      const rendered = this.component.render();
+
+      expect(rendered[1].$tag$).toBe('main-nav');
+    });
+
+    it('Checks element returned has give-nav', () => {
+      this.component.data = {give: {}, profile: {}};
+
+      const rendered = this.component.render();
+
+      expect(rendered[0].$children$[0].$children$[1].$tag$).toBe('give-nav');
+    });
+
+    it('Checks element returned has profile-nav', () => {
+      this.component.data = {give: {}, profile: {}};
+
+      const rendered = this.component.render();
+
+      expect(rendered[0].$children$[0].$children$[2].$tag$).toBe('profile-nav');
     });
   });
 });

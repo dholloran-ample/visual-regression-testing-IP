@@ -69,13 +69,12 @@ export namespace Components {
   }
   interface GlobalNav {
     'config': Object;
+    'data': JSON;
     'env': string;
-    'giveData': JSON;
     'giveNavIsShowing': boolean;
     'href': string;
     'mainNavIsShowing': boolean;
     'navClickHandler': Function;
-    'profileData': JSON;
     'profileNavIsShowing': boolean;
   }
   interface MainNav {
@@ -302,13 +301,12 @@ declare namespace LocalJSX {
   }
   interface GlobalNav extends JSXBase.HTMLAttributes<HTMLGlobalNavElement> {
     'config'?: Object;
+    'data'?: JSON;
     'env'?: string;
-    'giveData'?: JSON;
     'giveNavIsShowing'?: boolean;
     'href'?: string;
     'mainNavIsShowing'?: boolean;
     'navClickHandler'?: Function;
-    'profileData'?: JSON;
     'profileNavIsShowing'?: boolean;
   }
   interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {

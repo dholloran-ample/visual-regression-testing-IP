@@ -1,8 +1,9 @@
 import { Component, Prop, State, h } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
 
-import { Auth } from '../../../shared/auth';
+// import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
+import { Auth } from '../../../shared/__mocks__/auth';
 
 @Component({
   tag: 'global-nav',
@@ -17,8 +18,10 @@ export class GlobalNav {
   @Prop() mainNavIsShowing: boolean = false;
   @Prop() navClickHandler: Function;
   @Prop() profileNavIsShowing: boolean = false;
-  @Prop() giveData: JSON;
-  @Prop() profileData: JSON;
+  // @Prop() giveData.give: JSON;
+  // @Prop() profileData: JSON;
+
+  @Prop() data: JSON;
 
   @State() authenticated: boolean = false;
   @State() offset: number;
@@ -153,23 +156,27 @@ export class GlobalNav {
                       />
                     </div>
                   ) : (
-                    <div class="account" innerHTML={account} />
-                  )}
+                      <div class="account" innerHTML={account} />
+                    )}
                   <div class="close" innerHTML={close} />
                 </a>
               </div>
             </div>
-
+            <give-nav data={(this.data as any).give} giveNavIsShowing={this.giveNavIsShowing} />
             <profile-nav
               profileNavIsShowing={this.profileNavIsShowing && this.authenticated}
               handleSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
-              data={this.profileData}
+              data={(this.data as any).profile}
             />
-            <give-nav data={this.giveData} giveNavIsShowing={this.giveNavIsShowing} />
           </div>
         </header>
+        <main-nav
+          mainNavIsShowing={this.mainNavIsShowing}
+          data={(this.data as any).nav}
+          promoData={(this.data as any).promos}
+        />
       </Fragment>
-    );
+    ); //<give-nav data={(this.data as any).give} giveNavIsShowing={this.giveNavIsShowing} />
   }
 }
