@@ -17,9 +17,9 @@ export class CrdsRecommendedContent {
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
   private recommendedContent: [] = [];
+  private lifeStages: CrdsLifeStage[] = [];
 
   @State() user: CrdsUser = { name: '', lifeStage: null };
-  @State() lifeStages: CrdsLifeStage[] = [];
   @Prop() public authToken: string;
   @Element() public host: HTMLStencilElement;
 
@@ -37,18 +37,16 @@ export class CrdsRecommendedContent {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    Promise.all([
-      this.getLifeStages(),
-      this.getUser()
-    ]).then(() => {
-      if (this.user.lifeStage && this.user.lifeStage.id !== null)
-        this.filterContent(this.user.lifeStage.id);
-    })
+    return Promise.all([this.getLifeStages(), this.getUser()]);
   }
 
   public componentDidRender() {
     document.dispatchEvent(this.renderedEvent);
     Utils.trackInView(this.host, 'RecommendedContentComponent', this.getLifeStageId.bind(this));
+  }
+
+  public componentWillRender() {
+    if (this.user.lifeStage && this.user.lifeStage.id !== null) this.filterContent(this.user.lifeStage.id);
   }
 
   private getLifeStageId() {
@@ -57,21 +55,19 @@ export class CrdsRecommendedContent {
 
   private getUser() {
     if (!this.authToken) return null;
-    return this.apolloClient.query({ query: GET_USER })
-      .then(success => {
-        const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
-        const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
-        this.user = { ...this.user, lifeStage: { id: id, title: name } };
-        return;
-      });
+    return this.apolloClient.query({ query: GET_USER }).then(success => {
+      const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
+      const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
+      this.user = { ...this.user, lifeStage: { id: id, title: name } };
+      return;
+    });
   }
 
   private getLifeStages() {
-    return this.apolloClient.query({ query: GET_LIFESTAGES })
-      .then(success => {
-        this.lifeStages = success.data.lifeStages;
-        return;
-      });
+    return this.apolloClient.query({ query: GET_LIFESTAGES }).then(success => {
+      this.lifeStages = success.data.lifeStages;
+      return;
+    });
   }
 
   /**
@@ -87,12 +83,12 @@ export class CrdsRecommendedContent {
   private setLifeStage(lifeStageId, lifeStageName?) {
     const obj = lifeStageId
       ? {
-        id: lifeStageId,
-        title: lifeStageName
-      }
+          id: lifeStageId,
+          title: lifeStageName
+        }
       : null;
-    return this.apolloClient.mutate(
-      {
+    return this.apolloClient
+      .mutate({
         variables: { lifeStage: obj },
         mutation: SET_LIFESTAGE
       })
@@ -275,6 +271,7 @@ export class CrdsRecommendedContent {
     const renderLifeStages = this.lifeStages.length && this.user.lifeStage && !this.user.lifeStage.id;
     const renderRecommendedContent = this.recommendedContent.length;
     const cardsClasses = `cards ${this.recommendedContent.length ? 'media-cards' : ''}`;
+
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
