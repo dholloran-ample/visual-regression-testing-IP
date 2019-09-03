@@ -12,22 +12,18 @@ import { CrdsApollo } from '../../shared/apollo';
 export class CrdsGreeting {
   private apolloClient: ApolloClient<{}>;
 
-  @State() user: GreetingUser;
-  @Prop() authToken: string;
-
-  public componentWillRender() {
-    if (this.authToken && !this.user) {
-      this.getUserName();
+  @State() user: GreetingUser = {
+    contact: {
+      firstName: '',
+      nickName: ''
     }
-  }
+  };
+  @Prop() authToken: string;
+  @Prop() defaultName: string;
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    return this.init();
-  }
-
-  public init() {
-    if (this.authToken) return Promise.all([this.getUserName()]);
+    return this.getUserName()
   }
 
   public getUserName() {
@@ -41,11 +37,23 @@ export class CrdsGreeting {
       });
   }
 
-  public renderGreeting() {
-    if (this.user) {
-      const greeting = `Welcome ${this.user.contact.nickName || this.user.contact.firstName || 'patron'}`;
-      return <div>{greeting}</div>;
+  public parseTimeBasedGreetings(hour) {
+    let greetingText;
+    if (hour < 12) {
+      greetingText = 'Good morning';
+    } else if (hour >= 12) {
+      greetingText = 'Good afternoon' 
+    } else if (hour >= 17) {
+      greetingText = 'Good evening'
     }
+    return greetingText;
+  }
+
+  public renderGreeting() {
+    const time = new Date();
+    const greeting = this.parseTimeBasedGreetings(time);
+    const name = this.user.contact.nickName || this.user.contact.firstName || this.defaultName;
+    return `${greeting}, ${name}`;
   }
 
   private logError(err) {
@@ -53,6 +61,11 @@ export class CrdsGreeting {
   }
 
   public render() {
-    return <div class="data-greeting">{this.renderGreeting()}</div>;
+    return (
+      <div class="push-bottom">
+        <h3 class="font-size-large flush">{this.renderGreeting()}</h3>
+        <p class="flush">This place was made for you!</p>
+      </div>
+    );
   }
 }
