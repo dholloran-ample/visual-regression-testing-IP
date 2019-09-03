@@ -137,7 +137,7 @@ describe('<global-nav>', () => {
 
   describe('Tests menuClasses()', () => {
     it('Checks nav showing indicator added to class list if nav showing', () => {
-      this.component.mainNavIsShowing = true;
+      this.component.openNavName = 'main-nav';
 
       const newClass = this.component.menuClasses();
 
@@ -145,7 +145,7 @@ describe('<global-nav>', () => {
     });
 
     it('Checks nav showing indicator not added to class list if nav not showing', () => {
-      expect(this.component.mainNavIsShowing).toBeFalsy();
+      expect(this.component.openNavName).not.toBe('main-nav');
 
       const newClass = this.component.menuClasses();
 
@@ -155,7 +155,7 @@ describe('<global-nav>', () => {
 
   describe('Tests profileClasses()', () => {
     it('Checks nav showing indicator added to class list if nav showing and authenticated', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.openNavName = 'profile-nav';
       this.component.isAuthenticated = true;
 
       const newClass = this.component.profileClasses();
@@ -164,7 +164,7 @@ describe('<global-nav>', () => {
     });
 
     it('Checks nav showing indicator not added to class list if nav not showing', () => {
-      expect(this.component.mainNavIsShowing).toBeFalsy();
+      expect(this.component.openNavName).not.toBe('profile-nav');
       this.component.isAuthenticated = true;
 
       const newClass = this.component.profileClasses();
@@ -173,7 +173,7 @@ describe('<global-nav>', () => {
     });
 
     it('Checks nav showing indicator not added to class list if not authenticated', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.openNavName = 'profile-nav';
       expect(this.component.isAuthenticated).toBeFalsy();
 
       const newClass = this.component.profileClasses();
@@ -184,7 +184,7 @@ describe('<global-nav>', () => {
 
   describe('Tests giveClasses()', () => {
     it('Checks nav showing indicator added to class list if nav showing', () => {
-      this.component.giveNavIsShowing = true;
+      this.component.openNavName = 'give-nav';
 
       const newClass = this.component.giveClasses();
 
@@ -192,7 +192,7 @@ describe('<global-nav>', () => {
     });
 
     it('Checks nav showing indicator not added to class list if nav not showing', () => {
-      expect(this.component.giveNavIsShowing).toBeFalsy();
+      expect(this.component.openNavName).not.toBe('give-nav');
 
       const newClass = this.component.giveClasses();
 
@@ -212,13 +212,11 @@ describe('<global-nav>', () => {
         preventDefault: jest.fn()
       };
 
-      this.component.giveNavIsShowing = true;
+      this.component.openNavName = 'give-nav';
 
       this.component.closeNav(fakeEvent);
 
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
+      expect(this.component.openNavName).toBe('');
 
       expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('');
@@ -228,95 +226,31 @@ describe('<global-nav>', () => {
 
 
   describe('Tests navCloseClasses()', () => {
+    const navNames = ['main-nav', 'give-nav', 'profile-nav'];
+    navNames.forEach(nav => {
+      it(`Checks expected class name returned when ${nav} is open`, () => {
+        this.component.openNavName = nav;
+
+        const classes = this.component.navCloseClasses();
+
+        expect(classes).toBe('close-nav is-showing');
+      });
+    });
+
     it('Checks expected class name returned when navs are all closed', () => {
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-      expect(this.component.giveNavIsShowing).toBe(false);
+      this.component.openNavName = '';
 
       const classes = this.component.navCloseClasses();
 
       expect(classes).toBe('close-nav');
     });
 
-    it('Checks expected class name returned when main nav is open', () => {
-      this.component.mainNavIsShowing = true;
+    it('Checks expected class name returned if unknown nav is "open"', () => {
+      this.component.openNavName = 'super-fake-nav-name';
 
       const classes = this.component.navCloseClasses();
 
-      expect(classes).toBe('close-nav is-showing');
-    });
-
-    it('Checks expected class name returned when profile nav is open', () => {
-      this.component.profileNavIsShowing = true;
-
-      const classes = this.component.navCloseClasses();
-
-      expect(classes).toBe('close-nav is-showing');
-    });
-
-    it('Checks expected class name returned when give nav is open', () => {
-      this.component.giveNavIsShowing = true;
-
-      const classes = this.component.navCloseClasses();
-
-      expect(classes).toBe('close-nav is-showing');
-    });
-  });
-
-
-  describe('Tests handleScroll()', () => {
-    beforeEach(() => {
-      this.fakeEvent = {
-        preventDefault: jest.fn()
-      };
-    });
-
-    it('Checks navs closed if main nav showing', () => {
-      this.component.mainNavIsShowing = true;
-
-      this.component.handleScroll(this.fakeEvent);
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-
-      expect(document.body.style.overflow).toBe('scroll');
-      expect(document.body.style.position).toBe('');
-      expect(document.body.style.width).toBe('');
-    });
-
-    it('Checks navs closed if give nav showing', () => {
-      this.component.giveNavIsShowing = true;
-
-      this.component.handleScroll(this.fakeEvent);
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-
-      expect(document.body.style.overflow).toBe('scroll');
-      expect(document.body.style.position).toBe('');
-      expect(document.body.style.width).toBe('');
-    });
-
-    it('Checks navs closed if profile nav showing', () => {
-      this.component.profileNavIsShowing = true;
-
-      this.component.handleScroll(this.fakeEvent);
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-
-      expect(document.body.style.overflow).toBe('scroll');
-      expect(document.body.style.position).toBe('');
-      expect(document.body.style.width).toBe('');
-    });
-
-    it('Checks nothing is changed if no navs are open', () => {
-      this.component.handleScroll(this.fakeEvent);
-
-      expect(this.fakeEvent.preventDefault).not.toBeCalled();
+      expect(classes).toBe('close-nav');
     });
   });
 
@@ -328,100 +262,68 @@ describe('<global-nav>', () => {
       }
     });
 
-    it('Checks toggling main-nav', () => {
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
+    it('Checks open menu is toggled closed', () => {
+      this.component.openNavName = 'give-nav';
+
+      this.component.toggleMenu(this.fakeEvent, 'give-nav');
+
+      expect(this.component.openNavName).toBe('');
+    });
+
+    it('Checks new menu is toggled', () => {
+      this.component.openNavName = 'give-nav';
 
       this.component.toggleMenu(this.fakeEvent, 'main-nav');
 
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(true);
-      expect(this.component.profileNavIsShowing).toBe(false);
+      expect(this.component.openNavName).toBe('main-nav');
+    });
+
+    it('Checks closed menu is toggled open', () => {
+      this.component.openNavName = '';
+
+      this.component.toggleMenu(this.fakeEvent, 'give-nav');
+
+      expect(this.component.openNavName).toBe('give-nav');
+    });
+
+    it('Checks expected doc style is set when nav toggled open', () => {
+      this.component.openNavName = '';
+
+      this.component.toggleMenu(this.fakeEvent, 'main-nav');
 
       expect(document.body.style.overflow).toBe('hidden');
       expect(document.body.style.position).toBe('absolute');
       expect(document.body.style.width).toBe('100vw');
     });
 
-    it('Checks toggling main-nav when nav is showing', () => {
-      this.component.mainNavIsShowing = true;
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
+    it('Checks expected doc style is set when nav changes', () => {
+      this.component.openNavName = 'give-nav';
 
       this.component.toggleMenu(this.fakeEvent, 'main-nav');
 
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
+      expect(this.component.openNavName).toBe('main-nav');
+
+      expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.position).toBe('absolute');
+      expect(document.body.style.width).toBe('100vw');
+    });
+
+    it('Checks expected doc style is set when nav toggled closed', () => {
+      this.component.openNavName = 'main-nav';
+
+      this.component.toggleMenu(this.fakeEvent, 'main-nav');
 
       expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('');
       expect(document.body.style.width).toBe('');
     });
 
-    it('Checks toggling profile-nav', () => {
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
+    it('Checks expected doc style is set when unknown nav toggled "open"', () => {
+      this.component.openNavName = 'main-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'profile-nav');
+      this.component.toggleMenu(this.fakeEvent, 'super-fake-nav');
 
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(true);
-
-      expect(document.body.style.overflow).toBe('hidden');
-      expect(document.body.style.position).toBe('absolute');
-      expect(document.body.style.width).toBe('100vw');
-    });
-
-    it('Checks toggling profile-nav when nav is showing', () => {
-      this.component.profileNavIsShowing = true;
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-
-      this.component.toggleMenu(this.fakeEvent, 'profile-nav');
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-
-      expect(document.body.style.overflow).toBe('scroll');
-      expect(document.body.style.position).toBe('');
-      expect(document.body.style.width).toBe('');
-    });
-
-
-    it('Checks toggling give-nav', () => {
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-
-      this.component.toggleMenu(this.fakeEvent, 'give-nav');
-
-      expect(this.component.giveNavIsShowing).toBe(true);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
-
-      expect(document.body.style.overflow).toBe('hidden');
-      expect(document.body.style.position).toBe('absolute');
-      expect(document.body.style.width).toBe('100vw');
-    });
-
-    it('Checks toggling give-nav when nav is showing', () => {
-      this.component.giveNavIsShowing = true;
-
-      expect(this.component.profileNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-
-      this.component.toggleMenu(this.fakeEvent, 'give-nav');
-
-      expect(this.component.giveNavIsShowing).toBe(false);
-      expect(this.component.mainNavIsShowing).toBe(false);
-      expect(this.component.profileNavIsShowing).toBe(false);
+      expect(this.component.openNavName).toBe('super-fake-nav');
 
       expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('');
@@ -430,9 +332,12 @@ describe('<global-nav>', () => {
   });
 
   describe('Tests render()', () => {
+    beforeEach(() => {
+      this.component.data = {give: {}, profile: {}};
+    });
+
     it('Checks auth is initialized', () => {
       this.component.config = {};
-      this.component.data = {give: {}, profile: {}};
 
       expect(this.component.auth).toEqual({});
 
@@ -442,27 +347,197 @@ describe('<global-nav>', () => {
     });
 
     it('Checks element returned has main-nav', () => {
-      this.component.data = {give: {}, profile: {}};
-
       const rendered = this.component.render();
 
       expect(rendered[1].$tag$).toBe('main-nav');
     });
 
     it('Checks element returned has give-nav', () => {
-      this.component.data = {give: {}, profile: {}};
-
       const rendered = this.component.render();
 
       expect(rendered[0].$children$[0].$children$[1].$tag$).toBe('give-nav');
     });
 
     it('Checks element returned has profile-nav', () => {
-      this.component.data = {give: {}, profile: {}};
-
       const rendered = this.component.render();
 
       expect(rendered[0].$children$[0].$children$[2].$tag$).toBe('profile-nav');
     });
+
+    it('Checks header class if any nav is open', () => {
+      this.component.openNavName = 'profile-nav';
+
+      const rendered = this.component.render();
+
+      expect(rendered[0].$attrs$.class).toBe('nav-is-showing');
+    });
+
+    it('Checks header class if all navs are closed', () => {
+      this.component.openNavName = '';
+
+      const rendered = this.component.render();
+
+      expect(rendered[0].$attrs$.class).toBe('');
+    });
+
+    it('Checks header class if unknown nav is "open"', () => {
+      this.component.openNavName = 'super-fake-nav';
+
+      const rendered = this.component.render();
+
+      expect(rendered[0].$attrs$.class).toBe('');
+    });
+
+    ['give-nav', 'profile-nav'].forEach(styledNavs => {
+      it(`Checks header style if ${styledNavs} is opened`, () => {
+        this.component.offset = 15;
+        this.component.openNavName = styledNavs;
+
+        const rendered = this.component.render();
+
+        expect(rendered[0].$attrs$.style.top).toBe('15px');
+      });
+    });
+
+    it(`Checks header style if main-nav is opened`, () => {
+      this.component.offset = 15;
+      this.component.openNavName = 'main-nav';
+
+      const rendered = this.component.render();
+
+      expect(rendered[0].$attrs$.style.top).toBe('0px');
+    });
+  });
+
+  //TODO need better neative tests
+  describe('Tests maybeRenderIcons()', () => {
+    it('Checks falsy returned if non-array given', () => {
+      const rendered = this.component.maybeRenderIcons({icon: '123'});
+
+      expect(rendered).toBeFalsy();
+    });
+
+    it('Checks empty list returned if given empty array', () => {
+      const rendered = this.component.maybeRenderIcons([]);
+
+      expect(rendered).toHaveLength(0);
+      expect(rendered).toEqual([]);
+    });
+
+    it('Checks element has expected attributes if given config for one icon', () => {
+      const oneIcon = [{
+        'class': 'iconClass',
+        'innerHTML': '123'
+      }]
+      const rendered = this.component.maybeRenderIcons(oneIcon);
+
+      expect(rendered).toHaveLength(1);
+      expect(rendered[0].$tag$).toBe('div');
+      expect(rendered[0].$attrs$.class).toBe(oneIcon[0].class);
+      expect(rendered[0].$attrs$.innerHTML).toBe(oneIcon[0].innerHTML);
+    });
+
+    it('Checks elements have expected attributes if given config for more than one icon', () => {
+      const manyIcons = [{
+        'class': 'iconClass',
+        'innerHTML': '123'
+      },
+      {
+        'class': 'iconClass2',
+        'innerHTML': '12345'
+      }]
+      const rendered = this.component.maybeRenderIcons(manyIcons);
+
+      expect(rendered).toHaveLength(manyIcons.length);
+      manyIcons.forEach((icon, i) => {
+        expect(rendered[i].$tag$).toBe('div');
+        expect(rendered[i].$attrs$.class).toBe(icon.class);
+        expect(rendered[i].$attrs$.innerHTML).toBe(icon.innerHTML);
+      });
+    });
+
+    //authenticated, not authenticated, TODO missing
+    it('Checks element has expected innerHTML when authenticated', () => {
+      this.component.isAuthenticated = true;
+      const oneIcon = [{
+        'class': 'iconClass',
+        'innerHTML': {
+          'authenticated': '123',
+          'not-authenticated': 'nope!'
+        }
+      }]
+
+      const rendered = this.component.maybeRenderIcons(oneIcon);
+
+      expect(rendered).toHaveLength(1);
+      expect(rendered[0].$tag$).toBe('div');
+      expect(rendered[0].$attrs$.class).toBe(oneIcon[0].class);
+      expect(rendered[0].$attrs$.innerHTML).toBe(oneIcon[0].innerHTML.authenticated);
+    });
+
+    it('Checks element has expected innerHTML when not authenticated', () => {
+      this.component.isAuthenticated = false;
+      const oneIcon = [{
+        'class': 'iconClass',
+        'innerHTML': {
+          'authenticated': '123',
+          'not-authenticated': 'nope!'
+        }
+      }]
+
+      const rendered = this.component.maybeRenderIcons(oneIcon);
+
+      expect(rendered).toHaveLength(1);
+      expect(rendered[0].$tag$).toBe('div');
+      expect(rendered[0].$attrs$.class).toBe(oneIcon[0].class);
+      expect(rendered[0].$attrs$.innerHTML).toBe(oneIcon[0].innerHTML['not-authenticated']);
+    });
+  });
+  //TODO need thorough renderNavLink test
+
+  describe('Tests renderNavLink()', () => {
+    const mainMenu = {
+      'class-name': 'menu-container',
+      'nav-name': 'main-nav',
+      'href': '',
+      'automation-id': 'sh-menu',
+      'label': 'menu',
+      'icons': [
+        {
+          'class': 'menu',
+          'innerHTML': '123'
+        },
+        {
+          'class': 'close',
+          'innerHTML': '456'
+        }
+      ]
+    }
+
+    it('Checks a simple nav-menu container has expected elements when closed', () => {
+      const rendered = this.component.renderNavLink(mainMenu);
+
+      expect(rendered.$tag$).toBe('a');
+      expect(rendered.$attrs$['data-automation-id']).toBe(mainMenu['automation-id']);
+      expect(rendered.$attrs$['href']).toBe('');
+      expect(rendered.$attrs$['data-label']).toBe(mainMenu['label']);
+      expect(rendered.$attrs$['class']).toBe(mainMenu['class-name']);
+
+      expect(rendered.$children$).toHaveLength(2);
+      mainMenu.icons.forEach((icon, i) => {
+        expect(rendered.$children$[i].$tag$).toBe('div');
+        expect(rendered.$children$[i].$attrs$.class).toBe(icon.class);
+        expect(rendered.$children$[i].$attrs$.innerHTML).toBe(icon.innerHTML);
+      });
+    });
+
+    it('Checks a simple nav-menu container has expected elements when closed', () => {
+      this.component.openNavName = 'main-nav';
+      const rendered = this.component.renderNavLink(mainMenu);
+
+      expect(rendered.$attrs$['data-automation-id']).toBe(mainMenu['automation-id']);
+      expect(rendered.$attrs$['class']).toBe(`${mainMenu['class-name']} nav-is-showing`);
+    });
+    //TODO start with positive tests, then add negative once all situations covered
   });
 });
