@@ -15,8 +15,8 @@ export class CrdsGreeting {
 
   @State() user: GreetingUser = {
     contact: {
-      firstName: '',
-      nickName: ''
+      firstName: null,
+      nickName: null
     }
   };
   @Prop() authToken: string;
