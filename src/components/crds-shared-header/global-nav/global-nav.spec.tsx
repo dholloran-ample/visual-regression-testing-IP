@@ -409,7 +409,7 @@ describe('<global-nav>', () => {
     });
   });
 
-  //TODO need better neative tests
+  //TODO need better negative tests
   describe('Tests maybeRenderIcons()', () => {
     it('Checks falsy returned if non-array given', () => {
       const rendered = this.component.maybeRenderIcons({icon: '123'});

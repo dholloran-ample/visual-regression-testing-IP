@@ -38,8 +38,12 @@ export class SimpleNavHelper {
   }
 
   formatListEntry(data, classValue) {
+    const isSignOutLink = () => {
+      return data['automation-id'] === 'sh-sign-out';
+    }
+
     return (<li class={classValue}>
-      <nav-link href={data.href} automationId={data['automation-id']} handleSignOut={this.handleSignOut}>
+      <nav-link href={data.href} automationId={data['automation-id']} handleOnClick={isSignOutLink() && this.handleSignOut}>
         {data.title}
       </nav-link>
     </li>)

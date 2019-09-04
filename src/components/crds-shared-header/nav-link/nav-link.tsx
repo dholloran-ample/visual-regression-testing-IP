@@ -9,7 +9,7 @@ import { Config } from '../../../shared/config';
 export class NavigationLink {
   @Prop() href: string;
   @Prop() automationId: string;
-  @Prop() handleSignOut: Function;
+  @Prop() handleOnClick: Function;
 
   /**
    * Print log messages?
@@ -23,26 +23,17 @@ export class NavigationLink {
     this.config = new Config();
   }
 
+
   onClick(event) {
-    if(this.isSignOutLink()) {
-      if(typeof this.handleSignOut === 'function'){
-        this.handleSignOut();
-        event.preventDefault();
-      }
-      else {
-        console.error('Function to handle sign out not provided');
-      }
+    if(typeof this.handleOnClick === 'function'){
+      this.handleOnClick(event);
+      event.preventDefault();
     }
-    else {
-      window.location.href = this.href;
-      event.stopPropagation();
-    }
+    //navigates by default
+    event.stopPropagation();
   }
 
-  isSignOutLink(){
-    return this.automationId === 'sh-sign-out';
-  }
-//TODO add test for class
+//TODO add class?
   render() {
     return (
       <a href={this.href || "#"} data-automation-id={this.automationId} onClick={this.onClick.bind(this)}>

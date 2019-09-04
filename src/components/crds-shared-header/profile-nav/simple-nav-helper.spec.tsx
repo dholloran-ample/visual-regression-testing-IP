@@ -223,6 +223,7 @@ describe('simple-nav-helper', () => {
   });
 
   describe('Tests formatListEntry()', () => {
+    //TODO signin/non-signin
     it('Checks list entry returned formatted', () => {
       const data = {
         "title": "Many more test questions",
@@ -239,6 +240,31 @@ describe('simple-nav-helper', () => {
       expect(rendered.$children$[0].$attrs$.automationId).toBe(data['automation-id']);
       expect(rendered.$children$[0].$attrs$.href).toBe(data.href);
       expect(rendered.$children$[0].$children$[0].$text$).toBe(data.title);
+    });
+
+    it('Checks handle click function not passed in for normal links', () => {
+      const data = {
+        "title": "Many test links",
+        "href": "https://int.crossroads.net/giving",
+        "automation-id": "sh-give-link"
+      };
+
+      const rendered = this.helper.formatListEntry(data, 'some class value');
+
+      expect(rendered.$children$[0].$attrs$.handleOnClick).toBeFalsy();
+    });
+
+    it('Checks handle click function passed in if sign out link', () => {
+      this.helper.handleSignOut = () => { return 'fake callback';};
+      const data = {
+        "title": "Sign out",
+        "href": "https://int.crossroads.net/signout",
+        "automation-id": "sh-sign-out"
+      };
+
+      const rendered = this.helper.formatListEntry(data, 'some class value');
+
+      expect(typeof rendered.$children$[0].$attrs$.handleOnClick).toBe('function');
     });
   });
 

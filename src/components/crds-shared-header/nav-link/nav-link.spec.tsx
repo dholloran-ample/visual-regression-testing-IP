@@ -15,57 +15,23 @@ describe('<nav-link>', () => {
       }
     });
 
-    it('Checks handleSignOut to be called if is sign-out link and handleSignOut function defined', () => {
-      const ogWindowsLocation = window.location.href;
-
-      this.component.automationId = 'sh-sign-out';
-      this.component.handleSignOut = jest.fn();
+    it('Checks click handled with custom function if given', () => {
+      this.component.handleOnClick = jest.fn();
 
       this.component.onClick(this.fakeEvent);
 
-      expect(this.component.handleSignOut).toBeCalledTimes(1);
-      expect(window.location.href).toBe(ogWindowsLocation);
+      expect(this.component.handleOnClick).toBeCalledTimes(1);
+      expect(this.fakeEvent.stopPropagation).toBeCalledTimes(1);
+      expect(this.fakeEvent.preventDefault).toBeCalledTimes(1);
     });
 
-    it('Checks windows.location is not changed if is sign-out link but has no handleSignOut function', () => {
-      const ogWindowsLocation = window.location.href;
-
-      this.component.automationId = 'sh-sign-out';
-      this.component.handleSignOut = undefined;
+    it('Checks click handled by default if no custom function is given', () => {
+      this.component.handleOnClick = false;
 
       this.component.onClick(this.fakeEvent);
 
-      expect(window.location.href).toBe(ogWindowsLocation);
-    });
-
-    it('Checks window.location is set to current nav href if not sign-out link', () => {
-      expect(window.location.href).not.toBe('https://int.crossroads.net/prayer');
-
-      this.component.automationId = 'sh-prayer';
-      this.component.href = 'https://int.crossroads.net/prayer';
-      this.component.handleSignOut = jest.fn();
-      this.component.onClick(this.fakeEvent);
-
-      expect(window.location.href).toBe('https://int.crossroads.net/prayer');
-      expect(this.component.handleSignOut).not.toBeCalled();
-    });
-  });
-
-  describe('Tests isSignOutLink()', () => {
-    it('Checks true is returned if automation id matches known signout id', () => {
-      this.component.automationId = 'sh-sign-out';
-
-      const isSignOut = this.component.isSignOutLink();
-
-      expect(isSignOut).toBe(true);
-    });
-
-    it('Checks false is returned if automation id is not known signout id', () => {
-      this.component.automationId = 'other-sign-out';
-
-      const isSignOut = this.component.isSignOutLink();
-
-      expect(isSignOut).toBe(false);
+      expect(this.fakeEvent.stopPropagation).toBeCalledTimes(1);
+      expect(this.fakeEvent.preventDefault).not.toBeCalled();
     });
   });
 
@@ -90,17 +56,6 @@ describe('<nav-link>', () => {
       const rendered = this.component.render();
 
       expect(typeof rendered.$attrs$.onClick).toBe('function');
-    });
-
-    it('Checks element onClick event bound to expected method', () => {
-      expect(window.location.href).not.toBe('https://int.crossroads.net/prayer');
-
-      this.component.href = 'https://int.crossroads.net/prayer';
-
-      const rendered = this.component.render();
-      rendered.$attrs$.onClick(this.fakeEvent);
-
-      expect(window.location.href).toBe('https://int.crossroads.net/prayer')
     });
 
     it('Checks href set to # if not set', () => {

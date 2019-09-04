@@ -36,7 +36,7 @@ header {
 
   a {
     &:first-of-type {
-      margin-right: 18px;
+      margin-right: 18px; //This separates search icon - once all components are nav-links, try changing a to nav-link?
     }
   }
 }
@@ -60,6 +60,7 @@ $icon-size: 22px;
   height: $icon-size;
   padding: 12px 0;
   width: $icon-size;
+  display: block;
 
   svg {
     height: $icon-size;
@@ -89,6 +90,7 @@ $icon-size: 22px;
 
 .close {
   $size: 26px;
+  display: block;
 
   height: $size;
   padding: 9px 0;
@@ -100,14 +102,6 @@ $icon-size: 22px;
   }
 }
 
-.account,
-.close,
-.donate,
-.menu,
-.search {
-  display: block;
-}
-
 .give-container,
 .menu-container,
 .profile-container,
@@ -116,7 +110,7 @@ $icon-size: 22px;
   display: flex;
   text-decoration: none;
 
-  &::after {
+  &::after { //Old version
     @media (min-width: $screen-sm) {
       align-self: center;
       bottom: 2px;
@@ -128,6 +122,10 @@ $icon-size: 22px;
       text-transform: capitalize;
     }
   }
+
+  // a {
+  //   margin-right: 0px; //override margin so icons aren't separated from label? nope -
+  // }
 
   svg {
     fill: $cr-white;

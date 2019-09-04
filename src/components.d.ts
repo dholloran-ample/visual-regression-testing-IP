@@ -83,7 +83,7 @@ export namespace Components {
   }
   interface NavLink {
     'automationId': string;
-    'handleSignOut': Function;
+    'handleOnClick': Function;
     'href': string;
   }
   interface NavSection {
@@ -311,7 +311,7 @@ declare namespace LocalJSX {
   }
   interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
     'automationId'?: string;
-    'handleSignOut'?: Function;
+    'handleOnClick'?: Function;
     'href'?: string;
   }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
