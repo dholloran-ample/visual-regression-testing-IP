@@ -1,10 +1,12 @@
 import { SiteHappenings } from '../site-happenings';
 import { CrdsApollo } from '../../../shared/apollo';
 import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
+import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
 
 describe('<crds-site-happenings> Render', () => {
   beforeEach(async () => {
     this.happenings = new SiteHappenings();
+    this.happenings.contentBlockHandler = new ContentBlockHandler(null, 'site happenings');
   });
 
   describe('Tests maybeRenderSetSiteModal()', () => {

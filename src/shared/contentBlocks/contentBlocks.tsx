@@ -22,6 +22,7 @@ export class ContentBlockHandler {
   }
 
   public getContentBlock(slug: string): HTMLDivElement {
+    if(!this.copy) return null;
     const contentBlock = this.copy.find(c => c.slug === slug);
     if (!contentBlock) return;
     return <div innerHTML={contentBlock.content.toString()} />;
