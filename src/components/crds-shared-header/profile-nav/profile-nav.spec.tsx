@@ -148,8 +148,8 @@ describe('<profile-nav>', () => {
       const renderedNavLinks = rendered.$children$[1].$children$[0].$children$[1].$children$[0].$children$;
 
       [0,1,2].forEach(navLinkIndex => {
-        expect(renderedNavLinks[navLinkIndex].$children$[0].$tag$).toEqual('nav-link')
-        expect(renderedNavLinks[navLinkIndex].$children$[0].$attrs$.automationId).toBe(profileNav.children[0][navLinkIndex]['automation-id']);
+        expect(renderedNavLinks[navLinkIndex].$children$[0].$tag$).toEqual('a')
+        expect(renderedNavLinks[navLinkIndex].$children$[0].$attrs$['data-automation-id']).toBe(profileNav.children[0][navLinkIndex]['automation-id']);
       })
 
       const renderedHeader = rendered.$children$[1].$children$[0].$children$[2];

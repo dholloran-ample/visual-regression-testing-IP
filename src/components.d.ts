@@ -81,11 +81,6 @@ export namespace Components {
   interface NavCtas {
     'data': string;
   }
-  interface NavLink {
-    'automationId': string;
-    'handleOnClick': Function;
-    'href': string;
-  }
   interface NavSection {
     'handleClick': Function;
     'isActive': boolean;
@@ -191,12 +186,6 @@ declare global {
     new (): HTMLNavCtasElement;
   };
 
-  interface HTMLNavLinkElement extends Components.NavLink, HTMLStencilElement {}
-  var HTMLNavLinkElement: {
-    prototype: HTMLNavLinkElement;
-    new (): HTMLNavLinkElement;
-  };
-
   interface HTMLNavSectionElement extends Components.NavSection, HTMLStencilElement {}
   var HTMLNavSectionElement: {
     prototype: HTMLNavSectionElement;
@@ -229,7 +218,6 @@ declare global {
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
     'nav-ctas': HTMLNavCtasElement;
-    'nav-link': HTMLNavLinkElement;
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'profile-nav': HTMLProfileNavElement;
@@ -309,11 +297,6 @@ declare namespace LocalJSX {
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
   }
-  interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
-    'automationId'?: string;
-    'handleOnClick'?: Function;
-    'href'?: string;
-  }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'handleClick'?: Function;
     'isActive'?: boolean;
@@ -346,7 +329,6 @@ declare namespace LocalJSX {
     'global-nav': GlobalNav;
     'main-nav': MainNav;
     'nav-ctas': NavCtas;
-    'nav-link': NavLink;
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
     'profile-nav': ProfileNav;

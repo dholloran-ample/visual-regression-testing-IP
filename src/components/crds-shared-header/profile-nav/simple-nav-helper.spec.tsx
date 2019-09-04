@@ -98,15 +98,15 @@ describe('simple-nav-helper', () => {
 
         const secondChild = rendered[1].$children$[0].$children$[0];
         expect(secondChild.$attrs$.class).toBe('top-level');
-        expect(secondChild.$children$[0].$attrs$.automationId).toBe(objectChildren[1][0]['automation-id']);
+        expect(secondChild.$children$[0].$attrs$['data-automation-id']).toBe(objectChildren[1][0]['automation-id']);
         expect(secondChild.$children$[0].$attrs$.href).toBe(objectChildren[1][0].href);
-        expect(secondChild.$children$[0].$children$[0].$text$).toBe(objectChildren[1][0].title);
+        expect(secondChild.$children$[0].$attrs$.innerHTML).toBe(objectChildren[1][0].title);
 
         const thirdChild = rendered[1].$children$[0].$children$[1];
         expect(thirdChild.$attrs$.class).toBe('');
-        expect(thirdChild.$children$[0].$attrs$.automationId).toBe(objectChildren[1][1]['automation-id']);
+        expect(thirdChild.$children$[0].$attrs$['data-automation-id']).toBe(objectChildren[1][1]['automation-id']);
         expect(thirdChild.$children$[0].$attrs$.href).toBe(objectChildren[1][1].href);
-        expect(thirdChild.$children$[0].$children$[0].$text$).toBe(objectChildren[1][1].title);
+        expect(thirdChild.$children$[0].$attrs$.innerHTML).toBe(objectChildren[1][1].title);
       });
 
       it('Checks non-subHeader list elements are top level', () => {
@@ -129,11 +129,11 @@ describe('simple-nav-helper', () => {
 
         const firstChild = rendered[0].$children$[0].$children$[0];
         expect(firstChild.$attrs$.class).toBe('top-level');
-        expect(firstChild.$children$[0].$attrs$.automationId).toBe(objectChildren[0][0]['automation-id']);
+        expect(firstChild.$children$[0].$attrs$['data-automation-id']).toBe(objectChildren[0][0]['automation-id']);
 
         const secondChild = rendered[0].$children$[0].$children$[1];
         expect(secondChild.$attrs$.class).toBe('top-level');
-        expect(secondChild.$children$[0].$attrs$.automationId).toBe(objectChildren[0][1]['automation-id']);
+        expect(secondChild.$children$[0].$attrs$['data-automation-id']).toBe(objectChildren[0][1]['automation-id']);
       });
 
       it('Checks non-subHeader list elements are not top level if their top_level property is false', () => {
@@ -158,11 +158,11 @@ describe('simple-nav-helper', () => {
 
         const firstChild = rendered[0].$children$[0].$children$[0];
         expect(firstChild.$attrs$.class).toBe('');
-        expect(firstChild.$children$[0].$attrs$.automationId).toBe(objectChildren[0][0]['automation-id']);
+        expect(firstChild.$children$[0].$attrs$['data-automation-id']).toBe(objectChildren[0][0]['automation-id']);
 
         const secondChild = rendered[0].$children$[0].$children$[1];
         expect(secondChild.$attrs$.class).toBe('top-level');
-        expect(secondChild.$children$[0].$attrs$.automationId).toBe(objectChildren[0][1]['automation-id']);
+        expect(secondChild.$children$[0].$attrs$['data-automation-id']).toBe(objectChildren[0][1]['automation-id']);
       });
     });
   });
@@ -236,10 +236,10 @@ describe('simple-nav-helper', () => {
       expect(rendered.$tag$).toBe('li');
       expect(rendered.$attrs$.class).toBe('some class value');
 
-      expect(rendered.$children$[0].$tag$).toBe('nav-link');
-      expect(rendered.$children$[0].$attrs$.automationId).toBe(data['automation-id']);
+      expect(rendered.$children$[0].$tag$).toBe('a');
+      expect(rendered.$children$[0].$attrs$['data-automation-id']).toBe(data['automation-id']);
       expect(rendered.$children$[0].$attrs$.href).toBe(data.href);
-      expect(rendered.$children$[0].$children$[0].$text$).toBe(data.title);
+      expect(rendered.$children$[0].$attrs$.innerHTML).toBe(data.title);
     });
 
     it('Checks handle click function not passed in for normal links', () => {
@@ -264,7 +264,7 @@ describe('simple-nav-helper', () => {
 
       const rendered = this.helper.formatListEntry(data, 'some class value');
 
-      expect(typeof rendered.$children$[0].$attrs$.handleOnClick).toBe('function');
+      expect(typeof rendered.$children$[0].$attrs$.onClick).toBe('function');
     });
   });
 
@@ -304,8 +304,8 @@ describe('simple-nav-helper', () => {
 
       expect(rendered.$tag$).toBe('ul');
       expect(rendered.$children$).toHaveLength(2);
-      expect(rendered.$children$[0].$children$[0].$attrs$.automationId).toBe(data[0]["automation-id"]);
-      expect(rendered.$children$[1].$children$[0].$attrs$.automationId).toBe(data[1]["automation-id"]);
+      expect(rendered.$children$[0].$children$[0].$attrs$['data-automation-id']).toBe(data[0]["automation-id"]);
+      expect(rendered.$children$[1].$children$[0].$attrs$['data-automation-id']).toBe(data[1]["automation-id"]);
     });
   });
 
@@ -331,9 +331,9 @@ describe('simple-nav-helper', () => {
 
       expect(rendered.$tag$).toBe('li');
       expect(rendered.$attrs$.class).toBe('top-level');
-      expect(rendered.$children$[0].$attrs$.automationId).toBe(data['automation-id']);
+      expect(rendered.$children$[0].$attrs$['data-automation-id']).toBe(data['automation-id']);
       expect(rendered.$children$[0].$attrs$.href).toBe(data.href);
-      expect(rendered.$children$[0].$children$[0].$text$).toBe(data.title);
+      expect(rendered.$children$[0].$attrs$.innerHTML).toBe(data.title);
     });
 
     it('Checks if class is top_level based on data.top_level value, overriding given value', () => {
@@ -347,19 +347,19 @@ describe('simple-nav-helper', () => {
       const renderedGivenFalse = this.helper.maybeRenderListEntry(data, false);
 
       expect(renderedGivenFalse.$attrs$.class).toBe('top-level');
-      expect(renderedGivenFalse.$children$[0].$tag$).toBe('nav-link');
-      expect(renderedGivenFalse.$children$[0].$attrs$.automationId).toBe(data['automation-id']);
+      expect(renderedGivenFalse.$children$[0].$tag$).toBe('a');
+      expect(renderedGivenFalse.$children$[0].$attrs$['data-automation-id']).toBe(data['automation-id']);
       expect(renderedGivenFalse.$children$[0].$attrs$.href).toBe(data.href);
-      expect(renderedGivenFalse.$children$[0].$children$[0].$text$).toBe(data.title);
+      expect(renderedGivenFalse.$children$[0].$attrs$.innerHTML).toBe(data.title);
 
       data.top_level = false;
       const renderedGivenTrue = this.helper.maybeRenderListEntry(data, true);
 
       expect(renderedGivenTrue.$attrs$.class).toBe('');
-      expect(renderedGivenFalse.$children$[0].$tag$).toBe('nav-link');
-      expect(renderedGivenTrue.$children$[0].$attrs$.automationId).toBe(data['automation-id']);
+      expect(renderedGivenFalse.$children$[0].$tag$).toBe('a');
+      expect(renderedGivenTrue.$children$[0].$attrs$['data-automation-id']).toBe(data['automation-id']);
       expect(renderedGivenTrue.$children$[0].$attrs$.href).toBe(data.href);
-      expect(renderedGivenTrue.$children$[0].$children$[0].$text$).toBe(data.title);
+      expect(renderedGivenTrue.$children$[0].$attrs$.innerHTML).toBe(data.title);
     });
 
     it(`Checks given top level value is used if data.top_level is undefined`, () => {

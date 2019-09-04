@@ -36,7 +36,7 @@ header {
 
   a {
     &:first-of-type {
-      margin-right: 18px; //This separates search icon - once all components are nav-links, try changing a to nav-link?
+      margin-right: 18px;
     }
   }
 }
@@ -122,10 +122,6 @@ $icon-size: 22px;
       text-transform: capitalize;
     }
   }
-
-  // a {
-  //   margin-right: 0px; //override margin so icons aren't separated from label? nope -
-  // }
 
   svg {
     fill: $cr-white;
