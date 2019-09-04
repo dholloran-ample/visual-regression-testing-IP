@@ -16,7 +16,7 @@ export class SiteHappenings {
   private contentfulSites: string[] = [];
   private contentBlockHandler: ContentBlockHandler;
   private apolloClient: ApolloClient<{}>;
-  @State() user: CrdsUser = { name: '', site: '' };
+  private user: CrdsUser = { name: '', site: '', authToken: '' };
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
   @State() sites: Site[] = [];
@@ -32,6 +32,7 @@ export class SiteHappenings {
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
+      this.getUser();
     }
   }
 
@@ -44,14 +45,9 @@ export class SiteHappenings {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    this.getSites();
+    this.getSites().then(() => this.getUser());
     this.getPromos();
     this.contentBlockHandler.getCopy();
-    if (this.authToken) this.getUser();
-  }
-
-  public componentWillRender() {
-    if (this.authToken && !this.user.site) this.getUser();
   }
 
   public componentDidRender() {
@@ -77,36 +73,39 @@ export class SiteHappenings {
   }
 
   private getUser() {
-    if (!this.authToken) return null;
-    return this.apolloClient
+    if (!this.authToken) return this.resetUser();
+    this.apolloClient
       .query({ query: GET_USER })
       .then(response => {
-        let user = response.data.user;
+        let user = { ...response.data.user };
         let siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
         this.validateSelectedSite(this.user.site);
-        return;
       })
       .catch(err => {
         this.logError(err);
       });
   }
 
+  private resetUser() {
+    this.user = { name: '', site: '', authToken: '' };
+    this.selectedSite = 'Churchwide';
+  }
+
   private getPromos() {
-    return this.apolloClient
+    this.apolloClient
       .query({ query: GET_PROMOS })
       .then(response => {
         const promoList = response.data.promos;
         this.setHappenings(promoList);
         this.setContentfulSites();
         this.renderHappenings();
-        return;
       })
       .catch(err => this.logError(err));
   }
 
   private setUserSite(siteId) {
-    return this.apolloClient
+    this.apolloClient
       .mutate({
         variables: { siteId: siteId },
         mutation: SET_SITE
@@ -140,7 +139,7 @@ export class SiteHappenings {
    */
   private validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
-      this.user = { ...this.user, site: siteName };
+      this.user = { ...this.user, site: siteName, authToken: this.authToken };
     }
   }
 
@@ -150,18 +149,8 @@ export class SiteHappenings {
    * @param siteName
    */
   private validateSelectedSite(siteName) {
-    if (
-      typeof siteName !== 'string' ||
-      siteName === 'Not site specific' ||
-      siteName === 'I do not attend Crossroads' ||
-      siteName === 'Anywhere' ||
-      siteName === ''
-    ) {
-      this.selectedSite = 'Churchwide';
-    } else if (this.contentfulSites.includes(siteName)) this.selectedSite = siteName;
-    else {
-      this.selectedSite = 'Churchwide';
-    }
+    if (this.contentfulSites.includes(siteName)) return (this.selectedSite = siteName);
+    return (this.selectedSite = 'Churchwide');
   }
 
   /**
@@ -272,7 +261,7 @@ export class SiteHappenings {
    * Display happenings cards filtered by dropdown
    */
   private renderHappenings() {
-    if (!this.happenings.length) return this.renderHappeningsSkeleton();
+    if (!this.happenings.length || this.authToken !== this.user.authToken) return this.renderHappeningsSkeleton();
     return this.happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
@@ -332,7 +321,10 @@ export class SiteHappenings {
    */
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
-    if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
+    if (
+      (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '') &&
+      this.authToken === this.user.authToken
+    )
       return this.renderSetSiteModal();
     else return '';
   }

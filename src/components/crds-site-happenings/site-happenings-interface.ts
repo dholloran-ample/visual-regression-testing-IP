@@ -1,6 +1,7 @@
 export interface CrdsUser {
   name: string;
   site: string;
+  authToken: string;
 }
 
 export interface CrdsHappening {
