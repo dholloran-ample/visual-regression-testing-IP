@@ -3,7 +3,7 @@ export class Utils {
    * Returns content metatag who's property matches "prop"
    * @param prop Value of metatags prop attribute
    */
-  static getMeta(prop) {
+  public static getMeta(prop): string {
     let el = document.querySelector(`meta[property*="${prop}"]`);
     if (el) {
       return el.getAttribute('content');
@@ -14,7 +14,7 @@ export class Utils {
    * Returns a parameterized string
    * @param {String} str
    */
-  static parameterize(str) {
+  public static parameterize(str): string {
     return str
       .toLowerCase()
       .replace(/[^a-z]/g, '-')
@@ -25,7 +25,7 @@ export class Utils {
    * Returns the value of a cookie after looking up by name
    * @param {String} name
    */
-  static getCookie(name) {
+  public static getCookie(name): string {
     var value = '; ' + document.cookie;
     var parts = value.split('; ' + name + '=');
     if (parts.length == 2)
@@ -39,7 +39,7 @@ export class Utils {
    * Returns the appropriate subdomain based on the env
    * @param {String} env
    */
-  static getSubdomain(env) {
+  public static getSubdomain(env) {
     const subdomainMap = {
       development: 'int',
       prod: 'www',
@@ -52,9 +52,33 @@ export class Utils {
    * Swaps the Contentful domain for Imgix on images
    * @param {String} url
    */
-  static imgixify(url) {
+  public static imgixify(url) {
     const ctflDomain = 'images.ctfassets.net/y3a9myzsdjan';
     const imgixDomain = 'crds-media.imgix.net';
     return url.replace(ctflDomain, imgixDomain);
+  }
+
+  /**
+   *  Adds tracking analytics for when the component comes in view
+   *  @param {HTMLElement} host
+   *  @param {string} componentName
+   *  @param {function} dataFetch
+   */
+  public static trackInView(host: HTMLElement, componentName: string, dataFetch: () => {}) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          window['analytics'].track(`${componentName}InView`, {
+            target: entry.target,
+            data: dataFetch()
+          });
+        }
+      });
+    },
+      {
+        threshold: 1.0
+      });
+
+    observer.observe(host);
   }
 }

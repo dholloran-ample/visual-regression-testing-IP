@@ -1,5 +1,5 @@
 import { Component, Element, Prop, State, h } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import Fragment from '../../shared/fragment';
 import axios from 'axios';
 
 @Component({

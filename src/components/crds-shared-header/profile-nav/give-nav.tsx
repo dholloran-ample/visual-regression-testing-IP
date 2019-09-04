@@ -1,4 +1,5 @@
 import { Component, Prop, Listen, h } from '@stencil/core';
+import { SimpleNavHelper } from './simple-nav-helper';
 
 @Component({
   tag: 'give-nav',
@@ -8,50 +9,27 @@ import { Component, Prop, Listen, h } from '@stencil/core';
 export class GiveMenu {
   @Prop() giveNavIsShowing: boolean = true;
   @Prop() data: JSON;
+  private simpleNav: SimpleNavHelper;
 
-  @Listen('click')
-  handleClick(event) {
-    event.stopPropagation();
+  constructor() {
+    this.simpleNav = new SimpleNavHelper();
   }
 
-  renderSections = payload => {
-    let top_level = false;
+  private navTitle() {
+    const data = (this.data as any)
+    return (data && data.title) || '';
+  }
 
-    return (
-      <div>
-        <h2> {payload.title} </h2>
-        {payload.children.map(child => {
-          top_level = top_level || typeof child == 'string';
-
-          return (
-            <div style={{ padding: '0' }}>
-              {typeof child == 'string' && <h4>{child}</h4>}
-              {typeof child != 'string' && (
-                <ul>
-                  {child.map(el => {
-                    if (typeof el != 'string')
-                      return (
-                        <li class={top_level ? '' : 'top-level'}>
-                          <a href={el.href} data-automation-id={el['automation-id']}>
-                            {el.title}
-                          </a>
-                        </li>
-                      );
-                  })}
-                </ul>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  private backgroundImageURL(data) {
+    return data.background_img || '';
+  }
 
   render() {
-    if (!this.giveNavIsShowing) return null;
+    if (!this.giveNavIsShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
+
     return (
-      <div class="give-nav" style={{ backgroundImage: `url(${(this.data as any).background_img})` }}>
-        {this.renderSections(this.data)}
+      <div class="give-nav" style={{ backgroundImage: `url(${this.backgroundImageURL(this.data)})` }}>
+        {this.simpleNav.renderSections(this.data, this.navTitle())}
       </div>
     );
   }

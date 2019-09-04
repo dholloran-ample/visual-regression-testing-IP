@@ -5,17 +5,19 @@ export interface CrdsUser {
 
 export interface CrdsHappening {
   targetAudience: string[];
-  linkUrl: string;
+  imageUrl: string;
   title: string;
-  image: CrdsImage;
   description: string;
+  qualifiedUrl: string;
 }
 
-export interface CrdsImage {
-  url: string;
-}
 
-export interface MpCongregation {
+export interface Site {
   id: string;
   name: string;
+}
+
+export interface ContentBlock { 
+  slug: string
+  content: string
 }
