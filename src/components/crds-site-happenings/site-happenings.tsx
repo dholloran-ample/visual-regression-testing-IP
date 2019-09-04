@@ -1,10 +1,11 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
-import { CrdsUser, CrdsHappening, Site, ContentBlock } from './site-happenings-interface';
+import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
 import { CrdsApollo } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
-import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happenings.graphql';
+import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS } from './site-happenings.graphql';
+import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -13,14 +14,13 @@ import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happ
 export class SiteHappenings {
   private analytics = window['analytics'] || {};
   private contentfulSites: string[] = [];
-  private sites: Site[] = [];
-  private happenings: CrdsHappening[] = [];
+  private contentBlockHandler: ContentBlockHandler;
   private apolloClient: ApolloClient<{}>;
-  private user: CrdsUser = { name: '', site: '' };
-  private copy: ContentBlock[] = [];
-
+  @State() user: CrdsUser = { name: '', site: '' };
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
+  @State() sites: Site[] = [];
+  @State() happenings: CrdsHappening[] = [];
 
   @Element() host: HTMLElement;
 
@@ -43,11 +43,15 @@ export class SiteHappenings {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    return this.init();
+    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
+    this.getSites();
+    this.getPromos();
+    this.contentBlockHandler.getCopy();
+    if (this.authToken) this.getUser();
   }
 
   public componentWillRender() {
-    if (this.authToken && !this.user.site) return this.getUser();
+    if (this.authToken && !this.user.site) this.getUser();
   }
 
   public componentDidRender() {
@@ -60,14 +64,6 @@ export class SiteHappenings {
   }
 
   /** GraphQL I/O **/
-
-  private init() {
-    var promises = [this.getSites(), this.getPromos(), this.getCopy()];
-    if (this.authToken) promises.push(this.getUser());
-
-    return Promise.all(promises);
-  }
-
   private getSites() {
     return this.apolloClient
       .query({ query: GET_SITES })
@@ -107,17 +103,6 @@ export class SiteHappenings {
         return;
       })
       .catch(err => this.logError(err));
-  }
-
-  private getCopy() {
-    return this.apolloClient
-      .query({ query: GET_COPY })
-      .then(response => {
-        this.copy = response.data.contentBlocks;
-      })
-      .catch(err => {
-        this.logError(err);
-      });
   }
 
   private setUserSite(siteId) {
@@ -283,12 +268,6 @@ export class SiteHappenings {
     this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
 
-  private getContentBlock(slug: string) {
-    const contentBlock = this.copy.find(c => c.slug === slug)
-    if(!contentBlock) return;
-    return <div innerHTML={contentBlock.content.toString()} />;
-  }
-
   /**
    * Display happenings cards filtered by dropdown
    */
@@ -353,7 +332,6 @@ export class SiteHappenings {
    */
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
-
     if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
       return this.renderSetSiteModal();
     else return '';
@@ -372,7 +350,7 @@ export class SiteHappenings {
           </svg>
         </button>
         <div class="text-center push-top w-100">
-          {this.getContentBlock('SiteHappeningsPrompt')}
+          {this.contentBlockHandler.getContentBlock('SiteHappeningsPrompt')}
           <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
             <select class="dropdown w-100" onInput={event => this.handleSetSiteInput(event)}>
               <option disabled selected>

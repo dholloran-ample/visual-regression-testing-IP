@@ -17,8 +17,8 @@ export class CrdsRecommendedContent {
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
   private recommendedContent: [] = [];
-  private lifeStages: CrdsLifeStage[] = [];
 
+  @State() lifeStages: CrdsLifeStage[] = [];
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @Prop() public authToken: string;
   @Element() public host: HTMLStencilElement;
@@ -31,22 +31,22 @@ export class CrdsRecommendedContent {
     }
   }
 
-  renderedEvent = new CustomEvent('component rendered', {
-    detail: this.host
-  });
-
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    return Promise.all([this.getLifeStages(), this.getUser()]);
+    Promise.all([this.getLifeStages(), this.getUser()]);
   }
 
   public componentDidRender() {
-    document.dispatchEvent(this.renderedEvent);
+    const renderedEvent = new CustomEvent('component rendered', {
+      detail: this.host
+    });
+    document.dispatchEvent(renderedEvent);
     Utils.trackInView(this.host, 'RecommendedContentComponent', this.getLifeStageId.bind(this));
   }
 
   public componentWillRender() {
-    if (this.user.lifeStage && this.user.lifeStage.id !== null) this.filterContent(this.user.lifeStage.id);
+    if (this.user.lifeStage && this.user.lifeStage.id !== null && this.lifeStages.length)
+      this.filterContent(this.user.lifeStage.id);
   }
 
   private getLifeStageId() {
@@ -75,6 +75,26 @@ export class CrdsRecommendedContent {
    */
   private filterContent(lifeStageId) {
     this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
+  }
+
+  private handleBackClick(event) {
+    this.recommendedContent = [];
+    this.user = { ...this.user, lifeStage: { id: null, title: null } };
+    event.target.parentNode.scrollLeft = 0;
+  }
+
+  private handleContentClicked(event) {
+    try {
+      this.analytics.track('RecommendedContentClicked', {
+        parent: this.host.tagName,
+        title: event.currentTarget.querySelector('.component-header').innerText,
+        targetUrl: event.target.parentElement.href,
+        lifeStageId: this.user.lifeStage.id,
+        lifeStageName: this.user.lifeStage.title
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -116,7 +136,7 @@ export class CrdsRecommendedContent {
 
   private renderCardSkeleton() {
     return [1, 2, 3, 4, 5].map(() => (
-      <div class={`card-skeleton ${this.recommendedContent.length || this.lifeStages.length ? 'd-none' : ''}`}>
+      <div class="card-skeleton">
         <div class="content">
           <div class="text title" />
           <div class="text subtitle" />
@@ -194,20 +214,6 @@ export class CrdsRecommendedContent {
     );
   }
 
-  handleContentClicked(event) {
-    try {
-      this.analytics.track('RecommendedContentClicked', {
-        parent: this.host.tagName,
-        title: event.currentTarget.querySelector('.component-header').innerText,
-        targetUrl: event.target.parentElement.href,
-        lifeStageId: this.user.lifeStage.id,
-        lifeStageName: this.user.lifeStage.title
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   private renderRecommendedContent() {
     const imgixParams =
       window.innerWidth > 767 ? '?auto=format&w=400&h=225&fit=crop' : '?auto=format&w=262&h=196.5&fit=crop';
@@ -243,12 +249,6 @@ export class CrdsRecommendedContent {
     ));
   }
 
-  public handleBackClick(event) {
-    this.recommendedContent = [];
-    this.user = { ...this.user, lifeStage: { id: null, title: null } };
-    event.target.parentNode.scrollLeft = 0;
-  }
-
   private renderText() {
     const selectedLifeStage: any = this.lifeStages.find(
       stage => stage.id === (this.user.lifeStage && this.user.lifeStage.id)
@@ -271,7 +271,6 @@ export class CrdsRecommendedContent {
     const renderLifeStages = this.lifeStages.length && this.user.lifeStage && !this.user.lifeStage.id;
     const renderRecommendedContent = this.recommendedContent.length;
     const cardsClasses = `cards ${this.recommendedContent.length ? 'media-cards' : ''}`;
-
     return (
       <div class="life-stages">
         <div class="life-stages-inner">
@@ -280,7 +279,7 @@ export class CrdsRecommendedContent {
               if (renderLifeStages || renderRecommendedContent) return this.renderText();
               return this.renderTextSkeleton();
             })()}
-            {this.recommendedContent.length > 0 && (
+            {!!this.recommendedContent.length && (
               <div class="life-stage-selected">
                 <a
                   class="btn btn-gray-light btn-outline btn-sm back-btn"
