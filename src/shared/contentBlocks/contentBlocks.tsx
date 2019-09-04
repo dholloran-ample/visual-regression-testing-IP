@@ -1,9 +1,9 @@
-import { h } from '@stencil/core';
+import { h, State } from '@stencil/core';
 import { ApolloClient } from 'apollo-client';
 import { GET_COPY } from './contentBlock.graphql';
 
 export class ContentBlockHandler {
-  private copy: ContentBlock[];
+  private copy: ContentBlock[] = [];
   private componentName: string;
   private apolloClient: ApolloClient<{}>;
 
@@ -22,7 +22,7 @@ export class ContentBlockHandler {
   }
 
   public getContentBlock(slug: string): HTMLDivElement {
-    if(!this.copy) return null;
+    if (!this.copy) return null;
     const contentBlock = this.copy.find(c => c.slug === slug);
     if (!contentBlock) return;
     return <div innerHTML={contentBlock.content.toString()} />;

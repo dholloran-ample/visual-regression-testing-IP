@@ -14,14 +14,13 @@ import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 export class SiteHappenings {
   private analytics = window['analytics'] || {};
   private contentfulSites: string[] = [];
-  private sites: Site[] = [];
-  private happenings: CrdsHappening[] = [];
   private contentBlockHandler: ContentBlockHandler;
   private apolloClient: ApolloClient<{}>;
-  private user: CrdsUser = { name: '', site: '' };
-
+  @State() user: CrdsUser = { name: '', site: '' };
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
+  @State() sites: Site[] = [];
+  @State() happenings: CrdsHappening[] = [];
 
   @Element() host: HTMLElement;
 
@@ -45,13 +44,14 @@ export class SiteHappenings {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    var promises: Promise<any>[] = [this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy()];
-    if (this.authToken) promises.push(this.getUser());
-    return Promise.all(promises);
+    this.getSites();
+    this.getPromos();
+    this.contentBlockHandler.getCopy();
+    if (this.authToken) this.getUser();
   }
 
   public componentWillRender() {
-    if (this.authToken && !this.user.site) return this.getUser();
+    if (this.authToken && !this.user.site) this.getUser();
   }
 
   public componentDidRender() {
@@ -332,7 +332,6 @@ export class SiteHappenings {
    */
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
-
     if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
       return this.renderSetSiteModal();
     else return '';
