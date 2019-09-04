@@ -16,7 +16,7 @@ export class SiteHappenings {
   private contentfulSites: string[] = [];
   private contentBlockHandler: ContentBlockHandler;
   private apolloClient: ApolloClient<{}>;
-  private user: CrdsUser = { name: '', site: '', authToken: '' };
+  @State() user: CrdsUser = { name: '', site: '', authToken: '' };
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
   @State() sites: Site[] = [];
@@ -83,12 +83,13 @@ export class SiteHappenings {
         this.validateSelectedSite(this.user.site);
       })
       .catch(err => {
+        this.resetUser();
         this.logError(err);
       });
   }
 
   private resetUser() {
-    this.user = { name: '', site: '', authToken: '' };
+    this.user = { name: '', site: 'Churchwide', authToken: this.authToken };
     this.selectedSite = 'Churchwide';
   }
 
