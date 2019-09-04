@@ -17,6 +17,11 @@
     .site-happenings-skeleton {
       min-height: 500px;
     }
+
+    .greeting-skeleton {
+      margin-bottom: 1rem;
+      min-height: 60px;
+    }
   </style>
 
   <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
@@ -57,6 +62,12 @@
   </div>
 
   <div class="container soft-sides push-ends">
+    <div class="greeting-skeleton">
+      <crds-greeting
+        default-name="friend"
+        auth-token="">
+      </crds-greeting>
+    </div>
     <p class="lead text-center push-bottom">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
       ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
@@ -72,7 +83,9 @@
       <crds-site-happenings auth-token=""></crds-site-happenings>
     </div>
     <div class="life-stages-skeleton">
-      <crds-recommended-content auth-token></crds-recommended-content>
+      <crds-recommended-content
+        auth-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2NzE4OTQ3MCwibmJmIjoxNTY3MTg3NjcwLCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiIxYTA1MmI4Zi0wMmU1LTQ1N2YtODQxNS01N2I1MzVkZDhkNGIiLCJhdXRoX3RpbWUiOjE1NjcwOTM2NTYsImlkcCI6Imlkc3J2IiwibmFtZSI6Imx1a2VAZG90ZGFzaC5uZXQiLCJhbXIiOlsicGFzc3dvcmQiXX0.jZZt1qpLl_1LTAg2SC76zOEWNNXSpdFllTgl5iC77tH9FFkictjNT1QxSkxy7POvH2Iu9UfLC15w_KqNNs2MT5cUHdYA_HUIFQnNK6GVw82z3uHreIUOntUmA3ZYR_j_pYS5xpmSDMwUUKCef9aKz8G0s_IZzGI4t_rIrL5Oz24EqPWlQMOENELToeI1RNq5hRd-xsS3g44D0e7wPI-fYIl2oyojYs_ghpDu6N9RxqPDZG-9NQUMsiGKvxyFvIRbIoUL1UyR9gEKdcx76XPoX8qcfFRUqAbqa6gdOiLJ7-5v9cFMLNHNDuK4XVwgP5BnLWNylgEWLiE4ZULgwwKQIw">
+      </crds-recommended-content>
     </div>
   </div>
 
@@ -82,7 +95,7 @@
 </body>
 <script>
   // TODO: function for hiding html skeleton
-  document.addEventListener('component rendered', function(e) {
+  document.addEventListener('component rendered', function (e) {
     console.log('component rendered', e.detail.tagName);
   })
 </script>

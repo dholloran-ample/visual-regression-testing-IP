@@ -6,5 +6,6 @@ stories
   .addDecorator(withKnobs)
   .add('<crds-greeting />', () => {
     const token = text('sessionId', '');
-    return `<crds-greeting auth-token=${token}></crds-greeting>`;
+    const defaultName = text('defaultName', '');
+    return `<crds-greeting auth-token=${token} default-name=${defaultName}></crds-greeting>`;
   });
