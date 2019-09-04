@@ -42,7 +42,7 @@ export class NavigationLink {
   isSignOutLink(){
     return this.automationId === 'sh-sign-out';
   }
-
+//TODO add test for class
   render() {
     return (
       <a href={this.href || "#"} data-automation-id={this.automationId} onClick={this.onClick.bind(this)}>
