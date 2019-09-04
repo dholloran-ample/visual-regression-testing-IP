@@ -9,6 +9,7 @@ export class Auth {
   constructor(config: any = {}) {
     this.config = config;
     this.updateCurrentUser();
+    console.log('DEBUG fake auth init')
   }
 
   listen(callback) {

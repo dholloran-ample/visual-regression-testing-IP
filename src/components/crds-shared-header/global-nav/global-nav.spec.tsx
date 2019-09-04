@@ -21,12 +21,12 @@ describe('<global-nav>', () => {
     expect(redirectToRoot).toBeCalled();
   });
 
-  describe('Tests initAuth()', () => {
+  describe('Tests componentWillLoad()', () => {
     it('Checks auth is not initialized if config is undefined', () => {
       expect(this.component.auth).toEqual({});
       expect(this.component.config).toBeUndefined();
 
-      this.component.initAuth();
+      this.component.componentWillLoad();
 
       expect(this.component.auth).toEqual({});
     });
@@ -35,7 +35,7 @@ describe('<global-nav>', () => {
       this.component.auth = { config: 'fake config' }
       expect(this.component.config).toBeUndefined();
 
-      this.component.initAuth();
+      this.component.componentWillLoad();
 
       expect(this.component.auth).toEqual({ config: 'fake config' } );
     });
@@ -44,7 +44,7 @@ describe('<global-nav>', () => {
       this.component.config = {};
       expect(this.component.auth).toEqual({})
 
-      this.component.initAuth();
+      this.component.componentWillLoad();
 
       expect(this.component.auth).not.toEqual({})
     });
@@ -116,23 +116,6 @@ describe('<global-nav>', () => {
     });
   });
 
-  // describe('Tests handleProfileClick()', () => {
-  //   it('Checks event stopped if not authenticated', () => {
-  //     this.component.handleProfileClick(this.fakeEvent);
-
-  //     expect(this.fakeEvent.stopPropagation).toBeCalled();
-  //   });
-
-  //   it('Checks toggleMenu to be called if authenticated', () => {
-  //     this.component.toggleMenu = jest.fn();
-  //     this.component.auth = {authenticated: true}
-
-  //     this.component.handleProfileClick(this.fakeEvent);
-
-  //     expect(this.component.toggleMenu).toBeCalled();
-  //   });
-  // });
-
   describe('Tests setOpenNavName()', () => {
     it('Checks openNavName set and event.preventDefault called', () => {
       this.component.setOpenNavName(this.fakeEvent, 'fake-nav');
@@ -186,7 +169,7 @@ describe('<global-nav>', () => {
     });
 
     it('Checks menu requiring auth is opened if authenticated', () => {
-      this.component.auth = { authenticated: true };
+      this.component.isAuthenticated = true;
       this.component.openNavName = 'give-nav';
 
       this.component.toggleMenu(this.fakeEvent, 'profile-nav', true);
@@ -290,89 +273,9 @@ describe('<global-nav>', () => {
     });
   });
 
-  // describe('Tests toggleMenu()', () => {
-  //   it('Checks open menu is toggled closed', () => {
-  //     this.component.openNavName = 'give-nav';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'give-nav');
-
-  //     expect(this.component.openNavName).toBe('');
-  //   });
-
-  //   it('Checks new menu is toggled', () => {
-  //     this.component.openNavName = 'give-nav';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'main-nav');
-
-  //     expect(this.component.openNavName).toBe('main-nav');
-  //   });
-
-  //   it('Checks closed menu is toggled open', () => {
-  //     this.component.openNavName = '';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'give-nav');
-
-  //     expect(this.component.openNavName).toBe('give-nav');
-  //   });
-
-  //   it('Checks expected doc style is set when nav toggled open', () => {
-  //     this.component.openNavName = '';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'main-nav');
-
-  //     expect(document.body.style.overflow).toBe('hidden');
-  //     expect(document.body.style.position).toBe('absolute');
-  //     expect(document.body.style.width).toBe('100vw');
-  //   });
-
-  //   it('Checks expected doc style is set when nav changes', () => {
-  //     this.component.openNavName = 'give-nav';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'main-nav');
-
-  //     expect(this.component.openNavName).toBe('main-nav');
-
-  //     expect(document.body.style.overflow).toBe('hidden');
-  //     expect(document.body.style.position).toBe('absolute');
-  //     expect(document.body.style.width).toBe('100vw');
-  //   });
-
-  //   it('Checks expected doc style is set when nav toggled closed', () => {
-  //     this.component.openNavName = 'main-nav';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'main-nav');
-
-  //     expect(document.body.style.overflow).toBe('scroll');
-  //     expect(document.body.style.position).toBe('');
-  //     expect(document.body.style.width).toBe('');
-  //   });
-
-  //   it('Checks expected doc style is set when unknown nav toggled "open"', () => {
-  //     this.component.openNavName = 'main-nav';
-
-  //     this.component.toggleMenu(this.fakeEvent, 'super-fake-nav');
-
-  //     expect(this.component.openNavName).toBe('super-fake-nav');
-
-  //     expect(document.body.style.overflow).toBe('scroll');
-  //     expect(document.body.style.position).toBe('');
-  //     expect(document.body.style.width).toBe('');
-  //   });
-  // });
-
   describe('Tests render()', () => {
     beforeEach(() => {
       this.component.data = {give: {}, profile: {}};
-    });
-
-    it('Checks auth is initialized', () => {
-      this.component.config = {};
-
-      expect(this.component.auth).toEqual({});
-
-      this.component.render();
-
-      expect(this.component.auth).not.toEqual({});
     });
 
     it('Checks element returned has main-nav', () => {
