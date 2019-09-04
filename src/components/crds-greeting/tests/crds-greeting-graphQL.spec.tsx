@@ -16,7 +16,6 @@ describe('<greeting-component> GraphQL', () => {
 
   describe('Tests getUserName() with nickname', () => {
     it('checks that first name and nickname of user without nickname set are different', async () => {
-      expect(this.greetingComponent.user).toBeUndefined();
       await this.greetingComponent.getUserName();
       expect(this.greetingComponent.user.contact.firstName).toBe('Leia');
       expect(this.greetingComponent.user.contact.nickName).toBe('Princess');
