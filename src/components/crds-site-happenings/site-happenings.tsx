@@ -5,7 +5,7 @@ import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
 import { CrdsApollo } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
 import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS } from './site-happenings.graphql';
-import { ContentBlockHandler, ContentBlock } from '../../shared/contentBlocks/contentBlocks';
+import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
