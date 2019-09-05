@@ -323,7 +323,7 @@ export class SiteHappenings {
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
     if (
-      (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '') &&
+      (this.user.site === 'Not site specific' || !this.user.site) &&
       this.authToken === this.user.authToken
     )
       return this.renderSetSiteModal();
