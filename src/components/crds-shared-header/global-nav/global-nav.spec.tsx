@@ -1,5 +1,6 @@
 jest.mock('../../../shared/auth');
-import { GlobalNav } from './global-nav';
+import { GlobalNav } from "./global-nav";
+
 //TODO update tests with new toggle system - also include test for fake nav names
 describe('<global-nav>', () => {
   beforeEach(() => {
@@ -116,18 +117,9 @@ describe('<global-nav>', () => {
     });
   });
 
-  describe('Tests setOpenNavName()', () => {
-    it('Checks openNavName set and event.preventDefault called', () => {
-      this.component.setOpenNavName(this.fakeEvent, 'fake-nav');
-
-      expect(this.fakeEvent.preventDefault).toBeCalledTimes(1);
-      expect(this.component.openNavName).toBe('fake-nav');
-    });
-  });
-
-  describe('Tests toggleMenu()', () => {
+  describe('Tests toggleNav()', () => {
     it('Checks event propagation stopped', () =>{
-      this.component.toggleMenu(this.fakeEvent, 'fake-nav');
+      this.component.toggleNav(this.fakeEvent, 'fake-nav');
 
       expect(this.fakeEvent.stopPropagation).toBeCalledTimes(1);
     });
@@ -135,7 +127,7 @@ describe('<global-nav>', () => {
     it('Checks open menu is toggled closed', () => {
       this.component.openNavName = 'give-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'give-nav');
+      this.component.toggleNav(this.fakeEvent, 'give-nav');
 
       expect(this.component.openNavName).toBe('');
       expect(this.fakeEvent.preventDefault).toBeCalledTimes(1);
@@ -144,7 +136,7 @@ describe('<global-nav>', () => {
     it('Checks new menu is toggled', () => {
       this.component.openNavName = 'give-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'main-nav');
+      this.component.toggleNav(this.fakeEvent, 'main-nav');
 
       expect(this.component.openNavName).toBe('main-nav');
       expect(this.fakeEvent.preventDefault).toBeCalledTimes(1);
@@ -153,7 +145,7 @@ describe('<global-nav>', () => {
     it('Checks closed menu is toggled open', () => {
       this.component.openNavName = '';
 
-      this.component.toggleMenu(this.fakeEvent, 'give-nav');
+      this.component.toggleNav(this.fakeEvent, 'give-nav');
 
       expect(this.component.openNavName).toBe('give-nav');
       expect(this.fakeEvent.preventDefault).toBeCalledTimes(1);
@@ -162,7 +154,7 @@ describe('<global-nav>', () => {
     it('Checks menu requiring auth is not opened if not authenticated', () => {
       this.component.openNavName = 'give-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'profile-nav', true);
+      this.component.toggleNav(this.fakeEvent, 'profile-nav', true);
 
       expect(this.component.openNavName).toBe('give-nav');
       expect(this.fakeEvent.preventDefault).not.toBeCalled();
@@ -172,7 +164,7 @@ describe('<global-nav>', () => {
       this.component.isAuthenticated = true;
       this.component.openNavName = 'give-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'profile-nav', true);
+      this.component.toggleNav(this.fakeEvent, 'profile-nav', true);
 
       expect(this.component.openNavName).toBe('profile-nav');
       expect(this.fakeEvent.preventDefault).toBeCalledTimes(1);
@@ -181,7 +173,7 @@ describe('<global-nav>', () => {
     it('Checks expected doc style is set when nav toggled open', () => {
       this.component.openNavName = '';
 
-      this.component.toggleMenu(this.fakeEvent, 'main-nav');
+      this.component.toggleNav(this.fakeEvent, 'main-nav');
 
       expect(document.body.style.overflow).toBe('hidden');
       expect(document.body.style.position).toBe('absolute');
@@ -191,7 +183,7 @@ describe('<global-nav>', () => {
     it('Checks expected doc style is set when nav changes', () => {
       this.component.openNavName = 'give-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'main-nav');
+      this.component.toggleNav(this.fakeEvent, 'main-nav');
 
       expect(this.component.openNavName).toBe('main-nav');
 
@@ -203,7 +195,7 @@ describe('<global-nav>', () => {
     it('Checks expected doc style is set when nav toggled closed', () => {
       this.component.openNavName = 'main-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'main-nav');
+      this.component.toggleNav(this.fakeEvent, 'main-nav');
 
       expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('');
@@ -213,7 +205,7 @@ describe('<global-nav>', () => {
     it('Checks expected doc style is set when unknown nav toggled "open"', () => {
       this.component.openNavName = 'main-nav';
 
-      this.component.toggleMenu(this.fakeEvent, 'super-fake-nav');
+      this.component.toggleNav(this.fakeEvent, 'super-fake-nav');
 
       expect(this.component.openNavName).toBe('super-fake-nav');
 
@@ -240,36 +232,6 @@ describe('<global-nav>', () => {
       expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('');
       expect(document.body.style.width).toBe('');
-    });
-  });
-
-
-  describe('Tests navCloseClasses()', () => {
-    const navNames = ['main-nav', 'give-nav', 'profile-nav'];
-    navNames.forEach(nav => {
-      it(`Checks expected class name returned when ${nav} is open`, () => {
-        this.component.openNavName = nav;
-
-        const classes = this.component.navCloseClasses();
-
-        expect(classes).toBe('close-nav is-showing');
-      });
-    });
-
-    it('Checks expected class name returned when navs are all closed', () => {
-      this.component.openNavName = '';
-
-      const classes = this.component.navCloseClasses();
-
-      expect(classes).toBe('close-nav');
-    });
-
-    it('Checks expected class name returned if unknown nav is "open"', () => {
-      this.component.openNavName = 'super-fake-nav-name';
-
-      const classes = this.component.navCloseClasses();
-
-      expect(classes).toBe('close-nav');
     });
   });
 
@@ -341,90 +303,123 @@ describe('<global-nav>', () => {
     });
   });
 
-  //TODO need better negative tests
-  describe('Tests maybeRenderIcons()', () => {
-    it('Checks falsy returned if non-array given', () => {
-      const rendered = this.component.maybeRenderIcons({icon: '123'});
+  describe('Tests authProfileIcon()', () => {
+    const matchUrl = /url\('(.*)'\);/;
 
-      expect(rendered).toBeFalsy();
+    it('Checks avatarUrl is included in returend string', () => {
+      this.component.auth = { currentUser: { avatarUrl: 'https://fakeAvatar.com'} };
+
+      const newString = this.component.authProfileIcon();
+
+      expect(matchUrl.exec(newString)[1]).toBe('https://fakeAvatar.com');
     });
 
-    it('Checks empty list returned if given empty array', () => {
-      const rendered = this.component.maybeRenderIcons([]);
+    it('Checks url is empty string if auth is undefined', () => {
+      this.component.auth = undefined;
 
-      expect(rendered).toHaveLength(0);
-      expect(rendered).toEqual([]);
+      const newString = this.component.authProfileIcon();
+
+      expect(matchUrl.exec(newString)[1]).toBe('');
     });
 
-    it('Checks element has expected attributes if given config for one icon', () => {
-      const oneIcon = [{
-        'class': 'iconClass',
-        'innerHTML': '123'
-      }]
-      const rendered = this.component.maybeRenderIcons(oneIcon);
+    it('Checks url is empty string if auth.currentUser is undefined', () => {
+      this.component.auth = { };
 
-      expect(rendered).toHaveLength(1);
-      expect(rendered[0].$tag$).toBe('div');
-      expect(rendered[0].$attrs$.class).toBe(oneIcon[0].class);
-      expect(rendered[0].$attrs$.innerHTML).toBe(oneIcon[0].innerHTML);
+      const newString = this.component.authProfileIcon();
+
+      expect(matchUrl.exec(newString)[1]).toBe('');
     });
 
-    it('Checks elements have expected attributes if given config for more than one icon', () => {
-      const manyIcons = [{
-        'class': 'iconClass',
-        'innerHTML': '123'
-      },
-      {
-        'class': 'iconClass2',
-        'innerHTML': '12345'
-      }]
-      const rendered = this.component.maybeRenderIcons(manyIcons);
+    it('Checks url is empty string if auth.currentUser.avatarUrl is undefined', () => {
+      this.component.auth = { currentUser: {} };
 
-      expect(rendered).toHaveLength(manyIcons.length);
-      manyIcons.forEach((icon, i) => {
-        expect(rendered[i].$tag$).toBe('div');
-        expect(rendered[i].$attrs$.class).toBe(icon.class);
-        expect(rendered[i].$attrs$.innerHTML).toBe(icon.innerHTML);
-      });
-    });
+      const newString = this.component.authProfileIcon();
 
-    //authenticated, not authenticated, TODO missing
-    it('Checks element has expected innerHTML when authenticated', () => {
-      this.component.isAuthenticated = true;
-      const oneIcon = [{
-        'class': 'iconClass',
-        'innerHTML': {
-          'authenticated': '123',
-          'not-authenticated': 'nope!'
-        }
-      }]
-
-      const rendered = this.component.maybeRenderIcons(oneIcon);
-
-      expect(rendered).toHaveLength(1);
-      expect(rendered[0].$tag$).toBe('div');
-      expect(rendered[0].$attrs$.class).toBe(oneIcon[0].class);
-      expect(rendered[0].$attrs$.innerHTML).toBe(oneIcon[0].innerHTML.authenticated);
-    });
-
-    it('Checks element has expected innerHTML when not authenticated', () => {
-      this.component.isAuthenticated = false;
-      const oneIcon = [{
-        'class': 'iconClass',
-        'innerHTML': {
-          'authenticated': '123',
-          'not-authenticated': 'nope!'
-        }
-      }]
-
-      const rendered = this.component.maybeRenderIcons(oneIcon);
-
-      expect(rendered).toHaveLength(1);
-      expect(rendered[0].$tag$).toBe('div');
-      expect(rendered[0].$attrs$.class).toBe(oneIcon[0].class);
-      expect(rendered[0].$attrs$.innerHTML).toBe(oneIcon[0].innerHTML['not-authenticated']);
+      expect(matchUrl.exec(newString)[1]).toBe('');
     });
   });
+
+  //TODO need better negative tests
+  // describe('Tests maybeRenderIcon()', () => {
+    // it('Checks falsy returned if non-array given', () => {
+    //   const rendered = this.component.maybeRenderIcon({icon: '123'});
+
+    //   expect(rendered).toBeFalsy();
+    // });
+
+    // it('Checks empty list returned if given empty array', () => {
+    //   const rendered = this.component.maybeRenderIcon([]);
+
+    //   expect(rendered).toHaveLength(0);
+    //   expect(rendered).toEqual([]);
+    // });
+
+    // it('Checks element has expected attributes if given config for one icon', () => {
+    //   const icon = {
+    //     'class': 'iconClass',
+    //     'innerHTML': '123'
+    //   }
+    //   const rendered = this.component.maybeRenderIcon(icon);
+
+    //   expect(rendered.$tag$).toBe('div');
+    //   expect(rendered.$attrs$.class).toBe(icon.class);
+    //   expect(rendered.$attrs$.innerHTML).toBe(icon.innerHTML);
+    // });
+
+    // it('Checks elements have expected attributes if given config for more than one icon', () => {
+    //   const manyIcons = [{
+    //     'class': 'iconClass',
+    //     'innerHTML': '123'
+    //   },
+    //   {
+    //     'class': 'iconClass2',
+    //     'innerHTML': '12345'
+    //   }]
+    //   const rendered = this.component.maybeRenderIcon(manyIcons);
+
+    //   expect(rendered).toHaveLength(manyIcons.length);
+    //   manyIcons.forEach((icon, i) => {
+    //     expect(rendered[i].$tag$).toBe('div');
+    //     expect(rendered[i].$attrs$.class).toBe(icon.class);
+    //     expect(rendered[i].$attrs$.innerHTML).toBe(icon.innerHTML);
+    //   });
+    // });
+
+    //authenticated, not authenticated, TODO missing
+  //   it('Checks element has expected innerHTML when authenticated', () => {
+  //     this.component.isAuthenticated = true;
+  //     const authIcon = {
+  //       'class': 'iconClass',
+  //       'innerHTML': {
+  //         'authenticated': '123',
+  //         'not-authenticated': 'nope!'
+  //       }
+  //     }
+
+  //     const rendered = this.component.maybeRenderIcon(authIcon);
+
+  //     expect(rendered.$tag$).toBe('div');
+  //     expect(rendered.$attrs$.class).toBe(authIcon.class);
+  //     expect(rendered.$attrs$.innerHTML).toBe(authIcon.innerHTML.authenticated);
+  //   });
+
+  //   it('Checks element has expected innerHTML when not authenticated', () => {
+  //     this.component.isAuthenticated = false;
+  //     const authIcon = {
+  //       'class': 'iconClass',
+  //       'innerHTML': {
+  //         'authenticated': '123',
+  //         'not-authenticated': 'nope!'
+  //       }
+  //     }
+
+  //     const rendered = this.component.maybeRenderIcon(authIcon);
+
+  //     expect(rendered.$tag$).toBe('div');
+  //     expect(rendered.$attrs$.class).toBe(authIcon.class);
+  //     expect(rendered.$attrs$.innerHTML).toBe(authIcon.innerHTML['not-authenticated']);
+  //   });
+  // });
   //TODO need thorough renderNavLink test
 
   // describe('Tests renderNavLink()', () => {
