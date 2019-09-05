@@ -16,7 +16,6 @@ describe('<crds-site-happenings> Render', () => {
     });
 
     it('Checks setSiteModal not returned for authenticated user with site is already selected', () => {
-      this.happenings.authToken = '123'; //Value doesn't matter here
       this.happenings.user.site = 'Oakley';
 
       const modal = this.happenings.maybeRenderSetSiteModal();
@@ -26,8 +25,9 @@ describe('<crds-site-happenings> Render', () => {
     const userSiteNotSelected = ['Not site specific', null, ''];
     userSiteNotSelected.forEach(site => {
       it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, () => {
-        this.happenings.authToken = '123'; //Value doesn't matter here
+        this.happenings.authToken = '123';
         this.happenings.user.site = site;
+        this.happenings.user.authToken = '123';
 
         const render = this.happenings.maybeRenderSetSiteModal();
 
@@ -48,7 +48,9 @@ describe('<crds-site-happenings> Render', () => {
     });
 
     it('Checks card carousel is returned if there are happenings', () => {
+      this.happenings.authToken = '123';
       this.happenings.selectedSite = 'Oakley';
+      this.happenings.user.authToken = '123';
       this.happenings.happenings = [
         {
           targetAudience: ['Oakley', 'Mason'],
@@ -75,7 +77,9 @@ describe('<crds-site-happenings> Render', () => {
     });
 
     it('Checks card carousel contains only happenings for selected site', () => {
+      this.happenings.authToken = '123';
       this.happenings.selectedSite = 'Oakley';
+      this.happenings.user.authToken = '123';
       this.happenings.happenings = [
         {
           targetAudience: ['Oakley'],
