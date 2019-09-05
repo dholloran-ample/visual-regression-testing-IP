@@ -258,7 +258,7 @@ export class CrdsRecommendedContent {
         <h2 class="component-header flush-bottom">
           {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
         </h2>
-        <p class="push-half-top">
+        <p class="push-half-top color-gray">
           {this.recommendedContent.length
             ? selectedLifeStage.description
             : 'Which of these best describes your stage of life? (Pick one)'}
