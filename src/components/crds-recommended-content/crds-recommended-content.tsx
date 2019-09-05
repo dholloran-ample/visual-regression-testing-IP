@@ -258,7 +258,7 @@ export class CrdsRecommendedContent {
         <h2 class="component-header flush-bottom">
           {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
         </h2>
-        <p class="push-half-top color-gray">
+        <p class="push-half-top push-half-bottom color-gray">
           {this.recommendedContent.length
             ? selectedLifeStage.description
             : 'Which of these best describes your stage of life? (Pick one)'}
@@ -282,7 +282,7 @@ export class CrdsRecommendedContent {
             {!!this.recommendedContent.length && (
               <div class="life-stage-selected">
                 <a
-                  class="btn btn-gray-light btn-outline btn-sm back-btn"
+                  class="btn btn-gray-light btn-outline btn-sm back-btn flush"
                   onClick={event => this.handleBackClick(event)}
                 >
                   change
