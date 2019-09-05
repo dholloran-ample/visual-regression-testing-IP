@@ -16,9 +16,10 @@ export class SiteHappenings {
   private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
   private apolloClient: ApolloClient<{}>;
+
   private user: CrdsUser = { name: '', site: '' };
   private copy: ContentBlock[] = [];
-
+        
   @Prop() authToken: string;
   @State() selectedSite: string = 'Churchwide';
 
@@ -353,7 +354,6 @@ export class SiteHappenings {
    */
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
-
     if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
       return this.renderSetSiteModal();
     else return '';
