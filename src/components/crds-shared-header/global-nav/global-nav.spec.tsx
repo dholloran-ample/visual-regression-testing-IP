@@ -1,7 +1,6 @@
 jest.mock('../../../shared/auth');
 import { GlobalNav } from "./global-nav";
 
-//TODO update tests with new toggle system - also include test for fake nav names
 describe('<global-nav>', () => {
   beforeEach(() => {
     this.component = new GlobalNav();
@@ -13,7 +12,7 @@ describe('<global-nav>', () => {
     }
   });
 
-  it('should redirect users following signout', () => {
+  it('should redirect users following sign out', () => {
     this.component.auth = {
       signOut: jest.fn()
     };
@@ -338,133 +337,4 @@ describe('<global-nav>', () => {
       expect(matchUrl.exec(newString)[1]).toBe('');
     });
   });
-
-  //TODO need better negative tests
-  // describe('Tests maybeRenderIcon()', () => {
-    // it('Checks falsy returned if non-array given', () => {
-    //   const rendered = this.component.maybeRenderIcon({icon: '123'});
-
-    //   expect(rendered).toBeFalsy();
-    // });
-
-    // it('Checks empty list returned if given empty array', () => {
-    //   const rendered = this.component.maybeRenderIcon([]);
-
-    //   expect(rendered).toHaveLength(0);
-    //   expect(rendered).toEqual([]);
-    // });
-
-    // it('Checks element has expected attributes if given config for one icon', () => {
-    //   const icon = {
-    //     'class': 'iconClass',
-    //     'innerHTML': '123'
-    //   }
-    //   const rendered = this.component.maybeRenderIcon(icon);
-
-    //   expect(rendered.$tag$).toBe('div');
-    //   expect(rendered.$attrs$.class).toBe(icon.class);
-    //   expect(rendered.$attrs$.innerHTML).toBe(icon.innerHTML);
-    // });
-
-    // it('Checks elements have expected attributes if given config for more than one icon', () => {
-    //   const manyIcons = [{
-    //     'class': 'iconClass',
-    //     'innerHTML': '123'
-    //   },
-    //   {
-    //     'class': 'iconClass2',
-    //     'innerHTML': '12345'
-    //   }]
-    //   const rendered = this.component.maybeRenderIcon(manyIcons);
-
-    //   expect(rendered).toHaveLength(manyIcons.length);
-    //   manyIcons.forEach((icon, i) => {
-    //     expect(rendered[i].$tag$).toBe('div');
-    //     expect(rendered[i].$attrs$.class).toBe(icon.class);
-    //     expect(rendered[i].$attrs$.innerHTML).toBe(icon.innerHTML);
-    //   });
-    // });
-
-    //authenticated, not authenticated, TODO missing
-  //   it('Checks element has expected innerHTML when authenticated', () => {
-  //     this.component.isAuthenticated = true;
-  //     const authIcon = {
-  //       'class': 'iconClass',
-  //       'innerHTML': {
-  //         'authenticated': '123',
-  //         'not-authenticated': 'nope!'
-  //       }
-  //     }
-
-  //     const rendered = this.component.maybeRenderIcon(authIcon);
-
-  //     expect(rendered.$tag$).toBe('div');
-  //     expect(rendered.$attrs$.class).toBe(authIcon.class);
-  //     expect(rendered.$attrs$.innerHTML).toBe(authIcon.innerHTML.authenticated);
-  //   });
-
-  //   it('Checks element has expected innerHTML when not authenticated', () => {
-  //     this.component.isAuthenticated = false;
-  //     const authIcon = {
-  //       'class': 'iconClass',
-  //       'innerHTML': {
-  //         'authenticated': '123',
-  //         'not-authenticated': 'nope!'
-  //       }
-  //     }
-
-  //     const rendered = this.component.maybeRenderIcon(authIcon);
-
-  //     expect(rendered.$tag$).toBe('div');
-  //     expect(rendered.$attrs$.class).toBe(authIcon.class);
-  //     expect(rendered.$attrs$.innerHTML).toBe(authIcon.innerHTML['not-authenticated']);
-  //   });
-  // });
-  //TODO need thorough renderNavLink test
-
-  // describe('Tests renderNavLink()', () => {
-  //   const mainMenu = {
-  //     'class-name': 'menu-container',
-  //     'nav-name': 'main-nav',
-  //     'href': '',
-  //     'automation-id': 'sh-menu',
-  //     'label': 'menu',
-  //     'icons': [
-  //       {
-  //         'class': 'menu',
-  //         'innerHTML': '123'
-  //       },
-  //       {
-  //         'class': 'close',
-  //         'innerHTML': '456'
-  //       }
-  //     ]
-  //   }
-
-  //   it('Checks a simple nav-menu container has expected elements when closed', () => {
-  //     const rendered = this.component.renderNavLink(mainMenu);
-
-  //     expect(rendered.$tag$).toBe('a');
-  //     expect(rendered.$attrs$['data-automation-id']).toBe(mainMenu['automation-id']);
-  //     expect(rendered.$attrs$['href']).toBe('');
-  //     expect(rendered.$attrs$['data-label']).toBe(mainMenu['label']);
-  //     expect(rendered.$attrs$['class']).toBe(mainMenu['class-name']);
-
-  //     expect(rendered.$children$).toHaveLength(2);
-  //     mainMenu.icons.forEach((icon, i) => {
-  //       expect(rendered.$children$[i].$tag$).toBe('div');
-  //       expect(rendered.$children$[i].$attrs$.class).toBe(icon.class);
-  //       expect(rendered.$children$[i].$attrs$.innerHTML).toBe(icon.innerHTML);
-  //     });
-  //   });
-
-  //   it('Checks a simple nav-menu container has expected elements when closed', () => {
-  //     this.component.openNavName = 'main-nav';
-  //     const rendered = this.component.renderNavLink(mainMenu);
-
-  //     expect(rendered.$attrs$['data-automation-id']).toBe(mainMenu['automation-id']);
-  //     expect(rendered.$attrs$['class']).toBe(`${mainMenu['class-name']} nav-is-showing`);
-  //   });
-  //   //TODO start with positive tests, then add negative once all situations covered
-  // });
 });

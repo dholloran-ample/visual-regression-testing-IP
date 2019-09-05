@@ -1,32 +1,5 @@
 import { SharedHeader } from "./crds-shared-header";
 
-const navPayload = [
-  {
-    "title": "Watch, Listen, Read",
-    "description": "Videos, music, articles and podcasts",
-    "background": "//crds-media.imgix.net/...",
-    "children": [
-      [
-        {
-          "title": "All Media",
-          "href": "https://int.crossroads.net/media",
-          "top_level": true,
-          "automation-id": "sh-all-media"
-        }
-      ],
-      "Types"
-    ]
-  },
-  {
-    "title": "Get Connected",
-    "description": "Groups, camps, serve locally and globally, kids",
-    "background": "//crds-media.imgix.net/...",
-    "children": [
-      []
-    ]
-  }
-]
-
 describe('<crds-shared-header>', () => {
   beforeEach(() => {
     this.component = new SharedHeader();

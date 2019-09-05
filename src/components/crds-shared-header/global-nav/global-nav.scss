@@ -110,7 +110,7 @@ $icon-size: 22px;
   display: flex;
   text-decoration: none;
 
-  &::after { //Old version
+  &::after {
     @media (min-width: $screen-sm) {
       align-self: center;
       bottom: 2px;

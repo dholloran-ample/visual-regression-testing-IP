@@ -69,7 +69,6 @@ export namespace Components {
     'isNavShowing': boolean;
   }
   interface GlobalNav {
-    'config': Object;
     'data': JSON;
     'env': string;
   }
@@ -285,7 +284,6 @@ declare namespace LocalJSX {
     'isNavShowing'?: boolean;
   }
   interface GlobalNav extends JSXBase.HTMLAttributes<HTMLGlobalNavElement> {
-    'config'?: Object;
     'data'?: JSON;
     'env'?: string;
   }

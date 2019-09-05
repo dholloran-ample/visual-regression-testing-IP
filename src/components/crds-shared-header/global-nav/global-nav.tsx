@@ -3,9 +3,9 @@ import Fragment from '../../../shared/fragment';
 
 // import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
+import * as iconData from './global-nav-icons.json';
+
 import { Auth } from '../../../shared/__mocks__/auth';
-//TODO need to simplify around profile auth
-import * as iconData from './global-nav-icon.json';
 
 @Component({
   tag: 'global-nav',
@@ -13,26 +13,24 @@ import * as iconData from './global-nav-icon.json';
   shadow: true
 })
 export class GlobalNav {
-  @Prop() config: Object;
   @Prop() env: string;
   @Prop() data: JSON;
 
   @State() openNavName: string = '';
   @State() isAuthenticated: boolean = false;
-  @State() offset: number;
+  @State() topOffset: number;
 
   private element: HTMLElement;
-  //private navNames = ['main-nav', 'give-nav', 'profile-nav'];
 
   auth: any = {};
 
   componentDidLoad() {
-    this.offset = this.element.getBoundingClientRect().top + window.scrollY;
+    this.topOffset = this.element.getBoundingClientRect().top + window.scrollY;
   }
 
   componentWillLoad() {
-    if (!this.config || this.auth.config) return;
-    this.auth = new Auth(Object.assign(this.config, { env: this.env }));
+    if (!(this.data as any).config || this.auth.config) return;
+    this.auth = new Auth(Object.assign((this.data as any).config, { env: this.env }));
     this.auth.listen(this.authChangeCallback.bind(this));
   }
 
@@ -63,7 +61,7 @@ export class GlobalNav {
 
     if (this.openNavName === navName) {
       event.preventDefault();
-      this.openNavName = '';//Nav can always close
+      this.openNavName = '';
     } else if (navRequiresAuth) {
       if (this.isAuthenticated) {
         event.preventDefault();
@@ -105,7 +103,7 @@ export class GlobalNav {
         <header
           ref={el => (this.element = el)}
           class={this.isNavOpen() ? 'nav-is-showing' : ''}
-          style={{ top: `${this.openNavName === 'profile-nav' || this.openNavName === 'give-nav' ? this.offset : 0}px` }}
+          style={{ top: `${this.openNavName === 'profile-nav' || this.openNavName === 'give-nav' ? this.topOffset : 0}px` }}
         >
           <div>
             <div class="global-nav-items">
@@ -169,5 +167,4 @@ export class GlobalNav {
       </Fragment>
     );
   }
-  //TODO if profile picture set, changing the size of the dev tools shrinks the picture - this doesn't happen with give. Prevent this from happening. This is an existing bug.
-}//230
+}

@@ -9,12 +9,10 @@ export class Auth {
   constructor(config: any = {}) {
     this.config = config;
     this.updateCurrentUser();
-    console.log('DEBUG fake auth init')
   }
 
   listen(callback) {
     const token = '123'; //pretend we're signed in?
-    console.log('DEBUG in fake auth auth changed');
 
     if (!token) return (this.authenticated = false);
     this.authenticated = true;
@@ -35,7 +33,8 @@ export class Auth {
     return (this.currentUser = {
       id: '4488274',
       name: 'Ben',
-      avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248'
+      avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7795440',
+      REALavatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248'
     });
   }
 }

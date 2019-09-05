@@ -1,7 +1,4 @@
 import { Component, Element, Prop, State, Listen, h } from '@stencil/core';
-import axios from 'axios';
-import { Utils } from '../../shared/utils';
-import Fragment from '../../shared/fragment';
 import { testPayload } from './test_sh_data';
 
 @Component({
@@ -18,10 +15,6 @@ export class SharedHeader {
 
   @Element() element: HTMLElement;
 
-  /**
-   * Fires before render...
-   */
-
   public componentWillLoad() {
     this.data = testPayload;
     // const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
@@ -36,7 +29,6 @@ export class SharedHeader {
   public render() {
     return (
       <global-nav
-        config={this.data.config} //TODO move this into global-nav?
         env={this.env}
         data={this.data}
       />
