@@ -30,11 +30,19 @@ h5 {
 
   .life-stages-header {
     display: flex;
+    flex-direction: column;
     padding: 1.875rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
 
     .life-stage-selected {
       font-size: .875rem;
-      margin-left: auto;
+
+      @media (min-width: 768px) {
+        margin-left: auto;
+      }
     }
   }
 }
