@@ -9,6 +9,10 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
+  interface CrdsGreeting {
+    'authToken': string;
+    'defaultName': string;
+  }
   interface CrdsHeartButton {
     /**
     * Unique identifier for likeable resource
@@ -31,6 +35,9 @@ export namespace Components {
     'isActive': boolean;
     'label': string;
     'onModalClose': Function;
+  }
+  interface CrdsRecommendedContent {
+    'authToken': string;
   }
   interface CrdsSharedFooter {
     'env': string;
@@ -79,6 +86,7 @@ export namespace Components {
   }
   interface NavLink {
     'automationId': string;
+    'handleSignOut': Function;
     'href': string;
   }
   interface NavSection {
@@ -93,16 +101,21 @@ export namespace Components {
     'slug': string;
   }
   interface ProfileNav {
-    'config': any;
     'currentUser': any;
     'data': JSON;
-    'onSignOut': Function;
+    'handleSignOut': Function;
     'profileNavIsShowing': boolean;
   }
 }
 
 declare global {
 
+
+  interface HTMLCrdsGreetingElement extends Components.CrdsGreeting, HTMLStencilElement {}
+  var HTMLCrdsGreetingElement: {
+    prototype: HTMLCrdsGreetingElement;
+    new (): HTMLCrdsGreetingElement;
+  };
 
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
   var HTMLCrdsHeartButtonElement: {
@@ -114,6 +127,12 @@ declare global {
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
     new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsRecommendedContentElement extends Components.CrdsRecommendedContent, HTMLStencilElement {}
+  var HTMLCrdsRecommendedContentElement: {
+    prototype: HTMLCrdsRecommendedContentElement;
+    new (): HTMLCrdsRecommendedContentElement;
   };
 
   interface HTMLCrdsSharedFooterElement extends Components.CrdsSharedFooter, HTMLStencilElement {}
@@ -194,8 +213,10 @@ declare global {
     new (): HTMLProfileNavElement;
   };
   interface HTMLElementTagNameMap {
+    'crds-greeting': HTMLCrdsGreetingElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
+    'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-shared-header': HTMLCrdsSharedHeaderElement;
     'crds-site-happenings': HTMLCrdsSiteHappeningsElement;
@@ -213,6 +234,10 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
+    'authToken'?: string;
+    'defaultName'?: string;
+  }
   interface CrdsHeartButton extends JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement> {
     /**
     * Unique identifier for likeable resource
@@ -235,6 +260,9 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
     'label'?: string;
     'onModalClose'?: Function;
+  }
+  interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {
+    'authToken'?: string;
   }
   interface CrdsSharedFooter extends JSXBase.HTMLAttributes<HTMLCrdsSharedFooterElement> {
     'env'?: string;
@@ -283,8 +311,8 @@ declare namespace LocalJSX {
   }
   interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
     'automationId'?: string;
+    'handleSignOut'?: Function;
     'href'?: string;
-    'onSignOutClicked'?: (event: CustomEvent<any>) => void;
   }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'activeSection'?: any;
@@ -298,16 +326,17 @@ declare namespace LocalJSX {
     'slug'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
-    'config'?: any;
     'currentUser'?: any;
     'data'?: JSON;
-    'onSignOut'?: Function;
+    'handleSignOut'?: Function;
     'profileNavIsShowing'?: boolean;
   }
 
   interface IntrinsicElements {
+    'crds-greeting': CrdsGreeting;
     'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
+    'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
     'crds-shared-header': CrdsSharedHeader;
     'crds-site-happenings': CrdsSiteHappenings;

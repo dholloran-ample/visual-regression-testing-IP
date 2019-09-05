@@ -162,7 +162,7 @@ export class GlobalNav {
 
             <profile-nav
               profileNavIsShowing={this.profileNavIsShowing && this.authenticated}
-              onSignOut={this.handleSignOut.bind(this)}
+              handleSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
               data={this.profileData}
             />
