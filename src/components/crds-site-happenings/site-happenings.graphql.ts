@@ -12,6 +12,7 @@ export const GET_USER = gql`
   {
     user {
       site {
+        id
         name
       }
     }
