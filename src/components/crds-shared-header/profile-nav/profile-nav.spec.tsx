@@ -143,17 +143,16 @@ describe('<profile-nav>', () => {
       expect(rendered.$children$[0].$attrs$.class).toBe('profile-nav-img');
 
       const renderedName = rendered.$children$[1].$children$[0].$children$[0];
-      expect(renderedName.$children$[0].$text$).toMatch(/\W?Hello Ben\W?/);
+      expect(renderedName.$text$).toMatch(/\W?Hello Ben\W?/);
 
-      const renderedNavLinks = rendered.$children$[1].$children$[0].$children$[1].$children$[0].$children$;
-
+      const renderedNavLinks = rendered.$children$[1].$children$[1].$children$[0];
       [0,1,2].forEach(navLinkIndex => {
-        expect(renderedNavLinks[navLinkIndex].$children$[0].$tag$).toEqual('a')
-        expect(renderedNavLinks[navLinkIndex].$children$[0].$attrs$['data-automation-id']).toBe(profileNav.children[0][navLinkIndex]['automation-id']);
+        expect(renderedNavLinks.$children$[navLinkIndex].$children$[0].$tag$).toBe('a')
+        expect(renderedNavLinks.$children$[navLinkIndex].$children$[0].$attrs$['data-automation-id']).toBe(profileNav.children[0][navLinkIndex]['automation-id']);
       })
 
-      const renderedHeader = rendered.$children$[1].$children$[0].$children$[2];
-      expect(renderedHeader.$children$[0].$children$[0].$text$).toEqual(profileNav.children[1]);
+      const renderedHeader = rendered.$children$[1].$children$[2].$children$[0];
+      expect(renderedHeader.$children$[0].$text$).toEqual(profileNav.children[1]);
     });
   });
 });

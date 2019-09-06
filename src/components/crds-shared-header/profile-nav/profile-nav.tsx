@@ -39,7 +39,7 @@ export class ProfileMenu {
               }')`
           }}
         />
-        <div>{this.simpleNav.renderNav(this.data, this.navTitle())}</div>
+        {this.simpleNav.renderNav(this.data, this.navTitle())}
       </div>
     );
   }
