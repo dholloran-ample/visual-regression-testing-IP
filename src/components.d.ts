@@ -65,15 +65,15 @@ export namespace Components {
     'src': string;
   }
   interface GiveNav {
-    'data': JSON;
+    'data': any;
     'isNavShowing': boolean;
   }
   interface GlobalNav {
-    'data': JSON;
+    'data': any;
     'env': string;
   }
   interface MainNav {
-    'data': JSON;
+    'data': any;
     'isNavShowing': boolean;
     'promoData': string;
   }
@@ -92,7 +92,7 @@ export namespace Components {
   }
   interface ProfileNav {
     'currentUser': any;
-    'data': JSON;
+    'data': any;
     'handleSignOut': Function;
     'isNavShowing': boolean;
   }
@@ -280,15 +280,15 @@ declare namespace LocalJSX {
     'src'?: string;
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
-    'data'?: JSON;
+    'data'?: any;
     'isNavShowing'?: boolean;
   }
   interface GlobalNav extends JSXBase.HTMLAttributes<HTMLGlobalNavElement> {
-    'data'?: JSON;
+    'data'?: any;
     'env'?: string;
   }
   interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {
-    'data'?: JSON;
+    'data'?: any;
     'isNavShowing'?: boolean;
     'promoData'?: string;
   }
@@ -307,7 +307,7 @@ declare namespace LocalJSX {
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
     'currentUser'?: any;
-    'data'?: JSON;
+    'data'?: any;
     'handleSignOut'?: Function;
     'isNavShowing'?: boolean;
   }

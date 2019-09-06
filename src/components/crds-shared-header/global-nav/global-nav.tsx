@@ -14,7 +14,7 @@ import { Auth } from '../../../shared/__mocks__/auth';
 })
 export class GlobalNav {
   @Prop() env: string;
-  @Prop() data: JSON;
+  @Prop() data: any = {};
 
   @State() openNavName: string = '';
   @State() isAuthenticated: boolean = false;
@@ -29,8 +29,8 @@ export class GlobalNav {
   }
 
   componentWillLoad() {
-    if (!(this.data as any).config || this.auth.config) return;
-    this.auth = new Auth(Object.assign((this.data as any).config, { env: this.env }));
+    if (!this.data.config || this.auth.config) return;
+    this.auth = new Auth(Object.assign(this.data.config, { env: this.env }));
     this.auth.listen(this.authChangeCallback.bind(this));
   }
 
@@ -151,14 +151,14 @@ export class GlobalNav {
               isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
               handleSignOut={this.handleSignOut.bind(this)}
               currentUser={this.auth.currentUser}
-              data={(this.data as any).profile}
+              data={this.data.profile}
             />
           </div>
         </header>
         <main-nav
           isNavShowing={this.openNavName === 'main-nav'}
-          data={(this.data as any).nav}
-          promoData={(this.data as any).promos}
+          data={this.data.nav}
+          promoData={this.data.promos}
         />
 
         <div class={`close-nav ${this.isNavOpen() ? 'is-showing' : ''}`}>

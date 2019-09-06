@@ -32,7 +32,7 @@ describe('<main-nav>', () => {
     this.component = new MainMenu();
   });
 
-  describe('Tests navClasses()', () => {
+  describe('Tests getNavClass()', () => {
     const scenarios = [
       {
         mainNav: true,
@@ -61,7 +61,7 @@ describe('<main-nav>', () => {
         this.component.isNavShowing = navCombo.mainNav;
         this.component.activeSection = navCombo.activeSection;
 
-        const classes = this.component.navClasses();
+        const classes = this.component.getNavClass();
 
         expect(classes).toBe(navCombo.className)
       });
@@ -69,54 +69,64 @@ describe('<main-nav>', () => {
   });
 
   describe('Tests maybeRenderSections()', () => {
-    it('Checks null is returned if payload missing', () => {
-      const rendered = this.component.maybeRenderSections(undefined);
+    it('Checks falsy  returned if data is empty list', () => {
+      this.component.data = [];
+
+      const rendered = this.component.maybeRenderSections();
 
       expect(rendered).toBeFalsy();
     });
 
     it('Checks list of nav-section are returned for each entry in the payload', () => {
-      const rendered = this.component.maybeRenderSections(navPayload);
+      this.component.data = navPayload;
 
-      expect(rendered[0].$attrs$.sectionName).toBe('watch-listen-read');
-      expect(rendered[1].$attrs$.sectionName).toBe('get-connected');
+      const rendered = this.component.maybeRenderSections();
+
+      expect(rendered.$children$[0].$attrs$.sectionName).toBe('watch-listen-read');
+      expect(rendered.$children$[1].$attrs$.sectionName).toBe('get-connected');
 
       [0,1].forEach(elementIndex => {
-        expect(rendered[elementIndex].$attrs$.isActive).toBe(false);
-        expect(rendered[elementIndex].$tag$).toBe('nav-section');
-        expect(rendered[elementIndex].$children$[0].$children$[0].$text$).toBe(navPayload[elementIndex].title);
-        expect(rendered[elementIndex].$children$[1].$children$[0].$text$).toBe(navPayload[elementIndex].description);
+        expect(rendered.$children$[elementIndex].$attrs$.isActive).toBe(false);
+        expect(rendered.$children$[elementIndex].$tag$).toBe('nav-section');
+        expect(rendered.$children$[elementIndex].$children$[0].$children$[0].$text$).toBe(navPayload[elementIndex].title);
+        expect(rendered.$children$[elementIndex].$children$[1].$children$[0].$text$).toBe(navPayload[elementIndex].description);
       });
     });
 
     it('Checks expected nav-section is marked active', () => {
+      this.component.data = navPayload;
       this.component.activeSection = 'get-connected'
-      const rendered = this.component.maybeRenderSections(navPayload);
 
-      expect(rendered[0].$attrs$.isActive).toBe(false);
-      expect(rendered[1].$attrs$.isActive).toBe(true);
+      const rendered = this.component.maybeRenderSections();
+
+      expect(rendered.$children$[0].$attrs$.isActive).toBe(false);
+      expect(rendered.$children$[1].$attrs$.isActive).toBe(true);
     });
   });
 
   describe('Tests maybeRenderActiveSubNav()', () => {
-    it('Checks null is returned if payload missing', () => {
-      const rendered = this.component.maybeRenderActiveSubNav(undefined);
+    it('Checks falsy  returned if data is empty list', () => {
+      this.component.data = [];
+
+      const rendered = this.component.maybeRenderActiveSubNav();
 
       expect(rendered).toBeFalsy();
     });
 
     it('Checks falsy returned if activeSection is not in nav data', () => {
+      this.component.data = navPayload;
       this.component.activeSection = 'fake-nav';
 
-      const rendered = this.component.maybeRenderActiveSubNav(navPayload);
+      const rendered = this.component.maybeRenderActiveSubNav();
 
       expect(rendered).toBeFalsy();
     });
 
     it('Checks nav-section-subnav is returned for active section', () => {
+      this.component.data = navPayload;
       this.component.activeSection = 'get-connected';
 
-      const rendered = this.component.maybeRenderActiveSubNav(navPayload);
+      const rendered = this.component.maybeRenderActiveSubNav();
 
       expect(rendered.$attrs$.subNavName).toBe('get-connected');
       expect(rendered.$attrs$.isActive).toBe(true);
@@ -130,9 +140,10 @@ describe('<main-nav>', () => {
 
   describe('Tests renderSubNavOrCtas()', () => {
     it('Checks subnav is returned if a section is active', () => {
+      this.component.data = navPayload;
       this.component.activeSection = 'get-connected';
 
-      const rendered = this.component.renderSubNavOrCtas(navPayload);
+      const rendered = this.component.renderSubNavOrCtas();
 
       expect(rendered.$tag$).toBe('div');
       expect(rendered.$attrs$.class).toBe('subnavigation');
@@ -144,9 +155,10 @@ describe('<main-nav>', () => {
     });
 
     it('Checks ctas are returned if no section is active', () => {
+      this.component.data = navPayload;
       this.component.activeSection = undefined;
 
-      const rendered = this.component.renderSubNavOrCtas(navPayload);
+      const rendered = this.component.renderSubNavOrCtas();
 
       expect(rendered.$tag$).toBe('nav-ctas');
     });

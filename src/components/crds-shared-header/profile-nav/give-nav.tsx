@@ -8,7 +8,7 @@ import { SimpleNavHelper } from './simple-nav-helper';
 })
 export class GiveMenu {
   @Prop() isNavShowing: boolean = true;
-  @Prop() data: JSON;
+  @Prop() data: any = {};
   private simpleNav: SimpleNavHelper;
 
   constructor() {
@@ -16,8 +16,7 @@ export class GiveMenu {
   }
 
   private navTitle() {
-    const data = (this.data as any)
-    return (data && data.title) || '';
+    return (this.data && this.data.title) || '';
   }
 
   private backgroundImageURL(data) {

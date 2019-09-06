@@ -8,7 +8,7 @@ describe('<crds-shared-header>', () => {
 
   describe('Tests componentWillLoad()', () => {
     it('Checks data is retrieved', async () => {
-      expect(this.component.data).toEqual([]);
+      expect(this.component.data).toEqual({});
 
       await this.component.componentWillLoad();
 
