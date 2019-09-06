@@ -21,17 +21,16 @@ export class SiteHappenings {
   private user: CrdsUser = null;
   private contentBlockHandler: ContentBlockHandler;
 
-  @State() selectedSite: string = 'Churchwide';
+  @State() selectedSite: string;
   @Prop() authToken: string;
 
   @Element() host: HTMLStencilElement;
-
-
 
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
+      this.getUser();
     }
   }
 
@@ -48,20 +47,14 @@ export class SiteHappenings {
   /** Stencil Lifecycle methods **/
   public componentDidLoad() {
     Utils.trackInView(this.host, 'HappeningComponent', this.getInViewDetails.bind(this));
-    const renderedEvent = new CustomEvent('component rendered', {
-      detail: this.host
-    });
-    document.dispatchEvent(renderedEvent);
   }
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    return Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy()]);
-  }
-
-  public componentWillRender() {
-    if (!this.user || !this.authToken) return this.getUser();
+    Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
+      this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
+    });
   }
 
   public componentDidRender() {
@@ -70,7 +63,6 @@ export class SiteHappenings {
       this.selectedSite
     );
   }
-
 
   /** GraphQL I/O **/
   private getSites(): Promise<any> {
@@ -86,12 +78,12 @@ export class SiteHappenings {
   }
 
   private getUser(): Promise<any> {
-    if (!this.authToken) return Promise.resolve(this.resetUser());
+    if (!!!this.authToken) return Promise.resolve(this.resetUser());
     return this.apolloClient
       .query({ query: GET_USER })
       .then(response => {
-        let user = response.data.user;
-        let siteName = user.site && user.site.name;
+        const user = response.data.user;
+        const siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
         this.validateSelectedSite(this.user.site);
         return;
@@ -130,7 +122,7 @@ export class SiteHappenings {
 
   private resetUser() {
     this.user = null;
-    this.selectedSite = 'Churchwide';
+    this.validateSelectedSite('Churchwide');
   }
 
   /**
@@ -167,11 +159,9 @@ export class SiteHappenings {
       siteName === 'Anywhere' ||
       siteName === ''
     ) {
-      this.selectedSite = 'Churchwide';
-    } else if (this.contentfulSites.includes(siteName)) this.selectedSite = siteName;
-    else {
-      this.selectedSite = 'Churchwide';
+      siteName = 'Churchwide';
     }
+    if (this.contentfulSites.includes(siteName)) this.selectedSite = siteName;
   }
 
   /**
@@ -238,7 +228,7 @@ export class SiteHappenings {
     let params = {
       title: target.tagName === 'A' ? target.innerText.toLowerCase() : target.alt.toLowerCase(),
       url: target.tagName === 'A' ? target.href : target.parentNode.href,
-      userSite: this.user && this.user.site || 'logged out',
+      userSite: (this.user && this.user.site) || 'logged out',
       selectedSite: this.selectedSite
     };
 
@@ -279,9 +269,41 @@ export class SiteHappenings {
   }
 
   /**
+   * Map 4 fake cards while processing data
+   * from ctfl
+   */
+  private renderHappeningsSkeleton() {
+    return [1, 2, 3, 4].map(() => (
+      <div class="card-skeleton">
+        <svg
+          width="270px"
+          height="302px"
+          viewBox="0 0 323 302"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns-xlink="http://www.w3.org/1999/xlink"
+        >
+          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.5">
+            <g id="Short-skeleton-double" transform="translate(-30.000000, -30.000000)" fill="#979797">
+              <g transform="translate(30.000000, 30.000000)">
+                <rect id="bg-recent-1-copy" x="0" y="0" width="323" height="182" rx="1" />
+                <rect id="Rectangle" x="0" y="196" width="94" height="9" rx="1" />
+                <rect id="Rectangle" x="0" y="293" width="72" height="9" rx="1" />
+                <rect id="Rectangle" x="0" y="219" width="275" height="25" rx="1" />
+                <rect id="Rectangle" x="0" y="254" width="145" height="25" rx="1" />
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    ));
+  }
+
+  /**
    * Display happenings cards filtered by dropdown
    */
   private renderHappenings() {
+    if (!this.selectedSite) return this.renderHappeningsSkeleton();
     return this.happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
@@ -359,7 +381,7 @@ export class SiteHappenings {
 
   /** Helpers **/
   private isUserSiteSet(): Boolean {
-    return this.user.site !== 'Not site specific' && !!this.user.site;
+    return this.user.site && this.user.site !== 'Not site specific' ;
   }
 
   /** Render **/
