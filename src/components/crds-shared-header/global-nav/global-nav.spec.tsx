@@ -5,6 +5,7 @@ describe('<global-nav>', () => {
   beforeEach(() => {
     this.component = new GlobalNav();
     this.component.env = 'int';
+    this.component.data = [];
 
     this.fakeEvent = {
       preventDefault: jest.fn(),
@@ -24,7 +25,7 @@ describe('<global-nav>', () => {
   describe('Tests componentWillLoad()', () => {
     it('Checks auth is not initialized if config is undefined', () => {
       expect(this.component.auth).toEqual({});
-      expect(this.component.config).toBeUndefined();
+      expect(this.component.data.config).toBeUndefined();
 
       this.component.componentWillLoad();
 
@@ -33,7 +34,7 @@ describe('<global-nav>', () => {
 
     it('Checks auth is not initialized again if auth.config is defined', () => {
       this.component.auth = { config: 'fake config' }
-      expect(this.component.config).toBeUndefined();
+      expect(this.component.data.config).toBeUndefined();
 
       this.component.componentWillLoad();
 
@@ -41,7 +42,7 @@ describe('<global-nav>', () => {
     });
 
     it('Checks auth is initialized', () => {
-      this.component.config = {};
+      this.component.data.config = {};
       expect(this.component.auth).toEqual({})
 
       this.component.componentWillLoad();
@@ -59,11 +60,11 @@ describe('<global-nav>', () => {
     it('Checks offset is set', () => {
       this.component.element = { getBoundingClientRect(){return {top: 1}}};
 
-      expect(this.component.offset).toBeUndefined();
+      expect(this.component.topOffset).toBeUndefined();
 
       this.component.componentDidLoad();
 
-      expect(this.component.offset).toBeGreaterThanOrEqual(0);
+      expect(this.component.topOffset).toBeGreaterThanOrEqual(0);
     });
   });
 
@@ -283,7 +284,7 @@ describe('<global-nav>', () => {
 
     ['give-nav', 'profile-nav'].forEach(styledNavs => {
       it(`Checks header style if ${styledNavs} is opened`, () => {
-        this.component.offset = 15;
+        this.component.topOffset = 15;
         this.component.openNavName = styledNavs;
 
         const rendered = this.component.render();
@@ -293,7 +294,7 @@ describe('<global-nav>', () => {
     });
 
     it(`Checks header style if main-nav is opened`, () => {
-      this.component.offset = 15;
+      this.component.topOffset = 15;
       this.component.openNavName = 'main-nav';
 
       const rendered = this.component.render();

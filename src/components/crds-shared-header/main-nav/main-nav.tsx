@@ -63,9 +63,6 @@ export class MainMenu {
    * Returns all subnav elements
    * @param data
    */
-  // TODO: refactor renderSubnavs to work with
-  // nav-section-subnav, profile nav, and give nav
-  // ------------------------------------------------------
   private maybeRenderSubnavs(data) {
     if(!Array.isArray(data)) return;
 
