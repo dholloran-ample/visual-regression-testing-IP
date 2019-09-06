@@ -86,7 +86,7 @@ describe('<crds-site-happenings> Setters', () => {
 
   describe('Tests validateUserSite()', () => {
     it('Checks user site is stored', () => {
-      expect(this.happenings.user).toBe(null);
+      expect(this.happenings.user).toBeNull();
 
       const validSite = 'Oakley';
       this.happenings.validateUserSite(validSite);
@@ -137,7 +137,6 @@ describe('<crds-site-happenings> Setters', () => {
     });
 
     const invalidSiteNames = [
-      '',
       null,
       undefined,
       ['Array Site'],
@@ -148,7 +147,7 @@ describe('<crds-site-happenings> Setters', () => {
     invalidSiteNames.forEach(siteName => {
       it(`Checks selectedSite is set to "Churchwide" given "${siteName}"`, () => {
         this.happenings.validateSelectedSite(siteName);
-        expect(this.happenings.selectedSite).toEqual('Churchwide');
+        expect(this.happenings.selectedSite).toBeUndefined();
       });
     });
 

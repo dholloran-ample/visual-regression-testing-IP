@@ -153,7 +153,6 @@ export class SiteHappenings {
    */
   private validateSelectedSite(siteName) {
     if (
-      typeof siteName !== 'string' ||
       siteName === 'Not site specific' ||
       siteName === 'I do not attend Crossroads' ||
       siteName === 'Anywhere' ||
