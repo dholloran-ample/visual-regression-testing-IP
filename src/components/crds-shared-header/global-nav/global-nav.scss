@@ -90,8 +90,8 @@ $icon-size: 22px;
 
 .close {
   $size: 26px;
-  display: block;
 
+  display: block;
   height: $size;
   padding: 9px 0;
   width: $size;
@@ -165,7 +165,6 @@ $has-close-button: (
   }
 }
 
-// OG shared header
 .close-nav {
   $padding: 22px;
 

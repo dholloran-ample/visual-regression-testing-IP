@@ -9,7 +9,7 @@ import { SimpleNavHelper } from '../profile-nav/simple-nav-helper';
 })
 export class MainMenu {
   @Prop() isNavShowing: boolean = true;
-  @Prop() data: JSON;
+  @Prop() data: JSON; //TODO pass in only nav data?
   @Prop() promoData: string;
 
   @State() activeSection: string;
@@ -59,29 +59,30 @@ export class MainMenu {
     });
   }
 
-  /**
-   * Returns all subnav elements
-   * @param data
-   */
-  private maybeRenderSubnavs(data) {
-    if(!Array.isArray(data)) return;
+  maybeRenderActiveSubNav(data) {
+    if (!Array.isArray(data)) return;
 
-    return data.map(section => {
-      const subNavName = Utils.parameterize(section.title);
-      return (
-        <nav-section-subnav subNavName={subNavName} handleBackClick={this.handleBackClick.bind(this)} isActive={this.activeSection === subNavName}>
-          {this.simpleNav.formatMenuTitle(section.title)}
-          {this.simpleNav.maybeRenderNavEntries(section.children)}
-        </nav-section-subnav>
-      );
+    const activeSectionData = data.find((section) => {
+      section.subNavName = Utils.parameterize(section.title);
+      return section.subNavName === this.activeSection;
     });
+
+    return activeSectionData &&
+      (<nav-section-subnav subNavName={activeSectionData.subNavName} handleBackClick={this.handleBackClick.bind(this)} isActive={true}>
+        {this.simpleNav.formatMenuTitle(activeSectionData.title)}
+        {this.simpleNav.maybeRenderNavEntries(activeSectionData.children)}
+      </nav-section-subnav>)
   }
 
-  maybeRenderCtas() {
-    if (this.activeSection) return;
-    return (
-      <nav-ctas data={this.promoData} />
-    )
+  renderSubNavOrCtas(data) {
+    return this.activeSection ?
+      (
+        <div class="subnavigation">
+          {this.maybeRenderActiveSubNav(data)}
+        </div>
+      ) : (
+        <nav-ctas data={this.promoData} />
+      )
   }
 
   render() {
@@ -93,10 +94,7 @@ export class MainMenu {
             <div class="navigation">
               <ul>{this.maybeRenderSections(this.data)}</ul>
             </div>
-            <div class="subnavigation">
-              {this.maybeRenderSubnavs(this.data)}
-            </div>
-            {this.maybeRenderCtas()}
+            {this.renderSubNavOrCtas(this.data)}
           </div>
         </nav>
     )
