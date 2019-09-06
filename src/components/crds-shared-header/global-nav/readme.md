@@ -28,8 +28,8 @@
 
 ### Depends on
 
-- [profile-nav](..\profile-nav)
-- [give-nav](..\profile-nav)
+- [profile-nav](../profile-nav)
+- [give-nav](../profile-nav)
 
 ### Graph
 ```mermaid
