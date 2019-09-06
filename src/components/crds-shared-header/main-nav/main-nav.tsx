@@ -1,6 +1,5 @@
 import { Component, Prop, h, State } from '@stencil/core';
 import { Utils } from '../../../shared/utils';
-import { SimpleNavHelper } from '../profile-nav/simple-nav-helper';
 
 @Component({
   tag: 'main-nav',
@@ -13,12 +12,6 @@ export class MainMenu {
   @Prop() promoData: string;
 
   @State() activeSection: string;
-  private simpleNav: SimpleNavHelper;
-
-  constructor() {
-    this.simpleNav = new SimpleNavHelper();
-    this.simpleNav.formatMenuEntry = (element) => {return element}; //Don't add extra formatting to entries
-  }
 
   handleBackClick(event) {
     event.preventDefault();
@@ -62,11 +55,12 @@ export class MainMenu {
     });
 
     return activeSectionData &&
-      (<nav-section-subnav subNavName={activeSectionData.subNavName} handleBackClick={this.handleBackClick.bind(this)} isActive={true}>
-        {this.simpleNav.formatMenuTitle(activeSectionData.title)}
-        {this.simpleNav.maybeRenderNavEntries(activeSectionData.children)}
+      (<nav-section-subnav subNavName={activeSectionData.subNavName}
+        data={activeSectionData}
+        handleBackClick={this.handleBackClick.bind(this)}
+        isActive={true}>
       </nav-section-subnav>)
-  }//TODO this is broken - needs single subslot or taken out of subnav
+  }
 
   getNavClass() {
     let classes = [];

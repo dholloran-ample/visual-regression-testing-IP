@@ -133,8 +133,6 @@ describe('<main-nav>', () => {
       expect(typeof rendered.$attrs$.handleBackClick).toEqual('function');
 
       expect(rendered.$tag$).toBe('nav-section-subnav');
-      expect(rendered.$children$[0].$tag$).toBe('h2');
-      expect(rendered.$children$[0].$children$[0].$text$).toBe(navPayload[1].title);
     });
   });
 

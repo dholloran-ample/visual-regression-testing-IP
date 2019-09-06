@@ -86,6 +86,7 @@ export namespace Components {
     'sectionName': string;
   }
   interface NavSectionSubnav {
+    'data': any;
     'handleBackClick': Function;
     'isActive': boolean;
     'subNavName': string;
@@ -301,6 +302,7 @@ declare namespace LocalJSX {
     'sectionName'?: string;
   }
   interface NavSectionSubnav extends JSXBase.HTMLAttributes<HTMLNavSectionSubnavElement> {
+    'data'?: any;
     'handleBackClick'?: Function;
     'isActive'?: boolean;
     'subNavName'?: string;
