@@ -16,7 +16,6 @@ export class ContentBlockHandler {
     return this.apolloClient
       .query({ query: GET_COPY, variables: { componentName: this.componentName } })
       .then(response => {
-        console.log(response);
         this.copy = response.data.contentBlocks;
         return response.data.contentBlocks;
       });

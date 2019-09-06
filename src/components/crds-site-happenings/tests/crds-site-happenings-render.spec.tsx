@@ -1,10 +1,12 @@
 import { SiteHappenings } from '../site-happenings';
 import { CrdsApollo } from '../../../shared/apollo';
 import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
+import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
 
 describe('<crds-site-happenings> Render', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     this.happenings = new SiteHappenings();
+    this.happenings.contentBlockHandler = new ContentBlockHandler(null, null);
   });
 
   describe('Tests maybeRenderSetSiteModal()', () => {
@@ -14,8 +16,8 @@ describe('<crds-site-happenings> Render', () => {
     });
 
     it('Checks setSiteModal not returned for authenticated user with site is already selected', () => {
-      this.happenings.authToken = '123'; //Value doesn't matter here
-      this.happenings.user.site = 'Oakley';
+      this.happenings.authToken = '123';
+      this.happenings.user = { site: 'Oakley' };
 
       const modal = this.happenings.maybeRenderSetSiteModal();
       expect(modal).toBe('');
@@ -24,9 +26,8 @@ describe('<crds-site-happenings> Render', () => {
     const userSiteNotSelected = ['Not site specific', null, ''];
     userSiteNotSelected.forEach(site => {
       it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, () => {
-        this.happenings.authToken = '123'; //Value doesn't matter here
-        this.happenings.user.site = site;
-        this.happenings.user.authToken = '123';
+        this.happenings.authToken = '123';
+        this.happenings.user = { site: site };
         const render = this.happenings.maybeRenderSetSiteModal();
 
         expect(render).not.toBe('');

@@ -1,6 +1,7 @@
 import { SiteHappenings } from '../site-happenings';
 import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
 import { CrdsApollo } from '../../../shared/apollo';
+import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
 
 describe('<crds-site-happenings> GraphQL I/O', () => {
   beforeEach(async () => {
@@ -13,18 +14,16 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
     };
     this.happenings.authToken = await getSessionID(user_with_site.email, user_with_site.password);
     this.happenings.apolloClient = CrdsApollo(this.happenings.authToken);
+    this.happenings.contentBlockHandler = new ContentBlockHandler(null, null);
   });
 
   describe('Tests getSites()', () => {
     it('Checks MP sites are stored', async () => {
-      expect(this.happenings.sites).toHaveLength(0);
-
       await this.happenings.getSites();
       expect(this.happenings.sites.length).toBeGreaterThan(0);
     });
 
     it('Checks MP sites are stored if not authenticated', async () => {
-      expect(this.happenings.sites).toHaveLength(0);
       expect(this.lastError.error).toBeUndefined();
 
       const fakeAuthToken = '';
@@ -37,7 +36,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
 
   describe('Tests getUser()', () => {
     it("Checks that user's site is set", async () => {
-      expect(this.happenings.user.site).toBe("");
+      expect(this.happenings.user).toBe(null);
 
       await this.happenings.getUser();
 
@@ -45,14 +44,14 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
     });
 
     it("Checks that user's site is not stored if not authenticated", async () => {
-      expect(this.happenings.user.site).toBe("");
+      expect(this.happenings.user).toBe(null);
       expect(this.lastError.error).toBeUndefined();
 
       const authToken = '';
       this.happenings.apolloClient = CrdsApollo(authToken);
       await this.happenings.getUser();
 
-      expect(this.happenings.user.site).toBe("");
+      expect(this.happenings.user).toBe(null);
       expect(this.lastError.error).not.toBeUndefined();
     });
   });

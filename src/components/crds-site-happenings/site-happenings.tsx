@@ -78,6 +78,7 @@ export class SiteHappenings {
       .query({ query: GET_SITES })
       .then(response => {
         this.validateSites(response.data.sites);
+        return;
       })
       .catch(err => {
         this.logError(err);
@@ -93,7 +94,7 @@ export class SiteHappenings {
         let siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
         this.validateSelectedSite(this.user.site);
-        this.host.forceUpdate();
+        return;
       })
       .catch(err => {
         this.resetUser();
@@ -109,6 +110,7 @@ export class SiteHappenings {
         this.setHappenings(promoList);
         this.setContentfulSites();
         this.renderHappenings();
+        return;
       })
       .catch(err => this.logError(err));
   }
@@ -148,7 +150,7 @@ export class SiteHappenings {
    */
   private validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
-      this.user = { ...this.user, site: siteName };
+      this.user = { site: siteName };
     }
   }
 
@@ -236,7 +238,7 @@ export class SiteHappenings {
     let params = {
       title: target.tagName === 'A' ? target.innerText.toLowerCase() : target.alt.toLowerCase(),
       url: target.tagName === 'A' ? target.href : target.parentNode.href,
-      userSite: this.user.site || 'logged out',
+      userSite: this.user && this.user.site || 'logged out',
       selectedSite: this.selectedSite
     };
 
@@ -355,9 +357,7 @@ export class SiteHappenings {
     );
   }
 
-  /**
-   * Helpers
-   */
+  /** Helpers **/
   private isUserSiteSet(): Boolean {
     return this.user.site !== 'Not site specific' && !!this.user.site;
   }
