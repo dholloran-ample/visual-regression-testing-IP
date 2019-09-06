@@ -19,7 +19,7 @@
 
 ### Used by
 
- - [global-nav](..\global-nav)
+ - [global-nav](../global-nav)
 
 ### Graph
 ```mermaid

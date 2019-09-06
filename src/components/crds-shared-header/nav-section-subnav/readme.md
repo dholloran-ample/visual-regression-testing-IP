@@ -18,7 +18,7 @@
 
 ### Used by
 
- - [main-nav](..\main-nav)
+ - [main-nav](../main-nav)
 
 ### Graph
 ```mermaid

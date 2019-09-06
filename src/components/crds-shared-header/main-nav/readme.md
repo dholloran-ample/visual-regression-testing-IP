@@ -22,9 +22,9 @@
 
 ### Depends on
 
-- [nav-section](..\nav-section)
-- [nav-section-subnav](..\nav-section-subnav)
-- [nav-ctas](..\nav-ctas)
+- [nav-section](../nav-section)
+- [nav-section-subnav](../nav-section-subnav)
+- [nav-ctas](../nav-ctas)
 
 ### Graph
 ```mermaid

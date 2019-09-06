@@ -1,12 +1,10 @@
 import { SiteHappenings } from '../site-happenings';
 import { CrdsApollo } from '../../../shared/apollo';
 import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
-import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
 
 describe('<crds-site-happenings> Render', () => {
   beforeEach(async () => {
     this.happenings = new SiteHappenings();
-    this.happenings.contentBlockHandler = new ContentBlockHandler(null, 'site happenings');
   });
 
   describe('Tests maybeRenderSetSiteModal()', () => {
@@ -28,7 +26,7 @@ describe('<crds-site-happenings> Render', () => {
       it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, () => {
         this.happenings.authToken = '123'; //Value doesn't matter here
         this.happenings.user.site = site;
-
+        this.happenings.user.authToken = '123';
         const render = this.happenings.maybeRenderSetSiteModal();
 
         expect(render).not.toBe('');

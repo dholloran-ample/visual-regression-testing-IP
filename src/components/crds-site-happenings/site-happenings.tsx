@@ -1,11 +1,11 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
-import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
+import { CrdsUser, CrdsHappening, Site, ContentBlock } from './site-happenings-interface';
 import { CrdsApollo } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
-import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS } from './site-happenings.graphql';
-import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
+import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happenings.graphql';
+import { HTMLStencilElement } from '@stencil/core/internal';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -14,15 +14,16 @@ import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 export class SiteHappenings {
   private analytics = window['analytics'] || {};
   private contentfulSites: string[] = [];
-  private contentBlockHandler: ContentBlockHandler;
+  private sites: Site[] = [];
+  private happenings: CrdsHappening[] = [];
   private apolloClient: ApolloClient<{}>;
-  @State() user: CrdsUser = { name: '', site: '' };
-  @Prop() authToken: string;
-  @State() selectedSite: string = 'Churchwide';
-  @State() sites: Site[] = [];
-  @State() happenings: CrdsHappening[] = [];
+  private copy: ContentBlock[] = [];
 
-  @Element() host: HTMLElement;
+  @Prop() authToken: string;
+  @State() user: CrdsUser = { name: '', site: '', authToken: '' };
+  @State() selectedSite: string = 'Churchwide';
+
+  @Element() host: HTMLStencilElement;
 
   renderedEvent = new CustomEvent('component rendered', {
     detail: this.host
@@ -32,6 +33,7 @@ export class SiteHappenings {
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
+      this.getUser();
     }
   }
 
@@ -43,15 +45,7 @@ export class SiteHappenings {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    this.getSites();
-    this.getPromos();
-    this.contentBlockHandler.getCopy();
-    if (this.authToken) this.getUser();
-  }
-
-  public componentWillRender() {
-    if (this.authToken && !this.user.site) this.getUser();
+    return this.init();
   }
 
   public componentDidRender() {
@@ -64,6 +58,14 @@ export class SiteHappenings {
   }
 
   /** GraphQL I/O **/
+
+  private init() {
+    var promises = [this.getSites(), this.getPromos(), this.getCopy()];
+    if (this.authToken) promises.push(this.getUser());
+
+    return Promise.all(promises);
+  }
+
   private getSites() {
     return this.apolloClient
       .query({ query: GET_SITES })
@@ -85,7 +87,7 @@ export class SiteHappenings {
         let siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
         this.validateSelectedSite(this.user.site);
-        return;
+        this.host.forceUpdate();
       })
       .catch(err => {
         this.logError(err);
@@ -103,6 +105,17 @@ export class SiteHappenings {
         return;
       })
       .catch(err => this.logError(err));
+  }
+
+  private getCopy() {
+    return this.apolloClient
+      .query({ query: GET_COPY })
+      .then(response => {
+        this.copy = response.data.contentBlocks;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
   }
 
   private setUserSite(siteId) {
@@ -123,6 +136,11 @@ export class SiteHappenings {
 
   /** Setters **/
 
+  private resetUser() {
+    this.user = { name: '', site: '', authToken: this.authToken };
+    this.selectedSite = 'Churchwide';
+  }
+
   /**
    * Set sites after sorting and removing invalid/excluded sites
    * @param sites
@@ -140,7 +158,7 @@ export class SiteHappenings {
    */
   private validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
-      this.user = { ...this.user, site: siteName };
+      this.user = { ...this.user, site: siteName, authToken: this.authToken };
     }
   }
 
@@ -268,6 +286,12 @@ export class SiteHappenings {
     this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
 
+  private getContentBlock(slug: string) {
+    const contentBlock = this.copy.find(c => c.slug === slug);
+    if (!contentBlock) return;
+    return <div innerHTML={contentBlock.content.toString()} />;
+  }
+
   /**
    * Display happenings cards filtered by dropdown
    */
@@ -332,7 +356,7 @@ export class SiteHappenings {
    */
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
-    if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
+    if ((this.user.site === 'Not site specific' || !!!this.user.site) && this.authToken == this.user.authToken)
       return this.renderSetSiteModal();
     else return '';
   }
@@ -350,7 +374,7 @@ export class SiteHappenings {
           </svg>
         </button>
         <div class="text-center push-top w-100">
-          {this.contentBlockHandler.getContentBlock('SiteHappeningsPrompt')}
+          {this.getContentBlock('SiteHappeningsPrompt')}
           <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
             <select class="dropdown w-100" onInput={event => this.handleSetSiteInput(event)}>
               <option disabled selected>

@@ -16,8 +16,7 @@ export class CrdsRecommendedContent {
   private analytics = window['analytics'] || {};
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
-  private recommendedContent: [] = [];
-
+  @State() recommendedContent: [] = [];
   @State() lifeStages: CrdsLifeStage[] = [];
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @Prop() public authToken: string;
@@ -33,7 +32,8 @@ export class CrdsRecommendedContent {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    Promise.all([this.getLifeStages(), this.getUser()]);
+    this.getLifeStages();
+    this.getUser();
   }
 
   public componentDidRender() {
@@ -46,7 +46,7 @@ export class CrdsRecommendedContent {
 
   public componentWillRender() {
     if (this.user.lifeStage && this.user.lifeStage.id !== null && this.lifeStages.length)
-      this.filterContent(this.user.lifeStage.id);
+      return this.filterContent(this.user.lifeStage.id);
   }
 
   private getLifeStageId() {
@@ -58,15 +58,15 @@ export class CrdsRecommendedContent {
     return this.apolloClient.query({ query: GET_USER }).then(success => {
       const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
       const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
-      this.user = { ...this.user, lifeStage: { id: id, title: name } };
-      return;
+      this.user =  { ...this.user,lifeStage: { id: id, title: name } };
+      this.host.forceUpdate();
     });
   }
 
   private getLifeStages() {
     return this.apolloClient.query({ query: GET_LIFESTAGES }).then(success => {
       this.lifeStages = success.data.lifeStages;
-      return;
+      this.host.forceUpdate();
     });
   }
 
@@ -74,7 +74,7 @@ export class CrdsRecommendedContent {
    * Get content with set life stages
    */
   private filterContent(lifeStageId) {
-    this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
+    return this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   private handleBackClick(event) {
@@ -258,7 +258,7 @@ export class CrdsRecommendedContent {
         <h2 class="component-header flush-bottom">
           {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
         </h2>
-        <p class="push-half-top">
+        <p class="push-half-top push-half-bottom color-gray">
           {this.recommendedContent.length
             ? selectedLifeStage.description
             : 'Which of these best describes your stage of life? (Pick one)'}
@@ -282,7 +282,7 @@ export class CrdsRecommendedContent {
             {!!this.recommendedContent.length && (
               <div class="life-stage-selected">
                 <a
-                  class="btn btn-gray-light btn-outline btn-sm back-btn"
+                  class="btn btn-gray-light btn-outline btn-sm back-btn flush"
                   onClick={event => this.handleBackClick(event)}
                 >
                   change
