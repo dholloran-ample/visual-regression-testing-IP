@@ -26,7 +26,7 @@ describe('<crds-site-happenings> Render', () => {
       it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, () => {
         this.happenings.authToken = '123'; //Value doesn't matter here
         this.happenings.user.site = site;
-
+        this.happenings.user.authToken = '123';
         const render = this.happenings.maybeRenderSetSiteModal();
 
         expect(render).not.toBe('');

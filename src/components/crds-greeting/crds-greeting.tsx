@@ -27,7 +27,7 @@ export class CrdsGreeting {
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
-      this.getUserName();
+      this.getUser();
     }
   }
 
@@ -42,7 +42,7 @@ export class CrdsGreeting {
     }, 0);
   }
 
-  public getUserName() {
+  public getUser() {
     return this.apolloClient
       .query({ query: GET_NAMES })
       .then(success => {
