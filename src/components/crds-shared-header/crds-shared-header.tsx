@@ -1,5 +1,4 @@
 import { Component, Element, Prop, State, Listen, h } from '@stencil/core';
-import { testPayload } from './test_sh_data';
 import axios from 'axios';
 
 @Component({

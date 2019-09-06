@@ -1,11 +1,10 @@
 jest.mock('../../../shared/auth');
-import { GlobalNav } from "./global-nav";
+import { GlobalNav } from './global-nav';
 
 describe('<global-nav>', () => {
   beforeEach(() => {
     this.component = new GlobalNav();
     this.component.env = 'int';
-    this.component.data = [];
 
     this.fakeEvent = {
       preventDefault: jest.fn(),
@@ -312,14 +311,6 @@ describe('<global-nav>', () => {
       const newString = this.component.authProfileIcon();
 
       expect(matchUrl.exec(newString)[1]).toBe('https://fakeAvatar.com');
-    });
-
-    it('Checks url is empty string if auth is undefined', () => {
-      this.component.auth = undefined;
-
-      const newString = this.component.authProfileIcon();
-
-      expect(matchUrl.exec(newString)[1]).toBe('');
     });
 
     it('Checks url is empty string if auth.currentUser is undefined', () => {

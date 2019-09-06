@@ -1,11 +1,9 @@
 import { Component, Prop, State, h, Listen } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
 
-// import { Auth } from '../../../shared/auth';
+import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
 import * as iconData from './global-nav-icons.json';
-
-import { Auth } from '../../../shared/__mocks__/auth';
 
 @Component({
   tag: 'global-nav',
@@ -24,14 +22,14 @@ export class GlobalNav {
 
   auth: any = {};
 
-  componentDidLoad() {
-    this.topOffset = this.element.getBoundingClientRect().top + window.scrollY;
-  }
-
   componentWillLoad() {
     if (!this.data.config || this.auth.config) return;
     this.auth = new Auth(Object.assign(this.data.config, { env: this.env }));
     this.auth.listen(this.authChangeCallback.bind(this));
+  }
+
+  componentDidLoad() {
+    this.topOffset = this.element.getBoundingClientRect().top + window.scrollY;
   }
 
   /* Handle authentication */
@@ -79,7 +77,7 @@ export class GlobalNav {
   @Listen('click', { target: 'window' })
   closeNav(event) {
     if (this.isNavOpen()) {
-      event.preventDefault(); //Don't prevent other links from working
+      event.preventDefault();
     }
 
     this.openNavName = '';
@@ -92,7 +90,7 @@ export class GlobalNav {
   }
 
   authProfileIcon() {
-    const avatarUrl = ((this.auth && this.auth.currentUser as any) || {}).avatarUrl
+    const avatarUrl = this.auth.currentUser && this.auth.currentUser.avatarUrl;
     return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`
   }
 
