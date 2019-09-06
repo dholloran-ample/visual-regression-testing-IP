@@ -71,7 +71,7 @@ export class Auth {
     if (!this.authenticated) return (this.currentUser = null);
     return (this.currentUser = {
       id: this.getUserId(),
-      name: this.getUserName(),
+      name: this.getUser(),
       avatarUrl: this.getUserImageUrl()
     });
   }
@@ -82,7 +82,7 @@ export class Auth {
     if (this.isMp) return Utils.getCookie('userId');
   }
 
-  private getUserName() {
+  private getUser() {
     if (!this.authenticated) return null;
     if (this.isOkta) return this.token.id_token.claims.name;
     if (this.isMp) return Utils.getCookie('username');

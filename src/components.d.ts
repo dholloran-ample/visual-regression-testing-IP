@@ -11,6 +11,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface CrdsGreeting {
     'authToken': string;
+    'defaultName': string;
   }
   interface CrdsHeartButton {
     /**
@@ -244,6 +245,7 @@ declare global {
 declare namespace LocalJSX {
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
     'authToken'?: string;
+    'defaultName'?: string;
   }
   interface CrdsHeartButton extends JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement> {
     /**

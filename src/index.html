@@ -17,6 +17,11 @@
     .site-happenings-skeleton {
       min-height: 500px;
     }
+
+    .greeting-skeleton {
+      margin-bottom: 1rem;
+      min-height: 60px;
+    }
   </style>
 
   <link rel="stylesheet" href="//d1tmclqz61gqwd.cloudfront.net/styles/crds-styles-3.3.1.min.css" />
@@ -57,6 +62,12 @@
   </div>
 
   <div class="container soft-sides push-ends">
+    <div class="greeting-skeleton">
+      <crds-greeting
+        default-name="friend"
+        auth-token="">
+      </crds-greeting>
+    </div>
     <p class="lead text-center push-bottom">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
       ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
@@ -72,7 +83,9 @@
       <crds-site-happenings auth-token=""></crds-site-happenings>
     </div>
     <div class="life-stages-skeleton">
-      <crds-recommended-content auth-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2NzAwMDcyMywibmJmIjoxNTY2OTk4OTIzLCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiJiMzI2YWVmMi03N2U3LTQwNDItYjNiMS1kNWYxMzA1MDljMmUiLCJhdXRoX3RpbWUiOjE1NjU4ODg2MTksImlkcCI6Imlkc3J2IiwibmFtZSI6ImpqYW5zc2VuQGNhbGxpYnJpdHkuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.NR9clxpNhrFAYOxYsevdgzFf5dBh9Z9NCu8Lvk_Gj_xALarkB-v5R6QYESHfQTDK5AcoW0SKbTqH5wzlX6YjL42iUHtRtsoPym64YyvaH35Ae7VPgMXVrqHZBvNemIqdwv9VoLOoN_la1JFye8Zm7f_frpdQy0-VMYKpFr1m_1uM5T6_yL9Cu5nPlSJOaqTbZiNYKtnAiMlGlAJNL6lLOBjPQeFjfCVWf6eznnbQVmKfA9gSKrLDPRNC-walw3RvonLZHzHwfRnRs-yvuzi7TEftaMlk19gYgbi3RAjeWQxUCxDuZ3d4n3_JW5D_5f24lXIz0A0yRGwJcNjUMScHQw"></crds-recommended-content>
+      <crds-recommended-content
+        auth-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSIsImtpZCI6Ijkyc3c1bmhtbjBQS3N0T0k1YS1nVVZlUC1NWSJ9.eyJpc3MiOiJGb3JtcyIsImF1ZCI6IkZvcm1zL3Jlc291cmNlcyIsImV4cCI6MTU2NzcwNjkyNiwibmJmIjoxNTY3NzA1MTI2LCJjbGllbnRfaWQiOiJDUkRTLkNvbW1vbiIsInNjb3BlIjpbIm9wZW5pZCIsIm9mZmxpbmVfYWNjZXNzIiwiaHR0cDovL3d3dy50aGlua21pbmlzdHJ5LmNvbS9kYXRhcGxhdGZvcm0vc2NvcGVzL2FsbCJdLCJzdWIiOiJkNGUyOTBjYS1iNzBjLTQwNGItOTNlMy01ZDIzNjljOWM5YWYiLCJhdXRoX3RpbWUiOjE1Njc1Mjk5OTEsImlkcCI6Imlkc3J2IiwibmFtZSI6InRhdGUubHVjYXNAZ21haWwuY29tIiwiYW1yIjpbInBhc3N3b3JkIl19.owAN80qS8gc5noFGZj4X6Y8xvY_TZV_hEUNGzGXoyZ-vf7s2P8K7J6mYipwpjM9c92XlFgqMSw-B2KYFcslq0LUmQr40X9slTE0N04U0JX2YphS8UbfLG4twTIkx2gujaEBr8UoEXPGZZZ5QNKP-D7mZRIqGisc6JDzdc7OIdi2R_JesNP5skcTCjQ-v3ehheXOoPY-RZk9LM6ILh57t_oFQe2EIGbh42R1yuKq1JUE5wpElR73ymKGZtSvmxVZ9JsdAydxevaqnxFiuXZ9iat4tDGO3hHizZLBEkNJffubXXHwI0mqbGF95XtSjd-u5KTFbujs36Qd3r_OtZ1zzIQ">
+      </crds-recommended-content>
     </div>
   </div>
 
@@ -82,7 +95,7 @@
 </body>
 <script>
   // TODO: function for hiding html skeleton
-  document.addEventListener('component rendered', function(e) {
+  document.addEventListener('component rendered', function (e) {
     console.log('component rendered', e.detail.tagName);
   })
 </script>

@@ -5,6 +5,7 @@ import { CrdsUser, CrdsHappening, Site, ContentBlock } from './site-happenings-i
 import { CrdsApollo } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
 import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happenings.graphql';
+import { HTMLStencilElement } from '@stencil/core/internal';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -16,13 +17,13 @@ export class SiteHappenings {
   private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
   private apolloClient: ApolloClient<{}>;
-  private user: CrdsUser = { name: '', site: '' };
   private copy: ContentBlock[] = [];
 
   @Prop() authToken: string;
+  @State() user: CrdsUser = { name: '', site: '', authToken: '' };
   @State() selectedSite: string = 'Churchwide';
 
-  @Element() host: HTMLElement;
+  @Element() host: HTMLStencilElement;
 
   renderedEvent = new CustomEvent('component rendered', {
     detail: this.host
@@ -32,6 +33,7 @@ export class SiteHappenings {
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
+      this.getUser();
     }
   }
 
@@ -44,10 +46,6 @@ export class SiteHappenings {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     return this.init();
-  }
-
-  public componentWillRender() {
-    if (this.authToken && !this.user.site) return this.getUser();
   }
 
   public componentDidRender() {
@@ -89,7 +87,7 @@ export class SiteHappenings {
         let siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
         this.validateSelectedSite(this.user.site);
-        return;
+        this.host.forceUpdate();
       })
       .catch(err => {
         this.logError(err);
@@ -138,6 +136,11 @@ export class SiteHappenings {
 
   /** Setters **/
 
+  private resetUser() {
+    this.user = { name: '', site: '', authToken: this.authToken };
+    this.selectedSite = 'Churchwide';
+  }
+
   /**
    * Set sites after sorting and removing invalid/excluded sites
    * @param sites
@@ -155,7 +158,7 @@ export class SiteHappenings {
    */
   private validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
-      this.user = { ...this.user, site: siteName };
+      this.user = { ...this.user, site: siteName, authToken: this.authToken };
     }
   }
 
@@ -284,8 +287,8 @@ export class SiteHappenings {
   }
 
   private getContentBlock(slug: string) {
-    const contentBlock = this.copy.find(c => c.slug === slug)
-    if(!contentBlock) return;
+    const contentBlock = this.copy.find(c => c.slug === slug);
+    if (!contentBlock) return;
     return <div innerHTML={contentBlock.content.toString()} />;
   }
 
@@ -353,8 +356,7 @@ export class SiteHappenings {
    */
   private maybeRenderSetSiteModal() {
     if (!this.authToken) return '';
-
-    if (this.user.site === 'Not site specific' || this.user.site === null || this.user.site === '')
+    if ((this.user.site === 'Not site specific' || !!!this.user.site) && this.authToken == this.user.authToken)
       return this.renderSetSiteModal();
     else return '';
   }
