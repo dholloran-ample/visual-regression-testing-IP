@@ -78,7 +78,7 @@ export class SiteHappenings {
   }
 
   private getUser(): Promise<any> {
-    if (!!!this.authToken) return Promise.resolve(this.resetUser());
+    if (!this.authToken) return Promise.resolve(this.resetUser());
     return this.apolloClient
       .query({ query: GET_USER })
       .then(response => {
