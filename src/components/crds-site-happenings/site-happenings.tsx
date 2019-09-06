@@ -1,11 +1,12 @@
 import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
-import { CrdsUser, CrdsHappening, Site, ContentBlock } from './site-happenings-interface';
+import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
 import { CrdsApollo } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
 import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happenings.graphql';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -17,35 +18,50 @@ export class SiteHappenings {
   private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
   private apolloClient: ApolloClient<{}>;
-  private copy: ContentBlock[] = [];
+  private user: CrdsUser = null;
+  private contentBlockHandler: ContentBlockHandler;
 
-  @Prop() authToken: string;
-  @State() user: CrdsUser = { name: '', site: '', authToken: '' };
   @State() selectedSite: string = 'Churchwide';
+  @Prop() authToken: string;
 
   @Element() host: HTMLStencilElement;
 
-  renderedEvent = new CustomEvent('component rendered', {
-    detail: this.host
-  });
+
 
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
-      this.getUser();
     }
   }
 
-  public getSelectedSite(): {} {
+  /** Stencil Personalization Components Defaults **/
+  // This lets unit tests capture and confirm errors rather than listening in on console.error
+  private logError(err) {
+    console.error(err);
+  }
+
+  public getInViewDetails(): {} {
     return { selectedSite: this.selectedSite };
   }
 
   /** Stencil Lifecycle methods **/
+  public componentDidLoad() {
+    Utils.trackInView(this.host, 'HappeningComponent', this.getInViewDetails.bind(this));
+    const renderedEvent = new CustomEvent('component rendered', {
+      detail: this.host
+    });
+    document.dispatchEvent(renderedEvent);
+  }
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
-    return this.init();
+    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
+    return Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy()]);
+  }
+
+  public componentWillRender() {
+    if (!this.user || !this.authToken) return this.getUser();
   }
 
   public componentDidRender() {
@@ -53,33 +69,23 @@ export class SiteHappenings {
       this.host.shadowRoot.querySelector('.happenings-dropdown-select'),
       this.selectedSite
     );
-    document.dispatchEvent(this.renderedEvent);
-    Utils.trackInView(this.host, 'HappeningComponent', this.getSelectedSite.bind(this));
   }
+
 
   /** GraphQL I/O **/
-
-  private init() {
-    var promises = [this.getSites(), this.getPromos(), this.getCopy()];
-    if (this.authToken) promises.push(this.getUser());
-
-    return Promise.all(promises);
-  }
-
-  private getSites() {
+  private getSites(): Promise<any> {
     return this.apolloClient
       .query({ query: GET_SITES })
       .then(response => {
-        const siteList = response.data.sites;
-        this.validateSites(siteList);
+        this.validateSites(response.data.sites);
       })
       .catch(err => {
         this.logError(err);
       });
   }
 
-  private getUser() {
-    if (!this.authToken) return null;
+  private getUser(): Promise<any> {
+    if (!this.authToken) return Promise.resolve(this.resetUser());
     return this.apolloClient
       .query({ query: GET_USER })
       .then(response => {
@@ -90,11 +96,12 @@ export class SiteHappenings {
         this.host.forceUpdate();
       })
       .catch(err => {
+        this.resetUser();
         this.logError(err);
       });
   }
 
-  private getPromos() {
+  private getPromos(): Promise<any> {
     return this.apolloClient
       .query({ query: GET_PROMOS })
       .then(response => {
@@ -102,20 +109,8 @@ export class SiteHappenings {
         this.setHappenings(promoList);
         this.setContentfulSites();
         this.renderHappenings();
-        return;
       })
       .catch(err => this.logError(err));
-  }
-
-  private getCopy() {
-    return this.apolloClient
-      .query({ query: GET_COPY })
-      .then(response => {
-        this.copy = response.data.contentBlocks;
-      })
-      .catch(err => {
-        this.logError(err);
-      });
   }
 
   private setUserSite(siteId) {
@@ -129,15 +124,10 @@ export class SiteHappenings {
       });
   }
 
-  // This lets unit tests capture and confirm errors rather than listening in on console.error
-  private logError(err) {
-    console.error(err);
-  }
-
   /** Setters **/
 
   private resetUser() {
-    this.user = { name: '', site: '', authToken: this.authToken };
+    this.user = null;
     this.selectedSite = 'Churchwide';
   }
 
@@ -158,7 +148,7 @@ export class SiteHappenings {
    */
   private validateUserSite(siteName) {
     if (typeof siteName === 'string' && siteName !== '') {
-      this.user = { ...this.user, site: siteName, authToken: this.authToken };
+      this.user = { ...this.user, site: siteName };
     }
   }
 
@@ -286,17 +276,10 @@ export class SiteHappenings {
     this.host.shadowRoot.querySelector('.site-select-message').classList.add('hidden');
   }
 
-  private getContentBlock(slug: string) {
-    const contentBlock = this.copy.find(c => c.slug === slug);
-    if (!contentBlock) return;
-    return <div innerHTML={contentBlock.content.toString()} />;
-  }
-
   /**
    * Display happenings cards filtered by dropdown
    */
   private renderHappenings() {
-    if (!this.happenings.length) return this.renderHappeningsSkeleton();
     return this.happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
@@ -321,44 +304,11 @@ export class SiteHappenings {
   }
 
   /**
-   * Map 4 fake cards while processing data
-   * from ctfl
-   */
-  private renderHappeningsSkeleton() {
-    return [1, 2, 3, 4].map(() => (
-      <div class="card-skeleton">
-        <svg
-          width="270px"
-          height="302px"
-          viewBox="0 0 323 302"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns-xlink="http://www.w3.org/1999/xlink"
-        >
-          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.5">
-            <g id="Short-skeleton-double" transform="translate(-30.000000, -30.000000)" fill="#979797">
-              <g transform="translate(30.000000, 30.000000)">
-                <rect id="bg-recent-1-copy" x="0" y="0" width="323" height="182" rx="1" />
-                <rect id="Rectangle" x="0" y="196" width="94" height="9" rx="1" />
-                <rect id="Rectangle" x="0" y="293" width="72" height="9" rx="1" />
-                <rect id="Rectangle" x="0" y="219" width="275" height="25" rx="1" />
-                <rect id="Rectangle" x="0" y="254" width="145" height="25" rx="1" />
-              </g>
-            </g>
-          </g>
-        </svg>
-      </div>
-    ));
-  }
-
-  /**
    * Returns set site modal if conditions are met or empty string
    */
   private maybeRenderSetSiteModal() {
-    if (!this.authToken) return '';
-    if ((this.user.site === 'Not site specific' || !!!this.user.site) && this.authToken == this.user.authToken)
-      return this.renderSetSiteModal();
-    else return '';
+    if (this.user && !this.isUserSiteSet()) return this.renderSetSiteModal();
+    return '';
   }
 
   /**
@@ -374,7 +324,7 @@ export class SiteHappenings {
           </svg>
         </button>
         <div class="text-center push-top w-100">
-          {this.getContentBlock('SiteHappeningsPrompt')}
+          {this.contentBlockHandler.getContentBlock('SiteHappeningsPrompt')}
           <div class="happenings-dropdown" data-automation-id="happenings-choose-site">
             <select class="dropdown w-100" onInput={event => this.handleSetSiteInput(event)}>
               <option disabled selected>
@@ -403,6 +353,13 @@ export class SiteHappenings {
         </div>
       </div>
     );
+  }
+
+  /**
+   * Helpers
+   */
+  private isUserSiteSet(): Boolean {
+    return this.user.site !== 'Not site specific' && !!this.user.site;
   }
 
   /** Render **/
@@ -438,7 +395,7 @@ export class SiteHappenings {
                   transform="translate(-9 -53) rotate(90 127.7 129)"
                 />
               </svg>
-              {this.selectedSite === this.user.site ? <span class="my-site-label">(my site)</span> : ''}
+              {this.selectedSite === (this.user && this.user.site) ? <span class="my-site-label">(my site)</span> : ''}
             </div>
           </div>
           <div class="card-deck carousel" data-crds-carousel="mobile-scroll">
