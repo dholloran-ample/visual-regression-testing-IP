@@ -31,6 +31,10 @@ export class CrdsGreeting {
     }
   }
 
+  public componentWillLoad() {
+    this.authTokenHandler(this.authToken, null);
+  }
+
   public componentDidRender() {
     const renderedEvent = new CustomEvent('component rendered', {
       detail: this.host
