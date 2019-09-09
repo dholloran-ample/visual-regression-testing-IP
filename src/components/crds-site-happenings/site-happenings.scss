@@ -1,35 +1,5 @@
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.relative {
-  position: relative;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.d-flex {
-  display: flex;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.card-skeleton {
-  svg {
-    height: auto;
-    width: 100%;
-  }
-}
+@import '../../shared/shared.scss';
+@import '../../shared/skeleton.scss';
 
 .happenings-dropdown-container {
   display: flex;
@@ -66,7 +36,7 @@
     }
 
     @media (min-width: 480px) {
-      padding: .5rem;
+      padding: 0.5rem;
     }
   }
 
@@ -186,54 +156,6 @@
   opacity: 0;
 }
 
-// crds-styles
-hr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  border: 0;
-  border-top: 1px solid #e7e7e7;
-}
-
-.font-family-base {
-  font-family: 'acumin-pro', helvetica, arial, sans-serif !important;
-  font-weight: 300 !important;
-}
-
-.text-gray-light {
-  color: #979797 !important;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.flush {
-  margin: 0 !important;
-}
-
-.font-size-base {
-  font-size: 16px !important;
-  @media (min-width: 480px) {
-    font-size: 19px !important;
-  }
-}
-
-.flush-bottom {
-  margin-bottom: 0 !important;
-}
-
-.flush-top {
-  margin-top: 0 !important;
-}
-
-.push-half-bottom {
-  margin-bottom: 12px !important;
-}
-
-.push-top {
-  margin-top: 24px;
-}
-
 .card-deck .card {
   display: -webkit-box;
   display: -webkit-flex;
@@ -264,7 +186,7 @@ hr {
   }
 
   .card,
-  .card-skeleton {
+  .skeleton-happenings {
     cursor: auto;
     -webkit-flex: 1 0 270px;
     -ms-flex: 1 0 270px;
@@ -320,10 +242,63 @@ hr {
   }
 }
 
+.skeleton-happenings {
+  height: 500px;
+  margin: 0;
+
+  .image {
+    height: 75%;
+    max-height: 200px;
+    width: 100%;
+  }
+
+  .image,
+  .text {
+    background-color: #f0f0f0;
+    position: relative;
+  }
+
+  .content {
+    padding: .5rem;
+
+    .overlap {
+      background: white;
+      padding: .5rem;
+      transform: translateY(-40%);
+    }
+
+    .title {
+      height: 24px;
+      margin-bottom: .5rem;
+
+      &:nth-child(2) {
+        width: 75%;
+      }
+    }
+
+    .subtitle {
+      height: 16px;
+      margin: .5rem;
+
+      &:nth-child(3) {
+        width: 75%;
+      }
+
+      &:nth-child(4) {
+        width: 85%;
+      }
+
+      &:nth-child(5) {
+        width: 50%;
+      }
+    }
+  }
+}
+
 .img-responsive {
   display: block;
-  max-width: 100%;
   height: auto;
+  max-width: 100%;
 }
 
 .card-title--overlap {
