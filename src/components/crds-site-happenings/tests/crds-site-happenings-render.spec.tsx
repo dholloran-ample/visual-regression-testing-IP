@@ -36,6 +36,15 @@ describe('<crds-site-happenings> Render', () => {
   });
 
   describe('Tests renderHappenings()', () => {
+    it('Checks skeleton is returned if there are no happenings', () => {
+      const render = this.happenings.renderHappenings();
+
+      expect(render).toHaveLength(4);
+      render.forEach(element => {
+        expect(element['$attrs$'].class).toEqual('card-skeleton');
+      });
+    });
+
     it('Checks card carousel is returned if there are happenings', () => {
       this.happenings.selectedSite = 'Oakley';
       this.happenings.happenings = [
