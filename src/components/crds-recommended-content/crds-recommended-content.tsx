@@ -78,7 +78,7 @@ export class CrdsRecommendedContent {
   }
 
   private handleBackClick(event) {
-    this.recommendedContent = [];
+    this.recommendedContent.length = 0;
     this.user = { ...this.user, lifeStage: { id: null, title: null } };
     event.target.parentNode.scrollLeft = 0;
   }
@@ -253,13 +253,16 @@ export class CrdsRecommendedContent {
     const selectedLifeStage: any = this.lifeStages.find(
       stage => stage.id === (this.user.lifeStage && this.user.lifeStage.id)
     );
+
     return (
       <div>
         <h2 class="component-header flush-bottom">
-          {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
+          {this.recommendedContent.length && selectedLifeStage
+            ? 'Recommended For You'
+            : 'Personalize Your Experience'}
         </h2>
         <p class="push-half-top push-half-bottom color-gray">
-          {this.recommendedContent.length
+          {this.recommendedContent.length && selectedLifeStage
             ? selectedLifeStage.description
             : 'Which of these best describes your stage of life? (Pick one)'}
         </p>
