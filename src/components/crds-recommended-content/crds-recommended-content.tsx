@@ -136,10 +136,10 @@ export class CrdsRecommendedContent {
 
   private renderCardSkeleton() {
     return [1, 2, 3, 4, 5].map(() => (
-      <div class="card-skeleton">
+    <div class="skeleton skeleton-life-stage">
         <div class="content">
-          <div class="text title" />
-          <div class="text subtitle" />
+          <div class="text title shimmer shimmer-reverse" />
+          <div class="text subtitle shimmer shimmer-reverse" />
         </div>
       </div>
     ));
@@ -148,8 +148,8 @@ export class CrdsRecommendedContent {
   private renderTextSkeleton() {
     return (
       <div class="text-skeleton">
-        <div class="title" />
-        <div class="subtitle" />
+        <div class="title shimmer shimmer" />
+        <div class="subtitle shimmer shimmer" />
       </div>
     );
   }

@@ -52,9 +52,9 @@ export class SiteHappenings {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
-      this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
-    });
+    // Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
+    //   this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
+    // });
   }
 
   public componentDidRender() {
@@ -273,27 +273,18 @@ export class SiteHappenings {
    */
   private renderHappeningsSkeleton() {
     return [1, 2, 3, 4].map(() => (
-      <div class="card-skeleton">
-        <svg
-          width="270px"
-          height="302px"
-          viewBox="0 0 323 302"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns-xlink="http://www.w3.org/1999/xlink"
-        >
-          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.5">
-            <g id="Short-skeleton-double" transform="translate(-30.000000, -30.000000)" fill="#979797">
-              <g transform="translate(30.000000, 30.000000)">
-                <rect id="bg-recent-1-copy" x="0" y="0" width="323" height="182" rx="1" />
-                <rect id="Rectangle" x="0" y="196" width="94" height="9" rx="1" />
-                <rect id="Rectangle" x="0" y="293" width="72" height="9" rx="1" />
-                <rect id="Rectangle" x="0" y="219" width="275" height="25" rx="1" />
-                <rect id="Rectangle" x="0" y="254" width="145" height="25" rx="1" />
-              </g>
-            </g>
-          </g>
-        </svg>
+      <div class="skeleton skeleton-happenings">
+        <div class="image" />
+        <div class="content">
+          <div class="overlap">
+            <div class="text title" />
+            <div class="text title" />
+          </div>
+          <div class="text subtitle" />
+          <div class="text subtitle" />
+          <div class="text subtitle" />
+          <div class="text subtitle" />
+        </div>
       </div>
     ));
   }
@@ -380,7 +371,7 @@ export class SiteHappenings {
 
   /** Helpers **/
   private isUserSiteSet(): Boolean {
-    return this.user.site && this.user.site !== 'Not site specific' ;
+    return this.user.site && this.user.site !== 'Not site specific';
   }
 
   /** Render **/
