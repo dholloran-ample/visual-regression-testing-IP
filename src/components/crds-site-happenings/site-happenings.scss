@@ -244,7 +244,7 @@
 
 .skeleton-happenings {
   height: 500px;
-  margin: 0 .5rem;
+  margin: 0;
 
   .image {
     height: 75%;
@@ -255,6 +255,7 @@
   .image,
   .text {
     background-color: #f0f0f0;
+    position: relative;
   }
 
   .content {
@@ -271,7 +272,7 @@
       margin-bottom: .5rem;
 
       &:nth-child(2) {
-        width: 65%;
+        width: 75%;
       }
     }
 
@@ -280,7 +281,7 @@
       margin: .5rem;
 
       &:nth-child(3) {
-        width: 65%;
+        width: 75%;
       }
 
       &:nth-child(4) {

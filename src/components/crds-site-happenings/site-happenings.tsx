@@ -52,9 +52,9 @@ export class SiteHappenings {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    // Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
-    //   this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
-    // });
+    Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
+      this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
+    });
   }
 
   public componentDidRender() {
@@ -272,18 +272,26 @@ export class SiteHappenings {
    * from ctfl
    */
   private renderHappeningsSkeleton() {
-    return [1, 2, 3, 4].map(() => (
+    let arr = [];
+    if (window.innerWidth < 768) {
+      arr.push(1, 2);
+    } else if (window.innerWidth >= 768 && window.innerWidth < 960) {
+      arr.push(1,2,3);
+    } else {
+      arr.push(1,2,3,4);
+    }
+    return arr.map(() => (
       <div class="skeleton skeleton-happenings">
-        <div class="image" />
+        <div class="image shimmer" />
         <div class="content">
           <div class="overlap">
-            <div class="text title" />
-            <div class="text title" />
+            <div class="text title shimmer" />
+            <div class="text title shimmer" />
           </div>
-          <div class="text subtitle" />
-          <div class="text subtitle" />
-          <div class="text subtitle" />
-          <div class="text subtitle" />
+          <div class="text subtitle shimmer" />
+          <div class="text subtitle shimmer" />
+          <div class="text subtitle shimmer" />
+          <div class="text subtitle shimmer" />
         </div>
       </div>
     ));

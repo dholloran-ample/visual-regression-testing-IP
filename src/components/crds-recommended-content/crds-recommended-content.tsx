@@ -147,9 +147,9 @@ export class CrdsRecommendedContent {
 
   private renderTextSkeleton() {
     return (
-      <div class="text-skeleton">
-        <div class="title shimmer shimmer" />
-        <div class="subtitle shimmer shimmer" />
+      <div class="skeleton text-skeleton">
+        <div class="title shimmer" />
+        <div class="subtitle shimmer" />
       </div>
     );
   }
