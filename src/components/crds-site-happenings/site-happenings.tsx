@@ -52,9 +52,9 @@ export class SiteHappenings {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    // Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
-    //   this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
-    // });
+    Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
+      this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
+    });
   }
 
   public componentDidRender() {
