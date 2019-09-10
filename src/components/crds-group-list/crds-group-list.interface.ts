@@ -10,6 +10,7 @@ export interface Group {
   name: string;
   role: Role;
   type: Type;
+  meeting: Meeting;
 }
 
 export interface Role {
@@ -20,4 +21,10 @@ export interface Role {
 export interface Type {
   name: string;
   id: string;
+}
+
+export interface Meeting {
+  day: string;
+  time: string;
+  frequency: string;
 }

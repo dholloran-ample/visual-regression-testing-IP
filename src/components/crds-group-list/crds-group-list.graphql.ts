@@ -10,6 +10,11 @@ export const GET_GROUPS = gql`
       groups {
         id
         name
+        meeting {
+          day
+          time
+          frequency
+        }
         role {
           name
           id

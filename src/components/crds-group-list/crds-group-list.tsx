@@ -74,7 +74,7 @@ export class CrdsGroupList {
     return this.user.groups.map(group => (
       <div class="card">
         <h2>{group.name}</h2>
-        <p>Render Time here</p>
+        <p>{group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}</p>
         {this.renderLeaderTag(group)}
         <p>Render Image here</p>
       </div>
@@ -107,7 +107,7 @@ export class CrdsGroupList {
             <strong>Hey {this.user.contact.nickName || this.user.contact.firstName}! </strong>
             Looking to take the next step? Consider leading your own group.
             <br />
-            <a href="/leadersummiturl">Learn More About Leading A Group</a>
+            <a href="/groupsarefun">Learn More About Leading A Group</a>
           </div>
         );
       }
