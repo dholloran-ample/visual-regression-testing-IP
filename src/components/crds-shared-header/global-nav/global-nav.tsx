@@ -119,7 +119,7 @@ export class GlobalNav {
                   <div class="menu" innerHTML={menu} />
                   <div class="close" innerHTML={close} />
                 </a>
-                <a href="/search" class="search-container" data-automation-id="sh-search" data-label="search">
+                <a href={`${this.rootURL()}/search`} class="search-container" data-automation-id="sh-search" data-label="search">
                   <div class="search" innerHTML={search} />
                 </a>
               </div>
