@@ -17,12 +17,11 @@ h5 {
 
 .life-stages {
   background-color: #fff;
-  border: 1px solid #f0f0f0;
   min-height: 300px;
   overflow: hidden;
 
   @media (min-width: 768px) {
-    min-height: 528px;
+    min-height: 500px;
   }
 
   .life-stages-inner {
@@ -32,7 +31,7 @@ h5 {
   .life-stages-header {
     display: flex;
     flex-direction: column;
-    padding: 1.875rem;
+    padding-bottom: 1.875rem;
 
     @media (min-width: 768px) {
       flex-direction: row;
@@ -53,8 +52,7 @@ h5 {
   grid-auto-columns: 180px;
   grid-auto-flow: column;
   grid-column: 1 / -1;
-  grid-gap: 1.875rem;
-  grid-template-columns: .375rem;
+  grid-gap: 1rem;
   -webkit-overflow-scrolling: touch;
   overflow-x: scroll;
   padding-bottom: 1.875rem;
@@ -67,29 +65,20 @@ h5 {
 
   @media (min-width: 768px) {
     grid-auto-columns: 220px;
+    grid-gap: 1.875rem;
 
     &.media-cards {
       grid-auto-columns: 400px;
     }
   }
 
-  &::before,
-  &::after {
-    content: '';
-    width: .75rem;
-  }
-
   .card,
   .skeleton-life-stage {
     cursor: pointer;
-    height: 320px;
+    height: 340px;
     overflow: hidden;
     position: relative;
-    scroll-snap-align: center;
-
-    @media (min-width: 768px) {
-      height: 400px;
-    }
+    scroll-snap-align: start;
 
     &:hover {
       cursor: pointer;
