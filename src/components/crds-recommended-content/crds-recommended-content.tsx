@@ -36,11 +36,7 @@ export class CrdsRecommendedContent {
     this.getUser();
   }
 
-  public componentDidRender() {
-    const renderedEvent = new CustomEvent('component rendered', {
-      detail: this.host
-    });
-    document.dispatchEvent(renderedEvent);
+  public componentDidLoad() {
     Utils.trackInView(this.host, 'RecommendedContentComponent', this.getLifeStageId.bind(this));
   }
 
