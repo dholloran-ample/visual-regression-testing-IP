@@ -21,7 +21,6 @@ h5 {
 
   @media (min-width: 768px) {
     min-height: 500px;
-    border: 1px solid #f0f0f0;
   }
 
   .life-stages-inner {
@@ -35,7 +34,6 @@ h5 {
 
     @media (min-width: 768px) {
       flex-direction: row;
-      padding: 1.875rem;
     }
 
     .life-stage-selected {
@@ -65,15 +63,8 @@ h5 {
   }
 
   @media (min-width: 768px) {
-    grid-template-columns: .375rem;
     grid-auto-columns: 220px;
     grid-gap: 1.875rem;
-
-    &::before,
-    &::after {
-      content: '';
-      width: .75rem;
-    }
 
     &.media-cards {
       grid-auto-columns: 400px;
@@ -87,10 +78,6 @@ h5 {
     overflow: hidden;
     position: relative;
     scroll-snap-align: start;
-
-    @media (min-width: 768px) {
-      scroll-snap-align: center;
-    }
 
     &:hover {
       cursor: pointer;
