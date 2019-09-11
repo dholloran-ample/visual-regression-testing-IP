@@ -21,17 +21,16 @@ export class SiteHappenings {
   private user: CrdsUser = null;
   private contentBlockHandler: ContentBlockHandler;
 
-  @State() selectedSite: string = 'Churchwide';
+  @State() selectedSite: string;
   @Prop() authToken: string;
 
   @Element() host: HTMLStencilElement;
-
-
 
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.apolloClient = CrdsApollo(newValue);
+      this.getUser();
     }
   }
 
@@ -48,20 +47,14 @@ export class SiteHappenings {
   /** Stencil Lifecycle methods **/
   public componentDidLoad() {
     Utils.trackInView(this.host, 'HappeningComponent', this.getInViewDetails.bind(this));
-    const renderedEvent = new CustomEvent('component rendered', {
-      detail: this.host
-    });
-    document.dispatchEvent(renderedEvent);
   }
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
-    return Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy()]);
-  }
-
-  public componentWillRender() {
-    if (!this.user || !this.authToken) return this.getUser();
+    Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
+      this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
+    });
   }
 
   public componentDidRender() {
@@ -70,7 +63,6 @@ export class SiteHappenings {
       this.selectedSite
     );
   }
-
 
   /** GraphQL I/O **/
   private getSites(): Promise<any> {
@@ -90,8 +82,8 @@ export class SiteHappenings {
     return this.apolloClient
       .query({ query: GET_USER })
       .then(response => {
-        let user = response.data.user;
-        let siteName = user.site && user.site.name;
+        const user = response.data.user;
+        const siteName = user.site && user.site.name;
         this.validateUserSite(siteName);
         this.validateSelectedSite(this.user.site);
         return;
@@ -130,7 +122,7 @@ export class SiteHappenings {
 
   private resetUser() {
     this.user = null;
-    this.selectedSite = 'Churchwide';
+    this.validateSelectedSite('Churchwide');
   }
 
   /**
@@ -161,17 +153,14 @@ export class SiteHappenings {
    */
   private validateSelectedSite(siteName) {
     if (
-      typeof siteName !== 'string' ||
       siteName === 'Not site specific' ||
       siteName === 'I do not attend Crossroads' ||
       siteName === 'Anywhere' ||
       siteName === ''
     ) {
-      this.selectedSite = 'Churchwide';
-    } else if (this.contentfulSites.includes(siteName)) this.selectedSite = siteName;
-    else {
-      this.selectedSite = 'Churchwide';
+      siteName = 'Churchwide';
     }
+    if (this.contentfulSites.includes(siteName)) this.selectedSite = siteName;
   }
 
   /**
@@ -238,7 +227,7 @@ export class SiteHappenings {
     let params = {
       title: target.tagName === 'A' ? target.innerText.toLowerCase() : target.alt.toLowerCase(),
       url: target.tagName === 'A' ? target.href : target.parentNode.href,
-      userSite: this.user && this.user.site || 'logged out',
+      userSite: (this.user && this.user.site) || 'logged out',
       selectedSite: this.selectedSite
     };
 
@@ -279,9 +268,40 @@ export class SiteHappenings {
   }
 
   /**
+   * Map 4 fake cards while processing data
+   * from ctfl
+   */
+  private renderHappeningsSkeleton() {
+    let arr = [];
+    if (window.innerWidth < 768) {
+      arr.push(1, 2);
+    } else if (window.innerWidth < 960) {
+      arr.push(1,2,3);
+    } else {
+      arr.push(1,2,3,4);
+    }
+    return arr.map(() => (
+      <div class="skeleton skeleton-happenings">
+        <div class="image shimmer" />
+        <div class="content">
+          <div class="overlap">
+            <div class="text title shimmer" />
+            <div class="text title shimmer" />
+          </div>
+          <div class="text subtitle shimmer" />
+          <div class="text subtitle shimmer" />
+          <div class="text subtitle shimmer" />
+          <div class="text subtitle shimmer" />
+        </div>
+      </div>
+    ));
+  }
+
+  /**
    * Display happenings cards filtered by dropdown
    */
   private renderHappenings() {
+    if (!this.selectedSite) return this.renderHappeningsSkeleton();
     return this.happenings
       .filter(happening => happening.targetAudience.find(ta => ta === this.selectedSite))
       .map((obj, index) => (
@@ -359,7 +379,7 @@ export class SiteHappenings {
 
   /** Helpers **/
   private isUserSiteSet(): Boolean {
-    return this.user.site !== 'Not site specific' && !!this.user.site;
+    return this.user.site && this.user.site !== 'Not site specific';
   }
 
   /** Render **/

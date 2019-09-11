@@ -36,7 +36,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
 
   describe('Tests getUser()', () => {
     it("Checks that user's site is set", async () => {
-      expect(this.happenings.user).toBe(null);
+      expect(this.happenings.user).toBeNull();
 
       await this.happenings.getUser();
 
@@ -44,14 +44,14 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
     });
 
     it("Checks that user's site is not stored if not authenticated", async () => {
-      expect(this.happenings.user).toBe(null);
+      expect(this.happenings.user).toBeNull();
       expect(this.lastError.error).toBeUndefined();
 
       const authToken = '';
       this.happenings.apolloClient = CrdsApollo(authToken);
       await this.happenings.getUser();
 
-      expect(this.happenings.user).toBe(null);
+      expect(this.happenings.user).toBeNull();
       expect(this.lastError.error).not.toBeUndefined();
     });
   });

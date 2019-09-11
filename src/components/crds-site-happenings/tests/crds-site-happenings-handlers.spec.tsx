@@ -30,7 +30,7 @@ describe('<crds-site-happenings> Event handlers', () => {
 
   describe('Tests handleSiteSelection()', () => {
     it('Checks site selected and analytics data sent', () => {
-      expect(this.happenings.selectedSite).toEqual('Churchwide');
+      expect(this.happenings.selectedSite).toBeUndefined();
 
       let fakeEvent = { target: { value: 'Oakley' } };
       this.happenings.handleSiteSelection(fakeEvent);
@@ -44,25 +44,25 @@ describe('<crds-site-happenings> Event handlers', () => {
       expect(analyticsData.site).not.toBeUndefined();
     });
 
-    const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere', 'Fake Site'];
+    const notAllowedSiteNames = ['Not site specific', 'I do not attend Crossroads', 'Anywhere'];
     notAllowedSiteNames.forEach(siteName => {
       it(`Checks selecting ${siteName} should set selectedSite to Churchwide`, () => {
-        expect(this.happenings.selectedSite).toEqual('Churchwide');
+        expect(this.happenings.selectedSite).toBeUndefined();
 
         let fakeEvent = { target: { value: siteName } };
         this.happenings.handleSiteSelection(fakeEvent);
 
-        expect(this.happenings.selectedSite).toEqual('Churchwide');
+        expect(this.happenings.selectedSite).toBe("Churchwide");
 
         const analyticsData = this.analyticsEvent.data;
-        expect(analyticsData.site).toEqual('Churchwide');
+        expect(analyticsData.site).toBe("Churchwide");
       });
     });
 
     const siteNames = ['Oakley', 'Downtown Lexington'];
     siteNames.forEach(siteName => {
       it(`Checks selecting ${siteName} should set selectedSite to what was given`, () => {
-        expect(this.happenings.selectedSite).toEqual('Churchwide');
+        expect(this.happenings.selectedSite).toBeUndefined();
 
         let fakeEvent = { target: { value: siteName } };
         this.happenings.handleSiteSelection(fakeEvent);
@@ -97,7 +97,6 @@ describe('<crds-site-happenings> Event handlers', () => {
       expect(analyticsData.title).not.toBeUndefined();
       expect(analyticsData.url).not.toBeUndefined();
       expect(analyticsData.userSite).not.toBeUndefined();
-      expect(analyticsData.selectedSite).not.toBeUndefined();
     });
 
     it('Checks values sent to analytics when user clicks an "A" tag link', () => {
@@ -113,7 +112,7 @@ describe('<crds-site-happenings> Event handlers', () => {
         title: 'east side',
         url: 'int.crossroads.net',
         userSite: 'logged out',
-        selectedSite: 'Churchwide'
+        selectedSite: undefined
       };
 
       this.happenings.handleHappeningsClicked(fakeEvent);
@@ -141,7 +140,7 @@ describe('<crds-site-happenings> Event handlers', () => {
         title: 'east side',
         url: 'int.crossroads.net',
         userSite: 'logged out',
-        selectedSite: 'Churchwide'
+        selectedSite: undefined
       };
 
       this.happenings.handleHappeningsClicked(fakeEvent);
@@ -155,6 +154,7 @@ describe('<crds-site-happenings> Event handlers', () => {
 
     it('Checks values sent to analytics when user has a site', () => {
       this.happenings.user = { site: 'Oakley' };
+      this.happenings.validateSelectedSite(this.happenings.user.site);
       const fakeEvent = {
         target: {
           innerText: 'fake inner text',
@@ -170,7 +170,7 @@ describe('<crds-site-happenings> Event handlers', () => {
         title: 'east side',
         url: 'int.crossroads.net',
         userSite: 'Oakley',
-        selectedSite: 'Churchwide'
+        selectedSite: 'Oakley'
       };
 
       this.happenings.handleHappeningsClicked(fakeEvent);
@@ -199,7 +199,7 @@ describe('<crds-site-happenings> Event handlers', () => {
         title: 'east side',
         url: 'int.crossroads.net',
         userSite: 'logged out',
-        selectedSite: 'Churchwide'
+        selectedSite: undefined
       };
 
       this.happenings.handleHappeningsClicked(fakeEvent);
@@ -214,6 +214,22 @@ describe('<crds-site-happenings> Event handlers', () => {
 
   describe('Tests handleSetSiteInput()', () => {
     beforeEach(() => {
+      this.happenings.contentfulSites = [
+        'Churchwide',
+        'Columbus',
+        'Dayton',
+        'Downtown Lexington',
+        'East Side',
+        'Florence',
+        'Georgetown',
+        'Lexington',
+        'Mason',
+        'Oakley',
+        'Oxford',
+        'Richmond',
+        'Uptown',
+        'West Side'
+      ];
       //Mock methods called by handleSetSiteInput to avoid failures
       this.happenings.handleSetSiteModalClose = () => {}; //Interacts with the DOM
       this.happenings.setUserSite = () => {}; //Requires auth
@@ -228,8 +244,8 @@ describe('<crds-site-happenings> Event handlers', () => {
         }
       };
 
-      expect(this.happenings.selectedSite).toBe('Churchwide');
-      expect(this.happenings.user).toBe(null);
+      expect(this.happenings.selectedSite).toBeUndefined();
+      expect(this.happenings.user).toBeNull();
 
       this.happenings.handleSetSiteInput(fakeEvent);
 
@@ -275,7 +291,7 @@ describe('<crds-site-happenings> Event handlers', () => {
         };
 
         expect(this.happenings.selectedSite).toBe('Oakley');
-        expect(this.happenings.user).toBe(null);
+        expect(this.happenings.user).toBeNull();
 
         this.happenings.handleSetSiteInput(fakeEvent);
 
@@ -292,10 +308,6 @@ describe('<crds-site-happenings> Event handlers', () => {
       {
         value: null,
         text: null
-      },
-      {
-        value: '',
-        text: ''
       }
     ];
     badSelectionData.forEach(badData => {
@@ -316,14 +328,14 @@ describe('<crds-site-happenings> Event handlers', () => {
 
         this.happenings.handleSetSiteInput(fakeEvent);
 
-        expect(this.happenings.selectedSite).toBe('Churchwide');
+        expect(this.happenings.selectedSite).toBe('Oakley');
         expect(this.happenings.user.site).toBe('Mason');
 
         expect(this.analyticsEvent.name).toBe('HappeningSiteUpdated');
         expect(this.analyticsEvent.data).not.toBeUndefined();
         const analyticsData = this.analyticsEvent.data;
         expect(analyticsData.id).toBe(badData.value);
-        expect(analyticsData.name).toEqual('Churchwide');
+        expect(analyticsData.name).toEqual('Oakley');
       });
     });
   });
