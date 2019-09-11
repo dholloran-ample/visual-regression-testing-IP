@@ -4,6 +4,7 @@ import { CrdsApollo } from '../../shared/apollo';
 import { GroupUser, Group } from './crds-group-list.interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_GROUPS } from './crds-group-list.graphql';
+import { url } from 'inspector';
 
 @Component({
   tag: 'crds-group-list',
@@ -55,42 +56,35 @@ export class CrdsGroupList {
     }
   }
 
-  public renderDefault() {
-    console.log('called renderDefault()');
-    if (!this.user) return null;
-    return (
-      <div>
-        <h2>You haven't joined a group yet</h2>
-        <strong>Hey {this.user.contact.nickName || this.user.contact.firstName}! </strong>
-        You can make this big place feel small. Find your tribe to connect with people, yourself, and God.
-        <br />
-        <a href="/connect">Search Groups</a>
-      </div>
-    );
-  }
-
   public renderGroupList() {
     console.log('called renderGroupList()');
     return this.user.groups.map(group => (
-      <div class="card">
-        <h2>{group.name}</h2>
-        <p>{group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}</p>
-        {this.renderLeaderTag(group)}
-        <p>Render Image here</p>
+      <div class="group d-flex">
+        <div class="group-text">
+          <h4 class="list-header">{group.name}</h4>
+          <p>
+            {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
+          </p>
+          {this.renderLeaderTag(group)}
+        </div>
+        <div
+          class="group-image img-responsive img-circle"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1568071903270-134748f04f28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')`
+          }}
+        />
       </div>
     ));
   }
 
   public renderUserGroupState() {
-    if (this.user) {
-      if (this.user.groups.length > 0) {
-        return this.renderGroupList();
-      }
+    if (this.user && this.user.groups.length > 0) {
+      return this.renderGroupList();
     }
-    return this.renderDefault();
   }
 
-  public renderLeaderContent() {
+  // TODO: these should come from content blocks
+  public renderCallToAction() {
     if (this.user) {
       if (this.leader) {
         return (
@@ -110,6 +104,16 @@ export class CrdsGroupList {
             <a href="/groupsarefun">Learn More About Leading A Group</a>
           </div>
         );
+      } else {
+        return (
+          <div>
+            <h2>You haven't joined a group yet</h2>
+            <strong>Hey {this.user.contact.nickName || this.user.contact.firstName}! </strong>
+            You can make this big place feel small. Find your tribe to connect with people, yourself, and God.
+            <br />
+            <a href="/connect">Search Groups</a>
+          </div>
+        );
       }
     }
   }
@@ -119,7 +123,7 @@ export class CrdsGroupList {
       <div class="group-list">
         <div class="group-list-header">my groups</div>
         {this.renderUserGroupState()}
-        {this.renderLeaderContent()}
+        {this.renderCallToAction()}
       </div>
     );
   }

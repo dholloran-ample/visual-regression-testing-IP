@@ -1,0 +1,18 @@
+@import '../../shared/shared';
+@import '../../shared/skeleton';
+
+.group {
+  .group-image {
+    height: 90px;
+    margin-left: auto;
+    width: 90px;
+    background-size: cover;
+    background-position: 0;
+
+    &.img-circle {
+      border-color: rgba(231, 231, 231, 0.4);
+      border-style: solid;
+      border-width: 2px;
+    }
+  }
+}
