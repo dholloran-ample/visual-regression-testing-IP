@@ -9,6 +9,16 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
+  interface CrdsDefaultLayout {
+    'body': string;
+    'heading': string;
+    'image': string;
+    'meta': string;
+    'metaPosition': string;
+    'src': string;
+    'thumbnailSRC': string;
+    'url': string;
+  }
   interface CrdsGreeting {
     'authToken': string;
     'defaultName': string;
@@ -30,6 +40,22 @@ export namespace Components {
     * Cache key for localStorage
     */
     'storageKey': string;
+  }
+  interface CrdsMediaCard {
+    'author': string;
+    'body': string;
+    'contentCount': number;
+    'contentLayout': string;
+    'contentType': string;
+    'heading': string;
+    'image': string;
+    'mediaTopic': string;
+    'meta': string;
+    'metaPosition': string;
+    'nearestMinute': string;
+    'src': string;
+    'thumbnailSRC': string;
+    'url': string;
   }
   interface CrdsModal {
     'isActive': boolean;
@@ -111,6 +137,12 @@ export namespace Components {
 declare global {
 
 
+  interface HTMLCrdsDefaultLayoutElement extends Components.CrdsDefaultLayout, HTMLStencilElement {}
+  var HTMLCrdsDefaultLayoutElement: {
+    prototype: HTMLCrdsDefaultLayoutElement;
+    new (): HTMLCrdsDefaultLayoutElement;
+  };
+
   interface HTMLCrdsGreetingElement extends Components.CrdsGreeting, HTMLStencilElement {}
   var HTMLCrdsGreetingElement: {
     prototype: HTMLCrdsGreetingElement;
@@ -121,6 +153,12 @@ declare global {
   var HTMLCrdsHeartButtonElement: {
     prototype: HTMLCrdsHeartButtonElement;
     new (): HTMLCrdsHeartButtonElement;
+  };
+
+  interface HTMLCrdsMediaCardElement extends Components.CrdsMediaCard, HTMLStencilElement {}
+  var HTMLCrdsMediaCardElement: {
+    prototype: HTMLCrdsMediaCardElement;
+    new (): HTMLCrdsMediaCardElement;
   };
 
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
@@ -213,8 +251,10 @@ declare global {
     new (): HTMLProfileNavElement;
   };
   interface HTMLElementTagNameMap {
+    'crds-default-layout': HTMLCrdsDefaultLayoutElement;
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
+    'crds-media-card': HTMLCrdsMediaCardElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
@@ -234,6 +274,16 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface CrdsDefaultLayout extends JSXBase.HTMLAttributes<HTMLCrdsDefaultLayoutElement> {
+    'body'?: string;
+    'heading'?: string;
+    'image'?: string;
+    'meta'?: string;
+    'metaPosition'?: string;
+    'src'?: string;
+    'thumbnailSRC'?: string;
+    'url'?: string;
+  }
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
     'authToken'?: string;
     'defaultName'?: string;
@@ -255,6 +305,22 @@ declare namespace LocalJSX {
     * Cache key for localStorage
     */
     'storageKey'?: string;
+  }
+  interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
+    'author'?: string;
+    'body'?: string;
+    'contentCount'?: number;
+    'contentLayout'?: string;
+    'contentType'?: string;
+    'heading'?: string;
+    'image'?: string;
+    'mediaTopic'?: string;
+    'meta'?: string;
+    'metaPosition'?: string;
+    'nearestMinute'?: string;
+    'src'?: string;
+    'thumbnailSRC'?: string;
+    'url'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
@@ -333,8 +399,10 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'crds-default-layout': CrdsDefaultLayout;
     'crds-greeting': CrdsGreeting;
     'crds-heart-button': CrdsHeartButton;
+    'crds-media-card': CrdsMediaCard;
     'crds-modal': CrdsModal;
     'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
