@@ -1,12 +1,10 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-export const GET_NAMES = gql`
+export const GET_USER = gql`
   {
     user {
-      contact {
-        firstName
-        nickName
-      }
+      firstName
+      nickName
     }
   }
 `;
