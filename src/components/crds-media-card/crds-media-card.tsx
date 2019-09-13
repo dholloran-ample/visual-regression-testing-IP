@@ -36,11 +36,25 @@ export class CrdsMediaCard {
   @Element() element: HTMLElement;
 
   // Validations
+  @Watch('contentType')
+  validateContentType(newValue: string) {
+    if (typeof newValue != null && this.contentTypes.indexOf(newValue) == -1) {
+      throw new Error(`${newValue} is not a valid value for contentType`);
+    }
+  }
+
+  @Watch('contenLayout')
+  validateContentLayout(newValue: string) {
+    if (typeof newValue != null && this.contentLayouts.indexOf(newValue) == -1) {
+      throw new Error(`${newValue} is not a valid value for contentLayout`);
+    }
+  }
+
   @Watch('image')
   validateName(newValue: string) {
     const isEmpty = typeof newValue == null;
     if (isEmpty) {
-      throw new Error('name: required');
+      throw new Error('image property is required on all media cards');
     }
   }
 
@@ -59,25 +73,21 @@ export class CrdsMediaCard {
   ];
 
   private contentLayouts = ['default', 'overlay', 'media-object'];
-  private contentTypes = [''];
+  private contentTypes = ['article', 'video', 'podcast-episode', 'message', 'song', 'series', 'album', 'podcast'];
 
   // ----------------------------------------------- | Methods
 
   componentWillLoad() {
     // Set props for child component
     this.childProps = this.propNames.filter(prop => this[prop] != undefined);
-    // !this.contentLayouts[this.contentLayout] &&
-    //   console.error(`${this.contentLayout} is not a layout type for crds-media-card`);
   }
 
   private getLayout = () => {
-    const layout = {
+    return {
       default: <crds-default-layout {...this.childProps} />,
       overlay: <crds-overlay-layout {...this.childProps} />,
       'media-object': <crds-media-object-layout {...this.childProps} />
     }[this.contentLayout];
-
-    return layout;
   };
 
   public render() {
