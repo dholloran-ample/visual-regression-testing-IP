@@ -4,7 +4,6 @@ import { CrdsApollo } from '../../shared/apollo';
 import { GroupUser, Group } from './crds-group-list.interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_GROUPS } from './crds-group-list.graphql';
-import { url } from 'inspector';
 
 @Component({
   tag: 'crds-group-list',
@@ -13,6 +12,7 @@ import { url } from 'inspector';
 })
 export class CrdsGroupList {
   private apolloClient: ApolloClient<{}>;
+  private validGroups = ['Small Group', 'Journey'];
 
   @State() user: GroupUser;
   @Prop() authToken: string;
@@ -58,23 +58,29 @@ export class CrdsGroupList {
 
   public renderGroupList() {
     console.log('called renderGroupList()');
-    return this.user.groups.map(group => (
-      <div class="group d-flex">
-        <div class="group-text">
-          <h4 class="list-header">{group.name}</h4>
-          <p>
-            {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
-          </p>
-          {this.renderLeaderTag(group)}
-        </div>
-        <div
-          class="group-image img-responsive img-circle"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1568071903270-134748f04f28?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')`
-          }}
-        />
-      </div>
-    ));
+    return this.user.groups.map(group => {
+      console.log(group);
+      if (this.validGroups.includes(group.type.name)) {
+        return (
+          <div class="group d-flex">
+            <div class="group-text">
+              <h4 class="list-header">{group.name}</h4>
+              <p>
+                {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
+              </p>
+              {this.renderLeaderTag(group)}
+            </div>
+            <div
+              class="group-image img-responsive img-circle"
+              style={{
+                backgroundImage: `url('https://${group.image}')
+                                 ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
+              }}
+            />
+          </div>
+        );
+      }
+    });
   }
 
   public renderUserGroupState() {

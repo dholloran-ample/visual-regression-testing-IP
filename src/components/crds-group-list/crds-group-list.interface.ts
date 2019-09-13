@@ -11,6 +11,7 @@ export interface Group {
   role: Role;
   type: Type;
   meeting: Meeting;
+  image: string;
 }
 
 export interface Role {

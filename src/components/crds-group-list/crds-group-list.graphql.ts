@@ -10,6 +10,7 @@ export const GET_GROUPS = gql`
       groups {
         id
         name
+        image
         meeting {
           day
           time
