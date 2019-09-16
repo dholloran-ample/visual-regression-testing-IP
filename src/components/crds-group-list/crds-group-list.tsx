@@ -4,6 +4,7 @@ import { CrdsApollo } from '../../shared/apollo';
 import { GroupUser, Group } from './crds-group-list.interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_GROUPS } from './crds-group-list.graphql';
+import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 
 @Component({
   tag: 'crds-group-list',
@@ -13,6 +14,7 @@ import { GET_GROUPS } from './crds-group-list.graphql';
 export class CrdsGroupList {
   private apolloClient: ApolloClient<{}>;
   private validGroups = ['Small Group', 'Journey'];
+  private contentBlockHandler: ContentBlockHandler;
 
   @State() user: GroupUser;
   @Prop() authToken: string;
@@ -29,6 +31,8 @@ export class CrdsGroupList {
 
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
+    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'group list');
+    this.contentBlockHandler.getCopy();
     this.getUserGroups();
   }
 
@@ -89,37 +93,14 @@ export class CrdsGroupList {
     }
   }
 
-  // TODO: these should come from content blocks
   public renderCallToAction() {
     if (this.user) {
       if (this.leader) {
-        return (
-          <div>
-            <strong>Hey {this.user.nickName || this.user.firstName}! </strong>
-            Looking to revive your leader skills and get refreshed?
-            <br />
-            <a href="/leadersummiturl">Join us at the leader summit</a>
-          </div>
-        );
+        return this.contentBlockHandler.getContentBlock('group-list-leader');
       } else if (this.user.groups.length > 0) {
-        return (
-          <div>
-            <strong>Hey {this.user.nickName || this.user.firstName}! </strong>
-            Looking to take the next step? Consider leading your own group.
-            <br />
-            <a href="/groupsarefun">Learn More About Leading A Group</a>
-          </div>
-        );
+        return this.contentBlockHandler.getContentBlock('group-list-member');
       } else {
-        return (
-          <div>
-            <h2>You haven't joined a group yet</h2>
-            <strong>Hey {this.user.nickName || this.user.firstName}! </strong>
-            You can make this big place feel small. Find your tribe to connect with people, yourself, and God.
-            <br />
-            <a href="/connect">Search Groups</a>
-          </div>
-        );
+        return this.contentBlockHandler.getContentBlock('group-list-none');
       }
     }
   }
@@ -129,7 +110,10 @@ export class CrdsGroupList {
       <div class="group-list">
         <div class="group-list-header">my groups</div>
         {this.renderUserGroupState()}
-        {this.renderCallToAction()}
+        <span>
+          <strong>Hey {this.user.nickName || this.user.firstName}!</strong> 
+          {this.renderCallToAction()}
+        </span>
       </div>
     );
   }
