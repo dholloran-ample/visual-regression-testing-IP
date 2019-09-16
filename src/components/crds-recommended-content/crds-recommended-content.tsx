@@ -16,7 +16,7 @@ export class CrdsRecommendedContent {
   private analytics = window['analytics'] || {};
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
-  @State() recommendedContent: [] = [];
+  private recommendedContent: [] = [];
   @State() lifeStages: CrdsLifeStage[] = [];
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @Prop() public authToken: string;
@@ -70,11 +70,11 @@ export class CrdsRecommendedContent {
    * Get content with set life stages
    */
   private filterContent(lifeStageId) {
-    return this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
+    this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   private handleBackClick(event) {
-    this.recommendedContent.length = 0;
+    this.recommendedContent = [];
     this.user = { ...this.user, lifeStage: { id: null, title: null } };
     event.target.parentNode.scrollLeft = 0;
   }

@@ -26,8 +26,8 @@ describe('<greeting-component> GraphQL', () => {
         return;
       } else {
         await this.greetingComponent.getUser();
-        expect(this.greetingComponent.user.contact.firstName).toBe('Leia');
-        expect(this.greetingComponent.user.contact.nickName).toBe('Princess');
+        expect(this.greetingComponent.user.firstName).toBe('Leia');
+        expect(this.greetingComponent.user.nickName).toBe('Princess');
       }
     });
   });
