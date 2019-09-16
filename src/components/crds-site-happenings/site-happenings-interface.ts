@@ -1,7 +1,5 @@
 export interface CrdsUser {
-  name: string;
   site: string;
-  authToken: string;
 }
 
 export interface CrdsHappening {
@@ -16,9 +14,4 @@ export interface CrdsHappening {
 export interface Site {
   id: string;
   name: string;
-}
-
-export interface ContentBlock { 
-  slug: string
-  content: string
 }

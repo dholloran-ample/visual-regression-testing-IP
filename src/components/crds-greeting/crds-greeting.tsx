@@ -1,7 +1,7 @@
 import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
 import { GreetingUser } from './crds-greeting-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import { GET_NAMES } from './crds-greeting.graphql';
+import { GET_USER } from './crds-greeting.graphql';
 import ApolloClient from 'apollo-client';
 import { CrdsApollo } from '../../shared/apollo';
 
@@ -13,12 +13,9 @@ import { CrdsApollo } from '../../shared/apollo';
 export class CrdsGreeting {
   private apolloClient: ApolloClient<{}>;
 
-  @State() user: GreetingUser = {
-    contact: {
-      firstName: null,
-      nickName: null
-    }
-  };
+  private user: GreetingUser = null;
+
+  @State() displayName: string = null;
   @Prop() authToken: string;
   @Prop() defaultName: string;
   @Element() public host: HTMLStencilElement;
@@ -29,6 +26,14 @@ export class CrdsGreeting {
       this.apolloClient = CrdsApollo(newValue);
       this.getUser();
     }
+  }
+
+  public componentWillLoad(){ 
+    this.apolloClient = CrdsApollo(this.authToken);
+  }
+
+  public componentWillRender() {
+    if (this.authToken) return this.getUser();
   }
 
   public componentDidRender() {
@@ -44,13 +49,20 @@ export class CrdsGreeting {
 
   public getUser() {
     return this.apolloClient
-      .query({ query: GET_NAMES })
+      .query({ query: GET_USER })
       .then(success => {
         this.user = success.data.user;
+        this.getDisplayName();
+        return;
       })
       .catch(err => {
+        this.getDisplayName();
         this.logError(err);
       });
+  }
+
+  private getDisplayName(): void {
+    this.displayName = (this.user && (this.user.nickName || this.user.firstName)) || this.defaultName || '';
   }
 
   public parseTimeBasedGreetings(hour) {
@@ -62,8 +74,7 @@ export class CrdsGreeting {
   public renderGreeting() {
     const date = new Date();
     const greeting = this.parseTimeBasedGreetings(date.getHours());
-    const name = this.user.contact.nickName || this.user.contact.firstName || this.defaultName;
-    return `${greeting}, ${name}`;
+    return `${greeting}, ${this.displayName}`;
   }
 
   private logError(err) {
@@ -71,6 +82,7 @@ export class CrdsGreeting {
   }
 
   public render() {
+    if (!this.displayName) return '';
     return (
       <div class="greeting">
         <h3 class="font-size-large flush">{this.renderGreeting()}</h3>

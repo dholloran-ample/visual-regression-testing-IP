@@ -114,8 +114,7 @@ export class GlobalNav {
                   <div class={iconData.main.class} innerHTML={iconData.main.innerHTML} />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
                 </a>
-
-                <a href="/search" class="search-container" data-automation-id="sh-search" data-label="search">
+                <a href={`${this.rootURL()}/search`} class="search-container" data-automation-id="sh-search" data-label="search">
                   <div class={iconData.search.class} innerHTML={iconData.search.innerHTML} />
                 </a>
               </div>
