@@ -1,8 +1,7 @@
-import { Contact } from "../crds-greeting/crds-greeting-interface";
-
 export interface GroupUser {
-  contact: Contact
   groups: Group[];
+  nickName: string;
+  firstName: string;
 }
 
 export interface Group {

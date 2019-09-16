@@ -95,7 +95,7 @@ export class CrdsGroupList {
       if (this.leader) {
         return (
           <div>
-            <strong>Hey {this.user.contact.nickName || this.user.contact.firstName}! </strong>
+            <strong>Hey {this.user.nickName || this.user.firstName}! </strong>
             Looking to revive your leader skills and get refreshed?
             <br />
             <a href="/leadersummiturl">Join us at the leader summit</a>
@@ -104,7 +104,7 @@ export class CrdsGroupList {
       } else if (this.user.groups.length > 0) {
         return (
           <div>
-            <strong>Hey {this.user.contact.nickName || this.user.contact.firstName}! </strong>
+            <strong>Hey {this.user.nickName || this.user.firstName}! </strong>
             Looking to take the next step? Consider leading your own group.
             <br />
             <a href="/groupsarefun">Learn More About Leading A Group</a>
@@ -114,7 +114,7 @@ export class CrdsGroupList {
         return (
           <div>
             <h2>You haven't joined a group yet</h2>
-            <strong>Hey {this.user.contact.nickName || this.user.contact.firstName}! </strong>
+            <strong>Hey {this.user.nickName || this.user.firstName}! </strong>
             You can make this big place feel small. Find your tribe to connect with people, yourself, and God.
             <br />
             <a href="/connect">Search Groups</a>

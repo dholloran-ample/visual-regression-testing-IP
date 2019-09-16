@@ -3,10 +3,8 @@ import gql from "graphql-tag";
 export const GET_GROUPS = gql`
   {
     user {
-      contact {
-        firstName
-        nickName
-      }
+      firstName
+      nickName
       groups {
         id
         name
