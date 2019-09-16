@@ -59,25 +59,27 @@ export class CrdsGroupList {
   public renderGroupList() {
     console.log('called renderGroupList()');
     return this.user.groups.map(group => {
-      console.log(group);
       if (this.validGroups.includes(group.type.name)) {
+        const groupUrl = `/groups/search/small-group/${group.id}`
         return (
-          <div class="group d-flex">
-            <div class="group-text">
-              <h4 class="list-header">{group.name}</h4>
-              <p>
-                {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
-              </p>
-              {this.renderLeaderTag(group)}
+          <a href={groupUrl}>
+            <div class="group d-flex">
+              <div class="group-text">
+                <h4 class="list-header">{group.name}</h4>
+                <p>
+                  {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
+                </p>
+                {this.renderLeaderTag(group)}
+              </div>
+              <div
+                class="group-image img-responsive img-circle"
+                style={{
+                  backgroundImage: `url('https://${group.image}')
+                                  ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
+                }}
+              />
             </div>
-            <div
-              class="group-image img-responsive img-circle"
-              style={{
-                backgroundImage: `url('https://${group.image}')
-                                 ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
-              }}
-            />
-          </div>
+          </a>
         );
       }
     });
