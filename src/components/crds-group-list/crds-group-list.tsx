@@ -66,13 +66,8 @@ export class CrdsGroupList {
       console.log(group);
       if (this.validGroups.includes(group.type.name)) {
         return (
-<<<<<<< HEAD
           <div class="group d-flex">
             <div class="group-text push-half-bottom">
-=======
-          <div class="group d-flex push-half-bottom">
-            <div class="group-text">
->>>>>>> more fonts
               <h4 class="list-header flush"><a href="#">{group.name}</a></h4>
               <p class="control-label text-gray-light flush-top">
                 {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
