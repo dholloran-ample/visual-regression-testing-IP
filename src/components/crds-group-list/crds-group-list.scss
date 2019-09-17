@@ -2,10 +2,26 @@
 @import '../../shared/skeleton';
 
 .group {
+  .group-text {
+    h4 {
+      a {
+        color: #4d4d4d;
+        text-decoration: none;
+      }
+    }
+
+    .control-label {
+      @extend .font-family-base;
+      font-size: 12px;
+      font-weight: 600 !important;
+      text-transform: uppercase;
+    }
+  }
+
   .group-image {
-    height: 90px;
+    height: 75px;
+    width: 75px;
     margin-left: auto;
-    width: 90px;
     background-size: cover;
     background-position: 0;
 
