@@ -56,7 +56,7 @@ export class CrdsGroupList {
 
   public renderLeaderTag(group: Group) {
     if (group.role.name === 'Leader') {
-      return <p class="leader-tag">Leader</p>;
+      return <p class="leader-tag"><span class="label label-info">Leader</span></p>;
     }
   }
 
@@ -66,16 +66,16 @@ export class CrdsGroupList {
       console.log(group);
       if (this.validGroups.includes(group.type.name)) {
         return (
-          <div class="group d-flex">
-            <div class="group-text push-half-bottom">
-              <h4 class="list-header flush"><a href="#">{group.name}</a></h4>
-              <p class="control-label text-gray-light flush-top">
+          <div class="group d-flex push-half-bottom">
+            <div class="group-text">
+              <h4 class="list-header"><a href="#">{group.name}</a></h4>
+              <p class="control-label text-gray-light flush">
                 {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
               </p>
               {this.renderLeaderTag(group)}
             </div>
             <div
-              class="group-image img-responsive img-circle"
+              class="push-half-bottom group-image img-responsive img-circle"
               style={{
                 backgroundImage: `url('https://${group.image}')
                                  ,url('https://crossroads-media.imgix.net/images/avatar.svg')`

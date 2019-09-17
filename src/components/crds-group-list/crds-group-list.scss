@@ -1,9 +1,21 @@
 @import '../../shared/shared';
 @import '../../shared/skeleton';
 
+.group-list {
+  border-top: 1px solid $cr-gray-lighter;
+
+  p {
+    margin: $line-height-computed/2 0 $line-height-computed 0;
+  }
+}
+
 .group {
+  border-bottom: 1px solid $cr-gray-lighter;
+
   .group-text {
-    h4 {
+    h4.list-header {
+      margin: $line-height-computed/4 0 0 0;
+
       a {
         color: #4d4d4d;
         text-decoration: none;
@@ -15,6 +27,29 @@
       font-size: 12px;
       font-weight: 600 !important;
       text-transform: uppercase;
+    }
+
+    .leader-tag {
+      margin: $line-height-computed/2 0;
+    }
+
+    .label {
+      @extend .font-family-base;
+      font-size: 12px;
+      margin-top: 9px;
+      padding: 5px 6px 4px;
+      display: inline;
+      font-weight: 500 !important;
+      line-height: 1;
+      color: #4d4d4d;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: .25em;
+    }
+
+    .label-info {
+      background-color: #b6dee6;
     }
   }
 
@@ -29,6 +64,8 @@
       border-color: rgba(231, 231, 231, 0.4);
       border-style: solid;
       border-width: 2px;
+      background-size: cover;
+      place-self: flex-end;
     }
   }
 }
