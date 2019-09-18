@@ -6,5 +6,5 @@ stories
   .addDecorator(withKnobs)
   .add('<crds-group-list />', () => {
     const token = text('sessionId', '');
-    return `<crds-group-list auth-token=${token}></crds-group-list>`;
+    return `<crds-group-list auth-token='${token}'></crds-group-list>`;
   });

@@ -43,7 +43,6 @@ export class CrdsGroupList {
       .then(success => {
         this.user = success.data.user;
         this.leader = this.user.groups.filter(group => group.role.name === 'Leader').length > 0;
-        console.log(this.user, this.leader);
       })
       .catch(err => {
         this.logError(err);
@@ -61,9 +60,7 @@ export class CrdsGroupList {
   }
 
   public renderGroupList() {
-    console.log('called renderGroupList()');
     return this.user.groups.map(group => {
-      console.log(group);
       if (this.validGroups.includes(group.type.name)) {
         return (
           <div class="group d-flex push-half-bottom">
@@ -90,6 +87,10 @@ export class CrdsGroupList {
   public renderUserGroupState() {
     if (this.user && this.user.groups.length > 0) {
       return this.renderGroupList();
+    } else {
+      return (
+        <h4 class="list-header push-half-top flush-bottom text-gray-dark">You haven't joined a group yet</h4>
+      );
     }
   }
 
@@ -110,10 +111,9 @@ export class CrdsGroupList {
       <div class="group-list">
         <p class="text-gray-light font-family-base">my groups</p>
         {this.renderUserGroupState()}
-        <span>
-          <strong>Hey {this.user.nickName || this.user.firstName}!</strong> 
-          {this.renderCallToAction()}
-        </span>
+        <div class="push-half-top groups-cta">
+          <strong class="text-gray">Hey {this.user.nickName || this.user.firstName}!</strong> <span class="text-gray-light">{this.renderCallToAction()}</span>
+        </div>
       </div>
     );
   }
