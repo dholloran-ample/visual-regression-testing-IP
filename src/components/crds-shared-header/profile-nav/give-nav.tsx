@@ -29,7 +29,7 @@ export class GiveMenu {
 
     return (
       <div class="give-nav" style={{ backgroundImage: `url(${this.backgroundImageURL(this.data)})` }}>
-        {this.simpleNav.renderSections(this.data, this.navTitle())}
+        {this.simpleNav.renderNav(this.data, this.navTitle())}
       </div>
     );
   }

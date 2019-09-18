@@ -31,22 +31,7 @@ describe('<nav-ctas>', () => {
   });
 
   describe('Tests render()', () => {
-    it('Checks null is returned if component is active', () => {
-      this.component.active = true;
-      const rendered = this.component.render();
-      expect(rendered).toBeNull();
-    });
-
-    it('Checks component is returned with default active state', () => {
-      expect(this.component.active).toBeFalsy();
-
-      const rendered = this.component.render();
-      expect(rendered).not.toBeNull();
-      expect(rendered.$attrs$.class).toEqual('ctas');
-    });
-
     it('Checks component has no CTAs if not given data', () => {
-      this.component.active = false;
       this.component.data = '';
 
       const rendered = this.component.render();
@@ -55,8 +40,7 @@ describe('<nav-ctas>', () => {
       expect(rendered.$attrs$.innerHTML).toEqual('');
     });
 
-    it('Checks component has CTAs if not given data', () => {
-      this.component.active = false;
+    it('Checks component has CTAs if given data', () => {
       this.component.data = '<h3>More About Crossroads (INT)</h3>';
 
       const rendered = this.component.render();
