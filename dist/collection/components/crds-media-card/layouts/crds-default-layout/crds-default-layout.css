@@ -1,7 +1,7 @@
 .card-wrapper {
   margin-bottom: 2.75rem;
   max-width: 360px;
-  font-family: 'acumin-pro', helvetica, arial, sans-serif;
+  font-family: "acumin-pro", helvetica, arial, sans-serif;
 }
 
 .card-image-wrapper {
@@ -19,10 +19,9 @@
   left: 1em;
   display: flex;
   max-height: 28px;
-
-  .card-stamp {
-    margin-left: 0.25rem;
-  }
+}
+.card-stamp-container .card-stamp {
+  margin-left: 0.25rem;
 }
 
 .card-stamp {
@@ -45,7 +44,7 @@
 
 .card-heading {
   color: #4d4d4d;
-  font-family: 'acumin-pro-extra-condensed', sans-serif;
+  font-family: "acumin-pro-extra-condensed", sans-serif;
   font-size: 38px;
   font-weight: 500;
   line-height: 0.89;
@@ -53,10 +52,9 @@
   text-transform: uppercase;
   transition: color 300ms;
   user-select: none;
-
-  &:hover {
-    color: black;
-  }
+}
+.card-heading:hover {
+  color: black;
 }
 
 .card-meta-bottom {
@@ -71,24 +69,22 @@
 
 .card-content {
   overflow-y: hidden;
-  p {
-    display: block;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 24px;
-    color: #4d4d4d;
-    margin: 0;
-    a {
-      text-decoration: none;
-      color: #0095d9;
-    }
-  }
+}
+.card-content p {
+  display: block;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 24px;
+  color: #4d4d4d;
+  margin: 0;
+}
+.card-content p a {
+  text-decoration: none;
+  color: #0095d9;
 }
 
-.hover {
-  &:hover {
-    cursor: pointer;
-  }
+.hover:hover {
+  cursor: pointer;
 }
 
 .inactive {
