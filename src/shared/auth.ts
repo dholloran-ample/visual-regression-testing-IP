@@ -15,6 +15,7 @@ export class Auth {
   isMp: boolean;
   isOkta: boolean;
   token: any;
+  analytics: any;
 
   subdomainMap = {
     prod: 'www'
@@ -22,6 +23,7 @@ export class Auth {
 
   constructor(config: any = {}) {
     this.config = config;
+    this.analytics = window['analytics'] || {};
     const oktaConfig: CrdsOktaConfig = {
       clientId: config.okta_client_id,
       issuer: config.okta_issuer,
@@ -69,9 +71,17 @@ export class Auth {
 
   private updateCurrentUser() {
     if (!this.authenticated) return (this.currentUser = null);
+
+    const userId = this.getUserId();
+    const userName = this.getUser();
+    if (this.analytics)
+      this.analytics.identify(userId, {
+        name: userName
+      });
+
     return (this.currentUser = {
-      id: this.getUserId(),
-      name: this.getUser(),
+      id: userId,
+      name: userName,
       avatarUrl: this.getUserImageUrl()
     });
   }
