@@ -11,15 +11,17 @@
 }
 
 .card-stamp-container {
+  box-sizing: border-box;
   background-color: rgba(23, 23, 23, 0.9);
   top: 1em;
-  padding: 0.25rem;
+  padding: 0.5rem;
   position: absolute;
   left: 1em;
   display: flex;
+  max-height: 28px;
 
-  > * {
-    margin: 0.25rem;
+  .card-stamp {
+    margin-left: 0.25rem;
   }
 }
 
