@@ -8,10 +8,9 @@ import { Config } from '../../../shared/config';
   shadow: false
 })
 export class NavigationSection {
-  @Prop() public slug: string;
-  @Prop({ mutable: true }) public activeSection: any;
+  @Prop() public sectionName: string;
   @Prop() public isActive: boolean = false;
-  @Prop() public onActivate: any;
+  @Prop() public handleClick: Function;
 
   /**
    * Print log messages?
@@ -25,14 +24,18 @@ export class NavigationSection {
     this.config = new Config();
   }
 
+  onClick(event) {
+    if (typeof this.handleClick === 'function') {
+      this.handleClick(event, this.sectionName);
+    } else {
+      console.error('Function to handle nav-section click not provided');
+    }
+  }
+
   render() {
     return (
       <li>
-        <a
-          onClick={e => this.onActivate(e, this.slug)}
-          data-automation-id={`sh-section-${this.slug}`}
-          class={this.isActive ? 'is-active' : ''}
-        >
+        <a class={this.isActive ? 'is-active' : ''} data-automation-id={`sh-section-${this.sectionName}`} onClick={this.onClick.bind(this)}>
           <slot />
         </a>
       </li>

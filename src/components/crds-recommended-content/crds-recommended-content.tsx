@@ -16,7 +16,7 @@ export class CrdsRecommendedContent {
   private analytics = window['analytics'] || {};
   private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
-  @State() recommendedContent: [] = [];
+  private recommendedContent: [] = [];
   @State() lifeStages: CrdsLifeStage[] = [];
   @State() user: CrdsUser = { name: '', lifeStage: null };
   @Prop() public authToken: string;
@@ -36,11 +36,7 @@ export class CrdsRecommendedContent {
     this.getUser();
   }
 
-  public componentDidRender() {
-    const renderedEvent = new CustomEvent('component rendered', {
-      detail: this.host
-    });
-    document.dispatchEvent(renderedEvent);
+  public componentDidLoad() {
     Utils.trackInView(this.host, 'RecommendedContentComponent', this.getLifeStageId.bind(this));
   }
 
@@ -136,10 +132,10 @@ export class CrdsRecommendedContent {
 
   private renderCardSkeleton() {
     return [1, 2, 3, 4, 5].map(() => (
-      <div class="card-skeleton">
+    <div class="skeleton skeleton-life-stage">
         <div class="content">
-          <div class="text title" />
-          <div class="text subtitle" />
+          <div class="text title shimmer shimmer-reverse" />
+          <div class="text subtitle shimmer shimmer-reverse" />
         </div>
       </div>
     ));
@@ -147,9 +143,9 @@ export class CrdsRecommendedContent {
 
   private renderTextSkeleton() {
     return (
-      <div class="text-skeleton">
-        <div class="title" />
-        <div class="subtitle" />
+      <div class="skeleton text-skeleton">
+        <div class="title shimmer" />
+        <div class="subtitle shimmer" />
       </div>
     );
   }
@@ -253,13 +249,16 @@ export class CrdsRecommendedContent {
     const selectedLifeStage: any = this.lifeStages.find(
       stage => stage.id === (this.user.lifeStage && this.user.lifeStage.id)
     );
+
     return (
       <div>
         <h2 class="component-header flush-bottom">
-          {this.recommendedContent.length ? `Recommended For You` : 'Personalize Your Experience'}
+          {this.recommendedContent.length && selectedLifeStage
+            ? 'Recommended For You'
+            : 'Personalize Your Experience'}
         </h2>
         <p class="push-half-top push-half-bottom color-gray">
-          {this.recommendedContent.length
+          {this.recommendedContent.length && selectedLifeStage
             ? selectedLifeStage.description
             : 'Which of these best describes your stage of life? (Pick one)'}
         </p>

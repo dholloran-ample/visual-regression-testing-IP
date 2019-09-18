@@ -7,8 +7,8 @@ describe('<nav-section-subnav>', () => {
 
   describe('Tests render()', () => {
     it('Checks element class not hidden if active element', () => {
-      this.component.slug = 'subnav-come-visit';
-      this.component.active = 'subnav-come-visit';
+      this.component.subNavName = 'subnav-come-visit';
+      this.component.isActive = true;
 
       const rendered = this.component.render();
 
@@ -16,8 +16,8 @@ describe('<nav-section-subnav>', () => {
     });
 
     it('Checks element class hidden if not active element', () => {
-      this.component.slug = 'subnav-come-visit';
-      this.component.active = 'subnav-media';
+      this.component.subNavName = 'subnav-come-visit';
+      this.component.isActive = false;
 
       const rendered = this.component.render();
 
@@ -25,12 +25,11 @@ describe('<nav-section-subnav>', () => {
     });
 
     it('Checks element returned has data-automation-id', () => {
-      this.component.slug = 'come-visit';
+      this.component.subNavName = 'come-visit';
 
       const rendered = this.component.render();
-      const renderedElement = rendered.$children$[0];
 
-      expect(renderedElement.$attrs$['data-automation-id']).toBe('sh-section-subnav-come-visit');
+      expect(rendered.$attrs$['data-automation-id']).toBe('sh-section-subnav-come-visit');
     });
 
     it('Checks element returned has icon', () => {
@@ -49,13 +48,13 @@ describe('<nav-section-subnav>', () => {
     });
 
     it('Checks element onClick event bound to expected method', () => {
-      this.component.onBack = jest.fn();
+      this.component.handleBackClick = jest.fn();
 
       const rendered = this.component.render();
       const renderedEntry = rendered.$children$[0]
       renderedEntry.$attrs$.onClick();
 
-      expect(this.component.onBack).toBeCalledTimes(1);
+      expect(this.component.handleBackClick).toBeCalledTimes(1);
     });
   });
 });

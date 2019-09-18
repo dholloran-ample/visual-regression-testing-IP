@@ -19,15 +19,15 @@ describe('<greeting-component> GraphQL', () => {
     }
   });
 
-  describe('Tests getUserName() with nickname', () => {
+  describe('Tests getUser() with nickname', () => {
     it('checks that first name and nickname of user without nickname set are different', async () => {
       if(this.skip) {
         console.log("skipping test in production");
         return;
       } else {
-        await this.greetingComponent.getUserName();
-        expect(this.greetingComponent.user.contact.firstName).toBe('Leia');
-        expect(this.greetingComponent.user.contact.nickName).toBe('Princess');
+        await this.greetingComponent.getUser();
+        expect(this.greetingComponent.user.firstName).toBe('Leia');
+        expect(this.greetingComponent.user.nickName).toBe('Princess');
       }
     });
   });
