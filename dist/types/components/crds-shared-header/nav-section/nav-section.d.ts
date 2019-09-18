@@ -1,8 +1,7 @@
 export declare class NavigationSection {
-    slug: string;
-    activeSection: any;
+    sectionName: string;
     isActive: boolean;
-    onActivate: any;
+    handleClick: Function;
     /**
      * Print log messages?
      */
@@ -10,5 +9,6 @@ export declare class NavigationSection {
     private console;
     private config;
     componentWillLoad(): void;
+    onClick(event: any): void;
     render(): any;
 }

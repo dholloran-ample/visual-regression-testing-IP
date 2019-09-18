@@ -12,30 +12,8 @@ export declare class SharedHeader {
      */
     componentWillLoad(): Promise<any>;
     componentDidLoad(): void;
-    /**
-     * Section onClick event handler
-     * @param e Event
-     * @param id string
-     */
-    protected onClick(e: any, id: any): void;
-    /**
-     * Renders all sections from payload
-     */
-    private renderSections;
-    handleBackClick(event: any): void;
-    /**
-     * Returns all subnav elements
-     * @param payload
-     */
-    private renderSubnavs;
-    /**
-     * Returns header or unordered list
-     * @param section
-     */
-    private renderChildren;
     toggleMenu(event: any, navType: any): void;
     closeMenus(event: any): void;
-    navClasses(): string;
     navCloseClasses(): string;
     handleScroll(event: any): void;
     /**

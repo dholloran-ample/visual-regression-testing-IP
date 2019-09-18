@@ -13,9 +13,17 @@ export class NavigationSection {
         this.console = new Logger(this.debug);
         this.config = new Config();
     }
+    onClick(event) {
+        if (typeof this.handleClick === 'function') {
+            this.handleClick(event, this.sectionName);
+        }
+        else {
+            console.error('Function to handle nav-section click not provided');
+        }
+    }
     render() {
         return (h("li", null,
-            h("a", { onClick: e => this.onActivate(e, this.slug), "data-automation-id": `sh-section-${this.slug}`, class: this.isActive ? 'is-active' : '' },
+            h("a", { class: this.isActive ? 'is-active' : '', "data-automation-id": `sh-section-${this.sectionName}`, onClick: this.onClick.bind(this) },
                 h("slot", null))));
     }
     static get is() { return "nav-section"; }
@@ -26,7 +34,7 @@ export class NavigationSection {
         "$": ["nav-section.css"]
     }; }
     static get properties() { return {
-        "slug": {
+        "sectionName": {
             "type": "string",
             "mutable": false,
             "complexType": {
@@ -40,24 +48,7 @@ export class NavigationSection {
                 "tags": [],
                 "text": ""
             },
-            "attribute": "slug",
-            "reflect": false
-        },
-        "activeSection": {
-            "type": "any",
-            "mutable": true,
-            "complexType": {
-                "original": "any",
-                "resolved": "any",
-                "references": {}
-            },
-            "required": false,
-            "optional": false,
-            "docs": {
-                "tags": [],
-                "text": ""
-            },
-            "attribute": "active-section",
+            "attribute": "section-name",
             "reflect": false
         },
         "isActive": {
@@ -78,22 +69,24 @@ export class NavigationSection {
             "reflect": false,
             "defaultValue": "false"
         },
-        "onActivate": {
-            "type": "any",
+        "handleClick": {
+            "type": "unknown",
             "mutable": false,
             "complexType": {
-                "original": "any",
-                "resolved": "any",
-                "references": {}
+                "original": "Function",
+                "resolved": "Function",
+                "references": {
+                    "Function": {
+                        "location": "global"
+                    }
+                }
             },
             "required": false,
             "optional": false,
             "docs": {
                 "tags": [],
                 "text": ""
-            },
-            "attribute": "on-activate",
-            "reflect": false
+            }
         }
     }; }
 }

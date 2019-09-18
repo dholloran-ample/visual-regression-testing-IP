@@ -20,7 +20,7 @@ export class ProfileMenu {
             h("div", { class: "profile-nav-img", style: {
                     backgroundImage: `linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%),url('${this.backgroundImageURL()}')`
                 } }),
-            h("div", null, this.simpleNav.renderSections(this.data, this.navTitle()))));
+            h("div", null, this.simpleNav.renderNav(this.data, this.navTitle()))));
     }
     static get is() { return "profile-nav"; }
     static get encapsulation() { return "shadow"; }

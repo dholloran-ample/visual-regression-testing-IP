@@ -1,9 +1,20 @@
 import { h } from '@stencil/core';
 export class NavSectionSubnav {
+    constructor() {
+        this.isActive = false;
+    }
+    onClick(event) {
+        if (typeof this.handleBackClick === 'function') {
+            this.handleBackClick(event);
+        }
+        else {
+            console.error('Function to handle nav-section-subnav click not provided');
+        }
+    }
     render() {
         let chevronLeftLight = '<svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="chevron-left" class="svg-inline--fa fa-chevron-left fa-w-8" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M238.475 475.535l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L50.053 256 245.546 60.506c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0L10.454 247.515c-4.686 4.686-4.686 12.284 0 16.971l211.051 211.05c4.686 4.686 12.284 4.686 16.97-.001z"></path></svg>';
-        return (h("div", { class: this.active == this.slug ? '' : ' hidden' },
-            h("a", { href: "", "data-automation-id": `sh-section-subnav-${this.slug}`, class: "back", onClick: event => this.onBack(event) },
+        return (h("div", { class: this.isActive ? '' : 'hidden', "data-automation-id": `sh-section-subnav-${this.subNavName}` },
+            h("a", { class: "back", href: "", onClick: event => this.handleBackClick(event) },
                 h("span", { innerHTML: chevronLeftLight }),
                 "Back"),
             h("slot", null)));
@@ -16,24 +27,7 @@ export class NavSectionSubnav {
         "$": ["nav-section-subnav.css"]
     }; }
     static get properties() { return {
-        "active": {
-            "type": "string",
-            "mutable": true,
-            "complexType": {
-                "original": "string",
-                "resolved": "string",
-                "references": {}
-            },
-            "required": false,
-            "optional": false,
-            "docs": {
-                "tags": [],
-                "text": ""
-            },
-            "attribute": "active",
-            "reflect": false
-        },
-        "slug": {
+        "subNavName": {
             "type": "string",
             "mutable": false,
             "complexType": {
@@ -47,10 +41,28 @@ export class NavSectionSubnav {
                 "tags": [],
                 "text": ""
             },
-            "attribute": "slug",
+            "attribute": "sub-nav-name",
             "reflect": false
         },
-        "onBack": {
+        "isActive": {
+            "type": "boolean",
+            "mutable": false,
+            "complexType": {
+                "original": "boolean",
+                "resolved": "boolean",
+                "references": {}
+            },
+            "required": false,
+            "optional": false,
+            "docs": {
+                "tags": [],
+                "text": ""
+            },
+            "attribute": "is-active",
+            "reflect": false,
+            "defaultValue": "false"
+        },
+        "handleBackClick": {
             "type": "unknown",
             "mutable": false,
             "complexType": {

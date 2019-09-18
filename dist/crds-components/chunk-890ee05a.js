@@ -1,5 +1,6 @@
-import { h } from '@stencil/core';
-export class SimpleNavHelper {
+import { h } from './chunk-67523e50.js';
+
+class SimpleNavHelper {
     constructor(signOutCB) {
         this.handleSignOut = signOutCB;
     }
@@ -57,3 +58,5 @@ export class SimpleNavHelper {
         return maybeObject && typeof maybeObject === 'object' && !Array.isArray(maybeObject);
     }
 }
+
+export { SimpleNavHelper as S };

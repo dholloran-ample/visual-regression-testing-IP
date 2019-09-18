@@ -31,7 +31,7 @@ export class NavigationLink {
         return this.automationId === 'sh-sign-out';
     }
     render() {
-        return (h("a", { href: this.href, "data-automation-id": this.automationId, onClick: this.onClick.bind(this) },
+        return (h("a", { href: this.href || "#", "data-automation-id": this.automationId, onClick: this.onClick.bind(this) },
             h("slot", null)));
     }
     static get is() { return "nav-link"; }

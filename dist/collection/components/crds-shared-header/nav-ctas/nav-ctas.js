@@ -5,8 +5,6 @@ export class NavCtas {
         return decode(this.data || '');
     }
     render() {
-        if (this.active)
-            return null;
         return h("div", { class: "ctas", innerHTML: this.decodedData() });
     }
     static get is() { return "nav-ctas"; }
@@ -18,40 +16,6 @@ export class NavCtas {
         "$": ["nav-ctas.css"]
     }; }
     static get properties() { return {
-        "href": {
-            "type": "string",
-            "mutable": false,
-            "complexType": {
-                "original": "string",
-                "resolved": "string",
-                "references": {}
-            },
-            "required": false,
-            "optional": false,
-            "docs": {
-                "tags": [],
-                "text": ""
-            },
-            "attribute": "href",
-            "reflect": false
-        },
-        "active": {
-            "type": "string",
-            "mutable": false,
-            "complexType": {
-                "original": "string",
-                "resolved": "string",
-                "references": {}
-            },
-            "required": false,
-            "optional": false,
-            "docs": {
-                "tags": [],
-                "text": ""
-            },
-            "attribute": "active",
-            "reflect": false
-        },
         "data": {
             "type": "string",
             "mutable": false,

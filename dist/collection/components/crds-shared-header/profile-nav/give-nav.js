@@ -15,7 +15,7 @@ export class GiveMenu {
     render() {
         if (!this.giveNavIsShowing || !this.simpleNav.isObjectTruthyNonArray(this.data))
             return null;
-        return (h("div", { class: "give-nav", style: { backgroundImage: `url(${this.backgroundImageURL(this.data)})` } }, this.simpleNav.renderSections(this.data, this.navTitle())));
+        return (h("div", { class: "give-nav", style: { backgroundImage: `url(${this.backgroundImageURL(this.data)})` } }, this.simpleNav.renderNav(this.data, this.navTitle())));
     }
     static get is() { return "give-nav"; }
     static get encapsulation() { return "shadow"; }

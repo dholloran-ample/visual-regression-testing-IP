@@ -1,8 +1,13 @@
 export declare class SimpleNavHelper {
     private handleSignOut;
     constructor(signOutCB?: Function);
-    renderSections(data: any, menuTitle: any): any;
-    renderSubHeader(data: any): any;
+    renderNav(data: any, menuTitle: any): any;
+    formatMenuTitle(title: any): any;
+    formatMenuEntry(element: any): any;
+    formatSubHeader(header: any): any;
+    formatList(listElements: any): any;
+    formatListEntry(data: any, classValue: any): any;
+    maybeRenderNavEntries(data: any): any[];
     maybeRenderList(data: any, isTopLevel: any): any;
     maybeRenderListEntry(data: any, isTopLevel: any): any;
     private topLevelClassValue;
