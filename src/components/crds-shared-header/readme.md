@@ -17,21 +17,19 @@
 
 ### Depends on
 
-- [nav-section](nav-section)
-- [nav-section-subnav](nav-section-subnav)
 - [global-nav](global-nav)
-- [nav-ctas](nav-ctas)
+- [main-nav](main-nav)
 
 ### Graph
 ```mermaid
 graph TD;
-  crds-shared-header --> nav-section
-  crds-shared-header --> nav-section-subnav
   crds-shared-header --> global-nav
-  crds-shared-header --> nav-ctas
+  crds-shared-header --> main-nav
   global-nav --> profile-nav
   global-nav --> give-nav
-  profile-nav --> nav-link
+  main-nav --> nav-section
+  main-nav --> nav-section-subnav
+  main-nav --> nav-ctas
   style crds-shared-header fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
