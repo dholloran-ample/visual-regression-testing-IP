@@ -17,11 +17,10 @@ export class CrdsIcon {
     @Prop() size: string;
 
     render() {
-
         const domparser = new DOMParser();
         const doc = domparser.parseFromString(icons, 'text/html');
         const svg = doc.getElementById(this.name);
-        
+
         svg.setAttribute('height',`${Number(this.size) * 1.3333}px`);
         svg.setAttribute('width',`${this.size}px`);
         svg.getElementsByTagName('path')[0].setAttribute('fill', colors[this.color]);

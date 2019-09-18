@@ -1,0 +1,16 @@
+import { r as registerInstance, h } from './core-9036992e.js';
+var CrdsDefaultLayout = /** @class */ (function () {
+    function CrdsDefaultLayout(hostRef) {
+        registerInstance(this, hostRef);
+    }
+    CrdsDefaultLayout.prototype.render = function () {
+        return h("div", null, "Hello there");
+    };
+    Object.defineProperty(CrdsDefaultLayout, "style", {
+        get: function () { return ".card-wrapper{margin-bottom:2.75rem;max-width:360px}.card-image-wrapper{margin-bottom:.5rem;overflow:hidden;position:relative}.card-stamp-container{background-color:hsla(0,0%,9%,.9);bottom:0;padding:.25rem;position:absolute;right:0;display:-ms-flexbox;display:flex}.card-stamp-container>*{margin:.25rem}.card-stamp{display:inline-block;color:#fff;font-family:acumin-pro,helvetica,arial,sans-serif;font-size:10px;font-weight:600}.card-meta-top{color:#737373;display:block;font-family:acumin-pro,helvetica,arial,sans-serif;font-size:12px;line-height:1.67}.card-heading,.card-meta-top{font-weight:500;text-transform:uppercase}.card-heading{color:#4d4d4d;font-family:acumin-pro-extra-condensed,sans-serif;font-size:38px;line-height:.89;margin:0 0 .5rem;-webkit-transition:color .3s;transition:color .3s}.card-heading.hover:hover{color:#000}.card-meta-bottom{color:#979797;font-size:13px;line-height:1;margin:0}.card-content,.card-meta-bottom{display:block;font-weight:300;font-family:acumin-pro,helvetica,arial,sans-serif}.card-content{font-size:16px;line-height:24px;color:#4d4d4d;margin:.5rem 0 0 0}.hover:hover{cursor:pointer}crds-card .active{border:1px solid red}crds-card .active,crds-card .active .card-wrapper{display:none!important}.inactive{display:none}"; },
+        enumerable: true,
+        configurable: true
+    });
+    return CrdsDefaultLayout;
+}());
+export { CrdsDefaultLayout as crds_default_layout };

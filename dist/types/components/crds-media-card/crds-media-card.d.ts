@@ -1,0 +1,32 @@
+export declare class CrdsMediaCard {
+    contentType: string;
+    contentLayout: string;
+    imageSrc: string;
+    heading: string;
+    meta: string;
+    metaPosition: string;
+    body: string;
+    buttonSrc: string;
+    thumbnailSrc: string;
+    url: string;
+    nearestMinute: string;
+    author: string;
+    mediaTopic: string;
+    contentCount: number;
+    isVisible: boolean;
+    childProps: {};
+    private propNames;
+    private contentLayouts;
+    private contentTypes;
+    private metaPositions;
+    private validateContentType;
+    private validateContentLayout;
+    private validateImage;
+    private validateMeta;
+    private validateMetaPosition;
+    componentWillLoad(): void;
+    private getLayout;
+    private runValidations;
+    connectedCallback(): void;
+    render(): any;
+}
