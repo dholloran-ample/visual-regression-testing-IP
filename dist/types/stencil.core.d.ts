@@ -810,6 +810,10 @@ export namespace JSXBase {
     hidden?: boolean;
     id?: string;
     lang?: string;
+<<<<<<< HEAD
+=======
+    slot?: string;
+>>>>>>> development
     spellCheck?: boolean;
     spellcheck?: boolean | string;
     style?: { [key: string]: string | undefined };
@@ -1128,7 +1132,10 @@ export namespace JSXBase {
 
   export interface DOMAttributes<T = Element> {
     ref?: (elm?: T) => void;
+<<<<<<< HEAD
     slot?: string;
+=======
+>>>>>>> development
 
     // Clipboard Events
     onCopy?: (event: ClipboardEvent) => void;

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { h } from "@stencil/core";
+=======
+import { h } from '@stencil/core';
+>>>>>>> development
 import decode from 'unescape';
 export class NavCtas {
     decodedData() {

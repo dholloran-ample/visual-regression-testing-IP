@@ -12,7 +12,7 @@ export declare class CrdsRecommendedContent {
     authTokenHandler(newValue: string, oldValue: string): void;
     componentWillLoad(): void;
     componentDidLoad(): void;
-    componentWillRender(): void;
+    componentWillRender(): any;
     private getLifeStageId;
     private getUser;
     private getLifeStages;

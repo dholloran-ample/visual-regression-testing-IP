@@ -16,8 +16,12 @@ export class Auth {
         };
         const mpConfig = {
             accessTokenCookie: config.mp_access_token_cookie,
+<<<<<<< HEAD
             refreshTokenCookie: config.mp_refresh_token_cookie,
             issuer: Auth.getMPIssuerEndpoint(this.config.env)
+=======
+            refreshTokenCookie: config.mp_refresh_token_cookie
+>>>>>>> development
         };
         const authConfig = {
             oktaConfig: oktaConfig,
@@ -25,6 +29,10 @@ export class Auth {
             logging: config.logging || false,
             providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp]
         };
+<<<<<<< HEAD
+=======
+        console.log(authConfig);
+>>>>>>> development
         this.authService = new CrdsAuthenticationService(authConfig);
     }
     listen(callback) {
@@ -56,7 +64,11 @@ export class Auth {
             return (this.currentUser = null);
         return (this.currentUser = {
             id: this.getUserId(),
+<<<<<<< HEAD
             name: this.getUser(),
+=======
+            name: this.getUserName(),
+>>>>>>> development
             avatarUrl: this.getUserImageUrl()
         });
     }
@@ -68,7 +80,11 @@ export class Auth {
         if (this.isMp)
             return Utils.getCookie('userId');
     }
+<<<<<<< HEAD
     getUser() {
+=======
+    getUserName() {
+>>>>>>> development
         if (!this.authenticated)
             return null;
         if (this.isOkta)
@@ -85,8 +101,11 @@ export class Auth {
         const subdomain = Utils.getSubdomain(this.config.env);
         return `https://${subdomain}.crossroads.net/proxy/gateway/api/image/profile/${userId}`;
     }
+<<<<<<< HEAD
     static getMPIssuerEndpoint(env) {
         const subdomain = env == 'int' || env == 'demo' ? env : '';
         return `https://gateway${subdomain}.crossroads.net/gateway/api/login`;
     }
+=======
+>>>>>>> development
 }

@@ -10,13 +10,18 @@ import { HTMLStencilElement, JSXBase } from './stencil.core';
 
 export namespace Components {
   interface CrdsDefaultLayout {
+    'author': string;
     'body': string;
+    'buttonSrc': string;
+    'contentCount': number;
+    'contentType': string;
     'heading': string;
-    'image': string;
+    'imageSrc': string;
+    'mediaTopic': string;
     'meta': string;
     'metaPosition': string;
-    'src': string;
-    'thumbnailSRC': string;
+    'nearestMinute': string;
+    'thumbnailSrc': string;
     'url': string;
   }
   interface CrdsGreeting {
@@ -298,13 +303,18 @@ declare global {
 
 declare namespace LocalJSX {
   interface CrdsDefaultLayout extends JSXBase.HTMLAttributes<HTMLCrdsDefaultLayoutElement> {
+    'author'?: string;
     'body'?: string;
+    'buttonSrc'?: string;
+    'contentCount'?: number;
+    'contentType'?: string;
     'heading'?: string;
-    'image'?: string;
+    'imageSrc'?: string;
+    'mediaTopic'?: string;
     'meta'?: string;
     'metaPosition'?: string;
-    'src'?: string;
-    'thumbnailSRC'?: string;
+    'nearestMinute'?: string;
+    'thumbnailSrc'?: string;
     'url'?: string;
   }
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {

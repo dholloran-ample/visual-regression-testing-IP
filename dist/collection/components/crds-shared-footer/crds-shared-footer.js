@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { h } from "@stencil/core";
 import Fragment from '../../shared/fragment';
+=======
+import { h } from '@stencil/core';
+import Fragment from 'stencil-fragment';
+>>>>>>> development
 import axios from 'axios';
 export class SharedFooter {
     constructor() {

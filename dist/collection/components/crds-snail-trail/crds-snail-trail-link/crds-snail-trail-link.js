@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { h } from "@stencil/core";
+=======
+import { h } from '@stencil/core';
+>>>>>>> development
 import { parse } from 'url';
 export class SnailTrailLink {
     constructor() {

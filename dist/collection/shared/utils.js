@@ -44,6 +44,7 @@ export class Utils {
         };
         return subdomainMap[env] || env;
     }
+<<<<<<< HEAD
     /**
      * Swaps the Contentful domain for Imgix on images
      * @param {String} url
@@ -74,4 +75,6 @@ export class Utils {
         });
         observer.observe(host);
     }
+=======
+>>>>>>> development
 }

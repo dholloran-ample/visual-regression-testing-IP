@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { h } from "@stencil/core";
 import axios from 'axios';
 import Fragment from '../../shared/fragment';
+=======
+import { h } from '@stencil/core';
+import axios from 'axios';
+import Fragment from 'stencil-fragment';
+>>>>>>> development
 export class SnailTrail {
     constructor() {
         this.env = 'prod';

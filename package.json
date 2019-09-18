@@ -26,6 +26,10 @@
     "@alepop/stencil-env": "^0.2.0",
     "@babel/core": "^7.2.2",
     "@crds_npm/crds-client-auth": "^1.1.13",
+<<<<<<< HEAD
+=======
+    "@stencil/core": "1.1.3",
+>>>>>>> development
     "@graphql-codegen/cli": "^1.6.1",
     "@graphql-codegen/typescript": "^1.6.1",
     "@stencil/core": "~1.4.0",

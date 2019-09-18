@@ -1,1 +1,1 @@
-export declare const GET_NAMES: any;
+export declare const GET_USER: any;

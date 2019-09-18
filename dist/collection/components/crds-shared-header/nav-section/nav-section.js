@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { h } from "@stencil/core";
+=======
+import { h } from '@stencil/core';
+>>>>>>> development
 import { Logger } from '../../../shared/logger';
 import { Config } from '../../../shared/config';
 export class NavigationSection {
