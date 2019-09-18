@@ -1,7 +1,7 @@
 import { r as registerInstance, h } from './chunk-67523e50.js';
 import './chunk-950a1dca.js';
 import { a as axios } from './chunk-bab4a87b.js';
-import { L as Logger, C as Config } from './chunk-3e094fcc.js';
+import { L as Logger, C as Config } from './chunk-4288f781.js';
 import { U as Utils } from './chunk-4786bf9d.js';
 
 'use strict';
@@ -168,7 +168,7 @@ class HeartButton {
      * Returns service endpoint
      */
     endpoint() {
-        return Utils.getMeta('crds:interactions-endpoint') || "https://8k97vbzbrk.execute-api.us-east-1.amazonaws.com/int";
+        return Utils.getMeta('crds:interactions-endpoint') || "";
     }
     /**
      * HTML

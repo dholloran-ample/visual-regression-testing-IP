@@ -7,6 +7,7 @@ export declare class Auth {
     isMp: boolean;
     isOkta: boolean;
     token: any;
+    analytics: any;
     subdomainMap: {
         prod: string;
     };

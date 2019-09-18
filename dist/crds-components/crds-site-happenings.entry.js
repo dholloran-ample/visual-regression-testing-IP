@@ -1,5 +1,5 @@
 import { h, r as registerInstance, c as getElement } from './chunk-67523e50.js';
-import { g as gql, C as CrdsApollo } from './chunk-3601aa65.js';
+import { g as gql, C as CrdsApollo } from './chunk-3c377be1.js';
 import { c as createCommonjsModule, a as commonjsGlobal } from './chunk-a9955f90.js';
 import './chunk-950a1dca.js';
 import { U as Utils } from './chunk-4786bf9d.js';
