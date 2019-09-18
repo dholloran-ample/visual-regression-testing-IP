@@ -376,17 +376,7 @@ function normalizeValue(value) {
 }
 function getActiveSelectors(hostEl, hostScopeMap, globalScopes) {
     // computes the css scopes that might affect this particular element
-<<<<<<< HEAD
-    // avoiding using spread arrays to avoid ts helper fns when in es5
-    var scopes = [];
-    var scopesForElement = getScopesForElement(hostScopeMap, hostEl);
-    // globalScopes are always took into account
-    globalScopes.forEach(function (s) { return scopes.push(s); });
-    // the parent scopes are computed by walking parent dom until <html> is reached
-    scopesForElement.forEach(function (s) { return scopes.push(s); });
-=======
     var scopes = globalScopes.concat(getScopesForElement(hostScopeMap, hostEl));
->>>>>>> development
     // each scope might have an array of associated selectors
     // let's flatten the complete array of selectors from all the scopes
     var selectorSet = getSelectorsForScopes(scopes);
@@ -457,15 +447,9 @@ function reScope(scope, scopeId) {
             : segment;
     });
     var selectors = scope.selectors.map(function (sel) {
-<<<<<<< HEAD
-        return Object.assign(Object.assign({}, sel), { selector: replaceScope(sel.selector, scope.scopeId, scopeId) });
-    });
-    return Object.assign(Object.assign({}, scope), { template: template,
-=======
         return Object.assign({}, sel, { selector: replaceScope(sel.selector, scope.scopeId, scopeId) });
     });
     return Object.assign({}, scope, { template: template,
->>>>>>> development
         selectors: selectors,
         scopeId: scopeId });
 }

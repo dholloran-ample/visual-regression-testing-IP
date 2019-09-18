@@ -19,8 +19,4 @@
 })();
 
 export * from '../esm/polyfills/index.js';
-<<<<<<< HEAD
-export * from '../esm-es5/loader.mjs';
-=======
 export * from '../esm/legacy/loader.mjs';
->>>>>>> development

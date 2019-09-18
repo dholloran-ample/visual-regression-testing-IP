@@ -1,0 +1,115 @@
+.card-wrapper {
+  margin-bottom: 2.75rem;
+  max-width: 360px;
+  font-family: "acumin-pro", helvetica, arial, sans-serif;
+}
+
+.card-image-wrapper {
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-stamp-container {
+  box-sizing: border-box;
+  background-color: rgba(23, 23, 23, 0.9);
+  top: 1em;
+  padding: 0.5rem;
+  position: absolute;
+  left: 1em;
+  display: flex;
+  max-height: 28px;
+}
+.card-stamp-container .card-stamp {
+  margin-left: 0.25rem;
+}
+
+.card-stamp {
+  display: inline-block;
+  color: #ffffff;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.card-meta-top {
+  color: #737373;
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.67;
+  text-transform: uppercase;
+}
+
+.card-heading {
+  color: #4d4d4d;
+  font-family: "acumin-pro-extra-condensed", sans-serif;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 0.89;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  transition: color 300ms;
+  user-select: none;
+}
+.card-heading:hover {
+  color: black;
+}
+
+.card-meta-bottom {
+  color: #979797;
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  line-height: 1;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.card-content {
+  overflow-y: hidden;
+}
+.card-content p {
+  display: block;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 24px;
+  color: #4d4d4d;
+  margin: 0;
+}
+.card-content p a {
+  text-decoration: none;
+  color: #0095d9;
+}
+
+.hover:hover {
+  cursor: pointer;
+}
+
+.inactive {
+  display: none;
+}
+
+.card-button {
+  display: inline-block;
+  background-color: #3b6e8f;
+  color: #ffffff;
+  border-radius: 4px;
+  margin-top: 1.375em;
+  text-decoration: none;
+  cursor: pointer;
+  height: 43px;
+  vertical-align: middle;
+  line-height: 43px;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+}
+
+.card-thumbnail {
+  background-color: rgba(23, 23, 23, 0.9);
+  top: 1em;
+  position: absolute;
+  right: 1em;
+  max-width: 65px;
+  max-height: 65px;
+}

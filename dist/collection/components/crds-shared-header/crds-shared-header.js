@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-import { h } from "@stencil/core";
+import { h } from '@stencil/core';
 import axios from 'axios';
 import { Utils } from '../../shared/utils';
 import Fragment from '../../shared/fragment';
-=======
-import { h } from '@stencil/core';
-import Fragment from 'stencil-fragment';
-import axios from 'axios';
-import { Utils } from '../../shared/utils';
->>>>>>> development
 export class SharedHeader {
     constructor() {
         this.env = 'prod';
@@ -22,11 +15,7 @@ export class SharedHeader {
      */
     componentWillLoad() {
         const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
-<<<<<<< HEAD
         return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
-=======
-        axios.get(url).then(response => (this.data = response.data));
->>>>>>> development
     }
     componentDidLoad() {
         this.element.parentElement.classList.add('shared-header');
@@ -102,11 +91,7 @@ export class SharedHeader {
             this.mainNavIsShowing = !this.mainNavIsShowing;
             this.profileNavIsShowing = false;
             if (this.mainNavIsShowing) {
-<<<<<<< HEAD
                 document.body.setAttribute('style', 'overflow: hidden; position: absolute; width: 100vw;');
-=======
-                document.body.setAttribute('style', 'overflow: hidden; position: absolute;');
->>>>>>> development
             }
             else {
                 document.body.setAttribute('style', 'overflow: scroll;');

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { h } from "@stencil/core";
-=======
 import { h } from '@stencil/core';
->>>>>>> development
 export class CrdsModal {
     constructor() {
         this.isActive = false;

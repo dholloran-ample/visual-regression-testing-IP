@@ -13,14 +13,11 @@ header {
 header.nav-is-showing {
   position: fixed;
 }
-<<<<<<< HEAD
 @supports (position: sticky) {
   header.nav-is-showing {
     position: sticky;
   }
 }
-=======
->>>>>>> development
 header > div {
   margin: 0 auto;
   max-width: 1170px;

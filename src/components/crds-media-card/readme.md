@@ -35,6 +35,8 @@
 ```mermaid
 graph TD;
   crds-media-card --> crds-default-layout
+  crds-default-layout --> crds-image
+  crds-default-layout --> crds-icon
   style crds-media-card fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { h } from "@stencil/core";
-=======
 import { h } from '@stencil/core';
->>>>>>> development
 import dig from 'object-dig';
 import axios from 'axios';
 import { Logger } from '../../shared/logger';
