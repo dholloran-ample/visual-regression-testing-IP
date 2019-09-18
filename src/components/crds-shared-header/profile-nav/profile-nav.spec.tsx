@@ -99,7 +99,7 @@ describe('<profile-nav>', () => {
 
     const invalidData = [undefined, [], true, false, "String", null];
     invalidData.forEach(badValue => {
-      it(`Checks null is returned if give component's data is "${badValue}"`, () => {
+      it(`Checks null is returned if profile component's data is "${badValue}"`, () => {
         this.component.profileNavIsShowing = true;
         this.component.data = badValue;
 
