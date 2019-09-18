@@ -13,6 +13,9 @@ export namespace Components {
     'authToken': string;
     'defaultName': string;
   }
+  interface CrdsGroupList {
+    'authToken': string;
+  }
   interface CrdsHeartButton {
     /**
     * Unique identifier for likeable resource
@@ -119,6 +122,12 @@ declare global {
     new (): HTMLCrdsGreetingElement;
   };
 
+  interface HTMLCrdsGroupListElement extends Components.CrdsGroupList, HTMLStencilElement {}
+  var HTMLCrdsGroupListElement: {
+    prototype: HTMLCrdsGroupListElement;
+    new (): HTMLCrdsGroupListElement;
+  };
+
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
   var HTMLCrdsHeartButtonElement: {
     prototype: HTMLCrdsHeartButtonElement;
@@ -222,6 +231,7 @@ declare global {
   };
   interface HTMLElementTagNameMap {
     'crds-greeting': HTMLCrdsGreetingElement;
+    'crds-group-list': HTMLCrdsGroupListElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
@@ -246,6 +256,9 @@ declare namespace LocalJSX {
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
     'authToken'?: string;
     'defaultName'?: string;
+  }
+  interface CrdsGroupList extends JSXBase.HTMLAttributes<HTMLCrdsGroupListElement> {
+    'authToken'?: string;
   }
   interface CrdsHeartButton extends JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement> {
     /**
@@ -345,6 +358,7 @@ declare namespace LocalJSX {
 
   interface IntrinsicElements {
     'crds-greeting': CrdsGreeting;
+    'crds-group-list': CrdsGroupList;
     'crds-heart-button': CrdsHeartButton;
     'crds-modal': CrdsModal;
     'crds-recommended-content': CrdsRecommendedContent;
