@@ -1,0 +1,30 @@
+a {
+  color: #4d4d4d;
+  display: block;
+  font-weight: 300;
+  padding: 11px 15px;
+  position: relative;
+  text-decoration: none;
+}
+a.active::before {
+  border: 10px solid transparent;
+  border-bottom: 0;
+  border-top-color: #0095d9;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+}
+@media (hover) {
+  a:hover::after {
+    background-color: #0095d9;
+    bottom: 0;
+    content: "";
+    display: inline-block;
+    height: 2px;
+    left: 15px;
+    position: absolute;
+    width: calc(100% - 30px);
+  }
+}

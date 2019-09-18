@@ -7,8 +7,6 @@ import decode from 'unescape';
   shadow: true
 })
 export class NavCtas {
-  @Prop() href: string;
-  @Prop() active: string;
   @Prop() data: string;
 
   decodedData() {
@@ -16,7 +14,6 @@ export class NavCtas {
   }
 
   render() {
-    if (this.active) return null;
     return <div class="ctas" innerHTML={this.decodedData()} />;
   }
 }

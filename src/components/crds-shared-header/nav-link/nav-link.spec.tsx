@@ -102,6 +102,12 @@ describe('<nav-link>', () => {
 
       expect(window.location.href).toBe('https://int.crossroads.net/prayer')
     });
+
+    it('Checks href set to # if not set', () => {
+      const rendered = this.component.render();
+
+      expect(rendered.$attrs$.href).toBe('#');
+    });
   });
 
   describe('Tests componentWillLoad()', () => {

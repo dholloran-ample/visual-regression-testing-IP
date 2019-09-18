@@ -70,7 +70,7 @@ export class CrdsRecommendedContent {
    * Get content with set life stages
    */
   private filterContent(lifeStageId) {
-    this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
+    return this.recommendedContent = this.lifeStages.find(lifestage => lifestage.id === lifeStageId).content;
   }
 
   private handleBackClick(event) {
