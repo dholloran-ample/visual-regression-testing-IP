@@ -1,0 +1,65 @@
+@import '../../shared/shared';
+@import '../../shared/skeleton';
+
+.group-list {
+  border-top: 1px solid $cr-gray-lighter;
+
+  p {
+    margin: $line-height-computed/2 0 $line-height-computed 0;
+  }
+}
+
+.groups-cta {
+  @extend .font-family-base;
+
+  span div {
+    display: inline;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.group {
+  border-bottom: 1px solid $cr-gray-lighter;
+
+  .group-text {
+    h4.list-header {
+      margin: $line-height-computed/4 0 0 0;
+
+      a {
+        color: #4d4d4d;
+        text-decoration: none;
+      }
+    }
+
+    .control-label {
+      @extend .font-family-base;
+      font-size: 12px;
+      font-weight: 600 !important;
+      text-transform: uppercase;
+    }
+
+    .leader-tag {
+      margin: $line-height-computed/2 0;
+    }
+  }
+
+  .group-image {
+    height: 75px;
+    width: 75px;
+    margin-left: auto;
+    background-size: cover;
+    background-position: 0;
+    background-repeat: no-repeat;
+
+    &.img-circle {
+      border: 0px;
+      -webkit-box-shadow: inset 0px 0px 0px 2px rgba(231,231,231,0.4);
+      -moz-box-shadow: inset 0px 0px 0px 2px rgba(231,231,231,0.4);
+      box-shadow: inset 0px 0px 0px 2px rgba(231,231,231,0.4);
+      background-size: cover;
+    }
+  }
+}
