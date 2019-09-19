@@ -1,8 +1,8 @@
-import { r as registerInstance, h, c as getElement } from './chunk-67523e50.js';
-import { g as gql, C as CrdsApollo } from './chunk-04a07178.js';
+import { r as registerInstance, h, c as getElement } from './chunk-baaaaca5.js';
+import { g as gql, C as CrdsApollo } from './chunk-3c377be1.js';
 import './chunk-a9955f90.js';
 import './chunk-950a1dca.js';
-import { C as ContentBlockHandler } from './chunk-1fb009bf.js';
+import { C as ContentBlockHandler } from './chunk-2218e59c.js';
 
 const GET_GROUPS = gql `
   {

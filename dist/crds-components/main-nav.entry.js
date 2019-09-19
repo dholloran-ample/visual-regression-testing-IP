@@ -1,6 +1,6 @@
-import { r as registerInstance, h } from './chunk-67523e50.js';
+import { r as registerInstance, h } from './chunk-baaaaca5.js';
 import { U as Utils } from './chunk-4786bf9d.js';
-import { S as SimpleNavHelper } from './chunk-890ee05a.js';
+import { S as SimpleNavHelper } from './chunk-f7535199.js';
 
 class MainMenu {
     constructor(hostRef) {

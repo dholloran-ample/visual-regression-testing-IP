@@ -1,4 +1,4 @@
-import { r as registerInstance, h } from './chunk-67523e50.js';
+import { r as registerInstance, h } from './chunk-baaaaca5.js';
 
 /*!
  * is-extendable <https://github.com/jonschlinkert/is-extendable>

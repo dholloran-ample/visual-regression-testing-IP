@@ -1,5 +1,5 @@
-import { r as registerInstance, h, c as getElement } from './chunk-67523e50.js';
-import { g as gql, C as CrdsApollo } from './chunk-04a07178.js';
+import { r as registerInstance, h, c as getElement } from './chunk-baaaaca5.js';
+import { g as gql, C as CrdsApollo } from './chunk-3c377be1.js';
 import './chunk-a9955f90.js';
 import './chunk-950a1dca.js';
 

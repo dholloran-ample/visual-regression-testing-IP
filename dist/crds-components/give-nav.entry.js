@@ -1,5 +1,5 @@
-import { r as registerInstance, h } from './chunk-67523e50.js';
-import { S as SimpleNavHelper } from './chunk-890ee05a.js';
+import { r as registerInstance, h } from './chunk-baaaaca5.js';
+import { S as SimpleNavHelper } from './chunk-f7535199.js';
 
 class GiveMenu {
     constructor(hostRef) {
