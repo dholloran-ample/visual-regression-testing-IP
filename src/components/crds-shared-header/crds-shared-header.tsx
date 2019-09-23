@@ -26,12 +26,17 @@ export class SharedHeader {
 
   public componentWillLoad() {
     const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
-    return axios.get(url).then(response => (this.data = response.data)).catch(err => console.error(err));
+    return axios
+      .get(url)
+      .then(response => (this.data = response.data))
+      .catch(err => console.error(err));
   }
 
   componentDidLoad() {
     this.element.parentElement.classList.add('shared-header');
     this.element.parentElement.classList.remove('shared-header-skeleton');
+    const svgChildNode = this.element.parentElement.children[0];
+    this.element.parentElement.removeChild(svgChildNode);
   }
 
   toggleMenu(event, navType) {
@@ -103,11 +108,7 @@ export class SharedHeader {
           config={this.data.config}
           env={this.env}
         />
-        <main-nav
-          mainNavIsShowing={this.mainNavIsShowing}
-          data={this.data.nav}
-          promoData={this.data.promos}
-        />
+        <main-nav mainNavIsShowing={this.mainNavIsShowing} data={this.data.nav} promoData={this.data.promos} />
         <div class={this.navCloseClasses()}>
           <div class="close-icon" innerHTML={close} onClick={this.closeMenus.bind(this)} />
         </div>
