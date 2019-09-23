@@ -13,7 +13,6 @@ import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 })
 export class CrdsGroupList {
   private apolloClient: ApolloClient<{}>;
-  private validGroups = ['Small Group', 'Journey'];
   private contentBlockHandler: ContentBlockHandler;
 
   @State() user: GroupUser;
@@ -49,38 +48,55 @@ export class CrdsGroupList {
       });
   }
 
+  private convertTime(time): string {
+    const arr = time.split(':');
+    var suffix = arr[0] >= 12 ? 'PM' : 'AM';
+    var hours = arr[0] % 12 || 12;
+    var minutes = arr[1];
+
+    return `${hours}:${minutes} ${suffix}`;
+  }
+
   private logError(err) {
     console.error(err);
   }
 
+  public renderMeetingTime(group: Group) {
+    if (group.meeting.day)
+      return `${group.meeting.day} at ${this.convertTime(group.meeting.time)}, ${group.meeting.frequency}`;
+    else return 'Flexible Meeting Time';
+  }
+
   public renderLeaderTag(group: Group) {
     if (group.role.name === 'Leader') {
-      return <p class="leader-tag"><span class="label label-info">Leader</span></p>;
+      return (
+        <p class="leader-tag">
+          <span class="label label-info">Leader</span>
+        </p>
+      );
     }
   }
 
   public renderGroupList() {
     return this.user.groups.map(group => {
-      if (this.validGroups.includes(group.type.name)) {
-        return (
-          <div class="group d-flex push-half-bottom">
-            <div class="group-text">
-              <h4 class="list-header"><a href="#">{group.name}</a></h4>
-              <p class="control-label text-gray-light flush">
-                {group.meeting.day} at {group.meeting.time}, {group.meeting.frequency}
-              </p>
-              {this.renderLeaderTag(group)}
-            </div>
-            <div
-              class="push-half-bottom group-image img-responsive img-circle"
-              style={{
-                backgroundImage: `url('https://${group.image}')
-                                 ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
-              }}
-            />
+      return (
+        <div class="group d-flex push-half-bottom">
+          <div class="group-text">
+            <h4 class="list-header">
+              <a href={group.url}>{group.name}</a>
+            </h4>
+            <p class="control-label text-gray-light flush">{this.renderMeetingTime(group)}</p>
+            {this.renderLeaderTag(group)}
           </div>
-        );
-      }
+          <div
+            class="push-half-bottom group-image img-responsive img-circle"
+            style={{
+              backgroundImage: `url('https://${group.image}')
+                                 ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
+            }}
+          />
+        </div>
+      );
     });
   }
 
@@ -88,9 +104,7 @@ export class CrdsGroupList {
     if (this.user && this.user.groups.length > 0) {
       return this.renderGroupList();
     } else {
-      return (
-        <h4 class="list-header push-half-top flush-bottom text-gray-dark">You haven't joined a group yet</h4>
-      );
+      return this.contentBlockHandler.getContentBlock('group-list-none-header');
     }
   }
 
@@ -109,10 +123,11 @@ export class CrdsGroupList {
   public render() {
     return (
       <div class="group-list">
-        <p class="text-gray-light font-family-base">my groups</p>
+        {this.contentBlockHandler.getContentBlock('group-list-header')}
         {this.renderUserGroupState()}
         <div class="push-half-top groups-cta">
-          <strong class="text-gray">Hey {this.user.nickName || this.user.firstName}!</strong> <span class="text-gray-light">{this.renderCallToAction()}</span>
+          <strong class="text-gray">Hey {this.user.nickName || this.user.firstName}!</strong>{' '}
+          <span class="text-gray-light">{this.renderCallToAction()}</span>
         </div>
       </div>
     );
