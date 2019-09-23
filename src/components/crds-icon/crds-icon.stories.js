@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/polymer';
 import { withKnobs, text, select } from '@storybook/addon-knobs';
-import colors from './crds-icon-colors'
+import colors from '../../shared/crds-icon-colors'
 
 const stories = storiesOf('Icons', module);
 

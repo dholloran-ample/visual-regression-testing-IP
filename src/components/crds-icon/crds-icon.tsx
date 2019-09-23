@@ -2,7 +2,7 @@ import { Component, Prop, h } from '@stencil/core';
 
 // icons
 import icons from './icons.svg';
-import colors from '../../shared/crds-icon-colors.js';
+import colors from '../../shared/crds-icon-colors';
 
 @Component({
   tag: 'crds-icon',
