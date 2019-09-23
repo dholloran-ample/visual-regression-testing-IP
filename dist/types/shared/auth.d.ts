@@ -7,6 +7,7 @@ export declare class Auth {
     isMp: boolean;
     isOkta: boolean;
     token: any;
+    analytics: any;
     subdomainMap: {
         prod: string;
     };
@@ -15,6 +16,7 @@ export declare class Auth {
     signOut(callback: any): void;
     private updateCurrentUser;
     private getUserId;
-    private getUserName;
+    private getUser;
     private getUserImageUrl;
+    static getMPIssuerEndpoint(env: any): string;
 }

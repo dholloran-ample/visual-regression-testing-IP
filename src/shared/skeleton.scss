@@ -36,6 +36,41 @@
   }
 }
 
+.text-skeleton {
+  width: 100%;
+
+  .title,
+  .subtitle {
+    background-color: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .title {
+    height: 24px;
+    margin-bottom: 1rem;
+    width: 35%;
+  }
+
+  .subtitle {
+    height: 16px;
+    width: 50%;
+  }
+}
+
+.avatar-skeleton {
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+
+  .shimmer::after {
+    left: -400px;
+    animation: shimmer 1.5s .5s infinite;
+  }
+}
+
+
 @keyframes shimmer {
   to {
     transform: translateX(100%);

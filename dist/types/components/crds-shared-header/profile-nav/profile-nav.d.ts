@@ -1,13 +1,11 @@
 export declare class ProfileMenu {
-    config: any;
-    currentUser: any;
-    onSignOut: Function;
     profileNavIsShowing: boolean;
     data: JSON;
-    envUrl(path: any): string;
-    handleClick(event: any): void;
-    renderSections: (payload: any) => any;
-    renderChild: (child: any, topLevel: any) => any;
-    renderChildHTML: (child: any, topLevel: any) => any;
+    currentUser: any;
+    handleSignOut: Function;
+    private simpleNav;
+    constructor();
+    private navTitle;
+    private backgroundImageURL;
     render(): any;
 }

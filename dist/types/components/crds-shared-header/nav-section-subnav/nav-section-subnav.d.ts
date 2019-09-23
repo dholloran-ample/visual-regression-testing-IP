@@ -1,6 +1,7 @@
 export declare class NavSectionSubnav {
-    active: string;
-    slug: string;
-    onBack: Function;
+    subNavName: string;
+    isActive: boolean;
+    handleBackClick: Function;
+    onClick(event: any): void;
     render(): any;
 }

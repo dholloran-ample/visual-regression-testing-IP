@@ -1,7 +1,7 @@
-export declare class NavigationSection {
-    sectionName: string;
-    isActive: boolean;
-    handleClick: Function;
+export declare class NavigationLink {
+    href: string;
+    automationId: string;
+    handleSignOut: Function;
     /**
      * Print log messages?
      */
@@ -10,5 +10,6 @@ export declare class NavigationSection {
     private config;
     componentWillLoad(): void;
     onClick(event: any): void;
+    isSignOutLink(): boolean;
     render(): any;
 }

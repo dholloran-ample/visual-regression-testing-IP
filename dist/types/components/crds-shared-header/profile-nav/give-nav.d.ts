@@ -1,7 +1,9 @@
 export declare class GiveMenu {
     giveNavIsShowing: boolean;
     data: JSON;
-    handleClick(event: any): void;
-    renderSections: (payload: any) => any;
+    private simpleNav;
+    constructor();
+    private navTitle;
+    private backgroundImageURL;
     render(): any;
 }

@@ -8,7 +8,7 @@ export declare class Utils {
      * Returns a parameterized string
      * @param {String} str
      */
-    static parameterize(str: any): any;
+    static parameterize(str: any): string;
     /**
      * Returns the value of a cookie after looking up by name
      * @param {String} name
@@ -19,4 +19,16 @@ export declare class Utils {
      * @param {String} env
      */
     static getSubdomain(env: any): any;
+    /**
+     * Swaps the Contentful domain for Imgix on images
+     * @param {String} url
+     */
+    static imgixify(url: any): any;
+    /**
+     *  Adds tracking analytics for when the component comes in view
+     *  @param {HTMLElement} host
+     *  @param {string} componentName
+     *  @param {function} dataFetch
+     */
+    static trackInView(host: HTMLElement, componentName: string, dataFetch: () => {}): void;
 }

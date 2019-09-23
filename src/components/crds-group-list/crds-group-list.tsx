@@ -31,7 +31,9 @@ export class CrdsGroupList {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'group list');
-    this.contentBlockHandler.getCopy();
+    this.contentBlockHandler.getCopy().then(() => {
+    this.host.forceUpdate();
+    })
     this.getUserGroups();
   }
 
@@ -120,15 +122,39 @@ export class CrdsGroupList {
     }
   }
 
-  public render() {
-    return (
-      <div class="group-list">
-        {this.contentBlockHandler.getContentBlock('group-list-header')}
-        {this.renderUserGroupState()}
+  private renderGroupSkeleton() {
+    return [1, 2, 3].map(() => (
+      <div class="d-flex push-bottom">
+        <div class="skeleton text-skeleton">
+          <div class="title shimmer">&nbsp;</div>
+          <div class="subtitle shimmer">&nbsp;</div>
+        </div>
+        <div class="skeleton avatar-skeleton"><div class="shimmer">&nbsp;</div></div>
+      </div>
+    );
+  }
+
+  public renderUserGreeting() {
+    if (this.user) {
+      return (
         <div class="push-half-top groups-cta">
           <strong class="text-gray">Hey {this.user.nickName || this.user.firstName}!</strong>{' '}
           <span class="text-gray-light">{this.renderCallToAction()}</span>
         </div>
+      );
+    }
+  }
+
+  public render() {
+    const renderUserGroupState = this.user;
+    return (
+      <div class="group-list">
+        {this.contentBlockHandler.getContentBlock('group-list-header')}
+        {(() => {
+          if (this.user) return this.renderUserGroupState();
+          return this.renderGroupSkeleton();
+        })()}
+        {this.renderUserGreeting()}
       </div>
     );
   }
