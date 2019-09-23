@@ -61,7 +61,6 @@ export class CrdsImage {
     return (
       <div
         class={`crds-img-container ${size}`}
-        data-instrinsic="4:3"
         innerHTML={imgDidLoad ? cachedImg.outerHTML : ''}
         ref={el => (this.imgWrapper = el as HTMLDivElement)}
       />

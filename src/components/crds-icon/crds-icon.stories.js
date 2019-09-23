@@ -68,7 +68,7 @@ stories
     const name = select('name', nameOptions, 'media-article');
 
     const sizeOptions = { '12': '12', '24': '24', '36': '36' }
-    const size = select('size', sizeOptions, '24');
+    const size = select('size(px)', sizeOptions, '24');
 
     const color = select('color', colors, 'black')
 

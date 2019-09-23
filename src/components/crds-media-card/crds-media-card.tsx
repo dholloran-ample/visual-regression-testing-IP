@@ -23,16 +23,8 @@ export class CrdsMediaCard {
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
 
-  // article / video Podcast episode, message, song props
-  @Prop() nearestMinute: string;
-  @Prop() author: string;
-  @Prop() mediaTopic: string;
-
-  // Album & podcast props
-  @Prop() contentCount: number;
-
   // state
-  @State() isVisible: boolean = false;
+  @State() isVisible: boolean = false; // Will be used for skeleton blocks/prerendering
   @State() childProps = {};
 
   private propNames = [
@@ -43,16 +35,12 @@ export class CrdsMediaCard {
     'body',
     'url',
     'buttonSrc',
-    'nearestMinute',
-    'author',
-    'mediaTopic',
     'thumbnailSrc',
-    'contentCount',
     'contentType'
   ];
 
   private contentLayouts = ['default', 'overlay', 'media-object'];
-  private contentTypes = ['article', 'video', 'podcast-episode', 'message', 'song', 'series', 'album', 'podcast'];
+  private contentTypes = ['article', 'video', 'episode', 'message', 'song', 'series', 'album', 'podcast'];
   private metaPositions = ['top', 'bottom'];
 
   // ----------------------------------------------- | Validations

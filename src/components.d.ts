@@ -59,18 +59,14 @@ export namespace Components {
     'src': string;
   }
   interface CrdsMediaCard {
-    'author': string;
     'body': string;
     'buttonSrc': string;
-    'contentCount': number;
     'contentLayout': string;
     'contentType': string;
     'heading': string;
     'imageSrc': string;
-    'mediaTopic': string;
     'meta': string;
     'metaPosition': string;
-    'nearestMinute': string;
     'thumbnailSrc': string;
     'url': string;
   }
@@ -371,18 +367,14 @@ declare namespace LocalJSX {
     'src'?: string;
   }
   interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
-    'author'?: string;
     'body'?: string;
     'buttonSrc'?: string;
-    'contentCount'?: number;
     'contentLayout'?: string;
     'contentType'?: string;
     'heading'?: string;
     'imageSrc'?: string;
-    'mediaTopic'?: string;
     'meta'?: string;
     'metaPosition'?: string;
-    'nearestMinute'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
   }

@@ -24,8 +24,7 @@ export class CrdsDefaultLayout {
   private icons = {
     article: 'media-article',
     video: 'media-video',
-    'podcast-episode': '',
-    message: '',
+    episode: 'media-podcast',
     song: 'media-music'
   };
 
