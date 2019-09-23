@@ -108,6 +108,6 @@ export class Auth {
 
   public static getMPIssuerEndpoint(env) {
     const subdomain = env == 'int' || env == 'demo' ? env : '';
-    return `https://gateway${subdomain}.crossroads.net/gateway/api/login`;
+    return `https://gateway${subdomain}.crossroads.net/gateway/api/authenticated`;
   }
 }
