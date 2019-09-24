@@ -21,6 +21,15 @@
   }
 }
 
+.group-list-header {
+  min-height: 28px;
+  margin: $line-height-computed/2 0;
+
+  p {
+    margin: 0;
+  }
+}
+
 .group {
   border-bottom: 1px solid $cr-gray-lighter;
 
@@ -52,6 +61,7 @@
     background-size: cover;
     background-position: 0;
     background-repeat: no-repeat;
+    flex-shrink: 0;
 
     &.img-circle {
       border: 0px;

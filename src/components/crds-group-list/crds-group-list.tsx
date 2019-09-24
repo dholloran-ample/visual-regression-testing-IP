@@ -131,7 +131,7 @@ export class CrdsGroupList {
         </div>
         <div class="skeleton avatar-skeleton"><div class="shimmer">&nbsp;</div></div>
       </div>
-    );
+    ));
   }
 
   public renderUserGreeting() {
@@ -149,7 +149,9 @@ export class CrdsGroupList {
     const renderUserGroupState = this.user;
     return (
       <div class="group-list">
-        {this.contentBlockHandler.getContentBlock('group-list-header')}
+        <div class="group-list-header text-gray-light font-family-base">
+          {this.contentBlockHandler.getContentBlock('group-list-header')}
+        </div>
         {(() => {
           if (this.user) return this.renderUserGroupState();
           return this.renderGroupSkeleton();
