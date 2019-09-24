@@ -28,15 +28,17 @@ export class SharedHeader {
     const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
     return axios
       .get(url)
-      .then(response => (this.data = response.data))
+      .then(response => {
+        this.data = response.data;
+      })
       .catch(err => console.error(err));
   }
 
   componentDidLoad() {
-    this.element.parentElement.classList.add('shared-header');
+    const svgChildNode = this.element.parentElement.getElementsByTagName('svg')[0];
+    svgChildNode.remove();
     this.element.parentElement.classList.remove('shared-header-skeleton');
-    const svgChildNode = this.element.parentElement.children[0];
-    this.element.parentElement.removeChild(svgChildNode);
+    this.element.parentElement.classList.add('shared-header');
   }
 
   toggleMenu(event, navType) {
