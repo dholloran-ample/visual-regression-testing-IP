@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 export const GET_SITES = gql`
   {
-    sites(filter: "Available_Online = 1") {
+    sites(availableOnline: true) {
       name
       id
     }
