@@ -1,11 +1,5 @@
 .svg-container {
-  position: relative;
-
-  & svg {
+  svg {
     display: block;
-
-     & g {
-        display: block;
-     }
   }
 }

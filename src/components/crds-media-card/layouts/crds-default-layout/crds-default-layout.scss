@@ -1,11 +1,13 @@
+@import '../../../../assets/stylesheets/globals/variables';
+
 .card-wrapper {
-  margin-bottom: 2.75em;
+  margin-bottom: 2.75rem;
   max-width: 360px;
   font-family: 'acumin-pro', helvetica, arial, sans-serif;
 }
 
 .card-image-wrapper {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
   overflow: hidden;
   position: relative;
 }
@@ -13,43 +15,43 @@
 .card-stamp-container {
   box-sizing: border-box;
   background-color: rgba(23, 23, 23, 0.9);
-  top: 1em;
-  padding: 0.5em;
+  top: 1rem;
+  padding: 0.5rem;
   position: absolute;
-  left: 1em;
+  left: 1rem;
   display: flex;
   max-height: 28px;
 
   .card-stamp {
-    margin-left: 0.25em;
+    margin-left: 0.25rem;
   }
 }
 
 .card-stamp {
   display: inline-block;
-  color: #ffffff;
-  font-size: 0.625em;
+  color: $white;
+  font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
   line-height: 1;
 }
 
 .card-meta-top {
-  color: #737373;
+  color: $gray;
   display: block;
-  font-size: 0.8125em;
+  font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.67;
   text-transform: uppercase;
 }
 
 .card-heading {
-  color: #4d4d4d;
+  color: $gray-dark;
   font-family: 'acumin-pro-extra-condensed', sans-serif;
   font-size: 38px;
   font-weight: 500;
   line-height: 0.89;
-  margin: 0 0 0.5em;
+  margin: 0 0 0.5rem;
   text-transform: uppercase;
   transition: color 300ms;
   user-select: none;
@@ -60,27 +62,27 @@
 }
 
 .card-meta-bottom {
-  color: #979797;
+  color: $gray-light;
   display: block;
-  font-size: 0.8125em;
+  font-size: 0.8125rem;
   font-weight: 300;
   line-height: 1;
   margin: 0;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
 }
 
 .card-content {
   overflow-y: hidden;
   p {
     display: block;
-    font-size: 1em;
+    font-size: 1rem;
     font-weight: 300;
     line-height: 24px;
-    color: #4d4d4d;
+    color: $gray-dark;
     margin: 0;
     a {
       text-decoration: none;
-      color: #0095d9;
+      color: $cyan;
     }
   }
 }
@@ -91,24 +93,24 @@
 
 .card-button {
   display: inline-block;
-  background-color: #3b6e8f;
-  color: #ffffff;
+  background-color: $cyan-dark-b;
+  color: $white;
   border-radius: 4px;
-  margin-top: 1.375em;
+  margin-top: 1.375rem;
   text-decoration: none;
   cursor: pointer;
   height: 43px;
   vertical-align: middle;
   line-height: 43px;
-  padding: 0 1em;
-  font-size: 0.875em;
+  padding: 0 1rem;
+  font-size: 0.875rem;
 }
 
 .card-thumbnail {
-  background-color: rgba(23, 23, 23, 0.9);
-  top: 1em;
+  background-color: $black-opaque;
+  top: 1rem;
   position: absolute;
-  right: 1em;
+  right: 1rem;
   max-width: 65px;
   max-height: 65px;
 }

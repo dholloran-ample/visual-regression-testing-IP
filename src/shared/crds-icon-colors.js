@@ -37,7 +37,6 @@ const colors = {
     'white': '#FFFFFF',
     'black': '#000000',
 
-    'gray-alpha': () => { },
     'rust': '#CC2255',
     'green': '#6ACC93',
     'success': '#6ACC93',
