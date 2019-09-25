@@ -28,7 +28,7 @@ export class Auth {
       clientId: config.okta_client_id,
       issuer: config.okta_issuer,
       tokenManager: {
-        storage: 'cookie'
+        storage: 'localStorage'
       }
     };
     const mpConfig: CrdsMpConfig = {
