@@ -152,9 +152,9 @@ export class CrdsGroupList {
   public renderShowMoreLink() {
     if (this.user.groups.length > 3)
       return (
-        <a onClick={(() => this.expanded = !this.expanded)}>
-          {this.user.groups.length > 3 && (this.expanded ? 'Show Less-': 'Show More +')}
-        </a>
+        <btn onClick={(() => this.expanded = !this.expanded)} class="btn btn-sm btn-gray-light btn-outline">
+          {this.user.groups.length > 3 && (this.expanded ? 'Show Less': 'Show More')}
+        </btn>
       );
   }
 
