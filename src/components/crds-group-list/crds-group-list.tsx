@@ -15,8 +15,9 @@ export class CrdsGroupList {
   private apolloClient: ApolloClient<{}>;
   private contentBlockHandler: ContentBlockHandler;
 
-  @State() user: GroupUser;
   @Prop() authToken: string;
+  @State() user: GroupUser;
+  @State() expanded: boolean = false;
   @Element() public host: HTMLStencilElement;
   private leader: boolean;
 
@@ -80,7 +81,8 @@ export class CrdsGroupList {
   }
 
   public renderGroupList() {
-    return this.user.groups.map(group => {
+    const groups = !this.expanded && this.user.groups.length > 3 ? this.user.groups.slice(0, 3) : this.user.groups;
+    return groups.map(group => {
       return (
         <div class="group d-flex push-half-bottom">
           <div class="group-text">
@@ -104,7 +106,7 @@ export class CrdsGroupList {
 
   public renderUserGroupState() {
     if (this.user && this.user.groups.length > 0) {
-      return this.renderGroupList();
+      return [this.renderGroupList(), this.renderShowMoreLink()];
     } else {
       return this.contentBlockHandler.getContentBlock('group-list-none-header');
     }
@@ -145,6 +147,15 @@ export class CrdsGroupList {
         </div>
       );
     }
+  }
+
+  public renderShowMoreLink() {
+    if (this.user.groups.length > 3)
+      return (
+        <a onClick={(() => this.expanded = !this.expanded)}>
+          {this.user.groups.length > 3 && (this.expanded ? 'Show Less-': 'Show More +')}
+        </a>
+      );
   }
 
   public render() {
