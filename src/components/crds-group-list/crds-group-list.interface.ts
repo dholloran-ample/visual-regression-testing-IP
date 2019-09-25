@@ -7,10 +7,12 @@ export interface GroupUser {
 export interface Group {
   id: string;
   name: string;
+  url: string;
   role: Role;
   type: Type;
   meeting: Meeting;
   image: string;
+  endDate: string;
 }
 
 export interface Role {
