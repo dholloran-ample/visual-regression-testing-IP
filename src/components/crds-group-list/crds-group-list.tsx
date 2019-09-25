@@ -32,7 +32,7 @@ export class CrdsGroupList {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'group list');
     this.contentBlockHandler.getCopy().then(() => {
-    this.host.forceUpdate();
+      this.host.forceUpdate();
     })
     this.getUserGroups();
   }
@@ -126,10 +126,12 @@ export class CrdsGroupList {
     return [1, 2, 3].map(() => (
       <div class="d-flex push-bottom">
         <div class="skeleton text-skeleton">
-          <div class="title shimmer">&nbsp;</div>
-          <div class="subtitle shimmer">&nbsp;</div>
+          <div class="title shimmer" />
+          <div class="subtitle shimmer" />
         </div>
-        <div class="skeleton avatar-skeleton"><div class="shimmer">&nbsp;</div></div>
+        <div class="skeleton avatar-skeleton">
+          <div class="shimmer" />
+        </div>
       </div>
     ));
   }
