@@ -19,7 +19,6 @@ export class CrdsMediaCard {
   @Prop() meta: string;
   @Prop() metaPosition: string;
   @Prop({ reflect: false }) body: string;
-  @Prop() buttonSrc: string;
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
 
@@ -27,18 +26,7 @@ export class CrdsMediaCard {
   @State() isVisible: boolean = false; // Will be used for skeleton blocks/prerendering
   @State() childProps = {};
 
-  private propNames = [
-    'imageSrc',
-    'heading',
-    'meta',
-    'metaPosition',
-    'body',
-    'url',
-    'buttonSrc',
-    'thumbnailSrc',
-    'contentType'
-  ];
-
+  private propNames = ['imageSrc', 'heading', 'meta', 'metaPosition', 'body', 'url', 'thumbnailSrc', 'contentType'];
   private contentLayouts = ['default', 'overlay', 'media-object'];
   private contentTypes = ['article', 'video', 'episode', 'message', 'song', 'series', 'album', 'podcast'];
   private metaPositions = ['top', 'bottom'];
@@ -80,21 +68,17 @@ export class CrdsMediaCard {
   // ----------------------------------------------- | Methods
 
   componentWillLoad() {
-    // Set props for child component
+    /* 
+      Validates props passed to component against props assigned/related to children.
+      Stencil doesn't have out of the box support for props.
+    */
+
     this.propNames
       .filter(prop => this[prop] != undefined)
       .forEach(prop => {
         this.childProps[prop] = this[prop];
       });
   }
-
-  private getLayout = () => {
-    return {
-      default: <crds-default-layout {...this.childProps} />,
-      overlay: <crds-overlay-layout {...this.childProps} />,
-      'media-object': <crds-media-object-layout {...this.childProps} />
-    }[this.contentLayout];
-  };
 
   private runValidations() {
     this.validateImage();
@@ -109,6 +93,22 @@ export class CrdsMediaCard {
   }
 
   public render() {
-    return this.getLayout();
+    return (
+      <div>
+                
+        {this.contentLayout == 'default' && (
+          <crds-default-layout {...this.childProps}>
+            <slot />
+          </crds-default-layout>
+        )}
+        {this.contentLayout == 'overlay' && <crds-overlay-layout {...this.childProps} />}
+                
+        {this.contentLayout == 'media-object' && (
+          <crds-media-object-layout {...this.childProps}>
+            <slot />
+          </crds-media-object-layout>
+        )}
+      </div>
+    );
   }
 }
