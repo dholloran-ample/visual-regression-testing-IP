@@ -28,6 +28,7 @@ header {
 .global-nav-items {
   display: flex;
   justify-content: space-between;
+  padding: 2px;
 }
 
 .global-actions,
@@ -42,7 +43,9 @@ header {
 }
 
 .logo {
-  padding: 7px;
+  left: 50%;
+  margin: 7px 0 0 -52px;
+  position: absolute;
 
   svg {
     fill: $cr-white;
