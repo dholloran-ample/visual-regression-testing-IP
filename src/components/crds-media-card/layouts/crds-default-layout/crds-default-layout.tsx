@@ -1,5 +1,6 @@
 // Stencil
-import { h, Prop, Component } from '@stencil/core';
+import { h, Prop, Component, Element } from '@stencil/core';
+import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'crds-default-layout',
@@ -7,6 +8,7 @@ import { h, Prop, Component } from '@stencil/core';
   shadow: true
 })
 export class CrdsDefaultLayout {
+  @Element() element: HTMLStencilElement;
   @Prop() contentType: string;
   @Prop() imageSrc: string;
   @Prop() heading: string;
@@ -31,11 +33,11 @@ export class CrdsDefaultLayout {
   };
 
   public render() {
-    const { imageSrc, heading, meta, metaPosition, body, buttonSrc, thumbnailSrc, url, contentType, icons } = this;
+    const { imageSrc, heading, meta, metaPosition, thumbnailSrc, url, contentType, icons } = this;
 
     return (
       <div class="card-wrapper">
-        <div class="card-image-wrapper">
+        <a class="card-image-wrapper" href={url}>
           {imageSrc && <crds-image src={imageSrc} size="card" />}
           {icons[contentType] && (
             <div class="card-stamp-container">
@@ -48,19 +50,20 @@ export class CrdsDefaultLayout {
               <crds-image src={thumbnailSrc} size="thumbnail" />
             </div>
           )}
-        </div>
+        </a>
         {metaPosition == 'top' && <span class="card-meta-top">{meta}</span>}
 
-        {heading && <h2 class={`card-heading`}> {heading} </h2>}
+        {heading && (
+          <a class={`card-heading`} href={url}>
+            {heading}
+          </a>
+        )}
 
         {metaPosition == 'bottom' && <span class="card-meta-bottom">{meta}</span>}
 
-        {body && <div class="card-content" innerHTML={body} />}
-        {buttonSrc && (
-          <a class="card-button" href={buttonSrc} role="button">
-            Learn more
-          </a>
-        )}
+        <div class="card-content">
+          <slot />
+        </div>
       </div>
     );
   }

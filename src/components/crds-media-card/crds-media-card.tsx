@@ -1,5 +1,6 @@
 // Stencil
 import { Component, Prop, Element, h, State } from '@stencil/core';
+import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'crds-media-card',
@@ -22,6 +23,7 @@ export class CrdsMediaCard {
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
 
+  @Element() element!: HTMLStencilElement;
   // state
   @State() isVisible: boolean = false; // Will be used for skeleton blocks/prerendering
   @State() childProps = {};
@@ -67,6 +69,14 @@ export class CrdsMediaCard {
 
   // ----------------------------------------------- | Methods
 
+  componentDidLoad() {
+    const style = document.createElement('style');
+    style.innerText = `crds-media-card a {
+      text-decoration: none;
+      color: #0095D9;
+    }`;
+    this.element.before(style);
+  }
   componentWillLoad() {
     /* 
       Validates props passed to component against props assigned/related to children.

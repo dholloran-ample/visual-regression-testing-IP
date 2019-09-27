@@ -54,7 +54,7 @@
   margin: 0 0 0.5rem;
   text-transform: uppercase;
   transition: color 300ms;
-  user-select: none;
+  text-decoration: none;
 
   &:hover {
     color: black;
@@ -113,4 +113,13 @@
   right: 1rem;
   max-width: 65px;
   max-height: 65px;
+}
+
+::slotted(p) {
+  display: block;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 24px;
+  color: $gray-dark;
+  margin: 0;
 }
