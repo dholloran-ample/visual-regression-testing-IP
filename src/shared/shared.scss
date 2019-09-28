@@ -67,7 +67,7 @@ hr {
 }
 
 .text-gray-dark {
-  color: #4d4d4d !important;  
+  color: #4d4d4d !important;
 }
 
 .text-gray-light {
@@ -212,6 +212,7 @@ hr {
 
 // Buttons
 .btn {
+  @extend .font-family-base;
   display: inline-block;
   margin-bottom: 0;
   font-weight: 300;
@@ -271,6 +272,11 @@ hr {
   &.btn-sm {
     font-size: 13px;
     padding: 10px 16px 11px;
+  }
+
+  &.btn-block {
+    display: block;
+    width: 100%;
   }
 }
 
