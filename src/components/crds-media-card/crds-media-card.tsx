@@ -70,12 +70,15 @@ export class CrdsMediaCard {
   // ----------------------------------------------- | Methods
 
   componentDidLoad() {
-    const style = document.createElement('style');
-    style.innerText = `crds-media-card a {
-      text-decoration: none;
-      color: #0095D9;
-    }`;
-    this.element.before(style);
+    if (!document.getElementById('card-anchor-style')) {
+      const style = document.createElement('style');
+      style.innerText = `crds-media-card a {
+        text-decoration: none;
+        color: #0095D9;
+      }`;
+      style.id = 'card-anchor-style';
+      this.element.before(style);
+    }
   }
   componentWillLoad() {
     /* 
