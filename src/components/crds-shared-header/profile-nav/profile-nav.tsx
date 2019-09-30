@@ -7,8 +7,8 @@ import { SimpleNavHelper } from './simple-nav-helper';
   shadow: true
 })
 export class ProfileMenu {
-  @Prop() profileNavIsShowing: boolean = true;
-  @Prop() data: JSON;
+  @Prop() isNavShowing: boolean = true;
+  @Prop() data: any = {};
   @Prop() currentUser: any;
   @Prop() handleSignOut: Function;
   private simpleNav: SimpleNavHelper;
@@ -18,8 +18,7 @@ export class ProfileMenu {
   }
 
   private navTitle() {
-    const data = (this.data as any);
-    const title = (data && data.title) || '';
+    const title = (this.data && this.data.title) || '';
     return unescape(title.replace('%user_name%', this.currentUser.name || ''));
   }
 
@@ -28,7 +27,7 @@ export class ProfileMenu {
   }
 
   render() {
-    if (!this.profileNavIsShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
+    if (!this.isNavShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
 
     return (
       <div class="profile-nav">
@@ -40,7 +39,7 @@ export class ProfileMenu {
               }')`
           }}
         />
-        <div>{this.simpleNav.renderNav(this.data, this.navTitle())}</div>
+        {this.simpleNav.renderNav(this.data, this.navTitle())}
       </div>
     );
   }
