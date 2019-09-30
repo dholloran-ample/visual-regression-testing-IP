@@ -33,7 +33,17 @@ stories
     const contentType = select('Content Type', contentTypeOptions, 'article')
 
     return `<div style="width: 500px; height: 500px;" > 
-        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' body='${body}' button-src='${buttonSrc}' content-type='${contentType}' /> 
+        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' body='${body}' button-src='${buttonSrc}' content-type='${contentType}'>
+          <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+            <a href='#'>
+            Lorem ipsum
+            </a>
+          </p>
+          <crds-button href='#' label='Click me!'><crds-button>
+        </crds-media-card> 
     </div>
     `;
   });
