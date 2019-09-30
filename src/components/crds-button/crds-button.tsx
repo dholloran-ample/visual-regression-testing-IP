@@ -11,7 +11,7 @@ export class CrdsButton {
 
   render() {
     return (
-      <a class="card-button" href={this.href}>
+      <a class="crds-button" href={this.href}>
         {this.label}
       </a>
     );
