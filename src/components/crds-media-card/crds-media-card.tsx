@@ -35,13 +35,13 @@ export class CrdsMediaCard {
 
   // ----------------------------------------------- | Validations
   private validateContentType() {
-    if (typeof this.contentType != 'undefined' && this.contentTypes.indexOf(this.contentType) == -1) {
+    if (typeof this.contentType != 'undefined' && !this.contentTypes.includes(this.contentType)) {
       throw new Error(`${this.contentType} is not a valid value for contentType`);
     }
   }
 
   private validateContentLayout() {
-    if (typeof this.contentLayout != 'undefined' && this.contentLayouts.indexOf(this.contentLayout) == -1) {
+    if (typeof this.contentLayout != 'undefined' && !this.contentLayouts.includes(this.contentLayout)) {
       throw new Error(`${this.contentLayout} is not a valid value for contentLayout`);
     }
   }
@@ -60,7 +60,7 @@ export class CrdsMediaCard {
   }
 
   private validateMetaPosition() {
-    if (typeof this.metaPosition != 'undefined' && this.metaPositions.indexOf(this.metaPosition) == -1) {
+    if (typeof this.metaPosition != 'undefined' && !this.metaPositions.includes(this.metaPosition)) {
       throw new Error(`${this.metaPosition} is not a valid value for metaPosition`);
     } else if (typeof this.meta == 'undefined' && typeof this.metaPosition != 'undefined') {
       throw new Error(`Meta is required if you want to provide a meta posittion`);
@@ -110,16 +110,16 @@ export class CrdsMediaCard {
       <div>
                 
         {this.contentLayout == 'default' && (
-          <crds-default-layout {...this.childProps}>
+          <crds-default-card {...this.childProps}>
             <slot />
-          </crds-default-layout>
+          </crds-default-card>
         )}
-        {this.contentLayout == 'overlay' && <crds-overlay-layout {...this.childProps} />}
+        {this.contentLayout == 'overlay' && <crds-overlay-card {...this.childProps} />}
                 
         {this.contentLayout == 'media-object' && (
-          <crds-media-object-layout {...this.childProps}>
+          <crds-media-object-card {...this.childProps}>
             <slot />
-          </crds-media-object-layout>
+          </crds-media-object-card>
         )}
       </div>
     );

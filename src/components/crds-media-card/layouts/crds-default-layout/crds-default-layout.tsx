@@ -3,11 +3,11 @@ import { h, Prop, Component, Element } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
-  tag: 'crds-default-layout',
+  tag: 'crds-default-card',
   styleUrl: 'crds-default-layout.scss',
   shadow: true
 })
-export class CrdsDefaultLayout {
+export class CrdsDefaultCard {
   @Element() element: HTMLStencilElement;
   @Prop() contentType: string;
   @Prop() imageSrc: string;
