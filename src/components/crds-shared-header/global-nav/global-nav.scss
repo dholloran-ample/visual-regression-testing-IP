@@ -28,6 +28,7 @@ header {
 .global-nav-items {
   display: flex;
   justify-content: space-between;
+  padding: 2px;
 }
 
 .global-actions,
@@ -42,7 +43,9 @@ header {
 }
 
 .logo {
-  padding: 7px;
+  left: 50%;
+  margin: 7px 0 0 -52px;
+  position: absolute;
 
   svg {
     fill: $cr-white;
@@ -57,10 +60,10 @@ $icon-size: 22px;
 .donate,
 .menu,
 .search {
+  display: block;
   height: $icon-size;
   padding: 12px 0;
   width: $icon-size;
-  display: block;
 
   svg {
     height: $icon-size;
@@ -168,7 +171,7 @@ $has-close-button: (
 .close-nav {
   $padding: 22px;
 
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .9) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
   bottom: 0;
   display: none;
   height: $close-container-height;
@@ -189,7 +192,7 @@ $has-close-button: (
     background-color: $cr-cyan;
     border-radius: 50%;
     bottom: $padding;
-    box-shadow: 0 5px 24px -5px rgba(0, 0, 0, .75);
+    box-shadow: 0 5px 24px -5px rgba(0, 0, 0, 0.75);
     cursor: pointer;
     height: $circle-size;
     position: absolute;
