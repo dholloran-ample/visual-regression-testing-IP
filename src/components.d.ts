@@ -104,32 +104,20 @@ export namespace Components {
     'src': string;
   }
   interface GiveNav {
-    'data': JSON;
-    'giveNavIsShowing': boolean;
+    'data': any;
+    'isNavShowing': boolean;
   }
   interface GlobalNav {
-    'config': Object;
+    'data': any;
     'env': string;
-    'giveData': JSON;
-    'giveNavIsShowing': boolean;
-    'href': string;
-    'mainNavIsShowing': boolean;
-    'navClickHandler': Function;
-    'profileData': JSON;
-    'profileNavIsShowing': boolean;
   }
   interface MainNav {
-    'data': JSON;
-    'mainNavIsShowing': boolean;
+    'data': any;
+    'isNavShowing': boolean;
     'promoData': string;
   }
   interface NavCtas {
     'data': string;
-  }
-  interface NavLink {
-    'automationId': string;
-    'handleSignOut': Function;
-    'href': string;
   }
   interface NavSection {
     'handleClick': Function;
@@ -137,15 +125,16 @@ export namespace Components {
     'sectionName': string;
   }
   interface NavSectionSubnav {
+    'data': any;
     'handleBackClick': Function;
     'isActive': boolean;
     'subNavName': string;
   }
   interface ProfileNav {
     'currentUser': any;
-    'data': JSON;
+    'data': any;
     'handleSignOut': Function;
-    'profileNavIsShowing': boolean;
+    'isNavShowing': boolean;
   }
 }
 
@@ -266,12 +255,6 @@ declare global {
     new (): HTMLNavCtasElement;
   };
 
-  interface HTMLNavLinkElement extends Components.NavLink, HTMLStencilElement {}
-  var HTMLNavLinkElement: {
-    prototype: HTMLNavLinkElement;
-    new (): HTMLNavLinkElement;
-  };
-
   interface HTMLNavSectionElement extends Components.NavSection, HTMLStencilElement {}
   var HTMLNavSectionElement: {
     prototype: HTMLNavSectionElement;
@@ -309,7 +292,6 @@ declare global {
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
     'nav-ctas': HTMLNavCtasElement;
-    'nav-link': HTMLNavLinkElement;
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
     'profile-nav': HTMLProfileNavElement;
@@ -412,32 +394,20 @@ declare namespace LocalJSX {
     'src'?: string;
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
-    'data'?: JSON;
-    'giveNavIsShowing'?: boolean;
+    'data'?: any;
+    'isNavShowing'?: boolean;
   }
   interface GlobalNav extends JSXBase.HTMLAttributes<HTMLGlobalNavElement> {
-    'config'?: Object;
+    'data'?: any;
     'env'?: string;
-    'giveData'?: JSON;
-    'giveNavIsShowing'?: boolean;
-    'href'?: string;
-    'mainNavIsShowing'?: boolean;
-    'navClickHandler'?: Function;
-    'profileData'?: JSON;
-    'profileNavIsShowing'?: boolean;
   }
   interface MainNav extends JSXBase.HTMLAttributes<HTMLMainNavElement> {
-    'data'?: JSON;
-    'mainNavIsShowing'?: boolean;
+    'data'?: any;
+    'isNavShowing'?: boolean;
     'promoData'?: string;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
-  }
-  interface NavLink extends JSXBase.HTMLAttributes<HTMLNavLinkElement> {
-    'automationId'?: string;
-    'handleSignOut'?: Function;
-    'href'?: string;
   }
   interface NavSection extends JSXBase.HTMLAttributes<HTMLNavSectionElement> {
     'handleClick'?: Function;
@@ -445,15 +415,16 @@ declare namespace LocalJSX {
     'sectionName'?: string;
   }
   interface NavSectionSubnav extends JSXBase.HTMLAttributes<HTMLNavSectionSubnavElement> {
+    'data'?: any;
     'handleBackClick'?: Function;
     'isActive'?: boolean;
     'subNavName'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
     'currentUser'?: any;
-    'data'?: JSON;
+    'data'?: any;
     'handleSignOut'?: Function;
-    'profileNavIsShowing'?: boolean;
+    'isNavShowing'?: boolean;
   }
 
   interface IntrinsicElements {
@@ -476,7 +447,6 @@ declare namespace LocalJSX {
     'global-nav': GlobalNav;
     'main-nav': MainNav;
     'nav-ctas': NavCtas;
-    'nav-link': NavLink;
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
     'profile-nav': ProfileNav;

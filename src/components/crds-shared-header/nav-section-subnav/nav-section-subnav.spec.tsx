@@ -29,30 +29,37 @@ describe('<nav-section-subnav>', () => {
 
       const rendered = this.component.render();
 
-      expect(rendered.$attrs$['data-automation-id']).toBe('sh-section-subnav-come-visit');
+      expect(rendered.$children$[0].$attrs$['data-automation-id']).toBe('sh-section-subnav-come-visit');
     });
 
-    it('Checks element returned has icon', () => {
+    it('Checks element returned has back link', () => {
       const rendered = this.component.render();
 
-      const renderedElement = rendered.$children$[0].$children$[0];
+      expect(rendered.$children$[0].$attrs$.class).toBe('back');
+      expect(rendered.$children$[0].$children$[0].$attrs$.innerHTML).toMatch(/<svg.*/);
+    });
 
-      expect(renderedElement.$attrs$.innerHTML).toMatch(/<svg.*/);
+    it('Checks element returned has title', () => {
+      this.component.data.title = 'some title';
+
+      const rendered = this.component.render();
+
+      expect(rendered.$children$[1].$tag$).toBe('h2');
+      expect(rendered.$children$[1].$children$[0].$text$).toBe('some title');
     });
 
     it('Checks element returned has onClick', () => {
       const rendered = this.component.render();
-      const renderedElement = rendered.$children$[0];
 
-      expect(typeof renderedElement.$attrs$.onClick).toBe('function');
+      expect(typeof rendered.$children$[0].$attrs$.onClick).toBe('function');
     });
 
     it('Checks element onClick event bound to expected method', () => {
       this.component.handleBackClick = jest.fn();
 
       const rendered = this.component.render();
-      const renderedEntry = rendered.$children$[0]
-      renderedEntry.$attrs$.onClick();
+
+      rendered.$children$[0].$attrs$.onClick();
 
       expect(this.component.handleBackClick).toBeCalledTimes(1);
     });

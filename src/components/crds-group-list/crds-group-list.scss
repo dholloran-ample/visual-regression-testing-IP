@@ -3,7 +3,6 @@
 
 .group-list {
   border-top: 1px solid $cr-gray-lighter;
-
   p {
     margin: $line-height-computed/2 0 $line-height-computed 0;
   }
@@ -18,6 +17,15 @@
 
   strong {
     font-weight: 600;
+  }
+}
+
+.group-list-header {
+  min-height: 28px;
+  margin: $line-height-computed/2 0;
+
+  p {
+    margin: 0;
   }
 }
 
@@ -52,6 +60,7 @@
     background-size: cover;
     background-position: 0;
     background-repeat: no-repeat;
+    flex-shrink: 0;
 
     &.img-circle {
       border: 0px;
