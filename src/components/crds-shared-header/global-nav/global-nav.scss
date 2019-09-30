@@ -110,6 +110,7 @@ $icon-size: 22px;
 .profile-container,
 .search-container {
   color: $cr-white;
+  cursor: pointer;
   display: flex;
   text-decoration: none;
 
