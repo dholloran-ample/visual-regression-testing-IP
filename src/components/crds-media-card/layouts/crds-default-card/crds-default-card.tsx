@@ -4,10 +4,10 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'crds-default-card',
-  styleUrl: 'crds-default-layout.scss',
+  styleUrl: 'crds-default-card.scss',
   shadow: true
 })
-export class CrdsDefaultCard {
+export class CrdsDefaultLayout {
   @Element() element: HTMLStencilElement;
   @Prop() contentType: string;
   @Prop() imageSrc: string;
@@ -18,10 +18,6 @@ export class CrdsDefaultCard {
   @Prop() buttonSrc: string;
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
-  @Prop() nearestMinute: string;
-  @Prop() author: string;
-  @Prop() mediaTopic: string;
-  @Prop() contentCount: number;
 
   private icons = {
     article: 'media-article',

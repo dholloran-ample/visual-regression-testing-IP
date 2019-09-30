@@ -10,6 +10,7 @@
   margin-bottom: 0.5rem;
   overflow: hidden;
   position: relative;
+  display: block;
 }
 
 .card-stamp-container {
@@ -29,7 +30,7 @@
 
 .card-stamp {
   display: inline-block;
-  color: $white;
+  color: white;
   font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -80,10 +81,6 @@
     line-height: 24px;
     color: $gray-dark;
     margin: 0;
-    a {
-      text-decoration: none;
-      color: $cyan;
-    }
   }
 }
 
@@ -94,7 +91,7 @@
 .card-button {
   display: inline-block;
   background-color: $cyan-dark-b;
-  color: $white;
+  color: white;
   border-radius: 4px;
   margin-top: 1.375rem;
   text-decoration: none;
