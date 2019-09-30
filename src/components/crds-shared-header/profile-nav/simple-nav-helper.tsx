@@ -37,11 +37,24 @@ export class SimpleNavHelper {
     </ul>)
   }
 
+  handleOnClick(event, automationId){
+    const isSignOutLink = automationId === 'sh-sign-out';
+
+    if(isSignOutLink){
+      this.handleSignOut(event);
+      event.preventDefault();
+    }
+
+    //navigates by default
+    event.stopPropagation();
+  }
+
   formatListEntry(data, classValue) {
     return (<li class={classValue}>
-      <nav-link href={data.href} automationId={data['automation-id']} handleSignOut={this.handleSignOut}>
-        {data.title}
-      </nav-link>
+      <a href={data.href || "#"}
+        data-automation-id={data['automation-id']}
+        onClick={(event) => this.handleOnClick(event, data['automation-id'])}
+        innerHTML={data.title} />
     </li>)
   }
 

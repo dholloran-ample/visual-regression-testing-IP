@@ -15,8 +15,9 @@ export class CrdsGroupList {
   private apolloClient: ApolloClient<{}>;
   private contentBlockHandler: ContentBlockHandler;
 
-  @State() user: GroupUser;
   @Prop() authToken: string;
+  @State() user: GroupUser;
+  @State() expanded: boolean = false;
   @Element() public host: HTMLStencilElement;
   private leader: boolean;
 
@@ -31,7 +32,9 @@ export class CrdsGroupList {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'group list');
-    this.contentBlockHandler.getCopy();
+    this.contentBlockHandler.getCopy().then(() => {
+      this.host.forceUpdate();
+    })
     this.getUserGroups();
   }
 
@@ -78,7 +81,8 @@ export class CrdsGroupList {
   }
 
   public renderGroupList() {
-    return this.user.groups.map(group => {
+    const groups = !this.expanded && this.user.groups.length > 3 ? this.user.groups.slice(0, 3) : this.user.groups;
+    return groups.map(group => {
       return (
         <div class="group d-flex push-half-bottom">
           <div class="group-text">
@@ -102,7 +106,7 @@ export class CrdsGroupList {
 
   public renderUserGroupState() {
     if (this.user && this.user.groups.length > 0) {
-      return this.renderGroupList();
+      return [this.renderGroupList(), this.renderShowMoreLink()];
     } else {
       return this.contentBlockHandler.getContentBlock('group-list-none-header');
     }
@@ -120,15 +124,52 @@ export class CrdsGroupList {
     }
   }
 
-  public render() {
-    return (
-      <div class="group-list">
-        {this.contentBlockHandler.getContentBlock('group-list-header')}
-        {this.renderUserGroupState()}
+  private renderGroupSkeleton() {
+    return [1, 2, 3].map(() => (
+      <div class="d-flex push-bottom">
+        <div class="skeleton text-skeleton">
+          <div class="title shimmer" />
+          <div class="subtitle shimmer" />
+        </div>
+        <div class="skeleton avatar-skeleton">
+          <div class="shimmer" />
+        </div>
+      </div>
+    ));
+  }
+
+  public renderUserGreeting() {
+    if (this.user) {
+      return (
         <div class="push-half-top groups-cta">
           <strong class="text-gray">Hey {this.user.nickName || this.user.firstName}!</strong>{' '}
           <span class="text-gray-light">{this.renderCallToAction()}</span>
         </div>
+      );
+    }
+  }
+
+  public renderShowMoreLink() {
+    if (this.user.groups.length > 3)
+      return (
+        <btn onClick={(() => this.expanded = !this.expanded)} class="btn btn-sm btn-gray-light btn-outline">
+          {this.user.groups.length > 3 && (this.expanded ? 'Show Less': 'Show More')}
+        </btn>
+      );
+  }
+
+  public render() {
+    const renderUserGroupState = this.user;
+    return (
+      <div class="group-list">
+        <div class="group-list-header text-gray-light font-family-base">
+          {this.contentBlockHandler.getContentBlock('group-list-header')}
+        </div>
+        {(() => {
+          if (this.user) return this.renderUserGroupState();
+          return this.renderGroupSkeleton();
+        })()}
+        {this.renderUserGreeting()}
       </div>
     );
   }

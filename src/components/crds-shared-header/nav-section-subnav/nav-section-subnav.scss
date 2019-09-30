@@ -1,10 +1,11 @@
 // stylelint-disable a11y/no-display-none, a11y/font-size-is-readable
-.hidden {
-  display: none;
-}
 
 nav-section-subnav {
   @include nav-items('main-nav');
+
+  .hidden {
+    display: none;
+  }
 
   h2 {
     @media (min-width: $screen-md) {
