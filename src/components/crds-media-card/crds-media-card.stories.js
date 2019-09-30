@@ -22,7 +22,7 @@ stories
       'body',
       '<p> LAUNCH 2019 is a great way to make the connections that will help you thrive as you start your journey post high school. We’ll have dinner, live worship, and a chance to meet some college students and hear their stories. <a href="#"> RSVP here. <a/> </p>'
     );
-    const buttonSrc = text('buttonSrc', '#');
+    const url = text('url', '#');
 
     const contentTypeOptions = {
       'article': 'article',
@@ -33,7 +33,7 @@ stories
     const contentType = select('Content Type', contentTypeOptions, 'article')
 
     return `<div style="width: 500px; height: 500px;" > 
-        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' body='${body}' button-src='${buttonSrc}' content-type='${contentType}'>
+        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' body='${body}' url='${url}' content-type='${contentType}'>
           <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
