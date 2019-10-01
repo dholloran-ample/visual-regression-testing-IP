@@ -20,30 +20,28 @@ stories
     const metaPosition = select('metaPosition', { 'top': 'top', 'bottom': 'bottom' }, 'bottom')
     const body = text(
       'body',
-      '<p> LAUNCH 2019 is a great way to make the connections that will help you thrive as you start your journey post high school. We’ll have dinner, live worship, and a chance to meet some college students and hear their stories. <a href="#"> RSVP here. <a/> </p>'
+      `<p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+      eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+        <a href='#'>
+        Lorem ipsum
+        </a>
+      </p>
+      <crds-button href='#' label='Click me!'><crds-button>`
     );
     const url = text('url', '#');
-
-    const contentTypeOptions = {
-      'article': 'article',
-      'video': 'video',
-      'episode': 'episode',
-      'song': 'song'
-    }
+    const contentTypeOptions = ['article', 'video', 'episode', 'song']
     const contentType = select('Content Type', contentTypeOptions, 'article')
 
     return `<div style="width: 500px; height: 500px;" > 
-        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' body='${body}' url='${url}' content-type='${contentType}'>
-          <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-            <a href='#'>
-            Lorem ipsum
-            </a>
-          </p>
-          <crds-button href='#' label='Click me!'><crds-button>
+        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+            ${body}
         </crds-media-card> 
     </div>
     `;
+  }, {
+    knobs: {
+      escapeHTML: false
+    }
   });

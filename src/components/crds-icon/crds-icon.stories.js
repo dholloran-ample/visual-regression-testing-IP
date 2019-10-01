@@ -7,15 +7,9 @@ const stories = storiesOf('Icons', module);
 
 stories
   .addDecorator(withKnobs)
-  .add('Static Icon', () => {
+  .add('Icon', () => {
 
-    const nameOptions = () => {
-      const result = {}
-      names.forEach(name => result[name] = name)
-      return result;
-    }
-
-    const name = select('name', nameOptions(), 'media-article');
+    const name = select('name', names, 'media-article');
 
     const sizeOptions = { '12': '12', '24': '24', '36': '36' }
     const size = select('size(px)', sizeOptions, '24');
