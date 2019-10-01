@@ -9,18 +9,18 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-  interface CrdsDefaultLayout {
-    'author': string;
+  interface CrdsButton {
+    'href': string;
+    'label': string;
+  }
+  interface CrdsDefaultCard {
     'body': string;
     'buttonSrc': string;
-    'contentCount': number;
     'contentType': string;
     'heading': string;
     'imageSrc': string;
-    'mediaTopic': string;
     'meta': string;
     'metaPosition': string;
-    'nearestMinute': string;
     'thumbnailSrc': string;
     'url': string;
   }
@@ -60,7 +60,6 @@ export namespace Components {
   }
   interface CrdsMediaCard {
     'body': string;
-    'buttonSrc': string;
     'contentLayout': string;
     'contentType': string;
     'heading': string;
@@ -141,10 +140,16 @@ export namespace Components {
 declare global {
 
 
-  interface HTMLCrdsDefaultLayoutElement extends Components.CrdsDefaultLayout, HTMLStencilElement {}
-  var HTMLCrdsDefaultLayoutElement: {
-    prototype: HTMLCrdsDefaultLayoutElement;
-    new (): HTMLCrdsDefaultLayoutElement;
+  interface HTMLCrdsButtonElement extends Components.CrdsButton, HTMLStencilElement {}
+  var HTMLCrdsButtonElement: {
+    prototype: HTMLCrdsButtonElement;
+    new (): HTMLCrdsButtonElement;
+  };
+
+  interface HTMLCrdsDefaultCardElement extends Components.CrdsDefaultCard, HTMLStencilElement {}
+  var HTMLCrdsDefaultCardElement: {
+    prototype: HTMLCrdsDefaultCardElement;
+    new (): HTMLCrdsDefaultCardElement;
   };
 
   interface HTMLCrdsGreetingElement extends Components.CrdsGreeting, HTMLStencilElement {}
@@ -273,7 +278,8 @@ declare global {
     new (): HTMLProfileNavElement;
   };
   interface HTMLElementTagNameMap {
-    'crds-default-layout': HTMLCrdsDefaultLayoutElement;
+    'crds-button': HTMLCrdsButtonElement;
+    'crds-default-card': HTMLCrdsDefaultCardElement;
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
@@ -299,18 +305,18 @@ declare global {
 }
 
 declare namespace LocalJSX {
-  interface CrdsDefaultLayout extends JSXBase.HTMLAttributes<HTMLCrdsDefaultLayoutElement> {
-    'author'?: string;
+  interface CrdsButton extends JSXBase.HTMLAttributes<HTMLCrdsButtonElement> {
+    'href'?: string;
+    'label'?: string;
+  }
+  interface CrdsDefaultCard extends JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement> {
     'body'?: string;
     'buttonSrc'?: string;
-    'contentCount'?: number;
     'contentType'?: string;
     'heading'?: string;
     'imageSrc'?: string;
-    'mediaTopic'?: string;
     'meta'?: string;
     'metaPosition'?: string;
-    'nearestMinute'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
   }
@@ -350,7 +356,6 @@ declare namespace LocalJSX {
   }
   interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
     'body'?: string;
-    'buttonSrc'?: string;
     'contentLayout'?: string;
     'contentType'?: string;
     'heading'?: string;
@@ -428,7 +433,8 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
-    'crds-default-layout': CrdsDefaultLayout;
+    'crds-button': CrdsButton;
+    'crds-default-card': CrdsDefaultCard;
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-heart-button': CrdsHeartButton;
