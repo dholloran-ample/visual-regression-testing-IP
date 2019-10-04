@@ -90,7 +90,7 @@ describe('<profile-nav>', () => {
 
   describe('Tests render()', () => {
     it('Checks null is returned if profile nav is not showing', () => {
-      this.component.profileNavIsShowing = false;
+      this.component.isNavShowing = false;
 
       const rendered = this.component.render();
 
@@ -100,7 +100,7 @@ describe('<profile-nav>', () => {
     const invalidData = [undefined, [], true, false, "String", null];
     invalidData.forEach(badValue => {
       it(`Checks null is returned if profile component's data is "${badValue}"`, () => {
-        this.component.profileNavIsShowing = true;
+        this.component.isNavShowing = true;
         this.component.data = badValue;
 
         const rendered = this.component.render();
@@ -110,7 +110,7 @@ describe('<profile-nav>', () => {
     });
 
     it('Checks profile nav element is returned', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.currentUser = { avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
       this.component.data = profileNav;
 
@@ -120,7 +120,7 @@ describe('<profile-nav>', () => {
     });
 
     it('Checks profile nav contains user avatar', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.currentUser = { avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
       this.component.data = profileNav;
 
@@ -132,7 +132,7 @@ describe('<profile-nav>', () => {
     });
 
     it('Checks profile nav contains expected child elements in order', () => {
-      this.component.profileNavIsShowing = true;
+      this.component.isNavShowing = true;
       this.component.currentUser = { name: 'Ben', avatarUrl: 'fakeUrl' };
       this.component.data = profileNav;
 
@@ -143,17 +143,16 @@ describe('<profile-nav>', () => {
       expect(rendered.$children$[0].$attrs$.class).toBe('profile-nav-img');
 
       const renderedName = rendered.$children$[1].$children$[0].$children$[0];
-      expect(renderedName.$children$[0].$text$).toMatch(/\W?Hello Ben\W?/);
+      expect(renderedName.$text$).toMatch(/\W?Hello Ben\W?/);
 
-      const renderedNavLinks = rendered.$children$[1].$children$[0].$children$[1].$children$[0].$children$;
-
+      const renderedNavLinks = rendered.$children$[1].$children$[1].$children$[0];
       [0,1,2].forEach(navLinkIndex => {
-        expect(renderedNavLinks[navLinkIndex].$children$[0].$tag$).toEqual('nav-link')
-        expect(renderedNavLinks[navLinkIndex].$children$[0].$attrs$.automationId).toBe(profileNav.children[0][navLinkIndex]['automation-id']);
+        expect(renderedNavLinks.$children$[navLinkIndex].$children$[0].$tag$).toBe('a')
+        expect(renderedNavLinks.$children$[navLinkIndex].$children$[0].$attrs$['data-automation-id']).toBe(profileNav.children[0][navLinkIndex]['automation-id']);
       })
 
-      const renderedHeader = rendered.$children$[1].$children$[0].$children$[2];
-      expect(renderedHeader.$children$[0].$children$[0].$text$).toEqual(profileNav.children[1]);
+      const renderedHeader = rendered.$children$[1].$children$[2].$children$[0];
+      expect(renderedHeader.$children$[0].$text$).toEqual(profileNav.children[1]);
     });
   });
 });

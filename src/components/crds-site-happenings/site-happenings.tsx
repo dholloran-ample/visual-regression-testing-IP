@@ -386,7 +386,7 @@ export class SiteHappenings {
 
   public render() {
     return (
-      <div class="container push-top">
+      <div class="container">
         <div class="relative">
           {this.maybeRenderSetSiteModal()}
           <hr class="push-half-bottom" />

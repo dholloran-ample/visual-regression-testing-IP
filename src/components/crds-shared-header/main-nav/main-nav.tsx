@@ -1,52 +1,30 @@
 import { Component, Prop, h, State } from '@stencil/core';
 import { Utils } from '../../../shared/utils';
-import { SimpleNavHelper } from '../profile-nav/simple-nav-helper';
 
 @Component({
-  tag: 'main-nav'
+  tag: 'main-nav',
+  styleUrl: 'main-nav.scss',
+  shadow: true
 })
 export class MainMenu {
-  @Prop() mainNavIsShowing: boolean = true;
-  @Prop() data: JSON;
+  @Prop() isNavShowing: boolean = true;
+  @Prop() data: any = [];
   @Prop() promoData: string;
 
   @State() activeSection: string;
-  private simpleNav: SimpleNavHelper;
-
-  constructor() {
-    this.simpleNav = new SimpleNavHelper();
-    this.simpleNav.formatMenuEntry = (element) => {return element}; //Don't add extra formatting to entries
-  }
-
-  navClasses() {
-    let classes = [];
-    if (this.mainNavIsShowing) classes.push('is-showing');
-    if (this.activeSection) classes.push(`section--${this.activeSection}`);
-    return classes.join(' ');
-  }
 
   handleBackClick(event) {
     event.preventDefault();
     this.activeSection = null;
   }
 
-   /**
-   * Section handleSectionClick event handler
-   * @param event Event
-   * @param sectionName string
-   */
   protected handleSectionClick(event, sectionName) {
     event.preventDefault();
     this.activeSection = sectionName;
   }
 
-   /**
-   * Renders all sections from payload
-   */
-  private maybeRenderSections(data) {
-    if(!Array.isArray(data)) return;
-
-    return data.map(section => {
+  maybeRenderSections() {
+    const sectionList = this.data.map(section => {
       const sectionName = Utils.parameterize(section.title);
       return (
         <nav-section sectionName={sectionName} handleClick={this.handleSectionClick.bind(this)} isActive={this.activeSection === sectionName}>
@@ -55,49 +33,52 @@ export class MainMenu {
         </nav-section>
       );
     });
+
+    return sectionList.length > 0 && (<ul>{sectionList}</ul>);
   }
 
-  /**
-   * Returns all subnav elements
-   * @param data
-   */
-  // TODO: refactor renderSubnavs to work with
-  // nav-section-subnav, profile nav, and give nav
-  // ------------------------------------------------------
-  private maybeRenderSubnavs(data) {
-    if(!Array.isArray(data)) return;
+  renderSubNavOrCtas() {
+    return this.activeSection ?
+      (
+        <div class="subnavigation">
+          {this.maybeRenderActiveSubNav()}
+        </div>
+      ) : (
+        <nav-ctas data={this.promoData} />
+      )
+  }
 
-    return data.map(section => {
-      const subNavName = Utils.parameterize(section.title);
-      return (
-        <nav-section-subnav subNavName={subNavName} handleBackClick={this.handleBackClick.bind(this)} isActive={this.activeSection === subNavName}>
-          {this.simpleNav.formatMenuTitle(section.title)}
-          {this.simpleNav.maybeRenderNavEntries(section.children)}
-        </nav-section-subnav>
-      );
+  maybeRenderActiveSubNav() {
+    const activeSectionData = this.data.find((section) => {
+      section.subNavName = Utils.parameterize(section.title);
+      return section.subNavName === this.activeSection;
     });
+
+    return activeSectionData &&
+      (<nav-section-subnav subNavName={activeSectionData.subNavName}
+        data={activeSectionData}
+        handleBackClick={this.handleBackClick.bind(this)}
+        isActive={true}>
+      </nav-section-subnav>)
   }
 
-  maybeRenderCtas() {
-    if (this.activeSection) return;
-    return (
-      <nav-ctas data={this.promoData} />
-    )
+  getNavClass() {
+    let classes = [];
+    if (this.isNavShowing) classes.push('is-showing');
+    if (this.activeSection) classes.push(`section--${this.activeSection}`);
+    return classes.join(' ');
   }
 
   render() {
-    if (!this.mainNavIsShowing || !Array.isArray(this.data)) return null;
+    if (!this.isNavShowing || !Array.isArray(this.data)) return null;
 
     return (
-      <nav class={this.navClasses()} onClick={event => event.stopPropagation()}>
+      <nav class={this.getNavClass()} onClick={event => event.stopPropagation()}>
           <div class="content">
             <div class="navigation">
-              <ul>{this.maybeRenderSections(this.data)}</ul>
+              {this.maybeRenderSections()}
             </div>
-            <div class="subnavigation">
-              {this.maybeRenderSubnavs(this.data)}
-            </div>
-            {this.maybeRenderCtas()}
+            {this.renderSubNavOrCtas()}
           </div>
         </nav>
     )

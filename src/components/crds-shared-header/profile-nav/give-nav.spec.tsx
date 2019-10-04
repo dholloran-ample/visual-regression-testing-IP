@@ -90,7 +90,7 @@ describe('<give-nav>', () => {
 
   describe('Tests render()', () => {
     it('Checks null is returned if give nav is not showing', () => {
-      this.component.giveNavIsShowing = false;
+      this.component.isNavShowing = false;
 
       const rendered = this.component.render();
 
@@ -100,7 +100,7 @@ describe('<give-nav>', () => {
     const invalidData = [undefined, [], true, false, "String", null];
     invalidData.forEach(badValue => {
       it(`Checks null is returned if give component's data is "${badValue}"`, () => {
-        this.component.giveNavIsShowing = true;
+        this.component.isNavShowing = true;
         this.component.data = badValue;
 
         const rendered = this.component.render();
@@ -140,9 +140,9 @@ describe('<give-nav>', () => {
 
       const firstChid = rendered.$children$[0].$children$[1].$children$[0].$children$[0];
       expect(firstChid.$attrs$.class).toBe('top-level');
-      expect(firstChid.$children$[0].$attrs$.automationId).toBe(giveNav.children[0][0]['automation-id']);
+      expect(firstChid.$children$[0].$attrs$['data-automation-id']).toBe(giveNav.children[0][0]['automation-id']);
       expect(firstChid.$children$[0].$attrs$.href).toBe(giveNav.children[0][0]['href']);
-      expect(firstChid.$children$[0].$children$[0].$text$).toBe(giveNav.children[0][0]['title']);
+      expect(firstChid.$children$[0].$attrs$.innerHTML).toBe(giveNav.children[0][0]['title']);
 
       const secondChild = rendered.$children$[0].$children$[2].$children$[0];
       expect(secondChild.$children$[0].$text$).toBe(giveNav.children[1]);
@@ -150,27 +150,27 @@ describe('<give-nav>', () => {
 
       const thirdChild = rendered.$children$[0].$children$[3].$children$[0].$children$[0];
       expect(thirdChild.$attrs$.class).toBe('');
-      expect(thirdChild.$children$[0].$attrs$.automationId).toBe(giveNav.children[2][0]['automation-id']);
+      expect(thirdChild.$children$[0].$attrs$['data-automation-id']).toBe(giveNav.children[2][0]['automation-id']);
       expect(thirdChild.$children$[0].$attrs$.href).toBe(giveNav.children[2][0]['href']);
-      expect(thirdChild.$children$[0].$children$[0].$text$).toBe(giveNav.children[2][0]['title']);
+      expect(thirdChild.$children$[0].$attrs$.innerHTML).toBe(giveNav.children[2][0]['title']);
 
       const fourthChild = rendered.$children$[0].$children$[3].$children$[0].$children$[1];
       expect(fourthChild.$attrs$.class).toBe('top-level');
-      expect(fourthChild.$children$[0].$attrs$.automationId).toBe(giveNav.children[2][1]['automation-id']);
+      expect(fourthChild.$children$[0].$attrs$['data-automation-id']).toBe(giveNav.children[2][1]['automation-id']);
       expect(fourthChild.$children$[0].$attrs$.href).toBe(giveNav.children[2][1]['href']);
-      expect(fourthChild.$children$[0].$children$[0].$text$).toBe(giveNav.children[2][1]['title']);
+      expect(fourthChild.$children$[0].$attrs$.innerHTML).toBe(giveNav.children[2][1]['title']);
 
       const fifthChild = rendered.$children$[0].$children$[4].$children$[0].$children$[0];
       expect(fifthChild.$attrs$.class).toBe('top-level');
-      expect(fifthChild.$children$[0].$attrs$.automationId).toBe(giveNav.children[3][0]['automation-id']);
+      expect(fifthChild.$children$[0].$attrs$['data-automation-id']).toBe(giveNav.children[3][0]['automation-id']);
       expect(fifthChild.$children$[0].$attrs$.href).toBe(giveNav.children[3][0]['href']);
-      expect(fifthChild.$children$[0].$children$[0].$text$).toBe(giveNav.children[3][0]['title']);
+      expect(fifthChild.$children$[0].$attrs$.innerHTML).toBe(giveNav.children[3][0]['title']);
 
       const sixthChild = rendered.$children$[0].$children$[4].$children$[0].$children$[1];
       expect(sixthChild.$attrs$.class).toBe('');
-      expect(sixthChild.$children$[0].$attrs$.automationId).toBe(giveNav.children[3][1]['automation-id']);
+      expect(sixthChild.$children$[0].$attrs$['data-automation-id']).toBe(giveNav.children[3][1]['automation-id']);
       expect(sixthChild.$children$[0].$attrs$.href).toBe(giveNav.children[3][1]['href']);
-      expect(sixthChild.$children$[0].$children$[0].$text$).toBe(giveNav.children[3][1]['title']);
+      expect(sixthChild.$children$[0].$attrs$.innerHTML).toBe(giveNav.children[3][1]['title']);
     });
   });
 });
