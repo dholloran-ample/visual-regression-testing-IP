@@ -9,6 +9,7 @@
 
 | Property          | Attribute      | Description | Type       | Default     |
 | ----------------- | -------------- | ----------- | ---------- | ----------- |
+| `data`            | `data`         |             | `any`      | `{}`        |
 | `handleBackClick` | --             |             | `Function` | `undefined` |
 | `isActive`        | `is-active`    |             | `boolean`  | `false`     |
 | `subNavName`      | `sub-nav-name` |             | `string`   | `undefined` |

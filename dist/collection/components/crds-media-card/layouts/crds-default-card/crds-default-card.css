@@ -1,0 +1,118 @@
+.card-wrapper {
+  margin-bottom: 2.75rem;
+  max-width: 360px;
+  font-family: "acumin-pro", helvetica, arial, sans-serif;
+}
+
+.card-image-wrapper {
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  position: relative;
+  display: block;
+}
+
+.card-stamp-container {
+  box-sizing: border-box;
+  background-color: rgba(23, 23, 23, 0.9);
+  top: 1rem;
+  padding: 0.5rem;
+  position: absolute;
+  left: 1rem;
+  display: flex;
+  max-height: 28px;
+}
+.card-stamp-container .card-stamp {
+  margin-left: 0.25rem;
+}
+
+.card-stamp {
+  display: inline-block;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.card-meta-top {
+  color: #555555;
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.67;
+  text-transform: uppercase;
+}
+
+.card-heading {
+  color: #333333;
+  font-family: "acumin-pro-extra-condensed", sans-serif;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 0.89;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  transition: color 300ms;
+  text-decoration: none;
+}
+.card-heading:hover {
+  color: black;
+}
+
+.card-meta-bottom {
+  color: #777777;
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  line-height: 1;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.card-content {
+  overflow-y: hidden;
+}
+.card-content p {
+  display: block;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 24px;
+  color: #333333;
+  margin: 0;
+}
+
+.inactive {
+  display: none;
+}
+
+.card-button {
+  display: inline-block;
+  background-color: #3b6e8f;
+  color: white;
+  border-radius: 4px;
+  margin-top: 1.375rem;
+  text-decoration: none;
+  cursor: pointer;
+  height: 43px;
+  vertical-align: middle;
+  line-height: 43px;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+}
+
+.card-thumbnail {
+  background-color: #171717e6;
+  top: 1rem;
+  position: absolute;
+  right: 1rem;
+  max-width: 65px;
+  max-height: 65px;
+}
+
+::slotted(p) {
+  display: block;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 24px;
+  color: #333333;
+  margin: 0;
+}

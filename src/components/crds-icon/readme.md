@@ -18,12 +18,12 @@
 
 ### Used by
 
- - [crds-default-layout](../crds-media-card/layouts/crds-default-layout)
+ - [crds-default-card](../crds-media-card/layouts/crds-default-card)
 
 ### Graph
 ```mermaid
 graph TD;
-  crds-default-layout --> crds-icon
+  crds-default-card --> crds-icon
   style crds-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
