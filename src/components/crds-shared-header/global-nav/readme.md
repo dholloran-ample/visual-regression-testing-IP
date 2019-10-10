@@ -7,17 +7,10 @@
 
 ## Properties
 
-| Property              | Attribute                | Description | Type       | Default     |
-| --------------------- | ------------------------ | ----------- | ---------- | ----------- |
-| `config`              | --                       |             | `Object`   | `undefined` |
-| `env`                 | `env`                    |             | `string`   | `undefined` |
-| `giveData`            | --                       |             | `JSON`     | `undefined` |
-| `giveNavIsShowing`    | `give-nav-is-showing`    |             | `boolean`  | `false`     |
-| `href`                | `href`                   |             | `string`   | `undefined` |
-| `mainNavIsShowing`    | `main-nav-is-showing`    |             | `boolean`  | `false`     |
-| `navClickHandler`     | --                       |             | `Function` | `undefined` |
-| `profileData`         | --                       |             | `JSON`     | `undefined` |
-| `profileNavIsShowing` | `profile-nav-is-showing` |             | `boolean`  | `false`     |
+| Property | Attribute | Description | Type     | Default     |
+| -------- | --------- | ----------- | -------- | ----------- |
+| `data`   | `data`    |             | `any`    | `{}`        |
+| `env`    | `env`     |             | `string` | `undefined` |
 
 
 ## Dependencies
@@ -28,14 +21,19 @@
 
 ### Depends on
 
-- [profile-nav](../profile-nav)
 - [give-nav](../profile-nav)
+- [profile-nav](../profile-nav)
+- [main-nav](../main-nav)
 
 ### Graph
 ```mermaid
 graph TD;
-  global-nav --> profile-nav
   global-nav --> give-nav
+  global-nav --> profile-nav
+  global-nav --> main-nav
+  main-nav --> nav-section
+  main-nav --> nav-ctas
+  main-nav --> nav-section-subnav
   crds-shared-header --> global-nav
   style global-nav fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -26,8 +26,10 @@ export class SharedHeader {
   }
 
   componentDidLoad() {
-    const svgChildNode = this.element.parentElement.getElementsByTagName('svg')[0];
-    svgChildNode.remove();
+    let svgChildNode = this.element.parentElement.getElementsByTagName('svg')[0];
+    if (svgChildNode != undefined) {
+      svgChildNode.remove();
+    }
     this.element.parentElement.classList.remove('shared-header-skeleton');
     this.element.parentElement.classList.add('shared-header');
   }

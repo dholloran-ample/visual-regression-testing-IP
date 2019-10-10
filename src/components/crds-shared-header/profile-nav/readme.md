@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property              | Attribute                | Description | Type       | Default     |
-| --------------------- | ------------------------ | ----------- | ---------- | ----------- |
-| `currentUser`         | `current-user`           |             | `any`      | `undefined` |
-| `data`                | --                       |             | `JSON`     | `undefined` |
-| `handleSignOut`       | --                       |             | `Function` | `undefined` |
-| `profileNavIsShowing` | `profile-nav-is-showing` |             | `boolean`  | `true`      |
+| Property        | Attribute        | Description | Type       | Default     |
+| --------------- | ---------------- | ----------- | ---------- | ----------- |
+| `currentUser`   | `current-user`   |             | `any`      | `undefined` |
+| `data`          | `data`           |             | `any`      | `{}`        |
+| `handleSignOut` | --               |             | `Function` | `undefined` |
+| `isNavShowing`  | `is-nav-showing` |             | `boolean`  | `true`      |
 
 
 ## Dependencies
