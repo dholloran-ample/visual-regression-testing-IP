@@ -12,8 +12,8 @@ import { CrdsApollo } from '../../shared/apollo';
 })
 export class CrdsGreeting {
   private apolloClient: ApolloClient<{}>;
-
   private user: GreetingUser = null;
+  private chunkOfDay: string;
 
   @State() displayName: string = null;
   @Prop() authToken: string;
@@ -33,6 +33,7 @@ export class CrdsGreeting {
   }
 
   public componentWillRender() {
+    this.chunkOfDay = this.getChunkOfDay();
     if (this.authToken) return this.getUser();
   }
 
@@ -65,44 +66,29 @@ export class CrdsGreeting {
     this.displayName = (this.user && (this.user.nickName || this.user.firstName)) || this.defaultName || '';
   }
 
-  public parseTimeBasedGreetings(hour) {
-    if (hour >= 17) return 'Good evening';
-    if (hour >= 12) return 'Good afternoon';
-    return 'Good morning';
-  }
-
   public renderGreeting() {
-    const date = new Date();
-    const greeting = this.parseTimeBasedGreetings(date.getHours());
-    return `${greeting}, `;
+    return `Good ${this.chunkOfDay}, `;
   }
 
   public renderName() {
     return `${this.displayName}`
   }
 
-  public parseTimeBasedColor(hour) {
-    if (hour >= 17) return 'evening-color';
-    if (hour >= 12) return 'afternoon-color';
-    return 'morning-color';
+  private getChunkOfDay(): string {
+    const hour = new Date().getHours();
+    if (hour >= 17) return 'evening';
+    if (hour >= 12) return 'afternoon';
+    return 'morning';
   }
 
   public renderColor() {
-    const date = new Date();
-    const color = this.parseTimeBasedColor(date.getHours());
-    return color;
-  }
-
-  public parseTimeBasedImage(hour) {
-    if (hour >= 17) return 'https://crds-media.imgix.net/5wpDvJsiuBIYC7BRrCqE04/9189f384f2ac9b211e4841edf0b24f7d/evening-greeting.png';
-    if (hour >= 12) return 'https://crds-media.imgix.net/1Y0Nzb0RLd1BUpk5fgQETO/210b6787f44c17169ad0455e6d0d7484/afternoon-greeting.png';
-    return 'https://crds-media.imgix.net/35CRCDPcTPotq2zBF7Zvsx/94d58dea65820545dd888862abf9e21d/morning-greeting.png';
+    return `${this.chunkOfDay}-color`;
   }
 
   public renderImage() {
-    const date = new Date();
-    const image = this.parseTimeBasedImage(date.getHours());
-    return image;
+    if (this.chunkOfDay === 'evening') return 'https://crds-media.imgix.net/5wpDvJsiuBIYC7BRrCqE04/9189f384f2ac9b211e4841edf0b24f7d/evening-greeting.png';
+    if (this.chunkOfDay === 'afternoon') return 'https://crds-media.imgix.net/1Y0Nzb0RLd1BUpk5fgQETO/210b6787f44c17169ad0455e6d0d7484/afternoon-greeting.png';
+    return 'https://crds-media.imgix.net/35CRCDPcTPotq2zBF7Zvsx/94d58dea65820545dd888862abf9e21d/morning-greeting.png';
   }
 
   private logError(err) {
