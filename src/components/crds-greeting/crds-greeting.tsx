@@ -74,7 +74,35 @@ export class CrdsGreeting {
   public renderGreeting() {
     const date = new Date();
     const greeting = this.parseTimeBasedGreetings(date.getHours());
-    return `${greeting}, ${this.displayName}`;
+    return `${greeting}, `;
+  }
+
+  public renderName() {
+    return `${this.displayName}`
+  }
+
+  public parseTimeBasedColor(hour) {
+    if (hour >= 17) return 'evening-color';
+    if (hour >= 12) return 'afternoon-color';
+    return 'morning-color';
+  }
+
+  public renderColor() {
+    const date = new Date();
+    const color = this.parseTimeBasedColor(date.getHours());
+    return color;
+  }
+
+  public parseTimeBasedImage(hour) {
+    if (hour >= 17) return 'https://crds-media.imgix.net/5wpDvJsiuBIYC7BRrCqE04/9189f384f2ac9b211e4841edf0b24f7d/evening-greeting.png';
+    if (hour >= 12) return 'https://crds-media.imgix.net/1Y0Nzb0RLd1BUpk5fgQETO/210b6787f44c17169ad0455e6d0d7484/afternoon-greeting.png';
+    return 'https://crds-media.imgix.net/35CRCDPcTPotq2zBF7Zvsx/94d58dea65820545dd888862abf9e21d/morning-greeting.png';
+  }
+
+  public renderImage() {
+    const date = new Date();
+    const image = this.parseTimeBasedImage(date.getHours());
+    return image;
   }
 
   private logError(err) {
@@ -84,9 +112,12 @@ export class CrdsGreeting {
   public render() {
     if (!this.displayName) return '';
     return (
-      <div class="greeting">
-        <h3 class="font-size-large flush">{this.renderGreeting()}</h3>
-        <p class="flush">This place was made for you!</p>
+      <div class="greeting d-flex">
+        <img class="greeting-image" src={this.renderImage()} />
+        <div class="flex-column m-auto-ends push-half-left soft-half-ends">
+          <h3 class="component-header flush">{this.renderGreeting()}<span class={this.renderColor()}>{this.renderName()}</span></h3>
+          <p class="text-gray-dark flush">This place was made for you!</p>
+        </div> 
       </div>
     );
   }
