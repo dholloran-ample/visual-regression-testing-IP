@@ -101,7 +101,8 @@ export class GlobalNav {
   }
 
   injectMySiteComponent() {
-    this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${this.auth.token.access_token.accessToken}></my-site>`;
+    this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${this.auth.token ?
+      this.auth.token.access_token.accessToken : ''}></my-site>`;
   }
 
   /* Render elements */

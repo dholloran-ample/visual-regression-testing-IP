@@ -76,6 +76,7 @@
     "graphql-tag": "^2.10.1",
     "jquery": "^3.4.1",
     "node-fetch": "^2.6.0",
-    "popper.js": "^1.15.0"
+    "popper.js": "^1.15.0",
+    "toastr": "^2.1.4"
   }
 }

@@ -10,6 +10,7 @@ import { Utils } from '../../../../shared/utils';
 import { SvgSrc } from '../../../../shared/svgSrc';
 import { findValuesAddedToEnums } from 'graphql/utilities/findBreakingChanges';
 import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlocks';
+import toastr from 'toastr';
 
 @Component({
   tag: 'my-site',
@@ -18,7 +19,7 @@ import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlo
 })
 export class MySite {
   private apolloClient: ApolloClient<{}> = null;
-  private user: MySiteUser = null;
+
   private sites: any;
   private nearestSiteContent: Site;
   private popper: HTMLElement;
@@ -27,6 +28,7 @@ export class MySite {
 
   @Prop() authToken: string;
   @Prop() defaultName: string;
+  @Prop() user: MySiteUser = null;
   @State() nearestSiteID: number;
   @State() promptsDisabled: boolean = false;
   @Element() public host: HTMLStencilElement;
@@ -39,6 +41,7 @@ export class MySite {
   }
 
   public componentWillLoad() {
+    toastr.options.escapeHtml = false;
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
@@ -46,10 +49,6 @@ export class MySite {
     if (!this.authToken) promises.push(this.loggedOutUser());
     else promises.push(this.loggedInUser());
     return Promise.all(promises);
-  }
-
-  public componentWillRender() {
-    console.log('will rerender');
   }
 
   private async loggedOutUser() {
@@ -61,7 +60,7 @@ export class MySite {
     if (!this.user.closestSite) {
       await this.getClosestSite();
       this.setClosestSite(this.nearestSiteID);
-    } 
+    }
   }
 
   private getUserSites(): Promise<any> {
@@ -131,7 +130,7 @@ export class MySite {
 
   private calculateClosestSite(): Promise<any> {
     //uncomment when done testing.
-    // if (Utils.getCookie('promptedLocation') === 'true') return;
+    if (Utils.getCookie('promptedLocation') === 'true') return;
     Utils.setCookie('promptedLocation', 'true', 1);
     return this.getCurrentPosition()
       .then((position: any) => {
@@ -184,10 +183,20 @@ export class MySite {
   }
 
   private setUserSite(siteId) {
+    this.popper.classList.remove('open');
     return this.apolloClient
       .mutate({
         variables: { siteId: siteId },
         mutation: SET_SITE
+      })
+      .then(response => {
+        this.user = { ...this.user, site: response.data.setSite.site };
+        toastr.success(
+          `<div>
+            You've set ${this.user.site.name} as the preferred site for you and your household. 
+            <a href="/profile/personal">Update your profile</a> to cancel or change your site.
+          </div>`
+        );
       })
       .catch(err => {
         this.logError(err);
@@ -200,32 +209,44 @@ export class MySite {
     });
   }
 
+  private userHasSite() {
+    if (!this.user || !this.user.site) return false;
+    return (
+      this.user.site.name !== 'Not site specific' &&
+      this.user.site.name !== 'I do not attend Crossroads' &&
+      this.user.site.name !== ''
+    );
+  }
+
   public renderPopover() {
     return (
       <div class="my-popper">
-        {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
+        {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
+        {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
       </div>
     );
   }
 
   private shouldShowUpdateSitePrompt(): boolean {
-    return (
-      this.user &&
-      this.nearestSiteID !== (this.user && this.user.site && Number(this.user.site.id)) &&
-      !this.promptsDisabled
-    );
+    return this.userHasSite() && this.nearestSiteID !== Number(this.user.site.id) && !this.promptsDisabled;
   }
 
+  private shouldShowSetSitePrompt(): boolean {
+    return this.user && !this.userHasSite() && !this.promptsDisabled;
+  }
   private shouldShowSignInPrompt(): boolean {
     return this.nearestSiteID && !this.authToken && !this.promptsDisabled;
   }
 
   private shouldShowSiteContent(): boolean {
     return (
-      (!this.shouldShowUpdateSitePrompt() && !this.shouldShowSignInPrompt() && !!this.nearestSiteID) 
-      || (this.user && this.user.site && this.promptsDisabled) 
+      (!this.shouldShowUpdateSitePrompt() &&
+        !this.shouldShowSignInPrompt() &&
+        !this.shouldShowSetSitePrompt() &&
+        !!this.nearestSiteID) ||
+      (this.userHasSite() && this.promptsDisabled)
     );
   }
 
@@ -234,14 +255,12 @@ export class MySite {
   }
 
   private renderSiteDetails() {
-    var siteContent = this.user && this.user.site || this.nearestSiteContent;
+    var siteContent = (this.userHasSite() && this.user.site) || this.nearestSiteContent;
     return (
       <div class="popover-content">
         <button type="button" class="close" aria-label="Close" onClick={() => this.handlePopperClose()} />
         <h4>
-          {(this.user && this.user.site && this.user.site.id) === this.nearestSiteID.toString()
-            ? 'My Site'
-            : 'Closest Site'}
+          {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
         <div
           class="map-image"
@@ -261,16 +280,34 @@ export class MySite {
           <div>Open Hours</div>
           <div innerHTML={siteContent.openHours} />
         </div>
-        <div>Not your perferred site? Set your preferred site.</div>
+        <div>
+          Not your perferred site?
+          <a href="/profile/personal">Set your preferred site.</a>
+        </div>
       </div>
     );
   }
 
   private renderUpdateSitePrompt() {
     return (
-      <div>
-        <p>UPDATE SITE PROMPT</p>
+      <div class="popover-content">
+        {this.contentBlockHandler.getContentBlock('MySiteUpdatePrompt', {
+          nearestSite: this.nearestSiteContent.name,
+          userSite: this.user.site.name
+        })}
         <button onClick={() => this.setUserSite(this.nearestSiteID)}>Update My Site</button>
+        <a onClick={() => this.disablePrompts()}>No, thanks</a>
+      </div>
+    );
+  }
+
+  private renderSetSitePrompt() {
+    return (
+      <div class="popover-content">
+        {this.contentBlockHandler.getContentBlock('MySiteSetSitePrompt', {
+          nearestSite: this.nearestSiteContent.name
+        })}
+        <button onClick={() => this.setUserSite(this.nearestSiteID)}>Make it my preferred site</button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
     );
@@ -279,7 +316,7 @@ export class MySite {
   private renderSignInPrompt() {
     return (
       <div class="popover-content">
-        <p>{this.contentBlockHandler.getContentBlock('MySiteSignInPrompt', { site: this.nearestSiteContent.name })}</p>
+        {this.contentBlockHandler.getContentBlock('MySiteSignInPrompt', { nearestSite: this.nearestSiteContent.name })}
         <button
           onClick={() => {
             location.href = '/signin';
@@ -299,7 +336,10 @@ export class MySite {
       <div>
         <div class="my-site">
           {SvgSrc.locationPinIcon()}{' '}
-          <a class="my-site-name">{this.user && this.user.site && this.user.site.name || this.sites.find(site => Number(site.id) === this.nearestSiteID).name}</a>
+          <a class="my-site-name">
+            {(this.userHasSite() && this.user.site.name) ||
+              this.sites.find(site => Number(site.id) === this.nearestSiteID).name}
+          </a>
         </div>
         {this.renderPopover()}
       </div>

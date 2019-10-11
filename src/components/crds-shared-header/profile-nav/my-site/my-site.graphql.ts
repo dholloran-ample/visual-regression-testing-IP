@@ -49,6 +49,10 @@ export const SET_SITE = gql`
       site {
         id
         name
+        address
+        mapImageUrl
+        openHours
+        serviceTimes
       }
     }
   }
