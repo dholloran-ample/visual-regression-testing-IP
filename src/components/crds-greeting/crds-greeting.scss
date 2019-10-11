@@ -3,8 +3,30 @@
 .greeting {
   opacity: 0;
   transition: opacity .45s .25s ease-in-out;
+  box-shadow: 0 1px 5px 0 rgba(0,0,0,0.15),0 4px 7px 0 rgba(0,0,0,0.05);
+  border-radius: 8px;
 
   &.fade-in {
     opacity: 1;
   }
+}
+
+.m-auto-ends {
+  margin: auto 0;
+}
+
+.greeting-image {
+  max-width: 30%;
+}
+
+.morning-color {
+  color: #DF541A
+}
+
+.afternoon-color{
+  color: #FDD24D
+}
+
+.evening-color {
+  color: #426282
 }
