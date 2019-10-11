@@ -147,12 +147,25 @@ hr {
   margin-top: 24px;
 }
 
+.push-left {
+  margin-left: 24px !important;
+}
+
+.push-half-left {
+  margin-left: 12px !important;
+}
+
 .push-half-top {
   margin-top: 12px !important;
 }
 
 .soft-quarter-top {
   padding-top: 6px;
+} 
+
+.soft-half-ends {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
 }
 
 .component-header {
