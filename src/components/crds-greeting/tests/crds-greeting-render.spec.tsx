@@ -29,7 +29,8 @@ describe('<greeting-component> Render', () => {
     });
 
     it('changes greeting with time', () => {
-      const timeBasedGreeting = this.greeting.parseTimeBasedGreetings(0);
+      this.greeting.chunkOfDay = this.greeting.getChunkOfDay(0);
+      const timeBasedGreeting = this.greeting.renderGreeting();
       expect(timeBasedGreeting).toContain('Good morning');
     });
   });

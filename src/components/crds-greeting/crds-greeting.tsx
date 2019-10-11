@@ -33,7 +33,7 @@ export class CrdsGreeting {
   }
 
   public componentWillRender() {
-    this.chunkOfDay = this.getChunkOfDay();
+    this.chunkOfDay = this.getChunkOfDay(new Date().getHours());
     if (this.authToken) return this.getUser();
   }
 
@@ -74,8 +74,7 @@ export class CrdsGreeting {
     return `${this.displayName}`
   }
 
-  private getChunkOfDay(): string {
-    const hour = new Date().getHours();
+  private getChunkOfDay(hour: number): string {
     if (hour >= 17) return 'evening';
     if (hour >= 12) return 'afternoon';
     return 'morning';
