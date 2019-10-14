@@ -36,8 +36,9 @@ header {
   display: flex;
 
   a {
-    &:first-of-type {
-      margin-right: 18px;
+    margin-right: 18px;
+    &:last-of-type {
+      margin-right: 0;
     }
   }
 }
@@ -59,7 +60,8 @@ $icon-size: 22px;
 .account,
 .donate,
 .menu,
-.search {
+.search,
+.my-site {
   display: block;
   height: $icon-size;
   padding: 12px 0;
@@ -108,7 +110,8 @@ $icon-size: 22px;
 .give-container,
 .menu-container,
 .profile-container,
-.search-container {
+.search-container,
+.my-site-container {
   color: $cr-white;
   cursor: pointer;
   display: flex;

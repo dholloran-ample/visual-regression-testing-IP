@@ -1,0 +1,136 @@
+@import '../../../../shared/shared.scss';
+
+$op-black: rgba(black, 0.8);
+
+.my-site,
+.my-site-name {
+  @media (hover) {
+    &:hover {
+      color: darken($cr-white, 20);
+      svg {
+        fill: darken($cr-white, 20);
+      }
+    }
+  }
+}
+
+.my-site {
+  color: $cr-white;
+  cursor: pointer;
+  display: flex;
+  text-decoration: none;
+  padding: 12px 0px 12px;
+
+  svg {
+    fill: $cr-white;
+    height: 22px;
+    width: 22px;
+  }
+
+  border: none;
+}
+
+.my-site-name {
+  display: none;
+  @media (min-width: $screen-sm) {
+    align-self: center;
+    bottom: 2px;
+    content: attr(data-label);
+    display: inline-block;
+    font-size: 13px;
+    margin-left: 7px;
+    position: relative;
+    text-transform: capitalize;
+  }
+}
+
+
+.popper > ::before {
+  border: 10px solid transparent;
+  border-bottom: 0;
+  border-top-color: $op-black;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: -10px;
+  
+  background-color: white;
+  transform: rotate(180deg)
+}
+
+.popper {
+  padding: 10px;
+  text-align: center;
+  top: 2px;
+  display: none;
+  background-color: $op-black;
+  color: black;
+  @media (min-width: $screen-sm) {
+
+  }
+  &.open {
+    display: block;
+  }
+}
+
+.close {
+  $size: 25px;
+
+  appearance: none;
+  background-color: rgba(187, 187, 187, 0.6);
+  border-image: none;
+  border-radius: 50%;
+  border-style: none;
+  color: #fff;
+  cursor: pointer;
+  height: $size;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: $size;
+
+  &:after {
+    @include font-family-base;
+
+    bottom: 3px;
+    content: 'x';
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.popover-prompt {
+  h4 {
+    color: grey;
+  }
+  text-align: center;
+  color: white;
+  font-size: 13px;
+}
+
+.popover-content {
+  h4 {
+    color: grey;
+  }
+  color: white;
+  font-size: 13px;
+}
+
+.map-image {
+  background-size: cover;
+  background-position: center;
+  height: 100px;
+}
+
+.btn {
+  background-color: $op-black;
+  border-color: white;
+  width: 100%;
+  color: white;
+  margin: 5px;
+}

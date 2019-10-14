@@ -6,7 +6,9 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  MySiteUser,
+} from './components/crds-shared-header/profile-nav/my-site/my-site-interface';
 
 export namespace Components {
   interface CrdsGreeting {
@@ -79,6 +81,11 @@ export namespace Components {
     'data': any;
     'isNavShowing': boolean;
     'promoData': string;
+  }
+  interface MySite {
+    'authToken': string;
+    'defaultName': string;
+    'user': MySiteUser;
   }
   interface NavCtas {
     'data': string;
@@ -189,6 +196,12 @@ declare global {
     new (): HTMLMainNavElement;
   };
 
+  interface HTMLMySiteElement extends Components.MySite, HTMLStencilElement {}
+  var HTMLMySiteElement: {
+    prototype: HTMLMySiteElement;
+    new (): HTMLMySiteElement;
+  };
+
   interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
   var HTMLNavCtasElement: {
     prototype: HTMLNavCtasElement;
@@ -227,6 +240,7 @@ declare global {
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
+    'my-site': HTMLMySiteElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
@@ -306,6 +320,11 @@ declare namespace LocalJSX {
     'isNavShowing'?: boolean;
     'promoData'?: string;
   }
+  interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {
+    'authToken'?: string;
+    'defaultName'?: string;
+    'user'?: MySiteUser;
+  }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
   }
@@ -342,6 +361,7 @@ declare namespace LocalJSX {
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'main-nav': MainNav;
+    'my-site': MySite;
     'nav-ctas': NavCtas;
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;
