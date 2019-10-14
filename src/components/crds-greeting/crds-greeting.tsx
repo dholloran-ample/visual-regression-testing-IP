@@ -71,7 +71,7 @@ export class CrdsGreeting {
   }
 
   public renderName() {
-    return `${this.displayName}`
+    return `${this.displayName}`;
   }
 
   private getChunkOfDay(hour: number): string {
@@ -99,8 +99,8 @@ export class CrdsGreeting {
     return (
       <div class="greeting d-flex">
         <img class="greeting-image" src={this.renderImage()} />
-        <div class="flex-column m-auto-ends push-half-left soft-half-ends">
-          <h3 class="component-header flush">{this.renderGreeting()}<span class={this.renderColor()}>{this.renderName()}</span></h3>
+        <div class="m-auto-ends push-half-left soft-half-ends soft-quarter-right">
+          <h3 class="component-header flush text-gray-dark">{this.renderGreeting()}<span class={this.renderColor()}>{this.renderName()}</span></h3>
           <p class="text-gray-dark flush">This place was made for you!</p>
         </div> 
       </div>
