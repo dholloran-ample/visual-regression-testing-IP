@@ -44,10 +44,30 @@ $op-black: rgba(black, 0.8);
   }
 }
 
-.my-popper {
+
+.popper > ::before {
+  border: 10px solid transparent;
+  border-bottom: 0;
+  border-top-color: $op-black;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: -10px;
+  
+  background-color: white;
+  transform: rotate(180deg)
+}
+
+.popper {
+  padding: 10px;
+  text-align: center;
+  top: 2px;
   display: none;
   background-color: $op-black;
   color: black;
+  @media (min-width: $screen-sm) {
+
+  }
   &.open {
     display: block;
   }
@@ -84,11 +104,19 @@ $op-black: rgba(black, 0.8);
   }
 }
 
-.popover-content {
-  h4{
+.popover-prompt {
+  h4 {
     color: grey;
   }
-  justify-content: center;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+}
+
+.popover-content {
+  h4 {
+    color: grey;
+  }
   color: white;
   font-size: 13px;
 }
@@ -106,4 +134,3 @@ $op-black: rgba(black, 0.8);
   color: white;
   margin: 5px;
 }
-

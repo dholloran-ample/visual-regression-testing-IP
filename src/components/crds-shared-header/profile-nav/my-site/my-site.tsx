@@ -23,6 +23,7 @@ export class MySite {
   private sites: any;
   private nearestSiteContent: Site;
   private popper: HTMLElement;
+  private popperControl: any;
   private openPopperAutomatically: boolean = false;
   private contentBlockHandler: ContentBlockHandler;
 
@@ -79,20 +80,31 @@ export class MySite {
 
   public componentDidRender() {
     var reference = this.host.shadowRoot.querySelector('.my-site');
-    this.popper = this.host.shadowRoot.querySelector('.my-popper');
+    this.popper = this.host.shadowRoot.querySelector('.popper');
     if (!reference || !this.popper) return;
-    var popperInstance = new Popper(reference, this.popper, {
-      placement: 'bottom'
+    this.popperControl = new Popper(reference, this.popper, {
+      placement: 'bottom',
+      modifiers: {
+        offset: {
+          offset: '20px',
+          enabled: true
+        }
+      }
     });
 
     if (this.openPopperAutomatically) {
-      this.popper.classList.add('open');
+      this.handlePopperOpen();
       this.openPopperAutomatically = false;
     }
 
     reference.addEventListener('click', () => {
-      this.popper.classList.add('open');
+      this.handlePopperOpen();
     });
+  }
+
+  private handlePopperOpen() {
+    this.popper.classList.add('open');
+    this.popperControl.scheduleUpdate();
   }
 
   private handlePopperClose() {
@@ -220,7 +232,7 @@ export class MySite {
 
   public renderPopover() {
     return (
-      <div class="my-popper">
+      <div class="popper">
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
@@ -290,7 +302,7 @@ export class MySite {
 
   private renderUpdateSitePrompt() {
     return (
-      <div class="popover-content">
+      <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock('MySiteUpdatePrompt', {
           nearestSite: this.nearestSiteContent.name,
           userSite: this.user.site.name
@@ -303,7 +315,7 @@ export class MySite {
 
   private renderSetSitePrompt() {
     return (
-      <div class="popover-content">
+      <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock('MySiteSetSitePrompt', {
           nearestSite: this.nearestSiteContent.name
         })}
@@ -315,7 +327,7 @@ export class MySite {
 
   private renderSignInPrompt() {
     return (
-      <div class="popover-content">
+      <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock('MySiteSignInPrompt', { nearestSite: this.nearestSiteContent.name })}
         <button
           onClick={() => {
