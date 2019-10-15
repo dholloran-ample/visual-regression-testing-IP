@@ -11,5 +11,7 @@ export interface Site {
   mapImageUrl: string;
   address: string;
   openHours: string;
+  mapUrl: string;
+  imageUrl: string;
 }
 

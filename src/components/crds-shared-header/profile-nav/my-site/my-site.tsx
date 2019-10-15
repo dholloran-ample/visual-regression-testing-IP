@@ -232,7 +232,7 @@ export class MySite {
 
   public renderPopover() {
     return (
-      <div class="popper">
+      <div class="popper" >
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
@@ -269,19 +269,15 @@ export class MySite {
   private renderSiteDetails() {
     var siteContent = (this.userHasSite() && this.user.site) || this.nearestSiteContent;
     return (
-      <div class="popover-content">
+      <div class="popover-content" style={{ backgroundImage: `linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url(${Utils.imgixify(siteContent.imageUrl + '?auto=format')}`}}>
         <button type="button" class="close" aria-label="Close" onClick={() => this.handlePopperClose()} />
-        <h4>
+        <h4 class="text-left">
           {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
-        <div
-          class="map-image"
-          style={{
-            backgroundImage: `url(${Utils.imgixify(siteContent.mapImageUrl + '?auto=format')}`
-          }}
-        >
-          <h4>{siteContent.name}</h4>
-        </div>
+      
+          <img class="map-image" src={Utils.imgixify(siteContent.mapImageUrl + '?auto=format')} />
+          <h4 >{siteContent.name}</h4>
+      
 
         <div innerHTML={siteContent.address} />
         <div>
@@ -333,11 +329,11 @@ export class MySite {
           onClick={() => {
             location.href = '/signin';
           }}
-          class="btn"
+          class="btn flush-sides"
         >
           Login
         </button>
-        <a onClick={() => this.disablePrompts()}>No, thanks</a>
+        <a onClick={() => this.disablePrompts()} >No, thanks</a>
       </div>
     );
   }

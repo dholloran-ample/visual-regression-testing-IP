@@ -82,6 +82,10 @@ hr {
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-uppercase {
   text-transform: uppercase;
 
@@ -133,6 +137,11 @@ hr {
 
 .flush-top {
   margin-top: 0 !important;
+}
+
+.flush-sides {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }
 
 .push-half-bottom {
