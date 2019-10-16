@@ -19,7 +19,6 @@ import { CoverageMap } from 'istanbul-lib-coverage';
   shadow: true
 })
 export class MySite {
-  
   private apolloClient: ApolloClient<{}> = null;
   private sites: any;
   private nearestSite: Site;
@@ -36,7 +35,6 @@ export class MySite {
   @State() nearestSiteID: number;
   @State() promptsDisabled: boolean = false;
   @Element() public host: HTMLStencilElement;
-
 
   @Watch('authToken')
   authTokenHandler(newValue: string, oldValue: string) {
@@ -57,10 +55,8 @@ export class MySite {
   }
 
   public componentWillRender() {
-    if (this.shouldShowSiteContent()){
-      this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
-      return this.getDirectionsUrl(this.displaySite);
-    }
+    this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
+    return this.getDirectionsUrl(this.displaySite);
   }
 
   public componentDidRender() {
@@ -243,13 +239,24 @@ export class MySite {
 
   private getDirectionsUrl(siteContent: Site): Promise<string> {
     return this.getCurrentPosition().then((position: any) => {
-      return this.directionsUrl =  siteContent.mapUrl.replace('/place/', `/dir/${position.coords.latitude},${position.coords.longitude}/`);
+      return (this.directionsUrl = siteContent.mapUrl.replace(
+        '/place/',
+        `/dir/${position.coords.latitude},${position.coords.longitude}/`
+      ));
     });
   }
 
   public renderPopover() {
     return (
-      <div class="popper" style={{ backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.9)), url(${Utils.imgixify(this.displaySite.imageUrl + '?auto=format')}`, backgroundSize: `cover` }} >
+      <div
+        class="popper"
+        style={{
+          backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.9)), url(${Utils.imgixify(
+            this.displaySite.imageUrl + '?auto=format'
+          )}`,
+          backgroundSize: `cover`
+        }}
+      >
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
@@ -284,15 +291,14 @@ export class MySite {
   }
 
   private renderSiteDetails() {
-
     return (
       <div class="popover-content">
         <button type="button" class="close" aria-label="Close" onClick={() => this.handlePopperClose()} />
         <h4 class="text-left site-name-overlap">
           {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
-          <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />
-          <h4 >{this.displaySite.name}</h4>
+        <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />
+        <h4>{this.displaySite.name}</h4>
         <div innerHTML={this.displaySite.address} />
         <div>
           <div>Service Times</div>
@@ -348,7 +354,7 @@ export class MySite {
         >
           Login
         </button>
-        <a onClick={() => this.disablePrompts()} >No, thanks</a>
+        <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
     );
   }
