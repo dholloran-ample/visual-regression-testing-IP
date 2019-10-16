@@ -288,7 +288,7 @@ export class MySite {
     return (
       <div class="popover-content">
         <button type="button" class="close" aria-label="Close" onClick={() => this.handlePopperClose()} />
-        <h4 class="text-left">
+        <h4 class="text-left site-name-overlap">
           {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
           <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />

@@ -53,18 +53,20 @@ $op-black: rgba(black, 0.8);
   left: 50%;
   position: absolute;
   top: -10px;
+  
+  background-color: white;
   transform: rotate(180deg)
 }
 
 .popper {
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   top: 2px;
   display: none;
   background-color: $op-black;
   color: black;
   @media (min-width: $screen-sm) {
-  width: 265px;
+
   }
   &.open {
     display: block;
@@ -108,7 +110,7 @@ $op-black: rgba(black, 0.8);
   }
   text-align: center;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .popover-content {
@@ -131,4 +133,14 @@ $op-black: rgba(black, 0.8);
   width: 100%;
   color: white;
   margin: 5px;
+}
+
+.site-name-overlap {
+  background-color: #fff;
+    display: inline-block;
+    font-family: "acumin-pro-extra-condensed",sans-serif;
+    font-size: 2.125rem;
+    margin: -2rem -0.5rem 0;
+    padding: 0.25rem 0.5rem;
+    position: relative;
 }
