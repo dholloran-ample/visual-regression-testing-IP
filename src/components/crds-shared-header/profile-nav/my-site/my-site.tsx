@@ -292,23 +292,16 @@ export class MySite {
           {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
           <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />
-          <div class="card-block">
           <h4 >{this.displaySite.name}</h4>
-          <div class="card-text">
         <div innerHTML={this.displaySite.address} />
         <div>
-          <div>
-            <strong>Service Times</strong>
-            <div innerHTML={this.displaySite.serviceTimes} />
-          </div>
-         
+          <div>Service Times</div>
+          <div innerHTML={this.displaySite.serviceTimes} />
           <a href={this.directionsUrl}>Get Directions</a>
         </div>
         <div>
           <div>Open Hours</div>
           <div innerHTML={this.displaySite.openHours} />
-        </div>
-        </div>
         </div>
         <div>
           Not your perferred site?
