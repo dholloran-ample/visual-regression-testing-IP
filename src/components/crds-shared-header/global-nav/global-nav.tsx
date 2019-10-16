@@ -101,8 +101,15 @@ export class GlobalNav {
   }
 
   injectMySiteComponent() {
-    this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${this.auth.token ?
-      this.auth.token.access_token.accessToken : ''}></my-site>`;
+    var mySiteElement = this.host.shadowRoot.querySelector('my-site');
+    if (mySiteElement) {
+      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token')) return;
+      mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
+    } else {
+      this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
+        this.auth.token ? this.auth.token.access_token.accessToken : ''
+      }></my-site>`;
+    }
   }
 
   /* Render elements */
