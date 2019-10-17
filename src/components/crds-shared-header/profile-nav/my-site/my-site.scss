@@ -50,23 +50,21 @@ $op-black: rgba(black, 0.8);
   border-bottom: 0;
   border-top-color: $op-black;
   content: "";
-  left: 50%;
+  left: 45%;
   position: absolute;
   top: -10px;
-  
-  background-color: white;
   transform: rotate(180deg)
 }
 
 .popper {
-  padding: 10px;
+  padding: 20px;
   text-align: center;
   top: 2px;
   display: none;
   background-color: $op-black;
   color: black;
   @media (min-width: $screen-sm) {
-
+  width: 300px;
   }
   &.open {
     display: block;
@@ -110,7 +108,7 @@ $op-black: rgba(black, 0.8);
   }
   text-align: center;
   color: white;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .popover-content {
@@ -118,29 +116,53 @@ $op-black: rgba(black, 0.8);
     color: grey;
   }
   color: white;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .map-image {
-  background-size: cover;
-  background-position: center;
-  height: 100px;
+  height: 130px;
+  width: 260px;
+  display: block;
 }
 
 .btn {
-  background-color: $op-black;
+  background-color: transparent;
   border-color: white;
   width: 100%;
   color: white;
   margin: 5px;
 }
 
+
 .site-name-overlap {
-  background-color: #fff;
-    display: inline-block;
+    background-color: rgb(0, 0, 0, 0.7);
+    display: table;
     font-family: "acumin-pro-extra-condensed",sans-serif;
     font-size: 2.125rem;
-    margin: -2rem -0.5rem 0;
+    margin: -3rem -0.5rem 0;
     padding: 0.25rem 0.5rem;
     position: relative;
+    color: white;
+    
+}
+
+/* Add back in for 2nd design iteration (w/ SVG Masking)
+.site-name-overlap:after {
+    color: #979797;
+    content: '\2014';
+    display: block;
+    font-family: "acumin-pro",helvetica,arial,sans-serif;
+    font-size: 1.25rem;
+    font-weight: 100;
+    line-height: 1.5;
+    text-align: left;
+}
+*/
+
+.card-block {
+  padding: 1rem;
+}
+
+#service-times p {
+  margin: 0;
 }
