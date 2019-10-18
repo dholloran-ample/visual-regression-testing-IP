@@ -36,9 +36,10 @@ header {
   display: flex;
 
   a {
-    margin-right: 18px;
+    padding-right: 9px;
+    padding-left: 9px;
     &:last-of-type {
-      margin-right: 0;
+      padding-right: 0;
     }
   }
 }
@@ -148,7 +149,7 @@ $icon-size: 22px;
 $has-close-button: (
   menu-container: menu,
   profile-container: account,
-  give-container: donate
+  give-container: donate,
 );
 
 @each $container, $icon in $has-close-button {
