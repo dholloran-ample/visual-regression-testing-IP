@@ -1,6 +1,8 @@
 @import '../../../../shared/shared.scss';
+@import '../../main-nav/main-nav.scss';
 
 $op-black: rgba(black, 0.8);
+$arrow-height: 10px;
 
 .my-site,
 .my-site-name {
@@ -19,7 +21,8 @@ $op-black: rgba(black, 0.8);
   cursor: pointer;
   display: flex;
   text-decoration: none;
-  padding: 12px 0px 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 
   svg {
     fill: $cr-white;
@@ -44,17 +47,19 @@ $op-black: rgba(black, 0.8);
   }
 }
 
-
+/*
 .popper > ::before {
   border: 10px solid transparent;
   border-bottom: 0;
   border-top-color: $op-black;
   content: "";
-  left: 45%;
+  left: 5%;
   position: absolute;
   top: -10px;
   transform: rotate(180deg)
 }
+*/
+
 
 .popper {
   padding: 20px;
@@ -68,7 +73,9 @@ $op-black: rgba(black, 0.8);
   }
   &.open {
     display: block;
+
   }
+  
 }
 
 .close {
@@ -123,6 +130,7 @@ $op-black: rgba(black, 0.8);
   height: 130px;
   width: 260px;
   display: block;
+  clip-path: polygon(0% 15%, 100% 15%, 100% 85%, 64% 85%, 64% 69%, 20% 69%, 20% 85%, 0% 85%);
 }
 
 .btn {
@@ -146,7 +154,6 @@ $op-black: rgba(black, 0.8);
     
 }
 
-/* Add back in for 2nd design iteration (w/ SVG Masking)
 .site-name-overlap:after {
     color: #979797;
     content: '\2014';
@@ -157,7 +164,7 @@ $op-black: rgba(black, 0.8);
     line-height: 1.5;
     text-align: left;
 }
-*/
+
 
 .card-block {
   padding: 1rem;
@@ -166,3 +173,13 @@ $op-black: rgba(black, 0.8);
 #service-times p {
   margin: 0;
 }
+
+
+.arrow.open::before {
+  border: $arrow-height solid transparent;
+  border-top: 0;
+  border-bottom-color: $op-black;
+  content: '';
+  position: absolute;
+  top: $top-padding - $arrow-height;
+  }
