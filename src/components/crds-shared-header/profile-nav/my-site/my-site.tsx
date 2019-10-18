@@ -22,6 +22,7 @@ export class MySite {
   private apolloClient: ApolloClient<{}> = null;
   private sites: any;
   private nearestSite: Site;
+  private arrow: HTMLElement;
   private popper: HTMLElement;
   private popperControl: any;
   private openPopperAutomatically: boolean = false;
@@ -55,13 +56,16 @@ export class MySite {
   }
 
   public componentWillRender() {
-    this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
-    return this.getDirectionsUrl(this.displaySite);
+    if(this.shouldShowComponent()) {
+      this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
+      return this.getDirectionsUrl(this.displaySite);
+    }
   }
 
   public componentDidRender() {
     var reference = this.host.shadowRoot.querySelector('.my-site');
     this.popper = this.host.shadowRoot.querySelector('.popper');
+    this.arrow = this.host.shadowRoot.querySelector('.arrow');
     if (!reference || !this.popper) return;
     this.popperControl = new Popper(reference, this.popper, {
       placement: 'bottom',
@@ -111,11 +115,13 @@ export class MySite {
 
   private handlePopperOpen() {
     this.popper.classList.add('open');
+    this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
   }
 
   private handlePopperClose() {
     this.popper.classList.remove('open');
+    this.arrow.classList.remove('open');
   }
 
   /** Stencil Personalization Components Defaults **/
@@ -328,7 +334,7 @@ export class MySite {
           nearestSite: this.nearestSite.name,
           userSite: this.user.site.name
         })}
-        <button onClick={() => this.setUserSite(this.nearestSiteID)}>Update My Site</button>
+        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>Update My Site</button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
     );
@@ -340,7 +346,7 @@ export class MySite {
         {this.contentBlockHandler.getContentBlock('MySiteSetSitePrompt', {
           nearestSite: this.nearestSite.name
         })}
-        <button onClick={() => this.setUserSite(this.nearestSiteID)}>Make it my preferred site</button>
+        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>Make it my preferred site</button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
     );
@@ -366,7 +372,7 @@ export class MySite {
   public render() {
     if (!this.shouldShowComponent()) return null;
     return (
-      <div>
+      <div class="arrow">
         <div class="my-site">
           {SvgSrc.locationPinIcon()}{' '}
           <a class="my-site-name">
