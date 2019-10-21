@@ -31,6 +31,10 @@ $arrow-height: 10px;
   }
 
   border: none;
+
+  @media screen and (max-width: 374px){
+    display: none;
+  }
 }
 
 .my-site-name {
