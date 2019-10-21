@@ -109,9 +109,7 @@ $arrow-height: 10px;
     width: $size;
   }
 
-  @media screen and (min-width: $screen-sm){
-    display: block;
-  }
+ 
 }
 
 .popover-prompt {
@@ -135,8 +133,8 @@ $arrow-height: 10px;
   height: auto;
   width: 100%;
   display: block;
-  -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%);
+  // -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%);
+  // clip-path: polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%);
 }
 
 

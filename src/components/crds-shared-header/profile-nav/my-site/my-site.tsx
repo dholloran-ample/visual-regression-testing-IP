@@ -122,6 +122,14 @@ export class MySite {
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
+    const siteNameEl: any = this.host.shadowRoot.querySelector('.site-name-overlap');
+    var mapImageEl: any = this.host.shadowRoot.querySelector('.map-image');
+    console.log(siteNameEl.style.width);
+    console.log(`clipPath: polygon(0 0, 100% 0, 100% 100%, 16 - ${siteNameEl.style.padding} 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%)`);
+    // mapImageEl.style.clipPath = `clipPath: polygon(0 0, 100% 0, 100% 100%, ${16 - siteNameEl.style.padding} 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%)`;
+
+    console.log(mapImageEl.style.clipPath);
+    // polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%)
   }
 
   private handlePopperClose() {
@@ -316,7 +324,7 @@ export class MySite {
         </h4>
         <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />
         <div class="card-block text-left">
-          <h4 class="text-white text-uppercase site-name-overlap site-name">{this.displaySite.name}</h4>
+          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
           <div class="push-half-bottom" innerHTML={`${this.displaySite.address}`} />
           <div>
             <div>
@@ -331,8 +339,14 @@ export class MySite {
             <strong>Open Hours:</strong>
             <div innerHTML={this.displaySite.openHours} />
           </div>
-    
-          <p class="push-half-top">Not your site? <a class="text-white" href="/profile/personal"> Set your preferred site.</a></p>
+
+          <p class="push-half-top">
+            Not your site?{' '}
+            <a class="text-white" href="/profile/personal">
+              {' '}
+              Set your preferred site.
+            </a>
+          </p>
         </div>
       </div>
     );
