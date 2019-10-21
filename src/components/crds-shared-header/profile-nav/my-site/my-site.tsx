@@ -35,6 +35,7 @@ export class MySite {
   @Prop() user: MySiteUser = null;
   @State() nearestSiteID: number;
   @State() promptsDisabled: boolean = false;
+  @State() popperOpen: boolean = false;
   @Element() public host: HTMLStencilElement;
 
   @Watch('authToken')
@@ -62,7 +63,7 @@ export class MySite {
     }
   }
 
-  public componentDidRender() {
+  public componentDidLoad() {
     var reference = this.host.shadowRoot.querySelector('.my-site');
     this.popper = this.host.shadowRoot.querySelector('.popper');
     this.arrow = this.host.shadowRoot.querySelector('.arrow');
@@ -83,7 +84,8 @@ export class MySite {
     }
 
     reference.addEventListener('click', () => {
-      this.handlePopperOpen();
+      if (this.popperOpen) this.handlePopperClose();
+      else this.handlePopperOpen();
     });
 
     document.addEventListener('click', (e: any) => {
@@ -91,7 +93,7 @@ export class MySite {
       this.handlePopperClose();
     });
 
-    window.addEventListener("resize", () => this.addTextCutout());
+    window.addEventListener('resize', () => this.addTextCutout());
   }
 
   private async loggedOutUser() {
@@ -121,6 +123,7 @@ export class MySite {
   }
 
   private handlePopperOpen() {
+    this.popperOpen = true;
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
@@ -142,6 +145,7 @@ export class MySite {
   }
 
   private handlePopperClose() {
+    this.popperOpen = false;
     this.popper.classList.remove('open');
     this.arrow.classList.remove('open');
   }
@@ -434,8 +438,8 @@ export class MySite {
     if (!this.shouldShowComponent()) return null;
     return (
       <div class="arrow">
-        <div class="my-site">
-          {SvgSrc.locationPinIcon()}{' '}
+        <div class={`my-site ${this.popperOpen ? 'open' : ''}`}>
+          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}{' '}
           <a class="my-site-name">
             {(this.userHasSite() && this.user.site.name) ||
               this.sites.find(site => Number(site.id) === this.nearestSiteID).name}

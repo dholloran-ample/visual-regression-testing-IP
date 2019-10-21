@@ -24,10 +24,22 @@ $arrow-height: 10px;
   padding-top: 12px;
   padding-bottom: 12px;
 
+
   svg {
     fill: $cr-white;
     height: 22px;
     width: 22px;
+    vertical-align: text-bottom;
+  }
+
+  &.open {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    svg {
+      fill: $cr-white;
+      height: 26px;
+      width: 26px;
+    }
   }
 
   border: none;

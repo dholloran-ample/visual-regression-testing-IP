@@ -23,6 +23,7 @@ export class GlobalNav {
   private element: HTMLElement;
 
   auth: any = {};
+  preventClose: boolean;
 
   componentWillLoad() {
     if (!this.data.config || this.auth.config) return;
@@ -61,8 +62,6 @@ export class GlobalNav {
   }
 
   toggleNav(event, navName, navRequiresAuth: boolean = false) {
-    event.stopPropagation();
-
     if (this.openNavName === navName) {
       event.preventDefault();
       this.openNavName = '';
@@ -75,13 +74,14 @@ export class GlobalNav {
       event.preventDefault();
       this.openNavName = navName;
     }
-
+    this.preventClose = true;
     const docStyle = this.isNavOpen() ? 'overflow: hidden; position: absolute; width: 100vw;' : 'overflow: scroll;';
     document.body.setAttribute('style', docStyle);
   }
 
   @Listen('click', { target: 'window' })
   closeNav(event) {
+    if (this.preventClose) return (this.preventClose = false);
     if (this.isNavOpen()) {
       event.preventDefault();
     }
@@ -103,7 +103,8 @@ export class GlobalNav {
   injectMySiteComponent() {
     var mySiteElement = this.host.shadowRoot.querySelector('my-site');
     if (mySiteElement) {
-      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token')) return;
+      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token'))
+        return;
       mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
     } else {
       this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
@@ -153,9 +154,8 @@ export class GlobalNav {
               />
 
               <div class="user-actions">
-                
-              <a class="my-site-container" />
-              
+                <a class="my-site-container" />
+
                 <a
                   class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'give-nav')}
