@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
+import { Component, Prop, State, Element, Watch, h, Listen } from '@stencil/core';
 import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
@@ -56,7 +56,7 @@ export class MySite {
   }
 
   public componentWillRender() {
-    if(this.shouldShowComponent()) {
+    if (this.shouldShowComponent()) {
       this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
       return this.getDirectionsUrl(this.displaySite);
     }
@@ -84,6 +84,11 @@ export class MySite {
 
     reference.addEventListener('click', () => {
       this.handlePopperOpen();
+    });
+
+    document.addEventListener('click', (e: any) => {
+      if (e.path && e.path.find(el => el.className === 'my-site-container')) return;
+      this.handlePopperClose();
     });
   }
 
@@ -260,13 +265,19 @@ export class MySite {
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0.85)), url(${Utils.imgixify(
             this.displaySite.imageUrl + '?auto=format'
           )}`,
-          backgroundSize: `cover`
+          backgroundSize: `cover`,
+          backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
         }}
       >
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
         {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
+        <div class="close">
+          <div class="close-icon" onClick={() => this.handlePopperClose()}>
+            {SvgSrc.closeIcon()}
+          </div>
+        </div>
       </div>
     );
   }
@@ -278,6 +289,7 @@ export class MySite {
   private shouldShowSetSitePrompt(): boolean {
     return this.user && !this.userHasSite() && !this.promptsDisabled;
   }
+
   private shouldShowSignInPrompt(): boolean {
     return this.nearestSiteID && !this.authToken && !this.promptsDisabled;
   }
@@ -300,7 +312,6 @@ export class MySite {
     if (this.displaySite.id === '15') return this.renderAnywhereSiteContent();
     return (
       <div class="popover-content">
-        <button type="button" class="close" aria-label="Close" onClick={() => this.handlePopperClose()} />
         <h4 class="text-left text-uppercase">
           {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
@@ -336,20 +347,37 @@ export class MySite {
 
   private renderAnywhereSiteContent() {
     return (
-      <div class="popover-content">
+      <div class="popover-content anywhere">
         {this.contentBlockHandler.getContentBlock('MySiteAnywhereContent', { nearestSite: this.nearestSite.name })}
       </div>
     );
   }
 
+  private renderAnywhereSiteUpdatePrompt() {
+    return (
+      <div class="popover-prompt">
+        {this.contentBlockHandler.getContentBlock('MySiteAnywherePrompt', {
+          userSite: this.displaySite.name
+        })}
+        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
+          Update My Site
+        </button>
+        <a onClick={() => this.disablePrompts()}>No, thanks</a>
+      </div>
+    );
+  }
+
   private renderUpdateSitePrompt() {
+    if (this.nearestSite.id === '15') return this.renderAnywhereSiteUpdatePrompt();
     return (
       <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock('MySiteUpdatePrompt', {
           nearestSite: this.nearestSite.name,
           userSite: this.user.site.name
         })}
-        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>Update My Site</button>
+        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
+          Update My Site
+        </button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
     );
@@ -361,7 +389,9 @@ export class MySite {
         {this.contentBlockHandler.getContentBlock('MySiteSetSitePrompt', {
           nearestSite: this.nearestSite.name
         })}
-        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>Make it my preferred site</button>
+        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
+          Make it my preferred site
+        </button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
     );
