@@ -90,6 +90,8 @@ export class MySite {
       if (e.path && e.path.find(el => el.className === 'my-site-container')) return;
       this.handlePopperClose();
     });
+
+    window.addEventListener("resize", () => this.addTextCutout());
   }
 
   private async loggedOutUser() {
@@ -122,14 +124,21 @@ export class MySite {
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
-    const siteNameEl: any = this.host.shadowRoot.querySelector('.site-name-overlap');
-    var mapImageEl: any = this.host.shadowRoot.querySelector('.map-image');
-    console.log(siteNameEl.style.width);
-    console.log(`clipPath: polygon(0 0, 100% 0, 100% 100%, 16 - ${siteNameEl.style.padding} 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%)`);
-    // mapImageEl.style.clipPath = `clipPath: polygon(0 0, 100% 0, 100% 100%, ${16 - siteNameEl.style.padding} 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%)`;
+    this.addTextCutout();
+  }
 
-    console.log(mapImageEl.style.clipPath);
-    // polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%)
+  private addTextCutout() {
+    const siteNameEl: any = this.host.shadowRoot.querySelector('.site-name-overlap');
+    const siteNamePos = siteNameEl.getBoundingClientRect();
+    const siteNameStyle = window.getComputedStyle(siteNameEl);
+    const mapImageEl: any = this.host.shadowRoot.querySelector('.map-image');
+    const mapImagePos = mapImageEl.getBoundingClientRect();
+    const siteNameXPaddingAndMargin = siteNameStyle.paddingLeft.length + siteNameStyle.marginLeft.length;
+    const siteNameYPaddingAndMargin = siteNameStyle.paddingTop.length;
+    const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin;
+    const cutOutMinX = 16 - siteNameXPaddingAndMargin;
+    const cutOutMaxY = mapImagePos.height - (siteNameYPaddingAndMargin + 0.5 * siteNamePos.height);
+    mapImageEl.style.clipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
   private handlePopperClose() {
