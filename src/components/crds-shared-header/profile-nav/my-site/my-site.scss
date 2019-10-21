@@ -4,6 +4,13 @@
 $op-black: rgba(black, 0.8);
 $arrow-height: 10px;
 
+@media screen and (max-width: 374px){
+  :host {
+  display: none;
+  }
+}
+
+
 .my-site,
 .my-site-name {
   @media (hover) {
@@ -43,6 +50,7 @@ $arrow-height: 10px;
   }
 
   border: none;
+
 }
 
 .my-site-name {
