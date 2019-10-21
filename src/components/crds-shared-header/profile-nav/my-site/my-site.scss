@@ -73,7 +73,7 @@ $arrow-height: 10px;
 
 .close {
   $size: 25px;
-
+  display: none;
   appearance: none;
   background-color: rgba(187, 187, 187, 0.6);
   border-image: none;
@@ -100,6 +100,10 @@ $arrow-height: 10px;
   &:focus {
     outline: none;
   }
+
+  @media screen and (min-width: $screen-sm){
+    display: block;
+  }
 }
 
 .popover-prompt {
@@ -120,11 +124,13 @@ $arrow-height: 10px;
 }
 
 .map-image {
-  height: 130px;
-  width: 260px;
+  height: auto;
+  width: 100%;
   display: block;
-  clip-path: polygon(0% 15%, 100% 15%, 100% 85%, 64% 85%, 64% 69%, 20% 69%, 20% 85%, 0% 85%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 57% 100%, 57% 80%, 9% 80%, 9% 100%, 0 100%);
 }
+
 
 .btn {
   background-color: transparent;
@@ -145,6 +151,7 @@ $arrow-height: 10px;
   color: white;
 }
 
+/* Add back in after svg mask is in place
 .site-name-overlap:after {
   color: #979797;
   content: '\2014';
@@ -154,7 +161,7 @@ $arrow-height: 10px;
   font-weight: 100;
   line-height: 1.5;
   text-align: left;
-}
+}*/
 
 .card-block {
   padding: 1rem;

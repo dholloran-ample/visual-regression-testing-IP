@@ -150,6 +150,7 @@ $has-close-button: (
   menu-container: menu,
   profile-container: account,
   give-container: donate,
+  my-site-container: mySite /*added to get X icon working for My Site*/
 );
 
 @each $container, $icon in $has-close-button {

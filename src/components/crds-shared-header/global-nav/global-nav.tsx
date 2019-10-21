@@ -153,7 +153,9 @@ export class GlobalNav {
               />
 
               <div class="user-actions">
-                <a class="my-site-container" />
+                
+              <a class="my-site-container" />
+              
                 <a
                   class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'give-nav')}

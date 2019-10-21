@@ -297,7 +297,6 @@ export class MySite {
   }
 
   private renderSiteDetails() {
-    if (this.displaySite.id === '15') return this.renderAnywhereSiteContent();
     return (
       <div class="popover-content">
         <button type="button" class="close" aria-label="Close" onClick={() => this.handlePopperClose()} />
@@ -306,7 +305,7 @@ export class MySite {
         </h4>
         <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />
         <div class="card-block text-left">
-          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
+          <h4 class="text-white text-uppercase site-name-overlap site-name">{this.displaySite.name}</h4>
           <div class="push-half-bottom" innerHTML={`${this.displaySite.address}`} />
           <div>
             <div>
@@ -321,23 +320,9 @@ export class MySite {
             <strong>Open Hours:</strong>
             <div innerHTML={this.displaySite.openHours} />
           </div>
-
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
+    
+          <p class="push-half-top">Not your site? <a class="text-white" href="/profile/personal"> Set your preferred site.</a></p>
         </div>
-      </div>
-    );
-  }
-
-  private renderAnywhereSiteContent() {
-    return (
-      <div class="popover-content">
-        {this.contentBlockHandler.getContentBlock('MySiteAnywhereContent', { nearestSite: this.nearestSite.name })}
       </div>
     );
   }
