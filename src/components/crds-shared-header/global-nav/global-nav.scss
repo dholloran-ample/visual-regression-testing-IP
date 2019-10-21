@@ -161,7 +161,7 @@ $has-close-button: (
     }
 
     &.nav-is-showing {
-      @media (min-width: $screen-md) {
+      @media (min-width: $screen-sm) {
         .#{$icon} {
           display: none;
         }
@@ -187,7 +187,7 @@ $has-close-button: (
   z-index: 3;
 
   &.is-showing {
-    @media (max-width: $screen-md) {
+    @media (max-width: $screen-sm - 1) {
       display: block;
     }
   }
