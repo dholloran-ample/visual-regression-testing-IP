@@ -383,7 +383,7 @@ export class MySite {
             </div>
             <div innerHTML={this.displaySite.serviceTimes} />
             <a
-              class="text-white"
+              class="text-white underline"
               onClick={() => {
                 this.openInNewTab(this.directionsUrl);
               }}
