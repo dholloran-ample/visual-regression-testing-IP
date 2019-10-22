@@ -111,7 +111,7 @@ export class MySite {
   }
 
   public componentDidRender() {
-    if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(),100);
+    if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(), 100);
   }
 
   private async loggedOutUser() {
@@ -159,7 +159,7 @@ export class MySite {
     const siteNameXPaddingAndMargin = 10;
     const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin;
     const cutOutMinX = 16 - siteNameXPaddingAndMargin;
-    const cutOutMaxY = mapImagePos.height - (0.5 * siteNamePos.height);
+    const cutOutMaxY = mapImagePos.height - 0.5 * siteNamePos.height;
     mapImageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
@@ -298,6 +298,11 @@ export class MySite {
     });
   }
 
+  private openInNewTab(url) {
+    const win = window.open(url, '_blank');
+    win.focus();
+  }
+
   public renderPopover() {
     return (
       <div
@@ -350,22 +355,39 @@ export class MySite {
   }
 
   private renderSiteDetails() {
-    if(this.displaySite.id == '15') return this.renderAnywhereSiteContent();
+    if (this.displaySite.id == '15') return this.renderAnywhereSiteContent();
     return (
       <div class="popover-content">
         <h4 class="text-left text-uppercase">
           {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
         </h4>
-        <img class="map-image" src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')} />
+        <img
+          class="map-image"
+          src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
+          onClick={() => {
+            this.openInNewTab(this.displaySite.mapUrl);
+          }}
+        />
         <div class="card-block text-left">
           <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
-          <div class="push-half-bottom" innerHTML={`${this.displaySite.address}`} />
+          <div
+            class="push-half-bottom"
+            innerHTML={`${this.displaySite.address}`}
+            onClick={() => {
+              this.openInNewTab(this.displaySite.mapUrl);
+            }}
+          />
           <div>
             <div>
               <strong>Service Times:</strong>
             </div>
             <div innerHTML={this.displaySite.serviceTimes} />
-            <a class="text-white" href={this.directionsUrl}>
+            <a
+              class="text-white"
+              onClick={() => {
+                this.openInNewTab(this.directionsUrl);
+              }}
+            >
               Get Directions
             </a>
           </div>
