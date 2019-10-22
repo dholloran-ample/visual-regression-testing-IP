@@ -15,7 +15,7 @@
   width: 100vw;
   z-index: 2;
 
-  @media (min-width: $screen-md) {
+  @media (min-width: $screen-sm) {
     height: auto;
     left: auto;
     margin-right: -$global-nav-padding;
@@ -45,7 +45,7 @@
 
 .profile-nav {
   &:after {
-    background-color: rgba($cr-black, .75);
+    background-color: rgba($cr-black, 0.75);
     content: ' ';
     height: 100%;
     left: 0;
@@ -69,7 +69,7 @@
     z-index: -2;
   }
 
-  @media (min-width: $screen-md) {
+  @media (min-width: $screen-sm) {
     div {
       padding-bottom: 0;
     }

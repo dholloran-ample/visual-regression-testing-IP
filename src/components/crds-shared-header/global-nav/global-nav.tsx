@@ -1,9 +1,10 @@
-import { Component, Prop, State, h, Listen } from '@stencil/core';
+import { Component, Prop, State, h, Listen, Element } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
 
 import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
 import * as iconData from './global-nav-icons.json';
+import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'global-nav',
@@ -17,15 +18,17 @@ export class GlobalNav {
   @State() openNavName: string = '';
   @State() isAuthenticated: boolean = false;
   @State() topOffset: number;
+  @Element() public host: HTMLStencilElement;
 
   private element: HTMLElement;
 
   auth: any = {};
+  preventClose: boolean;
 
   componentWillLoad() {
     if (!this.data.config || this.auth.config) return;
     this.auth = new Auth(Object.assign(this.data.config, { env: this.env }));
-    this.auth.listen(this.authChangeCallback.bind(this));
+    this.auth.listen(this.authChangeCallback.bind(this), this.authAttemptedCallback.bind(this));
   }
 
   componentDidLoad() {
@@ -34,7 +37,11 @@ export class GlobalNav {
 
   /* Handle authentication */
   handleSignOut() {
-    this.auth.signOut(this.authChangeCallback.bind(this));
+    this.auth.signOut(this.authChangeCallback.bind(this), this.authAttemptedCallback.bind(this));
+  }
+
+  authAttemptedCallback() {
+    this.injectMySiteComponent();
   }
 
   authChangeCallback() {
@@ -50,13 +57,11 @@ export class GlobalNav {
 
   /* Handle nav open/close */
   isNavOpen() {
-    const navNames = ['main-nav', 'give-nav', 'profile-nav'];
+    const navNames = ['main-nav', 'my-site', 'give-nav', 'profile-nav'];
     return navNames.includes(this.openNavName);
   }
 
   toggleNav(event, navName, navRequiresAuth: boolean = false) {
-    event.stopPropagation();
-
     if (this.openNavName === navName) {
       event.preventDefault();
       this.openNavName = '';
@@ -69,13 +74,14 @@ export class GlobalNav {
       event.preventDefault();
       this.openNavName = navName;
     }
-
+    this.preventClose = true;
     const docStyle = this.isNavOpen() ? 'overflow: hidden; position: absolute; width: 100vw;' : 'overflow: scroll;';
     document.body.setAttribute('style', docStyle);
   }
 
   @Listen('click', { target: 'window' })
   closeNav(event) {
+    if (this.preventClose) return (this.preventClose = false);
     if (this.isNavOpen()) {
       event.preventDefault();
     }
@@ -91,7 +97,20 @@ export class GlobalNav {
 
   authProfileIcon() {
     const avatarUrl = this.auth.currentUser && this.auth.currentUser.avatarUrl;
-    return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`
+    return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`;
+  }
+
+  injectMySiteComponent() {
+    var mySiteElement = this.host.shadowRoot.querySelector('my-site');
+    if (mySiteElement) {
+      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token'))
+        return;
+      mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
+    } else {
+      this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
+        this.auth.token ? this.auth.token.access_token.accessToken : ''
+      }></my-site>`;
+    }
   }
 
   /* Render elements */
@@ -101,7 +120,9 @@ export class GlobalNav {
         <header
           ref={el => (this.element = el)}
           class={this.isNavOpen() ? 'nav-is-showing' : ''}
-          style={{ top: `${this.openNavName === 'profile-nav' || this.openNavName === 'give-nav' ? this.topOffset : 0}px` }}
+          style={{
+            top: `${this.openNavName === 'profile-nav' || this.openNavName === 'give-nav' ? this.topOffset : 0}px`
+          }}
         >
           <div>
             <div class="global-nav-items">
@@ -110,23 +131,37 @@ export class GlobalNav {
                   class={`menu-container ${this.openNavName === 'main-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'main-nav')}
                   data-label="menu"
-                  data-automation-id="sh-menu">
+                  data-automation-id="sh-menu"
+                >
                   <div class={iconData.main.class} innerHTML={iconData.main.innerHTML} />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
                 </a>
-                <a href={`${this.rootURL()}/search`} class="search-container" data-automation-id="sh-search" data-label="search">
+                <a
+                  href={`${this.rootURL()}/search`}
+                  class="search-container"
+                  data-automation-id="sh-search"
+                  data-label="search"
+                >
                   <div class={iconData.search.class} innerHTML={iconData.search.innerHTML} />
                 </a>
               </div>
 
-              <a href={this.rootURL()} data-automation-id="sh-logo" class={iconData.logo.class} innerHTML={iconData.logo.innerHTML} />
+              <a
+                href={this.rootURL()}
+                data-automation-id="sh-logo"
+                class={iconData.logo.class}
+                innerHTML={iconData.logo.innerHTML}
+              />
 
               <div class="user-actions">
+                <a class="my-site-container" />
+
                 <a
                   class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'give-nav')}
                   data-label="give"
-                  data-automation-id="sh-give">
+                  data-automation-id="sh-give"
+                >
                   <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
                 </a>
@@ -136,13 +171,17 @@ export class GlobalNav {
                   onClick={event => this.toggleNav(event, 'profile-nav', true)}
                   data-label={this.isAuthenticated ? 'my account' : 'sign in'}
                   href={`${this.rootURL()}/signin`}
-                  data-automation-id="sh-profile">
-                  <div class={iconData.profile.class} innerHTML={this.isAuthenticated ? this.authProfileIcon() : iconData.profile.innerHTML} />
+                  data-automation-id="sh-profile"
+                >
+                  <div
+                    class={iconData.profile.class}
+                    innerHTML={this.isAuthenticated ? this.authProfileIcon() : iconData.profile.innerHTML}
+                  />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
                 </a>
-
               </div>
             </div>
+
             <give-nav isNavShowing={this.openNavName === 'give-nav'} data={(this.data as any).give} />
             <profile-nav
               isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
@@ -152,11 +191,7 @@ export class GlobalNav {
             />
           </div>
         </header>
-        <main-nav
-          isNavShowing={this.openNavName === 'main-nav'}
-          data={this.data.nav}
-          promoData={this.data.promos}
-        />
+        <main-nav isNavShowing={this.openNavName === 'main-nav'} data={this.data.nav} promoData={this.data.promos} />
 
         <div class={`close-nav ${this.isNavOpen() ? 'is-showing' : ''}`}>
           <div class="close-nav-icon" innerHTML={iconData.close.innerHTML} onClick={this.closeNav.bind(this)} />

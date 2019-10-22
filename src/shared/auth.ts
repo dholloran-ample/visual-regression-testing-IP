@@ -45,15 +45,19 @@ export class Auth {
     this.authService = new CrdsAuthenticationService(authConfig);
   }
 
-  listen(callback) {
+  listen(successCallback, alwaysCallback) {
     this.authService.authenticated().subscribe(token => {
-      if (!token) return (this.authenticated = false);
+      if (!token) {
+        alwaysCallback(this);
+        return (this.authenticated = false);
+      }
       this.authenticated = true;
       this.token = token;
       this.isMp = token.provider == CrdsAuthenticationProviders.Mp;
       this.isOkta = token.provider == CrdsAuthenticationProviders.Okta;
       this.updateCurrentUser();
-      callback(this);
+      alwaysCallback(this);
+      successCallback(this);
     });
   }
 
@@ -74,10 +78,10 @@ export class Auth {
 
     const userId = this.getUserId();
     const userName = this.getUser();
-    if (this.analytics)
-      this.analytics.identify(userId, {
-        name: userName
-      });
+    // if (this.analytics)
+    //   this.analytics.identify(userId, {
+    //     name: userName
+    //   });
 
     return (this.currentUser = {
       id: userId,

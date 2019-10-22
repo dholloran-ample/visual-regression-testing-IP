@@ -36,8 +36,10 @@ header {
   display: flex;
 
   a {
-    &:first-of-type {
-      margin-right: 18px;
+    padding-right: 7px;
+    padding-left: 7px;
+    &:last-of-type {
+      padding-right: 0;
     }
   }
 }
@@ -59,7 +61,8 @@ $icon-size: 22px;
 .account,
 .donate,
 .menu,
-.search {
+.search,
+.my-site {
   display: block;
   height: $icon-size;
   padding: 12px 0;
@@ -108,7 +111,8 @@ $icon-size: 22px;
 .give-container,
 .menu-container,
 .profile-container,
-.search-container {
+.search-container,
+.my-site-container {
   color: $cr-white;
   cursor: pointer;
   display: flex;
@@ -145,7 +149,8 @@ $icon-size: 22px;
 $has-close-button: (
   menu-container: menu,
   profile-container: account,
-  give-container: donate
+  give-container: donate,
+  my-site-container: mySite /*added to get X icon working for My Site*/
 );
 
 @each $container, $icon in $has-close-button {
@@ -156,7 +161,7 @@ $has-close-button: (
     }
 
     &.nav-is-showing {
-      @media (min-width: $screen-md) {
+      @media (min-width: $screen-sm) {
         .#{$icon} {
           display: none;
         }
@@ -182,7 +187,7 @@ $has-close-button: (
   z-index: 3;
 
   &.is-showing {
-    @media (max-width: $screen-md) {
+    @media (max-width: $screen-sm - 1) {
       display: block;
     }
   }
