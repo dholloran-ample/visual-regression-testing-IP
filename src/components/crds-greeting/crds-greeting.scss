@@ -31,3 +31,9 @@
 .evening-color {
   color: #426282
 }
+
+@media screen and (max-width: 414px){
+.mobile-header {
+  font-size: 1.6rem !important;
+  }
+}
