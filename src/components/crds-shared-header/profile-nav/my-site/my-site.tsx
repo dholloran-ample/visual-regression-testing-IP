@@ -157,7 +157,7 @@ export class MySite {
     const siteNamePos = siteNameEl.getBoundingClientRect();
     const mapImagePos = mapImageEl.getBoundingClientRect();
     const siteNameXPaddingAndMargin = 10;
-    const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin;
+    const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin + 1;
     const cutOutMinX = 16 - siteNameXPaddingAndMargin;
     const cutOutMaxY = mapImagePos.height - 0.5 * siteNamePos.height;
     mapImageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
