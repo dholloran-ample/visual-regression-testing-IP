@@ -29,6 +29,7 @@ export class MySite {
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
+  private mutationObserver: MutationObserver;
 
   @Prop() authToken: string;
   @Prop() defaultName: string;
@@ -89,11 +90,28 @@ export class MySite {
     });
 
     document.addEventListener('click', (e: any) => {
-      if (e.path && e.path.find(el => el.className === 'my-site-container')) return;
+      function composedPath(el) {
+        var path = [];
+        while (el) {
+          path.push(el);
+          if (el.tagName === 'HTML') {
+            path.push(document);
+            path.push(window);
+            return path;
+          }
+          el = el.parentElement;
+        }
+      }
+      var path = e.composedPath(e.target);
+      if (path && path.find(el => el.className === 'my-site-container')) return;
       this.handlePopperClose();
     });
 
     window.addEventListener('resize', () => this.addTextCutout());
+  }
+
+  public componentDidRender() {
+    if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(),100);
   }
 
   private async loggedOutUser() {
@@ -131,17 +149,18 @@ export class MySite {
   }
 
   private addTextCutout() {
+    if (!this.host) return;
     const siteNameEl: any = this.host.shadowRoot.querySelector('.site-name-overlap');
-    const siteNamePos = siteNameEl.getBoundingClientRect();
-    const siteNameStyle = window.getComputedStyle(siteNameEl);
     const mapImageEl: any = this.host.shadowRoot.querySelector('.map-image');
+    if (!siteNameEl || !mapImageEl) return;
+
+    const siteNamePos = siteNameEl.getBoundingClientRect();
     const mapImagePos = mapImageEl.getBoundingClientRect();
-    const siteNameXPaddingAndMargin = siteNameStyle.paddingLeft.length + siteNameStyle.marginLeft.length;
-    const siteNameYPaddingAndMargin = siteNameStyle.paddingTop.length;
+    const siteNameXPaddingAndMargin = 10;
     const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin;
     const cutOutMinX = 16 - siteNameXPaddingAndMargin;
-    const cutOutMaxY = mapImagePos.height - (siteNameYPaddingAndMargin + 0.5 * siteNamePos.height);
-    mapImageEl.style.clipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
+    const cutOutMaxY = mapImagePos.height - (0.5 * siteNamePos.height);
+    mapImageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
   private handlePopperClose() {
@@ -160,6 +179,7 @@ export class MySite {
     //save this to the users personalization profile too????
     this.promptsDisabled = true;
     Utils.setCookie('disableMySitePrompts', 'true', 365);
+    this.addTextCutout();
   }
 
   private getSites(): Promise<any> {
@@ -330,6 +350,7 @@ export class MySite {
   }
 
   private renderSiteDetails() {
+    if(this.displaySite.id == '15') return this.renderAnywhereSiteContent();
     return (
       <div class="popover-content">
         <h4 class="text-left text-uppercase">
