@@ -359,7 +359,7 @@ export class MySite {
     return (
       <div class="popover-content">
         <h4 class="text-left text-uppercase">
-          {(this.userHasSite() && this.user.site.id) === this.nearestSiteID.toString() ? 'My Site' : 'Closest Site'}
+          {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
         <img
           class="map-image"
