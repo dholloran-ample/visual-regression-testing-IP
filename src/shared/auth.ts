@@ -40,7 +40,8 @@ export class Auth {
       oktaConfig: oktaConfig,
       mpConfig: mpConfig,
       logging: config.logging || false,
-      providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp]
+      providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
+      cookieDomain: process.env.COOKIE_DOMAIN_PREFIX + '.crossroads.net'
     };
     this.authService = new CrdsAuthenticationService(authConfig);
   }
