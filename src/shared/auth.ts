@@ -41,7 +41,7 @@ export class Auth {
       mpConfig: mpConfig,
       logging: config.logging || false,
       providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
-      env: process.env.COOKIE_DOMAIN_PREFIX
+      env: config.env == 'production' ? '' : config.env
     };
     this.authService = new CrdsAuthenticationService(authConfig);
   }
