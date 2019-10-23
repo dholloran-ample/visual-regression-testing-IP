@@ -93,47 +93,47 @@ $arrow-height: 10px;
   }
 }
 
-.close {
-  $padding: 22px;
-  bottom: 0;
-  display: none;
-  height: $close-container-height;
-  padding-left: 2px;
-  position: fixed;
-  width: 100%;
-  z-index: 3;
+// .close {
+//   $padding: 22px;
+//   bottom: 0;
+//   display: none;
+//   height: $close-container-height;
+//   padding-left: 2px;
+//   position: fixed;
+//   width: 100%;
+//   z-index: 3;
 
-  @media (max-width: $screen-sm - 1) {
-    display: block;
-    position: sticky;
-  }
+//   @media (max-width: $screen-sm - 1) {
+//     display: block;
+//     position: sticky;
+//   }
 
-  &-icon {
-    $circle-size: 64px;
+//   &-icon {
+//     $circle-size: 64px;
 
-    background-color: $cr-cyan;
-    border-radius: 50%;
-    bottom: $padding;
-    box-shadow: 0 5px 24px -5px rgba(0, 0, 0, 0.75);
-    cursor: pointer;
-    height: $circle-size;
-    position: absolute;
-    width: $circle-size;
-  }
+//     background-color: $cr-cyan;
+//     border-radius: 50%;
+//     bottom: $padding;
+//     box-shadow: 0 5px 24px -5px rgba(0, 0, 0, 0.75);
+//     cursor: pointer;
+//     height: $circle-size;
+//     position: absolute;
+//     width: $circle-size;
+//   }
 
-  svg {
-    $size: 30px;
-    fill: $cr-white;
-    height: $size;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: $size;
-  }
+//   svg {
+//     $size: 30px;
+//     fill: $cr-white;
+//     height: $size;
+//     left: 50%;
+//     position: absolute;
+//     top: 50%;
+//     transform: translate(-50%, -50%);
+//     width: $size;
+//   }
 
  
-}
+// }
 
 .popover-prompt {
   h4 {
@@ -205,3 +205,5 @@ $arrow-height: 10px;
   position: absolute;
   top: $top-padding - $arrow-height;
 }
+
+

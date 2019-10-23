@@ -85,7 +85,6 @@ export class GlobalNav {
     if (this.isNavOpen()) {
       event.preventDefault();
     }
-
     this.openNavName = '';
     document.body.setAttribute('style', 'overflow: scroll;');
   }
@@ -154,7 +153,11 @@ export class GlobalNav {
               />
 
               <div class="user-actions">
-                <a class="my-site-container" />
+                <a
+                  class="my-site-container"
+                  onClick={event => this.toggleNav(event, 'my-site')}
+                  data-automation-id="sh-my-site"
+                />
 
                 <a
                   class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}

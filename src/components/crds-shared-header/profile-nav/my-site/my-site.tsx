@@ -8,10 +8,8 @@ import Popper from 'popper.js';
 import { CrdsApollo } from '../../../../shared/apollo';
 import { Utils } from '../../../../shared/utils';
 import { SvgSrc } from '../../../../shared/svgSrc';
-import { findValuesAddedToEnums } from 'graphql/utilities/findBreakingChanges';
 import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlocks';
 import toastr from 'toastr';
-import { CoverageMap } from 'istanbul-lib-coverage';
 
 @Component({
   tag: 'my-site',
@@ -145,8 +143,10 @@ export class MySite {
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
+    document.body.style.overflow = 'hidden';
     this.addTextCutout();
   }
+ 
 
   private addTextCutout() {
     if (!this.host) return;
@@ -318,11 +318,6 @@ export class MySite {
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
         {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
-        <div class="close">
-          <div class="close-icon" onClick={() => this.handlePopperClose()}>
-            {SvgSrc.closeIcon()}
-          </div>
-        </div>
       </div>
     );
   }
@@ -406,6 +401,7 @@ export class MySite {
       </div>
     );
   }
+  
 
   private renderAnywhereSiteContent() {
     return (
