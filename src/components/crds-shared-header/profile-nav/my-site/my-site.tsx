@@ -176,10 +176,9 @@ export class MySite {
   }
 
   private disablePrompts(): void {
-    //save this to the users personalization profile too????
+    this.handlePopperClose();
     this.promptsDisabled = true;
     Utils.setCookie('disableMySitePrompts', 'true', 365);
-    this.addTextCutout();
   }
 
   private getSites(): Promise<any> {
@@ -254,7 +253,7 @@ export class MySite {
   }
 
   private setUserSite(siteId) {
-    this.popper.classList.remove('open');
+    this.handlePopperClose();
     return this.apolloClient
       .mutate({
         variables: { siteId: siteId },
@@ -267,7 +266,7 @@ export class MySite {
             You've set ${this.user.site.name} as the preferred site for you and your household. 
             <a href="/profile/personal">Update your profile</a> to cancel or change your site.
           </div>`
-        );
+        ); 
       })
       .catch(err => {
         this.logError(err);
