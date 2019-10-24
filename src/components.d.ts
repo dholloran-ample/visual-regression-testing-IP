@@ -71,6 +71,7 @@ export namespace Components {
   }
   interface CrdsTitheChallenge {
     'authToken': string;
+    'selectedFeeling': string;
   }
   interface GiveNav {
     'data': any;
@@ -319,6 +320,7 @@ declare namespace LocalJSX {
   }
   interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
     'authToken'?: string;
+    'selectedFeeling'?: string;
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
