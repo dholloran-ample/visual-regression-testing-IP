@@ -23,7 +23,7 @@ export class Auth {
 
   constructor(config: any = {}) {
     this.config = config;
-    this.analytics = window['analytics'] || false;
+    this.analytics = window['analytics'];
     const oktaConfig: CrdsOktaConfig = {
       clientId: config.okta_client_id,
       issuer: config.okta_issuer,
