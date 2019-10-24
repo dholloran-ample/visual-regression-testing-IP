@@ -6,9 +6,7 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-import {
-  MySiteUser,
-} from './components/crds-shared-header/profile-nav/my-site/my-site-interface';
+
 
 export namespace Components {
   interface CrdsGreeting {
@@ -83,9 +81,8 @@ export namespace Components {
     'promoData': string;
   }
   interface MySite {
+    'authInit': boolean;
     'authToken': string;
-    'defaultName': string;
-    'user': MySiteUser;
   }
   interface NavCtas {
     'data': string;
@@ -321,9 +318,8 @@ declare namespace LocalJSX {
     'promoData'?: string;
   }
   interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {
+    'authInit'?: boolean;
     'authToken'?: string;
-    'defaultName'?: string;
-    'user'?: MySiteUser;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
