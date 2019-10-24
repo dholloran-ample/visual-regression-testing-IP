@@ -23,7 +23,7 @@ export class Auth {
 
   constructor(config: any = {}) {
     this.config = config;
-    this.analytics = window['analytics'] || {};
+    this.analytics = window['analytics'];
     const oktaConfig: CrdsOktaConfig = {
       clientId: config.okta_client_id,
       issuer: config.okta_issuer,
@@ -79,10 +79,11 @@ export class Auth {
 
     const userId = this.getUserId();
     const userName = this.getUser();
-    // if (this.analytics)
-    //   this.analytics.identify(userId, {
-    //     name: userName
-    //   });
+    if (this.analytics) {
+      this.analytics.identify(userId, {
+        name: userName
+      });
+    }
 
     return (this.currentUser = {
       id: userId,
