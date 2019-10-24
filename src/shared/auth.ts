@@ -79,10 +79,11 @@ export class Auth {
 
     const userId = this.getUserId();
     const userName = this.getUser();
-    // if (this.analytics)
-    //   this.analytics.identify(userId, {
-    //     name: userName
-    //   });
+    if (this.analytics) {
+      this.analytics.identify(userId, {
+        name: userName
+      });
+    }
 
     return (this.currentUser = {
       id: userId,
