@@ -249,6 +249,12 @@ hr {
   }
 }
 
+.icon {
+  fill: #fff;
+  height: 16px;
+  width: 12px;
+}
+
 // Buttons
 .btn {
   @extend .font-family-base;
