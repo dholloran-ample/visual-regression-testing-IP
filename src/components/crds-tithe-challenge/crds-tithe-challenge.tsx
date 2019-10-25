@@ -73,6 +73,14 @@ export class CrdsTitheChallenge {
     });
   }
 
+  private getDaysDown() {
+    return this.convertTimeToDays(this.getDaysDownTime());
+  }
+
+  private getDaysToGo() {
+    return 90 - this.getDaysDown();
+  }
+
   private logUserResponse() {
     return this.apolloClient
       .mutate({
@@ -97,11 +105,16 @@ export class CrdsTitheChallenge {
   }
 
   private getProgress() {
+    const diffTime = this.getDaysDownTime();
+    return Math.floor((this.convertTimeToDays(diffTime) / this.lengthOfChallenge) * 100);
+  }
+
+  private getDaysDownTime(): number {
     var today = new Date();
     var startDate = new Date(0);
     startDate.setTime(this.user.groups[0].userStartDate * 1000);
     const diffTime = Math.abs(today.getTime() - startDate.getTime());
-    return Math.floor((this.convertTimeToDays(diffTime) / this.lengthOfChallenge) * 100);
+    return diffTime;
   }
 
   private convertTimeToDays(time: number): number {
@@ -170,7 +183,7 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {!this.selectedFeeling
-            ? this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName })
+            ? this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName, daysDown: this.getDaysDown().toString() , daysToGo: this.getDaysToGo().toString() })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
         </div>
