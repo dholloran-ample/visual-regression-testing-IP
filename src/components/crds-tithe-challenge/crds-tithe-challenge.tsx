@@ -85,9 +85,9 @@ export class CrdsTitheChallenge {
     return Math.ceil(time / (1000 * 60 * 60 * 24));
   }
 
-  private handleFeelingSelected(event) {
+  private handleFeelingSelected(event, feeling) {
     //fire to graphql/cosmos
-    this.selectedFeeling = event.target;
+    this.selectedFeeling = feeling;
   }
 
   private buildResponses(){
@@ -189,7 +189,7 @@ export class CrdsTitheChallenge {
           </button>
           <ul class="crds-list dropdown-menu">
             {this.feelings.map(feeling => (
-              <li value={feeling.id} onClick={event => this.handleFeelingSelected(event)} data-name={feeling.text}>
+              <li value={feeling.id} onClick={event => this.handleFeelingSelected(event, feeling)} data-name={feeling.text}>
                 <a>{feeling.text}</a>
               </li>
             ))}
