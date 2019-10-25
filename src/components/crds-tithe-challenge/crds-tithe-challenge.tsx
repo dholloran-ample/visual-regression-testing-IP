@@ -41,7 +41,11 @@ export class CrdsTitheChallenge {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'tithe challenge');
-    return Promise.all([this.contentBlockHandler.getCopy(), this.getFeelingResponses()]);
+    return Promise.all([
+      this.contentBlockHandler.getCopy(),
+      this.getFeelingResponses(),
+      this.authToken ? this.getUser() : null
+    ]);
   }
 
   public componentWillRender() {
@@ -184,9 +188,14 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {!this.selectedFeeling
-            ? this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName, daysDown: this.getDaysDown().toString() , daysToGo: this.getDaysToGo().toString() })
+            ? this.contentBlockHandler.getContentBlock('tithe-started', {
+                name: this.user.nickName,
+                daysDown: this.getDaysDown().toString(),
+                daysToGo: this.getDaysToGo().toString()
+              })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
+
           <div class="push-top">
             <div class="meter">
               <span style={{ width: `${this.getProgress()}%` }} />
@@ -194,8 +203,8 @@ export class CrdsTitheChallenge {
             <div class="d-flex">
               <p class="text-white text-uppercase">start</p><p class="text-finished text-uppercase ml-auto">finished</p>
             </div>
-          </div>
-
+           
+          </div>
         </div>
       </div>
     );
