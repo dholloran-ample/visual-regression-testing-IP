@@ -12,6 +12,7 @@ import {
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
 import { promises } from 'fs';
+import { listenerCount } from 'cluster';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -186,6 +187,15 @@ export class CrdsTitheChallenge {
             ? this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName, daysDown: this.getDaysDown().toString() , daysToGo: this.getDaysToGo().toString() })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
+          <div>
+            <div class="meter push-half-top">
+              <span style={{ width: `${this.getProgress()}%` }} />
+            </div>
+            <div class="d-flex">
+              <p class="text-white text-uppercase">start</p><p class="text-gray-dark text-uppercase">finished</p>
+            </div>
+          </div>
+
         </div>
       </div>
     );
