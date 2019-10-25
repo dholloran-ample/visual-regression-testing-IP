@@ -22,6 +22,7 @@ export class CrdsTitheChallenge {
     { text: 'Hopeful', href: '' },
     { text: 'Excited', href: '' }
   ];
+  private lengthOfChallenge: number = 90;
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
@@ -75,6 +76,18 @@ export class CrdsTitheChallenge {
     return this.user && this.user.groups.length;
   }
 
+  private getProgress() {
+    var today = new Date();
+    var startDate = new Date(0);
+    startDate.setTime(this.user.groups[0].userStartDate * 1000);
+    const diffTime = Math.abs(today.getTime() - startDate.getTime());
+    return Math.floor(this.convertTimeToDays(diffTime) / this.lengthOfChallenge * 100);
+  }
+
+  private convertTimeToDays(time: number): number {
+    return Math.ceil(time / (1000 * 60 * 60 * 24));
+  }
+
   private handleFeelingSelected(event) {
     //fire to graphql/cosmos
     this.selectedFeeling = event.target.value;
@@ -95,6 +108,16 @@ export class CrdsTitheChallenge {
       <div>
         <div>{this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName })}</div>
         {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style={{ width: `${this.getProgress()}%` }}
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          />
+        </div>
       </div>
     );
   }

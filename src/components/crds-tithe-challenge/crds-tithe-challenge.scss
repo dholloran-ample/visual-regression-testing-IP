@@ -1,0 +1,13 @@
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/gradients";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/progress-bar";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/progress-bars";
+
+.progress {
+  box-shadow: none;
+  height: 0.5rem;
+}
+
+.progress-bar {
+  box-shadow: none;
+}
