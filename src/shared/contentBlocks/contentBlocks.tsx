@@ -31,9 +31,21 @@ export class ContentBlockHandler {
     });
     return <div innerHTML={contentBlock.content.toString()} />;
   }
+
+  public getContentBlocksBySlugPartial(slugPartial: string): ContentBlock[] {
+    if (!this.copy) return null;
+    let foundBlocks: ContentBlock[] = [];
+    this.copy.map(block => {
+      if (block.slug.includes(slugPartial)){
+        foundBlocks.push(block);
+      }
+    })
+    return foundBlocks;
+  }
 }
 
 export interface ContentBlock {
   slug: string;
   content: string;
+  title: string;
 }

@@ -1,7 +1,7 @@
 import { Component, Element, h, Prop, State, Watch } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import ApolloClient from 'apollo-client';
-import { TitheUser } from './crds-tithe-challenge.interface';
+import { TitheUser , Response} from './crds-tithe-challenge.interface';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { CrdsApollo } from '../../shared/apollo';
 import { GET_DONATIONS, GET_USER_GROUPS } from './crds-tithe-challenge.graphql';
@@ -15,14 +15,7 @@ import { SvgSrc } from '../../shared/svgSrc';
 export class CrdsTitheChallenge {
   private apolloClient: ApolloClient<{}> = null;
   private contentBlockHandler: ContentBlockHandler;
-  private feelings: any[] = [
-    { text: 'Blessed', href: '' },
-    { text: 'Discouraged', href: '' },
-    { text: 'Nervous', href: '' },
-    { text: 'Meh', href: '' },
-    { text: 'Hopeful', href: '' },
-    { text: 'Excited', href: '' }
-  ];
+  private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
 
   @State() user: TitheUser = null;
@@ -98,6 +91,22 @@ export class CrdsTitheChallenge {
     this.selectedFeeling = event.target.value;
   }
 
+  private buildResponses(){
+    var responseContent = this.contentBlockHandler.getContentBlocksBySlugPartial('feelingResponse');
+    responseContent.map(contentBlock => {
+      this.feelings.push({
+        id: parseInt(contentBlock.slug.replace('feelingResponse', '')),
+        content: contentBlock.content,
+        text: this.getResponseText(contentBlock.title.trim())
+      }) 
+    })
+  }
+
+  private getResponseText(text) {
+    text = text.split(" ");
+    return text[text.length - 1];
+  }
+
   public render() {
     if (!this.shouldShowComponent()) return null;
     return <div>{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
@@ -144,6 +153,7 @@ export class CrdsTitheChallenge {
   }
 
   public renderStarted() {
+    this.buildResponses();
     return (
       <div class="tithe-container d-flex">
         <div class="m-auto text-center">

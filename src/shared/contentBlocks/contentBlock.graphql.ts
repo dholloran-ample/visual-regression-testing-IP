@@ -5,6 +5,7 @@ query contentBlocks($componentName: String) {
   contentBlocks(filters: { category: $componentName }) {
     content
     slug
+    title
   }
 }
 `;

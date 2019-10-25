@@ -17,3 +17,9 @@ export interface Donation {
   amount: number
   date: number
 }
+
+export interface Response {
+  id: number
+  content: string
+  text: string
+}
