@@ -35,3 +35,9 @@ export const GET_FEELING_RESPONSES = gql`
     }
   }
 `;
+
+export const LOG_USER_RESPONSE = gql`
+  mutation logUserResponse($response: FeelingResponseInput) {
+    logFeelingResponse(response: $response)
+  }
+`;
