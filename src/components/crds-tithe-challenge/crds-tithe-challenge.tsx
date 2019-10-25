@@ -87,8 +87,7 @@ export class CrdsTitheChallenge {
 
   private handleFeelingSelected(event) {
     //fire to graphql/cosmos
-    console.log(event.target.value);
-    this.selectedFeeling = event.target.value;
+    this.selectedFeeling = event.target;
   }
 
   private buildResponses(){
