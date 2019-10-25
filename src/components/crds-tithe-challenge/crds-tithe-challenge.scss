@@ -1,0 +1,101 @@
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/gradients";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/progress-bar";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/progress-bars";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/nav-divider";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/reset-filter";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
+@import "../../shared/shared.scss";
+
+.progress {
+  box-shadow: none;
+  height: 0.5rem;
+}
+
+.progress-bar {
+  box-shadow: none;
+  
+}
+
+
+.tithe-container {
+  height: auto;
+  flex-wrap: wrap;
+  background-color: #274254;
+  @media screen and (min-width: $screen-sm) {
+      height: 400px;
+  }
+}
+.divider {
+  border: 1px solid $cr-gray-light;
+  margin: auto;
+  width: 85%;
+  @media screen and (min-width: $screen-sm) {
+      height: 75%;
+      width: auto;
+      margin: auto 0;
+  }
+}
+.m-auto {
+  margin: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.m-ends-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.text-container {
+  margin: auto;
+  text-align: center;
+  padding: 2.5rem 3rem;
+  width: 100%;
+  @media (min-width: $screen-sm) {
+      width: 55%;
+      text-align: left;
+      padding: 2.5rem 0;
+  }
+}
+.schedule-btn {
+  padding: 13px 30px;
+  @media screen and (min-width: 516px) {
+      margin-right: 12px;
+  }
+}
+.tithe-logo {
+  max-width: 75%;
+  text-align: center;
+  padding: 2.5rem 0;
+  @media screen and (min-width: $screen-sm) {
+      max-width: 100%;
+  }
+}
+
+.meter {
+   height: 9px;  /* Can be anything */
+   width: auto;
+   position: relative;
+   background: linear-gradient(270deg, #FFFFFF 0%,#E09E06 15%,  #C05C04 35% ,  #57AFA9 55%, #0095D9 75%, #FFFFFF 100%);
+   transform: rotate(180deg);
+}
+.meter > span {
+  width: 50%;
+  display: block;
+  height: 100%;
+  background-color: #1B303D;
+  position: absolute;
+  overflow: hidden;
+}
+
+a,
+a label {
+    cursor: pointer;
+}
+
+.finished {
+  color: #1B303D;
+}

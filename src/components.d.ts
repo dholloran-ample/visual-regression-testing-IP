@@ -7,6 +7,9 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  Response,
+} from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
+import {
   MySiteUser,
 } from './components/crds-shared-header/profile-nav/my-site/my-site-interface';
 
@@ -68,6 +71,10 @@ export namespace Components {
   interface CrdsSubscribe {
     'label': string;
     'src': string;
+  }
+  interface CrdsTitheChallenge {
+    'authToken': string;
+    'selectedFeeling': Response;
   }
   interface GiveNav {
     'data': any;
@@ -178,6 +185,12 @@ declare global {
     new (): HTMLCrdsSubscribeElement;
   };
 
+  interface HTMLCrdsTitheChallengeElement extends Components.CrdsTitheChallenge, HTMLStencilElement {}
+  var HTMLCrdsTitheChallengeElement: {
+    prototype: HTMLCrdsTitheChallengeElement;
+    new (): HTMLCrdsTitheChallengeElement;
+  };
+
   interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
   var HTMLGiveNavElement: {
     prototype: HTMLGiveNavElement;
@@ -237,6 +250,7 @@ declare global {
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
+    'crds-tithe-challenge': HTMLCrdsTitheChallengeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
@@ -307,6 +321,10 @@ declare namespace LocalJSX {
     'label'?: string;
     'src'?: string;
   }
+  interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
+    'authToken'?: string;
+    'selectedFeeling'?: Response;
+  }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
     'isNavShowing'?: boolean;
@@ -358,6 +376,7 @@ declare namespace LocalJSX {
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
+    'crds-tithe-challenge': CrdsTitheChallenge;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'main-nav': MainNav;
