@@ -5,6 +5,7 @@ import { TitheUser } from './crds-tithe-challenge.interface';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { CrdsApollo } from '../../shared/apollo';
 import { GET_DONATIONS, GET_USER_GROUPS } from './crds-tithe-challenge.graphql';
+import { SvgSrc } from '../../shared/svgSrc';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -44,14 +45,12 @@ export class CrdsTitheChallenge {
   }
 
   public componentWillRender() {
-    console.log(this.user);
     if (!this.isUserInChallenge()) return; //exit because we cant do anything else at this point
     if (!this.user.donations) return this.getUserDonations();
   }
 
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
-      console.log(response);
       this.user = response.data.user;
     });
   }
@@ -64,7 +63,6 @@ export class CrdsTitheChallenge {
       })
       .then(response => {
         this.user.donations = response.data.user.donations;
-        console.log(this.user.donations);
       });
   }
 
@@ -76,12 +74,18 @@ export class CrdsTitheChallenge {
     return this.user && this.user.groups.length;
   }
 
+  private toggleDropdown() {
+    const dropdownEl = this.host.shadowRoot.getElementById('feelingsDropdown');
+    if (dropdownEl.classList.contains('open')) dropdownEl.classList.remove('open');
+    else dropdownEl.classList.add('open');
+  }
+
   private getProgress() {
     var today = new Date();
     var startDate = new Date(0);
     startDate.setTime(this.user.groups[0].userStartDate * 1000);
     const diffTime = Math.abs(today.getTime() - startDate.getTime());
-    return Math.floor(this.convertTimeToDays(diffTime) / this.lengthOfChallenge * 100);
+    return Math.floor((this.convertTimeToDays(diffTime) / this.lengthOfChallenge) * 100);
   }
 
   private convertTimeToDays(time: number): number {
@@ -90,33 +94,68 @@ export class CrdsTitheChallenge {
 
   private handleFeelingSelected(event) {
     //fire to graphql/cosmos
+    console.log(event.target.value);
     this.selectedFeeling = event.target.value;
   }
 
   public render() {
     if (!this.shouldShowComponent()) return null;
+    return <div>{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
+  }
+
+  public renderNotStarted() {
     return (
-      <div>
-        <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwolper.com.au%2Fwolpers-new-coffee-cart%2Fimage-placeholder%2F&psig=AOvVaw1DnAtouBgZ0b8uMlA9FJvf&ust=1572032062564000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNij8vfRteUCFQAAAAAdAAAAABAD" />
-        {this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}
+      <div class="tithe-container d-flex">
+        <div class="m-auto text-center">
+          <img
+            class="tithe-logo"
+            src="https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png"
+          />
+        </div>
+        <div class="divider" />
+        <div class="text-container">
+          {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
+          <button
+            class="btn btn-blue schedule-btn"
+            type="button"
+            onClick={() => {
+              window.location.href = '/give';
+            }}
+          >
+            Schedule your tithe now
+          </button>
+          <button
+            class="btn btn-white btn-outline"
+            type="button"
+            onClick={() => {
+              console.log('redirect to brians message from 10/27');
+            }}
+          >
+            Watch a message from Brian
+          </button>
+          <br />
+          <a class="text-gray-light push-half-top inline-block" href="">
+            What's the 90 Day Tithe Test?
+          </a>
+          <br />
+        </div>
       </div>
     );
   }
 
   public renderStarted() {
     return (
-      <div>
-        <div>{this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName })}</div>
-        {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
-        <div class="progress">
-          <div
-            class="progress-bar"
-            role="progressbar"
-            style={{ width: `${this.getProgress()}%` }}
-            aria-valuenow="25"
-            aria-valuemin="0"
-            aria-valuemax="100"
+      <div class="tithe-container d-flex">
+        <div class="m-auto text-center">
+          <img
+            class="tithe-logo"
+            src="https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png"
           />
+        </div>
+        <div class="divider" />
+        <div class="text-container">
+          {this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName })}
+          {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
         </div>
       </div>
     );
@@ -124,38 +163,29 @@ export class CrdsTitheChallenge {
 
   public renderFeelingSelection() {
     return (
-      <div>
-        I'm feeling
-        <select class="dropdown" onInput={event => this.handleFeelingSelected(event)}>
-          {this.feelings.map(option => (
-            <option value={option.text} data-name={option.text}>
-              {option.text}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  }
-
-  public renderNotStarted() {
-    return (
-      <div>
-        <div>{this.contentBlockHandler.getContentBlock('tithe-encourage', { name: this.user.nickName })}</div>
-        <button
-          onClick={() => {
-            window.location.href = '/give';
-          }}
-        >
-          Schedule your tithe now
-        </button>
-        <button
-          onClick={() => {
-            console.log('redirect to brians message from 10/27');
-          }}
-        >
-          Message from Brian
-        </button>
-        <a href="">What's the 90 day challenge?</a>
+      <div class="d-flex">
+        <p class="text-white push-half-right">I'm feeling</p>
+        <div id="feelingsDropdown" class="dropdown" role="presentation">
+          <button
+            class="btn btn-blue dropdown-toggle"
+            type="button"
+            onClick={() => {
+              this.toggleDropdown();
+            }}
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            #Blessed
+            {/* {SvgSrc.chevronDown()} */}
+          </button>
+          <ul class="crds-list dropdown-menu">
+            {this.feelings.map(feeling => (
+              <li value={feeling.id} onClick={event => this.handleFeelingSelected(event)} data-name={feeling.text}>
+                <a>{feeling.text}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
