@@ -21,5 +21,5 @@ export interface Donation {
 export interface Response {
   id: number
   content: string
-  text: string
+  value: string
 }

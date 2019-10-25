@@ -26,3 +26,12 @@ export const GET_DONATIONS = gql`
     }
   }
 `;
+
+export const GET_FEELING_RESPONSES = gql`
+  {
+    feelingResponses {
+      id
+      value
+    }
+  }
+`;
