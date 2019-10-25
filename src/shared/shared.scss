@@ -22,6 +22,10 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .d-none {
   display: none;
 }
@@ -363,4 +367,19 @@ hr {
   &.label-info {
     background-color: #b6dee6;
   }
+}
+
+
+// Gross styles Jake is adding to make things work instead of pulling in crds-styles 
+@media screen and (min-width: 480px) {
+h1 {
+  font-size: 3.9875rem;
+}
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.1;
+  color: #4d4d4d;
 }
