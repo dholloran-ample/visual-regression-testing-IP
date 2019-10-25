@@ -176,7 +176,7 @@ export class CrdsTitheChallenge {
         <p class="text-white push-half-right">I'm feeling</p>
         <div id="feelingsDropdown" class="dropdown" role="presentation">
           <button
-            class="btn btn-blue dropdown-toggle"
+            class="btn btn-blue dropdown-toggle icon"
             type="button"
             onClick={() => {
               this.toggleDropdown();
@@ -185,7 +185,7 @@ export class CrdsTitheChallenge {
             aria-expanded="false"
           >
             #Blessed
-            {/* {SvgSrc.chevronDown()} */}
+            {SvgSrc.chevronDown()}
           </button>
           <ul class="crds-list dropdown-menu">
             {this.feelings.map(feeling => (
