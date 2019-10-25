@@ -1,11 +1,12 @@
 import { Component, Element, h, Prop, State, Watch } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import ApolloClient from 'apollo-client';
-import { TitheUser , Response} from './crds-tithe-challenge.interface';
+import { TitheUser, Response } from './crds-tithe-challenge.interface';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { CrdsApollo } from '../../shared/apollo';
-import { GET_DONATIONS, GET_USER_GROUPS } from './crds-tithe-challenge.graphql';
+import { GET_DONATIONS, GET_USER_GROUPS, GET_FEELING_RESPONSES } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
+import { promises } from 'fs';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -34,7 +35,7 @@ export class CrdsTitheChallenge {
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'tithe challenge');
-    return this.contentBlockHandler.getCopy();
+    return Promise.all([this.contentBlockHandler.getCopy(), this.getFeelingResponses()]);
   }
 
   public componentWillRender() {
@@ -57,6 +58,12 @@ export class CrdsTitheChallenge {
       .then(response => {
         this.user.donations = response.data.user.donations;
       });
+  }
+
+  private getFeelingResponses() {
+    return this.apolloClient.query({ query: GET_FEELING_RESPONSES }).then(response => {
+      this.feelings = response.data.feelingResponses;
+    });
   }
 
   private isUserActive() {
@@ -85,24 +92,13 @@ export class CrdsTitheChallenge {
     return Math.ceil(time / (1000 * 60 * 60 * 24));
   }
 
-  private handleFeelingSelected(event, feeling) {
+  private handleFeelingSelected(feeling) {
     //fire to graphql/cosmos
     this.selectedFeeling = feeling;
   }
 
-  private buildResponses(){
-    var responseContent = this.contentBlockHandler.getContentBlocksBySlugPartial('feelingResponse');
-    responseContent.map(contentBlock => {
-      this.feelings.push({
-        id: parseInt(contentBlock.slug.replace('feelingResponse', '')),
-        content: contentBlock.content,
-        text: this.getResponseText(contentBlock.title.trim())
-      }) 
-    })
-  }
-
   private getResponseText(text) {
-    text = text.split(" ");
+    text = text.split(' ');
     return text[text.length - 1];
   }
 
@@ -152,7 +148,6 @@ export class CrdsTitheChallenge {
   }
 
   public renderStarted() {
-    this.buildResponses();
     return (
       <div class="tithe-container d-flex">
         <div class="m-auto text-center">
@@ -189,8 +184,8 @@ export class CrdsTitheChallenge {
           </button>
           <ul class="crds-list dropdown-menu">
             {this.feelings.map(feeling => (
-              <li value={feeling.id} onClick={event => this.handleFeelingSelected(event, feeling)} data-name={feeling.text}>
-                <a>{feeling.text}</a>
+              <li value={feeling.id} onClick={() => this.handleFeelingSelected(feeling)} data-name={feeling.value}>
+                <a>{feeling.value}</a>
               </li>
             ))}
           </ul>

@@ -93,3 +93,8 @@ progress {
   position: absolute;
   overflow: hidden;
 }
+
+a,
+a label {
+    cursor: pointer;
+}
