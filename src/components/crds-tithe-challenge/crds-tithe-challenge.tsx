@@ -97,11 +97,6 @@ export class CrdsTitheChallenge {
     this.selectedFeeling = feeling;
   }
 
-  private getResponseText(text) {
-    text = text.split(' ');
-    return text[text.length - 1];
-  }
-
   public render() {
     if (!this.shouldShowComponent()) return null;
     return <div>{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
