@@ -107,7 +107,7 @@ export class CrdsTitheChallenge {
 
   private getProgress() {
     const diffTime = this.getDaysDownTime();
-    return Math.floor((this.convertTimeToDays(diffTime) / this.lengthOfChallenge) * 100);
+    return 100 - Math.floor((this.convertTimeToDays(diffTime) / this.lengthOfChallenge) * 100);
   }
 
   private getDaysDownTime(): number {
@@ -192,7 +192,7 @@ export class CrdsTitheChallenge {
               <span style={{ width: `${this.getProgress()}%` }} />
             </div>
             <div class="d-flex">
-              <p class="text-white text-uppercase">start</p><p class="text-gray-dark text-uppercase">finished</p>
+              <p class="text-white text-uppercase">start</p><p class="text-gray-dark text-uppercase ml-auto">finished</p>
             </div>
           </div>
 
