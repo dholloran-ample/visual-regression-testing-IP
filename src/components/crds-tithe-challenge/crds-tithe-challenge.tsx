@@ -4,7 +4,12 @@ import ApolloClient from 'apollo-client';
 import { TitheUser, Response } from './crds-tithe-challenge.interface';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { CrdsApollo } from '../../shared/apollo';
-import { GET_DONATIONS, GET_USER_GROUPS, GET_FEELING_RESPONSES } from './crds-tithe-challenge.graphql';
+import {
+  GET_DONATIONS,
+  GET_USER_GROUPS,
+  GET_FEELING_RESPONSES,
+  LOG_USER_RESPONSE
+} from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
 import { promises } from 'fs';
 
@@ -21,7 +26,7 @@ export class CrdsTitheChallenge {
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
-  @Prop() selectedFeeling: string;
+  @Prop() selectedFeeling: Response;
   @Element() public host: HTMLStencilElement;
 
   @Watch('authToken')
@@ -62,8 +67,19 @@ export class CrdsTitheChallenge {
 
   private getFeelingResponses() {
     return this.apolloClient.query({ query: GET_FEELING_RESPONSES }).then(response => {
-      this.feelings = response.data.feelingResponses;
+      this.feelings = response.data.feelingResponses.map(response => {
+        return { id: response.id, value: response.value };
+      });
     });
+  }
+
+  private logUserResponse() {
+    return this.apolloClient
+      .mutate({
+        variables: { response: this.selectedFeeling },
+        mutation: LOG_USER_RESPONSE
+      })
+      .catch(err => console.error(err));
   }
 
   private isUserActive() {
@@ -93,13 +109,8 @@ export class CrdsTitheChallenge {
   }
 
   private handleFeelingSelected(feeling) {
-    //fire to graphql/cosmos
     this.selectedFeeling = feeling;
-  }
-
-  private getResponseText(text) {
-    text = text.split(' ');
-    return text[text.length - 1];
+    this.logUserResponse();
   }
 
   public render() {
@@ -158,7 +169,9 @@ export class CrdsTitheChallenge {
         </div>
         <div class="divider" />
         <div class="text-container">
-          {this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName })}
+          {!this.selectedFeeling
+            ? this.contentBlockHandler.getContentBlock('tithe-started', { name: this.user.nickName })
+            : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
         </div>
       </div>
@@ -195,7 +208,7 @@ export class CrdsTitheChallenge {
   }
 
   public renderFeelingResponse() {
-    return this.contentBlockHandler.getContentBlock(`feelingResponse${this.selectedFeeling}`);
+    return this.contentBlockHandler.getContentBlock(`feelingResponse${this.selectedFeeling.id}`);
   }
 
   private shouldShowComponent(): boolean {

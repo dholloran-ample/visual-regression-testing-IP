@@ -7,6 +7,9 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
+  Response,
+} from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
+import {
   MySiteUser,
 } from './components/crds-shared-header/profile-nav/my-site/my-site-interface';
 
@@ -71,7 +74,7 @@ export namespace Components {
   }
   interface CrdsTitheChallenge {
     'authToken': string;
-    'selectedFeeling': string;
+    'selectedFeeling': Response;
   }
   interface GiveNav {
     'data': any;
@@ -320,7 +323,7 @@ declare namespace LocalJSX {
   }
   interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
     'authToken'?: string;
-    'selectedFeeling'?: string;
+    'selectedFeeling'?: Response;
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
