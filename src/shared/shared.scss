@@ -22,6 +22,10 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .d-none {
   display: none;
 }
@@ -152,6 +156,10 @@ hr {
   margin-bottom: 12px !important;
 }
 
+.push-half-top {
+  margin-top: 12px !important;
+}
+
 .push-bottom {
   margin-bottom: 24px !important;
 }
@@ -166,6 +174,10 @@ hr {
 
 .push-half-left {
   margin-left: 12px !important;
+}
+
+.push-half-right {
+  margin-right: 12px !important;
 }
 
 .push-half-top {
@@ -196,6 +208,7 @@ hr {
     font-size: 2.125rem; // 34px
   }
 }
+
 
 .list-header {
   font-family: 'acumin-pro-extra-condensed', sans-serif;
@@ -240,6 +253,12 @@ hr {
   }
 }
 
+.icon {
+  fill: #fff;
+  height: 16px;
+  width: 12px;
+}
+
 // Buttons
 .btn {
   @extend .font-family-base;
@@ -275,6 +294,12 @@ hr {
     border-color: #979797;
   }
 
+  &.btn-white {
+    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+  }
+
   &.btn.btn-blue,
   &.btn.btn-primary {
     color: #fff;
@@ -295,6 +320,18 @@ hr {
 
     &:hover {
       background-color: #979797;
+      color: #fff;
+    }
+  }
+
+  &.btn-white.btn-outline {
+    background: transparent;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+
+    &:hover {
+      background-color: transparent;
       color: #fff;
     }
   }
@@ -330,4 +367,19 @@ hr {
   &.label-info {
     background-color: #b6dee6;
   }
+}
+
+
+// Gross styles Jake is adding to make things work instead of pulling in crds-styles 
+@media screen and (min-width: 480px) {
+h1 {
+  font-size: 3.9875rem;
+}
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.1;
+  color: #4d4d4d;
 }
