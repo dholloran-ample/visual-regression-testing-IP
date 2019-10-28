@@ -133,7 +133,7 @@ export class CrdsTitheChallenge {
 
   public render() {
     if (!this.shouldShowComponent()) return null;
-    return <div>{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
+    return <div class="tithe-challenge">{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
   }
 
   public renderNotStarted() {
