@@ -41,7 +41,7 @@ export class GlobalNav {
   }
 
   authAttemptedCallback() {
-    this.host.shadowRoot.querySelector('my-site').setAttribute('auth-init', 'true');
+    this.injectMySiteComponent();
   }
 
   authChangeCallback() {
@@ -60,6 +60,19 @@ export class GlobalNav {
   isNavOpen() {
     const navNames = ['main-nav', 'my-site', 'give-nav', 'profile-nav'];
     return navNames.includes(this.openNavName);
+  }
+
+  injectMySiteComponent() {
+    var mySiteElement = this.host.shadowRoot.querySelector('my-site');
+    if (mySiteElement) {
+      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token'))
+        return;
+      mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
+    } else {
+      this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
+        this.auth.token ? this.auth.token.access_token.accessToken : ''
+      }></my-site>`;
+    }
   }
 
   toggleNav(event, navName, navRequiresAuth: boolean = false) {
@@ -151,7 +164,6 @@ export class GlobalNav {
                   onClick={event => this.toggleNav(event, 'my-site')}
                   data-automation-id="sh-my-site"
                 >
-                <my-site auth-token auth-init="false"></my-site>
                 </a>
 
                 <a

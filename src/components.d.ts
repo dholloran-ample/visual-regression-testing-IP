@@ -9,9 +9,6 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   Response,
 } from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
-import {
-  Site,
-} from './components/crds-shared-header/profile-nav/my-site/my-site-interface';
 
 export namespace Components {
   interface CrdsGreeting {
@@ -90,10 +87,7 @@ export namespace Components {
     'promoData': string;
   }
   interface MySite {
-    'authInit': boolean;
     'authToken': string;
-    'displaySite': Site;
-    'nearestSite': Site;
   }
   interface NavCtas {
     'data': string;
@@ -340,10 +334,7 @@ declare namespace LocalJSX {
     'promoData'?: string;
   }
   interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {
-    'authInit'?: boolean;
     'authToken'?: string;
-    'displaySite'?: Site;
-    'nearestSite'?: Site;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
