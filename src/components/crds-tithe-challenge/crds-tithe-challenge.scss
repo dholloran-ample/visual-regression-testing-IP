@@ -7,6 +7,10 @@
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
 @import "../../shared/shared.scss";
 
+:host {
+  margin-bottom: 32px;
+}
+
 .progress {
   box-shadow: none;
   height: 0.5rem;
@@ -14,9 +18,7 @@
 
 .progress-bar {
   box-shadow: none;
-  
 }
-
 
 .tithe-container {
   height: auto;
