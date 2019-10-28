@@ -112,6 +112,7 @@ export class MySite {
   private async loggedInUser() {
     await this.getUserSites();
     if (!this.user.closestSite) {
+      this.promptsDisabled = true;
       await this.getClosestSite();
       this.setClosestSite(this.nearestSiteID);
     }
