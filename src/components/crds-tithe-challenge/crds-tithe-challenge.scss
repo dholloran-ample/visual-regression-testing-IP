@@ -98,6 +98,19 @@ a label {
     cursor: pointer;
 }
 
-.finished {
+.text-finished {
   color: #1B303D;
+}
+
+.feeling-dropdown {
+  display: flex !important;
+}
+
+.mobile-dropdown {
+  display: flex;
+  margin: auto;
+  @media screen and (min-width: $screen-sm) {
+    
+    margin: 0;
+  }
 }
