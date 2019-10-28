@@ -10,6 +10,7 @@ import { Utils } from '../../../../shared/utils';
 import { SvgSrc } from '../../../../shared/svgSrc';
 import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlocks';
 import toastr from 'toastr';
+import { tsImportEqualsDeclaration } from '@babel/types';
 
 @Component({
   tag: 'my-site',
@@ -19,16 +20,17 @@ import toastr from 'toastr';
 export class MySite {
   private apolloClient: ApolloClient<{}> = null;
   private sites: any;
-  private nearestSite: Site;
+
   private arrow: HTMLElement;
   private popper: HTMLElement;
   private popperControl: any;
   private openPopperAutomatically: boolean = false;
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
-  private displaySite: Site;
   private mutationObserver: MutationObserver;
 
+  @Prop() displaySite: Site;
+  @Prop() nearestSite: Site;
   @Prop() authToken: string;
   @Prop() authInit: boolean;
   @State() user: MySiteUser = null;
@@ -44,22 +46,24 @@ export class MySite {
     }
   }
 
+  @Watch('authInit')
+  authInitHandler(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.fetchSite();
+    }
+  }
+
   public componentWillLoad() {
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     toastr.options.escapeHtml = false;
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
-    var promises = [
-      this.getSites(),
-      this.contentBlockHandler.getCopy(),
-      this.authToken ? this.loggedInUser() : this.loggedOutUser()
-    ];
-
-    return Promise.all(promises);
+    this.getSites();
+    this.contentBlockHandler.getCopy();
+    if(this.authInit) this.fetchSite();
   }
 
   public async componentWillRender() {
-    if (this.authToken && !this.user) await this.loggedInUser();
     if (this.shouldShowComponent()) {
       this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
       return this.getDirectionsUrl(this.displaySite);
@@ -106,8 +110,13 @@ export class MySite {
     if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(), 100);
   }
 
+  private fetchSite() {
+    if(this.authToken) this.loggedInUser();
+    else this.loggedOutUser();
+  }
+
   private async loggedOutUser() {
-    await this.getClosestSite();
+    this.getClosestSite();
   }
 
   private async loggedInUser() {
@@ -163,7 +172,7 @@ export class MySite {
       .query({ query: GET_USER })
       .then(response => {
         this.user = response.data.user;
-        if (this.user.closestSite) { 
+        if (this.user.closestSite) {
           this.nearestSite = this.user.closestSite;
         }
         this.nearestSiteID = Number(this.user.closestSite.id);
@@ -187,13 +196,13 @@ export class MySite {
   }
 
   private async getClosestSite(): Promise<any> {
-    this.nearestSiteID = this.getSiteFromCookie() || await this.calculateClosestSite();
+    this.nearestSiteID = this.getSiteFromCookie() || (await this.calculateClosestSite());
     await this.getSiteContent(this.nearestSiteID);
   }
 
   private getSiteFromCookie(): number {
-    const siteId =  Number(Utils.getCookie('nearestSiteId'));
-    if(siteId) this.promptsDisabled = true;
+    const siteId = Number(Utils.getCookie('nearestSiteId'));
+    if (siteId) this.promptsDisabled = true;
     return siteId;
   }
 
@@ -323,7 +332,7 @@ export class MySite {
   }
 
   private shouldShowComponent(): boolean {
-    return (this.authInit && !!this.nearestSiteID) || !!this.user;
+    return !!this.sites && ((this.userHasSite() && !!this.user.site) || !!this.nearestSite);
   }
 
   public renderPopover() {
@@ -361,7 +370,9 @@ export class MySite {
           }}
         />
         <div class="card-block text-left">
-          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
+          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
+            {this.displaySite.name}
+          </a>
           <div
             class="push-half-bottom"
             innerHTML={`${this.displaySite.address}`}

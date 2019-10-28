@@ -151,7 +151,7 @@ export class GlobalNav {
                   onClick={event => this.toggleNav(event, 'my-site')}
                   data-automation-id="sh-my-site"
                 >
-                <my-site auth-token auth-init="false" ></my-site>
+                <my-site auth-token auth-init="false"></my-site>
                 </a>
 
                 <a
