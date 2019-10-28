@@ -11,8 +11,7 @@ import {
   LOG_USER_RESPONSE
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
-import { promises } from 'fs';
-import { listenerCount } from 'cluster';
+import { Analytics } from '../../shared/analytics';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -24,6 +23,9 @@ export class CrdsTitheChallenge {
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
+  private debug = true;
+  private analytics: Analytics = new Analytics(this.debug, this.constructor.name);
+
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
@@ -56,6 +58,7 @@ export class CrdsTitheChallenge {
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
+      this.analytics.setUser(response.data.user);
     });
   }
 
@@ -152,6 +155,7 @@ export class CrdsTitheChallenge {
             class="btn btn-blue schedule-btn"
             type="button"
             onClick={() => {
+              this.analytics.trackUrlClicked('/give', {contentBlock: 'tithe-encourage'});
               window.location.href = '/give';
             }}
           >
