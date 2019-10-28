@@ -12,6 +12,7 @@ import {
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
 import { Analytics } from '../../shared/analytics';
+import { Utils } from '../../shared/utils';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -23,8 +24,8 @@ export class CrdsTitheChallenge {
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
-  private debug = true;
-  private analytics: Analytics = new Analytics(this.debug, this.constructor.name);
+  private debug = false;
+  private analytics: Analytics = null;
 
 
   @State() user: TitheUser = null;
@@ -54,11 +55,15 @@ export class CrdsTitheChallenge {
     if (!this.isUserInChallenge()) return; //exit because we cant do anything else at this point
     if (!this.user.donations) return this.getUserDonations();
   }
+  
+  public componentDidLoad() {
+    Utils.trackInView(this.host, this.constructor.name, this.isUserActive.bind(this));
+  }
 
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
-      this.analytics.setUser(response.data.user);
+      this.analytics = new Analytics(this.debug, this, response.data.user);
     });
   }
 
@@ -131,6 +136,7 @@ export class CrdsTitheChallenge {
 
   private handleFeelingSelected(feeling) {
     this.selectedFeeling = feeling;
+    this.analytics.track(`${this.constructor.name}FeelingSelected`, feeling);
     this.logUserResponse();
   }
 
@@ -151,34 +157,6 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
-<<<<<<< HEAD
-          <button
-            class="btn btn-blue schedule-btn"
-            type="button"
-            onClick={() => {
-              this.analytics.trackUrlClicked('/give', {contentBlock: 'tithe-encourage'});
-              window.location.href = '/give';
-            }}
-          >
-            Schedule your tithe now
-          </button>
-          <button
-            class="btn btn-white btn-outline"
-            type="button"
-            onClick={() => {
-              console.log('redirect to brians message from 10/27');
-            }}
-          >
-            Watch a message from Brian
-          </button>
-          <br />
-          <a class="text-gray-light push-half-top inline-block" href="">
-            What's the 90 Day Tithe Test?
-          </a>
-          <br />
-=======
-
->>>>>>> development
         </div>
       </div>
     );

@@ -1,31 +1,25 @@
 export class Analytics {
   private analytics = window['analytics'] || {};
   private debug;
-  private component;
-  private user = 'not logged in';
+  private componentName;
+  private user;
 
   constructor(debug = false, component, user?){
     this.debug = debug;
-    this.component = component;
-    this.user = user;
+    this.componentName = component.constructor.name;
+    user ? this.user = user : 'not logged in';
   }
 
-  setUser(user){
-    this.user = user;
-    this.log(`user set to ${this.user.toString()}`);
-  }
-
-  trackUrlClicked(url, data?){
+  track(action, payload){
     try {
-      this.analytics.track("UrlClicked", {
-        component: this.component.name,
-        data: data,
-        url: url,
+      this.analytics.track(action, {
+        component: this.componentName,
+        data: payload,
         user: this.user
       })
-      this.log({url, data});
+      this.log({action, payload});
     } catch {
-      this.logError({url, data});
+      this.logError({action, payload});
     }
   }
 
