@@ -148,29 +148,7 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
-          <button
-            class="btn btn-blue schedule-btn"
-            type="button"
-            onClick={() => {
-              window.location.href = '/give';
-            }}
-          >
-            Schedule your tithe now
-          </button>
-          <button
-            class="btn btn-white btn-outline"
-            type="button"
-            onClick={() => {
-              console.log('redirect to brians message from 10/27');
-            }}
-          >
-            Watch a message from Brian
-          </button>
-          <br />
-          <a class="text-gray-light push-half-top inline-block" href="">
-            What's the 90 Day Tithe Test?
-          </a>
-          <br />
+          
         </div>
       </div>
     );
@@ -196,11 +174,14 @@ export class CrdsTitheChallenge {
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
 
-          <div class="push-top">
+          <div class="progress-container">
             <div class="meter">
-              <span style={{ width: `${this.getProgress()}%` }} />
+              <span style={{ width: `${this.getProgress()}%` }}></span>
+              <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
+                <div class="user-img"></div> 
+              </div>   
             </div>
-            <div class="d-flex">
+            <div class="d-flex push-half-top">
               <p class="text-white text-uppercase">start</p><p class="text-finished text-uppercase ml-auto">finished</p>
             </div>
            
