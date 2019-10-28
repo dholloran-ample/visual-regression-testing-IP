@@ -11,8 +11,6 @@ import {
   LOG_USER_RESPONSE
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
-import { promises } from 'fs';
-import { listenerCount } from 'cluster';
 
 @Component({
   tag: 'crds-tithe-challenge',
