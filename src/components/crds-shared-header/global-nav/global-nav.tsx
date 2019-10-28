@@ -46,7 +46,7 @@ export class GlobalNav {
 
   authChangeCallback() {
     this.isAuthenticated = this.auth.authenticated;
-    this.host.shadowRoot.querySelector('my-site').setAttribute('auth-token', this.auth.token && this.auth.token.access_token.accessToken);
+    this.host.shadowRoot && this.host.shadowRoot.querySelector('my-site').setAttribute('auth-token', this.auth.token && this.auth.token.access_token.accessToken);
     if (!this.isAuthenticated) {
       this.redirectToRoot();
     }
@@ -63,7 +63,7 @@ export class GlobalNav {
   }
 
   toggleNav(event, navName, navRequiresAuth: boolean = false) {
-    const path = event.composedPath(event.target);
+    const path = event.composedPath && event.composedPath(event.target);
     if (path && path.find(el => el.className == 'popper open')) return (this.preventClose = true);
     if (this.openNavName === navName) {
       event.preventDefault();
@@ -84,7 +84,7 @@ export class GlobalNav {
 
   @Listen('click', { target: 'window' })
   closeNav(event) {
-    const path = event.composedPath(event.target);
+    const path = event.composedPath && event.composedPath(event.target);
     if (path && path.find(el => el.className === this.openNavName)) return;
     if (this.preventClose) return (this.preventClose = false);
     if (this.isNavOpen()) {
