@@ -112,10 +112,9 @@ export class MySite {
   private async loggedInUser() {
     await this.getUserSites();
     if (!this.user.closestSite) {
-      this.promptsDisabled = true;
       await this.getClosestSite();
       this.setClosestSite(this.nearestSiteID);
-    }
+    } else this.promptsDisabled = true;
   }
 
   private handlePopperOpen() {
@@ -163,7 +162,7 @@ export class MySite {
       .query({ query: GET_USER })
       .then(response => {
         this.user = response.data.user;
-        if (this.user.closestSite) { 
+        if (this.user.closestSite) {
           this.nearestSite = this.user.closestSite;
         }
         this.nearestSiteID = Number(this.user.closestSite.id);
@@ -187,13 +186,13 @@ export class MySite {
   }
 
   private async getClosestSite(): Promise<any> {
-    this.nearestSiteID = this.getSiteFromCookie() || await this.calculateClosestSite();
+    this.nearestSiteID = this.getSiteFromCookie() || (await this.calculateClosestSite());
     await this.getSiteContent(this.nearestSiteID);
   }
 
   private getSiteFromCookie(): number {
-    const siteId =  Number(Utils.getCookie('nearestSiteId'));
-    if(siteId) this.promptsDisabled = true;
+    const siteId = Number(Utils.getCookie('nearestSiteId'));
+    if (siteId) this.promptsDisabled = true;
     return siteId;
   }
 
@@ -323,7 +322,7 @@ export class MySite {
   }
 
   private shouldShowComponent(): boolean {
-    return (!!this.nearestSiteID) || !!this.user;
+    return !!this.nearestSiteID || !!this.user;
   }
 
   public renderPopover() {
@@ -361,7 +360,9 @@ export class MySite {
           }}
         />
         <div class="card-block text-left">
-          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
+          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
+            {this.displaySite.name}
+          </a>
           <div
             class="push-half-bottom"
             innerHTML={`${this.displaySite.address}`}
