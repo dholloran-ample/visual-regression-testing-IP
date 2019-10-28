@@ -12,5 +12,6 @@ export interface Site {
   openHours: string;
   mapUrl: string;
   imageUrl: string;
+  qualifiedUrl: string
 }
 

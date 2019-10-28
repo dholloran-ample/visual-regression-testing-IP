@@ -163,9 +163,9 @@ export class MySite {
       .query({ query: GET_USER })
       .then(response => {
         this.user = response.data.user;
-        if (this.user.closestSite) { 
+        if (this.user.closestSite) {
           this.nearestSite = this.user.closestSite;
-          this.disablePrompts();
+          this.promptsDisabled = true;
         }
         this.nearestSiteID = Number(this.user.closestSite.id);
         return;
@@ -189,7 +189,7 @@ export class MySite {
 
   private async getClosestSite(): Promise<any> {
     this.nearestSiteID = Number(Utils.getCookie('nearestSiteId'));
-    if (this.nearestSiteID) this.disablePrompts();
+    if (this.nearestSiteID) this.promptsDisabled = true;
     else await this.calculateClosestSite();
     await this.getSiteContent(this.nearestSiteID);
   }
@@ -358,7 +358,9 @@ export class MySite {
           }}
         />
         <div class="card-block text-left">
-          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
+          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
+            {this.displaySite.name}
+          </a>
           <div
             class="push-half-bottom"
             innerHTML={`${this.displaySite.address}`}
