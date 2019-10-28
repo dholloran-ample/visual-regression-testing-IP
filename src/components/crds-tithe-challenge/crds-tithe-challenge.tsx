@@ -195,18 +195,15 @@ export class CrdsTitheChallenge {
               })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
-          <div>
-                    
-            <div class="meter push-half-top">
-                        
-              <span style={{ width: `${this.getProgress()}%` }} />
-                      
-            </div>
+
+          <div class="push-top">
+            <div class="meter">
+              <span style={{ width: `${this.getProgress()}%` }} />
+            </div>
             <div class="d-flex">
-              <p class="text-white text-uppercase">start</p>
-              <p class="text-gray-dark text-uppercase ml-auto">finished</p>
+              <p class="text-white text-uppercase">start</p><p class="text-finished text-uppercase ml-auto">finished</p>
             </div>
-                      
+           
           </div>
         </div>
       </div>
@@ -215,11 +212,12 @@ export class CrdsTitheChallenge {
 
   public renderFeelingSelection() {
     return (
-      <div class="d-flex">
+      <div class="d-flex push-top">
+        <div class="mobile-dropdown">
         <p class="text-white push-half-right">I'm feeling</p>
         <div id="feelingsDropdown" class="dropdown" role="presentation">
           <button
-            class="btn btn-blue dropdown-toggle"
+            class="btn btn-cyan dropdown-toggle feeling-dropdown"
             type="button"
             onClick={() => {
               this.toggleDropdown();
@@ -237,6 +235,7 @@ export class CrdsTitheChallenge {
               </li>
             ))}
           </ul>
+        </div>
         </div>
       </div>
     );
