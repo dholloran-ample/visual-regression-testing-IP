@@ -188,7 +188,9 @@ export class MySite {
   }
 
   private async getClosestSite(): Promise<any> {
-    this.nearestSiteID = Number(Utils.getCookie('nearestSiteId') || (await this.calculateClosestSite()));
+    this.nearestSiteID = Number(Utils.getCookie('nearestSiteId'));
+    if (this.nearestSiteID) this.disablePrompts();
+    else await this.calculateClosestSite();
     await this.getSiteContent(this.nearestSiteID);
   }
 
