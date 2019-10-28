@@ -148,29 +148,7 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
-          <button
-            class="btn btn-blue schedule-btn"
-            type="button"
-            onClick={() => {
-              window.location.href = '/give';
-            }}
-          >
-            Schedule your tithe now
-          </button>
-          <button
-            class="btn btn-white btn-outline"
-            type="button"
-            onClick={() => {
-              window.location.href = "https://www.crossroads.net/media/series/the-blessed-life/gods-money-test-or-the-blessed-life-week-2?autoPlay=true&sound=11";
-            }}
-          >
-            Watch a message from Brian
-          </button>
-          <br />
-          <a class="text-gray-light push-half-top inline-block" href="">
-            What's the 90 Day Tithe Test?
-          </a>
-          <br />
+
         </div>
       </div>
     );
@@ -195,7 +173,6 @@ export class CrdsTitheChallenge {
               })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
-
           <div class="push-top">
             <div class="meter">
               <span style={{ width: `${this.getProgress()}%` }} />
