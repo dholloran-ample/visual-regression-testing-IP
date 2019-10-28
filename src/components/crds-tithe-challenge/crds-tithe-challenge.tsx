@@ -23,7 +23,6 @@ export class CrdsTitheChallenge {
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
 
-
   @State() user: TitheUser = null;
   @Prop() authToken: string;
   @Prop() selectedFeeling: Response;
