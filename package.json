@@ -11,7 +11,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --docs --prod",
+    "build": "stencil build --docs",
     "clean": "rimraf dist www",
     "deploy": "echo 'deploy'",
     "start": "stencil build --dev --watch --serve",
