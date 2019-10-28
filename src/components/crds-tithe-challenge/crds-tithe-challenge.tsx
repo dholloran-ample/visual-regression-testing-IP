@@ -161,7 +161,7 @@ export class CrdsTitheChallenge {
             class="btn btn-white btn-outline"
             type="button"
             onClick={() => {
-              console.log('redirect to brians message from 10/27');
+              window.location.href = "https://www.crossroads.net/media/series/the-blessed-life/gods-money-test-or-the-blessed-life-week-2?autoPlay=true&sound=11";
             }}
           >
             Watch a message from Brian
