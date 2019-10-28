@@ -112,3 +112,20 @@ a label {
     margin: 0;
   }
 }
+
+.user-img-container {
+  text-align: left;
+  transform: rotate(180deg);
+}
+
+.user-img {
+  background-color: black;
+  width: 56px;
+  height: 56px;
+  transform: translateY(22px);
+  border-radius: 50%;
+}
+
+.progress-container {
+  margin-top: 50px;
+}
