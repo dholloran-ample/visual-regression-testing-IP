@@ -163,7 +163,10 @@ export class MySite {
       .query({ query: GET_USER })
       .then(response => {
         this.user = response.data.user;
-        if (this.user.closestSite) this.nearestSite = this.user.closestSite;
+        if (this.user.closestSite) { 
+          this.nearestSite = this.user.closestSite;
+          this.disablePrompts();
+        }
         this.nearestSiteID = Number(this.user.closestSite.id);
         return;
       })
