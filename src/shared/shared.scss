@@ -300,6 +300,12 @@ hr {
     border-color: #fff;
   }
 
+  &.btn-cyan {
+    color: #fff;
+    background-color: #0095d9;
+    border-color: #0095d9;
+  }
+
   &.btn.btn-blue,
   &.btn.btn-primary {
     color: #fff;
@@ -369,8 +375,10 @@ hr {
   }
 }
 
+h1 {
+  font-size: 2.75rem;
+}
 
-// Gross styles Jake is adding to make things work instead of pulling in crds-styles 
 @media screen and (min-width: 480px) {
 h1 {
   font-size: 3.9875rem;

@@ -30,8 +30,7 @@ export class MySite {
   private mutationObserver: MutationObserver;
 
   @Prop() authToken: string;
-  @Prop() defaultName: string;
-  @Prop() user: MySiteUser = null;
+  @State() user: MySiteUser = null;
   @State() nearestSiteID: number;
   @State() promptsDisabled: boolean = false;
   @State() popperOpen: boolean = false;
@@ -45,17 +44,21 @@ export class MySite {
   }
 
   public componentWillLoad() {
-    toastr.options.escapeHtml = false;
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
+    toastr.options.escapeHtml = false;
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
-    var promises = [this.getSites(), this.contentBlockHandler.getCopy()];
-    if (!this.authToken) promises.push(this.loggedOutUser());
-    else promises.push(this.loggedInUser());
+    var promises = [
+      this.getSites(),
+      this.contentBlockHandler.getCopy(),
+      this.authToken ? this.loggedInUser() : this.loggedOutUser()
+    ];
+
     return Promise.all(promises);
   }
 
-  public componentWillRender() {
+  public async componentWillRender() {
+    if (this.authToken && !this.user) this.loggedInUser();
     if (this.shouldShowComponent()) {
       this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
       return this.getDirectionsUrl(this.displaySite);
@@ -79,6 +82,8 @@ export class MySite {
 
     if (this.openPopperAutomatically) {
       this.handlePopperOpen();
+      const mySiteContainerEl: any = this.host.parentElement;
+      mySiteContainerEl.click();
       this.openPopperAutomatically = false;
     }
 
@@ -88,19 +93,7 @@ export class MySite {
     });
 
     document.addEventListener('click', (e: any) => {
-      function composedPath(el) {
-        var path = [];
-        while (el) {
-          path.push(el);
-          if (el.tagName === 'HTML') {
-            path.push(document);
-            path.push(window);
-            return path;
-          }
-          el = el.parentElement;
-        }
-      }
-      var path = e.composedPath(e.target);
+      const path = e.composedPath(e.target);
       if (path && path.find(el => el.className === 'my-site-container')) return;
       this.handlePopperClose();
     });
@@ -119,23 +112,10 @@ export class MySite {
   private async loggedInUser() {
     await this.getUserSites();
     if (!this.user.closestSite) {
+      this.promptsDisabled = true;
       await this.getClosestSite();
       this.setClosestSite(this.nearestSiteID);
     }
-  }
-
-  private getUserSites(): Promise<any> {
-    return this.apolloClient
-      .query({ query: GET_USER })
-      .then(response => {
-        this.user = response.data.user;
-        if (this.user.closestSite) this.nearestSite = this.user.closestSite;
-        this.nearestSiteID = Number(this.user.closestSite.id);
-        return;
-      })
-      .catch(err => {
-        this.logError(err);
-      });
   }
 
   private handlePopperOpen() {
@@ -146,7 +126,12 @@ export class MySite {
     document.body.style.overflow = 'hidden';
     this.addTextCutout();
   }
- 
+
+  private handlePopperClose() {
+    this.popperOpen = false;
+    this.popper.classList.remove('open');
+    this.arrow.classList.remove('open');
+  }
 
   private addTextCutout() {
     if (!this.host) return;
@@ -163,14 +148,6 @@ export class MySite {
     mapImageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
-  private handlePopperClose() {
-    this.popperOpen = false;
-    this.popper.classList.remove('open');
-    this.arrow.classList.remove('open');
-  }
-
-  /** Stencil Personalization Components Defaults **/
-  // This lets unit tests capture and confirm errors rather than listening in on console.error
   private logError(err) {
     console.error(err);
   }
@@ -179,6 +156,22 @@ export class MySite {
     this.handlePopperClose();
     this.promptsDisabled = true;
     Utils.setCookie('disableMySitePrompts', 'true', 365);
+  }
+
+  private getUserSites(): Promise<any> {
+    return this.apolloClient
+      .query({ query: GET_USER })
+      .then(response => {
+        this.user = response.data.user;
+        if (this.user.closestSite) { 
+          this.nearestSite = this.user.closestSite;
+        }
+        this.nearestSiteID = Number(this.user.closestSite.id);
+        return;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
   }
 
   private getSites(): Promise<any> {
@@ -194,12 +187,17 @@ export class MySite {
   }
 
   private async getClosestSite(): Promise<any> {
-    this.nearestSiteID = Number(Utils.getCookie('nearestSiteId') || (await this.calculateClosestSite()));
+    this.nearestSiteID = this.getSiteFromCookie() || await this.calculateClosestSite();
     await this.getSiteContent(this.nearestSiteID);
   }
 
+  private getSiteFromCookie(): number {
+    const siteId =  Number(Utils.getCookie('nearestSiteId'));
+    if(siteId) this.promptsDisabled = true;
+    return siteId;
+  }
+
   private calculateClosestSite(): Promise<any> {
-    //uncomment when done testing.
     if (Utils.getCookie('promptedLocation') === 'true') return;
     Utils.setCookie('promptedLocation', 'true', 1);
     return this.getCurrentPosition()
@@ -210,10 +208,10 @@ export class MySite {
             query: GET_CLOSEST_SITE
           })
           .then(response => {
-            this.nearestSiteID = response.data.closestSite.id;
-            Utils.setCookie('nearestSiteId', this.nearestSiteID, 365);
+            var nearestSiteID = Number(response.data.closestSite.id);
+            Utils.setCookie('nearestSiteId', nearestSiteID, 365);
             this.openPopperAutomatically = true;
-            return this.nearestSiteID;
+            return nearestSiteID;
           })
           .catch(err => {
             this.logError(err);
@@ -227,7 +225,7 @@ export class MySite {
   private getSiteContent(id: number): Promise<any> {
     return this.apolloClient
       .query({
-        variables: { id: id },
+        variables: { id: Number(id) },
         query: GET_SITE_CONTENT
       })
       .then(response => {
@@ -266,7 +264,7 @@ export class MySite {
             You've set ${this.user.site.name} as the preferred site for you and your household. 
             <a href="/profile/personal">Update your profile</a> to cancel or change your site.
           </div>`
-        ); 
+        );
       })
       .catch(err => {
         this.logError(err);
@@ -302,26 +300,6 @@ export class MySite {
     win.focus();
   }
 
-  public renderPopover() {
-    return (
-      <div
-        class="popper"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0.85)), url(${Utils.imgixify(
-            this.displaySite.imageUrl + '?auto=format'
-          )}`,
-          backgroundSize: `cover`,
-          backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
-        }}
-      >
-        {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
-        {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
-        {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
-        {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
-      </div>
-    );
-  }
-
   private shouldShowUpdateSitePrompt(): boolean {
     return this.userHasSite() && this.nearestSiteID !== Number(this.user.site.id) && !this.promptsDisabled;
   }
@@ -345,7 +323,27 @@ export class MySite {
   }
 
   private shouldShowComponent(): boolean {
-    return !!this.nearestSiteID || !!this.user;
+    return (!!this.nearestSiteID) || !!this.user;
+  }
+
+  public renderPopover() {
+    return (
+      <div
+        class="popper"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0.85)), url(${Utils.imgixify(
+            this.displaySite.imageUrl + '?auto=format'
+          )}`,
+          backgroundSize: `cover`,
+          backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
+        }}
+      >
+        {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
+        {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
+        {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
+        {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
+      </div>
+    );
   }
 
   private renderSiteDetails() {
@@ -363,7 +361,7 @@ export class MySite {
           }}
         />
         <div class="card-block text-left">
-          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
+          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
           <div
             class="push-half-bottom"
             innerHTML={`${this.displaySite.address}`}
@@ -401,7 +399,6 @@ export class MySite {
       </div>
     );
   }
-  
 
   private renderAnywhereSiteContent() {
     return (

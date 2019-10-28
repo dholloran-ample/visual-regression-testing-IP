@@ -7,7 +7,7 @@
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
 @import "../../shared/shared.scss";
 
-:host {
+.tithe-challenge {
   margin-bottom: 32px;
 }
 
@@ -98,6 +98,19 @@ a label {
     cursor: pointer;
 }
 
-.finished {
+.text-finished {
   color: #1B303D;
+}
+
+.feeling-dropdown {
+  display: flex !important;
+}
+
+.mobile-dropdown {
+  display: flex;
+  margin: auto;
+  @media screen and (min-width: $screen-sm) {
+    
+    margin: 0;
+  }
 }
