@@ -6,7 +6,9 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  Response,
+} from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
 
 export namespace Components {
   interface CrdsGreeting {
@@ -67,6 +69,10 @@ export namespace Components {
     'label': string;
     'src': string;
   }
+  interface CrdsTitheChallenge {
+    'authToken': string;
+    'selectedFeeling': Response;
+  }
   interface GiveNav {
     'data': any;
     'isNavShowing': boolean;
@@ -79,6 +85,9 @@ export namespace Components {
     'data': any;
     'isNavShowing': boolean;
     'promoData': string;
+  }
+  interface MySite {
+    'authToken': string;
   }
   interface NavCtas {
     'data': string;
@@ -171,6 +180,12 @@ declare global {
     new (): HTMLCrdsSubscribeElement;
   };
 
+  interface HTMLCrdsTitheChallengeElement extends Components.CrdsTitheChallenge, HTMLStencilElement {}
+  var HTMLCrdsTitheChallengeElement: {
+    prototype: HTMLCrdsTitheChallengeElement;
+    new (): HTMLCrdsTitheChallengeElement;
+  };
+
   interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
   var HTMLGiveNavElement: {
     prototype: HTMLGiveNavElement;
@@ -187,6 +202,12 @@ declare global {
   var HTMLMainNavElement: {
     prototype: HTMLMainNavElement;
     new (): HTMLMainNavElement;
+  };
+
+  interface HTMLMySiteElement extends Components.MySite, HTMLStencilElement {}
+  var HTMLMySiteElement: {
+    prototype: HTMLMySiteElement;
+    new (): HTMLMySiteElement;
   };
 
   interface HTMLNavCtasElement extends Components.NavCtas, HTMLStencilElement {}
@@ -224,9 +245,11 @@ declare global {
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
+    'crds-tithe-challenge': HTMLCrdsTitheChallengeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
+    'my-site': HTMLMySiteElement;
     'nav-ctas': HTMLNavCtasElement;
     'nav-section': HTMLNavSectionElement;
     'nav-section-subnav': HTMLNavSectionSubnavElement;
@@ -293,6 +316,10 @@ declare namespace LocalJSX {
     'label'?: string;
     'src'?: string;
   }
+  interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
+    'authToken'?: string;
+    'selectedFeeling'?: Response;
+  }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
     'isNavShowing'?: boolean;
@@ -305,6 +332,9 @@ declare namespace LocalJSX {
     'data'?: any;
     'isNavShowing'?: boolean;
     'promoData'?: string;
+  }
+  interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {
+    'authToken'?: string;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
@@ -339,9 +369,11 @@ declare namespace LocalJSX {
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
+    'crds-tithe-challenge': CrdsTitheChallenge;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'main-nav': MainNav;
+    'my-site': MySite;
     'nav-ctas': NavCtas;
     'nav-section': NavSection;
     'nav-section-subnav': NavSectionSubnav;

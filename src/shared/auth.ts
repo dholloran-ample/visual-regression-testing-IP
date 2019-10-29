@@ -23,7 +23,7 @@ export class Auth {
 
   constructor(config: any = {}) {
     this.config = config;
-    this.analytics = window['analytics'] || false;
+    this.analytics = window['analytics'];
     const oktaConfig: CrdsOktaConfig = {
       clientId: config.okta_client_id,
       issuer: config.okta_issuer,
@@ -40,20 +40,25 @@ export class Auth {
       oktaConfig: oktaConfig,
       mpConfig: mpConfig,
       logging: config.logging || false,
-      providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp]
+      providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
+      env: config.env == 'production' ? '' : config.env
     };
     this.authService = new CrdsAuthenticationService(authConfig);
   }
 
-  listen(callback) {
+  listen(successCallback, alwaysCallback) {
     this.authService.authenticated().subscribe(token => {
-      if (!token) return (this.authenticated = false);
+      if (!token) {
+        alwaysCallback(this);
+        return (this.authenticated = false);
+      }
       this.authenticated = true;
       this.token = token;
       this.isMp = token.provider == CrdsAuthenticationProviders.Mp;
       this.isOkta = token.provider == CrdsAuthenticationProviders.Okta;
       this.updateCurrentUser();
-      callback(this);
+      alwaysCallback(this);
+      successCallback(this);
     });
   }
 
@@ -74,10 +79,11 @@ export class Auth {
 
     const userId = this.getUserId();
     const userName = this.getUser();
-    if (this.analytics)
+    if (this.analytics) {
       this.analytics.identify(userId, {
         name: userName
       });
+    }
 
     return (this.currentUser = {
       id: userId,

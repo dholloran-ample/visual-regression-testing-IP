@@ -21,15 +21,31 @@ export class ContentBlockHandler {
       });
   }
 
-  public getContentBlock(slug: string): HTMLDivElement {
+  public getContentBlock(slug: string, replace?: { [key: string]: string }): HTMLDivElement {
     if (!this.copy) return null;
-    const contentBlock = this.copy.find(c => c.slug === slug);
+    var contentBlock = this.copy.find(c => c.slug === slug);
     if (!contentBlock) return;
+    if (replace)
+    Object.keys(replace).forEach(key => {
+      contentBlock.content = contentBlock.content.replace(`{${key}}`, replace[key]);
+    });
     return <div innerHTML={contentBlock.content.toString()} />;
+  }
+
+  public getContentBlocksBySlugPartial(slugPartial: string): ContentBlock[] {
+    if (!this.copy) return null;
+    let foundBlocks: ContentBlock[] = [];
+    this.copy.map(block => {
+      if (block.slug.includes(slugPartial)){
+        foundBlocks.push(block);
+      }
+    })
+    return foundBlocks;
   }
 }
 
 export interface ContentBlock {
   slug: string;
   content: string;
+  title: string;
 }

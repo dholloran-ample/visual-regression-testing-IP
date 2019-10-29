@@ -117,12 +117,6 @@ describe('<global-nav>', () => {
   });
 
   describe('Tests toggleNav()', () => {
-    it('Checks event propagation stopped', () =>{
-      this.component.toggleNav(this.fakeEvent, 'fake-nav');
-
-      expect(this.fakeEvent.stopPropagation).toBeCalledTimes(1);
-    });
-
     it('Checks open menu is toggled closed', () => {
       this.component.openNavName = 'give-nav';
 

@@ -3,6 +3,7 @@ import { SiteHappenings } from '../site-happenings';
 describe('<crds-site-happenings> Event handlers', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
+    this.happenings.analytics = {};
     this.happenings.contentfulSites = [
       'Churchwide',
       'Columbus',
