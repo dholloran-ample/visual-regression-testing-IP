@@ -118,6 +118,10 @@ export class GlobalNav {
     return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`;
   }
 
+  giveData() {
+    return (this.data as any).give
+  }
+
   /* Render elements */
   render() {
     return (
@@ -166,15 +170,24 @@ export class GlobalNav {
                 >
                 </a>
 
-                <a
+                {!this.giveData().children && <a
+                  href={this.giveData().href}
+                  class="give-container"
+                  data-label={this.giveData().title}
+                  data-automation-id="sh-give"
+                >
+                  <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
+                </a>}
+
+                {this.giveData().children && <a
                   class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'give-nav')}
-                  data-label="give"
+                  data-label={this.giveData().title}
                   data-automation-id="sh-give"
                 >
                   <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
-                </a>
+                </a>}
 
                 <a
                   class={`profile-container ${this.openNavName === 'profile-nav' ? 'nav-is-showing' : ''}`}
@@ -192,7 +205,7 @@ export class GlobalNav {
               </div>
             </div>
 
-            <give-nav isNavShowing={this.openNavName === 'give-nav'} data={(this.data as any).give} />
+            {this.giveData().children && <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />}
             <profile-nav
               isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
               handleSignOut={this.handleSignOut.bind(this)}
