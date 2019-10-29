@@ -53,10 +53,6 @@ export class CrdsTitheChallenge {
     if (!this.isUserInChallenge()) return; //exit because we cant do anything else at this point
     if (!this.user.donations) return this.getUserDonations();
   }
-  
-  public componentDidLoad() {
-    Utils.trackInView(this.host, this.constructor.name, this.isUserActive.bind(this));
-  }
 
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
@@ -163,6 +159,7 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
+
         </div>
       </div>
     );
