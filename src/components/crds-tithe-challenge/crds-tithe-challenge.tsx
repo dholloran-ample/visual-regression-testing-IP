@@ -26,7 +26,7 @@ export class CrdsTitheChallenge {
   private lengthOfChallenge: number = 90;
   private debug = false;
   private analytics: Analytics = null;
-
+  private titheImage = "https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png";
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
@@ -112,7 +112,7 @@ export class CrdsTitheChallenge {
   }
 
   private toggleDropdown() {
-    const dropdownEl = this.host.shadowRoot.getElementById('feelingsDropdown');
+    const dropdownEl = this.host.shadowRoot.getElementById('feelingsDropdownList');
     if (dropdownEl.classList.contains('open')) dropdownEl.classList.remove('open');
     else dropdownEl.classList.add('open');
   }
@@ -151,7 +151,7 @@ export class CrdsTitheChallenge {
         <div class="m-auto text-center">
           <img
             class="tithe-logo"
-            src="https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png"
+            src={this.titheImage}
           />
         </div>
         <div class="divider" />
@@ -168,7 +168,7 @@ export class CrdsTitheChallenge {
         <div class="m-auto text-center">
           <img
             class="tithe-logo"
-            src="https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png"
+            src={this.titheImage}
           />
         </div>
         <div class="divider" />
@@ -200,7 +200,7 @@ export class CrdsTitheChallenge {
       <div class="d-flex push-top">
         <div class="mobile-dropdown">
         <p class="text-white push-half-right">I'm feeling</p>
-        <div id="feelingsDropdown" class="dropdown" role="presentation">
+        <div class="dropdown" role="presentation">
           <button
             class="btn btn-cyan dropdown-toggle feeling-dropdown"
             type="button"
@@ -213,10 +213,10 @@ export class CrdsTitheChallenge {
             #Blessed
             {SvgSrc.chevronDown()}
           </button>
-          <ul class="crds-list dropdown-menu">
+          <ul id="feelingsDropdownList" class="crds-list dropdown-menu">
             {this.feelings.map(feeling => (
               <li value={feeling.id} onClick={() => this.handleFeelingSelected(feeling)} data-name={feeling.value}>
-                <a>{feeling.value}</a>
+                <a class="dropdown-item">{feeling.value}</a>
               </li>
             ))}
           </ul>
