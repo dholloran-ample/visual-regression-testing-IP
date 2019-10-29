@@ -11,7 +11,6 @@ import {
   LOG_USER_RESPONSE
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
-import { Analytics } from '../../shared/analytics';
 import { Utils } from '../../shared/utils';
 
 @Component({
@@ -20,12 +19,11 @@ import { Utils } from '../../shared/utils';
   shadow: true
 })
 export class CrdsTitheChallenge {
+  private analytics = window['analytics'];
   private apolloClient: ApolloClient<{}> = null;
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
-  private debug = false;
-  private analytics: Analytics = null;
   private titheImage = "https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png";
 
   @State() user: TitheUser = null;
@@ -63,7 +61,6 @@ export class CrdsTitheChallenge {
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
-      this.analytics = new Analytics(this.debug, this, response.data.user);
     });
   }
 
@@ -136,8 +133,17 @@ export class CrdsTitheChallenge {
 
   private handleFeelingSelected(feeling) {
     this.selectedFeeling = feeling;
-    this.analytics.track(`${this.constructor.name}FeelingSelected`, feeling);
     this.logUserResponse();
+    try {
+      this.analytics.track(`FeelingSelected`, {
+        parent: this.host.tagName,
+        feeling: this.selectedFeeling,
+        user: this.user,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   public render() {
