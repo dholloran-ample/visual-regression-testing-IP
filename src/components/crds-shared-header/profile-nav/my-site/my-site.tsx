@@ -415,7 +415,9 @@ export class MySite {
         <h4 class="text-left text-uppercase">
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
-        <img class="map-image" src="https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg?auto=format,compress&w=300&h=225&fit=crop&ixlib=imgixjs-3.3.2?auto=format"/>
+        <div class="map-container">
+          <img class="map-image" src="https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg?auto=format,compress&w=300&h=225&fit=crop&ixlib=imgixjs-3.3.2?auto=format"/>
+        </div>
         <div class="card-block text-left">
           <a href="https://int.crossroads.net/oakley" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
           <div class="push-top"><strong>Live Stream Schedule:</strong></div>
