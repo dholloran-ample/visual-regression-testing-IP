@@ -11,8 +11,6 @@ import {
   LOG_USER_RESPONSE
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
-import { Analytics } from '../../shared/analytics';
-import { Utils } from '../../shared/utils';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -24,8 +22,6 @@ export class CrdsTitheChallenge {
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
-  private debug = false;
-  private analytics: Analytics = null;
   private titheImage = "https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png";
 
   @State() user: TitheUser = null;
@@ -55,15 +51,10 @@ export class CrdsTitheChallenge {
     if (!this.isUserInChallenge()) return; //exit because we cant do anything else at this point
     if (!this.user.donations) return this.getUserDonations();
   }
-  
-  public componentDidLoad() {
-    Utils.trackInView(this.host, this.constructor.name, this.isUserActive.bind(this));
-  }
 
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
-      this.analytics = new Analytics(this.debug, this, response.data.user);
     });
   }
 
@@ -136,7 +127,6 @@ export class CrdsTitheChallenge {
 
   private handleFeelingSelected(feeling) {
     this.selectedFeeling = feeling;
-    this.analytics.track(`${this.constructor.name}FeelingSelected`, feeling);
     this.logUserResponse();
   }
 
@@ -157,6 +147,7 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
+
         </div>
       </div>
     );
