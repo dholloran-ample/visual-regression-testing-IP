@@ -239,6 +239,12 @@ describe('<global-nav>', () => {
       expect(rendered[1].$tag$).toBe('main-nav');
     });
 
+    it('Checks element has no give-nav if children not defined', () => {
+      expect(this.component.data.children).toBeUndefined
+      const rendered = this.component.render();
+      expect(rendered[0].$children$[0].$children$[1].$tag$).not.toBe('give-nav');
+    })
+
     it('Checks element returned has give-nav', () => {
       this.component.data.give = { children: [] }
       const rendered = this.component.render();
