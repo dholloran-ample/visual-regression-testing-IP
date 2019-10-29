@@ -41,7 +41,7 @@ export class GlobalNav {
   }
 
   authAttemptedCallback() {
-    // this.injectMySiteComponent(); // removed for 90DTC deploy
+    this.injectMySiteComponent();
   }
 
   authChangeCallback() {
