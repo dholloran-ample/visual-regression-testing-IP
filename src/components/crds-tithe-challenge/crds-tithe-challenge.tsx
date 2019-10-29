@@ -11,6 +11,7 @@ import {
   LOG_USER_RESPONSE
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
+import { Utils } from '../../shared/utils';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -18,6 +19,7 @@ import { SvgSrc } from '../../shared/svgSrc';
   shadow: true
 })
 export class CrdsTitheChallenge {
+  private analytics = window['analytics'];
   private apolloClient: ApolloClient<{}> = null;
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
@@ -128,6 +130,16 @@ export class CrdsTitheChallenge {
   private handleFeelingSelected(feeling) {
     this.selectedFeeling = feeling;
     this.logUserResponse();
+    try {
+      this.analytics.track(`FeelingSelected`, {
+        parent: this.host.tagName,
+        feeling: this.selectedFeeling,
+        user: this.user,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   public render() {
