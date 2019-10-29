@@ -30,7 +30,8 @@ $arrow-height: 10px;
   text-decoration: none;
   padding-top: 12px;
   padding-bottom: 12px;
-
+  opacity: 0;
+  transition: opacity .45s .25s ease-in-out;
 
   svg {
     fill: $cr-white;
@@ -47,6 +48,10 @@ $arrow-height: 10px;
       height: 26px;
       width: 26px;
     }
+  }
+
+  &.fade-in {
+    opacity: 1;
   }
 
   border: none;
@@ -85,7 +90,7 @@ $arrow-height: 10px;
   }
 
   @media (min-width: $screen-sm) {
-    width: 300px;
+    width: 334px;
   }
 
   &.open {
@@ -152,12 +157,21 @@ $arrow-height: 10px;
   font-size: 14px;
 }
 
-.map-image {
-  height: auto;
-  width: 100%;
-  display: block;
+.map-container {
+  height: 0;
+  overflow: hidden;
+  padding-top: 38%;
+  position: relative;
 }
 
+.map-image {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
 .btn {
   background-color: transparent;
@@ -213,3 +227,8 @@ $arrow-height: 10px;
   text-decoration: none;
   color: white;
 }
+
+.site-details {
+  line-height: 18px;
+}
+

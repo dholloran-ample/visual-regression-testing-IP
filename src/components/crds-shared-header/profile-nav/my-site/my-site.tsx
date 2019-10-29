@@ -103,6 +103,10 @@ export class MySite {
 
   public componentDidRender() {
     if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(), 100);
+
+    setTimeout(() => {
+      this.host.shadowRoot.querySelector('.my-site').classList.add('fade-in');
+    }, 0);
   }
 
   private async loggedOutUser() {
@@ -330,11 +334,11 @@ export class MySite {
       <div
         class="popper"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0.85)), url(${Utils.imgixify(
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.75), rgb(0, 0, 0, 0.97)), url(${Utils.imgixify(
             this.displaySite.imageUrl ? this.displaySite.imageUrl + '?auto=format' : this.anywhereImage + '?auto=format'
           )}`,
           backgroundSize: `cover`,
-          // backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
+          backgroundPosition: `center`
         }}
       >
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
@@ -352,50 +356,54 @@ export class MySite {
         <h4 class="text-left text-uppercase">
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
-        <img
-          class="map-image"
-          src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
-          onClick={() => {
-            this.openInNewTab(this.displaySite.mapUrl);
-          }}
-        />
-        <div class="card-block text-left">
-          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
-            {this.displaySite.name}
-          </a>
-          <div
-            class="push-half-bottom"
-            innerHTML={`${this.displaySite.address}`}
+        <div class="map-container">
+          <img
+            class="map-image"
+            src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
             onClick={() => {
               this.openInNewTab(this.displaySite.mapUrl);
             }}
           />
-          <div>
-            <div>
-              <strong>Service Times:</strong>
-            </div>
-            <div innerHTML={this.displaySite.serviceTimes} />
-            <a
-              class="text-white underline"
+        </div>
+        <div class="card-block text-left">
+          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
+            {this.displaySite.name}
+          </a>
+          <div class="site-details">
+            <div
+              class="push-half-bottom"
+              innerHTML={`${this.displaySite.address}`}
               onClick={() => {
-                this.openInNewTab(this.directionsUrl);
+                this.openInNewTab(this.displaySite.mapUrl);
               }}
-            >
-              Get Directions
-            </a>
-          </div>
-          <div class="push-half-top">
-            <strong>Open Hours:</strong>
-            <div innerHTML={this.displaySite.openHours} />
-          </div>
+            />
+            <div>
+              <div>
+                <strong>Service Times:</strong>
+              </div>
+              <div innerHTML={this.displaySite.serviceTimes} />
+              <a
+                class="text-white underline"
+                onClick={() => {
+                  this.openInNewTab(this.directionsUrl);
+                }}
+              >
+                Get Directions
+              </a>
+            </div>
+            <div class="push-half-top">
+              <strong>Open Hours:</strong>
+              <div innerHTML={this.displaySite.openHours} />
+            </div>
 
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
+            <p class="push-half-top">
+              Not your site?{' '}
+              <a class="text-white" href="/profile/personal">
+                {' '}
+                Set your preferred site.
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -474,7 +482,7 @@ export class MySite {
         {this.contentBlockHandler.getContentBlock('MySiteSignInPrompt', { nearestSite: this.nearestSite.name })}
         <button
           onClick={() => {
-            location.href = '/signin';
+            location.href = '/profile';
           }}
           class="btn flush-sides"
         >
