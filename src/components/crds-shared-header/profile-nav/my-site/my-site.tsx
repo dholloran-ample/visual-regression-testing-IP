@@ -412,10 +412,12 @@ export class MySite {
           <a href="https://int.crossroads.net/oakley" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
           <div class="push-top"><strong>Live Stream Schedule:</strong></div>
           <p class="flush">Streaming hourly every Sunday from 8am - 10pm (EST)</p>
-          <div class="push-top"><strong>Ways To Connect</strong></div>
-          <a href="">Put yourself on the map</a><br />
-          <a href="">Join us on Facebook</a><br />
-          <a href="https://www.youtube.com/user/crdschurch">Check out our YouTube</a>
+          <div class="push-top"><strong>Ways To Connect:</strong></div>
+          <div class="anywhere-connect">
+            <a href="">Put yourself on the map</a><br />
+            <a href="">Join us on Facebook</a><br />
+            <a href="https://www.youtube.com/user/crdschurch">Check out our YouTube</a>
+          </div>
           <p class="push-half-top">Not your site?{' '}<a class="text-white" href="/profile/personal">{' '}Set your preferred site.</a></p>
         </div>
       </div>

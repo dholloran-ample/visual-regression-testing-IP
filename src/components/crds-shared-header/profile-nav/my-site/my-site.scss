@@ -209,7 +209,7 @@ $arrow-height: 10px;
   top: $top-padding - $arrow-height;
 }
 
-// .anywhere-connect{
-//   text-decoration: none;
-//   color: white;
-// }
+.anywhere-connect > a {
+  text-decoration: none;
+  color: white;
+}
