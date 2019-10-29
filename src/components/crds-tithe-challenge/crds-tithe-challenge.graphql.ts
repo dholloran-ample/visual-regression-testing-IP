@@ -18,7 +18,7 @@ export const GET_USER_GROUPS = gql`
 export const GET_DONATIONS = gql`
   query donations($startDate: Int!) {
     user {
-      donations(startDate: $startDate) {
+      donations(startDate: $startDate, statuses: [1,2,4], programs: [3, 146], includeCogiver: true) {
         id
         amount
         date
