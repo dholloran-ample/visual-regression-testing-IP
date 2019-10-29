@@ -27,7 +27,7 @@ export class MySite {
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
-  private mutationObserver: MutationObserver;
+  private anywhereImage: string = "https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg";
 
   @Prop() authToken: string;
   @State() user: MySiteUser = null;
@@ -331,10 +331,10 @@ export class MySite {
         class="popper"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0.85)), url(${Utils.imgixify(
-            this.displaySite.imageUrl + '?auto=format'
+            this.displaySite.imageUrl ? this.displaySite.imageUrl + '?auto=format' : this.anywhereImage + '?auto=format'
           )}`,
           backgroundSize: `cover`,
-          backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
+          // backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
         }}
       >
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
@@ -409,16 +409,14 @@ export class MySite {
         </h4>
         <img class="map-image" src="https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg?auto=format,compress&w=300&h=225&fit=crop&ixlib=imgixjs-3.3.2?auto=format"/>
         <div class="card-block text-left">
-          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
-          
-          
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
+          <a href="https://int.crossroads.net/oakley" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
+          <div class="push-top"><strong>Live Stream Schedule:</strong></div>
+          <p class="flush">Streaming hourly every Sunday from 8am - 10pm (EST)</p>
+          <div class="push-top"><strong>Ways To Connect</strong></div>
+          <a href="">Put yourself on the map</a><br />
+          <a href="">Join us on Facebook</a><br />
+          <a href="https://www.youtube.com/user/crdschurch">Check out our YouTube</a>
+          <p class="push-half-top">Not your site?{' '}<a class="text-white" href="/profile/personal">{' '}Set your preferred site.</a></p>
         </div>
       </div>
     );
