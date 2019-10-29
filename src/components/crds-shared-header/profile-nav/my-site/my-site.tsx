@@ -403,8 +403,23 @@ export class MySite {
 
   private renderAnywhereSiteContent() {
     return (
-      <div class="popover-content anywhere">
-        {this.contentBlockHandler.getContentBlock('MySiteAnywhereContent', { nearestSite: this.nearestSite.name })}
+      <div class="popover-content">
+        <h4 class="text-left text-uppercase">
+          {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
+        </h4>
+        <img class="map-image" src="https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg?auto=format,compress&w=300&h=225&fit=crop&ixlib=imgixjs-3.3.2?auto=format"/>
+        <div class="card-block text-left">
+          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
+          
+          
+          <p class="push-half-top">
+            Not your site?{' '}
+            <a class="text-white" href="/profile/personal">
+              {' '}
+              Set your preferred site.
+            </a>
+          </p>
+        </div>
       </div>
     );
   }
