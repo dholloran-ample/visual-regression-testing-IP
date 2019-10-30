@@ -72,6 +72,7 @@ export class CrdsTitheChallenge {
       })
       .then(response => {
         this.user.donations = response.data.user.donations;
+        this.user.recurringGifts = response.data.user.recurringGifts;
       });
   }
 
@@ -105,7 +106,7 @@ export class CrdsTitheChallenge {
   }
 
   private isUserActive() {
-    return this.user.donations.length;
+    return this.user.donations.length || this.user.recurringGifts.length;
   }
 
   private isUserInChallenge() {
