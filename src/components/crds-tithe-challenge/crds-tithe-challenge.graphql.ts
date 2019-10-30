@@ -23,6 +23,11 @@ export const GET_DONATIONS = gql`
         amount
         date
       }
+      recurringGifts (programs: [3, 146], active: true, includeCogiver:true) {
+        id
+        amount
+        active
+      }
     }
   }
 `;
