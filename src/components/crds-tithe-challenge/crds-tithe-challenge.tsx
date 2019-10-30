@@ -56,6 +56,7 @@ export class CrdsTitheChallenge {
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
+      console.log(this.user);
     });
   }
 
@@ -178,7 +179,11 @@ export class CrdsTitheChallenge {
             <div class="meter">
               <span style={{ width: `${this.getProgress()}%` }}></span>
               <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
-                <div class="user-img"></div> 
+                <div class="user-img" style={{
+                  backgroundImage: `url('https://${this.user.image}')
+                                   ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
+                  }}>
+                </div> 
               </div>   
             </div>
             <div class="d-flex push-half-top">

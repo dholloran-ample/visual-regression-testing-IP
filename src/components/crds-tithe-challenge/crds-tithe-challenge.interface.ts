@@ -1,5 +1,6 @@
 export interface TitheUser {
   nickName: string;
+  image: string;
   groups: Groups[];
   donations: Donation[]
 }
