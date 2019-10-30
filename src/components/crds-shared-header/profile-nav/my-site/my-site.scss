@@ -74,7 +74,7 @@ $arrow-height: 10px;
 
 .popper {
   display: none;
-  padding: 20px;
+  padding: 22px;
 
   @media (max-width: $screen-sm - 1) {
     top: $top-padding !important;
@@ -85,7 +85,7 @@ $arrow-height: 10px;
     color: black;
     height: calc(100% - 50px);
     transform: none !important;
-    // padding-bottom: 125px;
+    padding-bottom: 125px;
     overflow: scroll;
   }
 
@@ -160,7 +160,7 @@ $arrow-height: 10px;
 .map-container {
   height: 0;
   overflow: hidden;
-  padding-top: 38%;
+  padding-top: 38.5%;
   position: relative;
 }
 

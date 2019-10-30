@@ -334,7 +334,7 @@ export class MySite {
       <div
         class="popper"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.75), rgb(0, 0, 0, 0.97)), url(${Utils.imgixify(
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7), rgb(0, 0, 0, 0.97)), url(${Utils.imgixify(
             this.displaySite.imageUrl ? this.displaySite.imageUrl + '?auto=format' : this.anywhereImage + '?auto=format'
           )}`,
           backgroundSize: `cover`,
@@ -353,7 +353,7 @@ export class MySite {
     if (this.displaySite.id == '15') return this.renderAnywhereSiteContent();
     return (
       <div class="popover-content">
-        <h4 class="text-left text-uppercase">
+        <h4 class="text-left text-uppercase font-family-base-bold">
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
         <div class="map-container">
@@ -412,23 +412,25 @@ export class MySite {
   private renderAnywhereSiteContent() {
     return (
       <div class="popover-content">
-        <h4 class="text-left text-uppercase">
+        <h4 class="text-left text-uppercase font-family-base-bold">
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
         <div class="map-container">
-          <img class="map-image" src="https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg?auto=format,compress&w=300&h=225&fit=crop&ixlib=imgixjs-3.3.2?auto=format"/>
+          <img class="map-image" src={Utils.imgixify(`https://crds-media.imgix.net/1VXQmZC7UPLJNR9QWaN00/d03bcc64b2952059590b5e9e9c7d7030/Screen_Shot_2019-10-29_at_7.24.35_PM.png?auto=format`)} />
         </div>
         <div class="card-block text-left">
-          <a href="https://int.crossroads.net/oakley" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
-          <div class="push-top"><strong>Live Stream Schedule:</strong></div>
-          <p class="flush">Streaming hourly every Sunday from 8am - 10pm (EST)</p>
-          <div class="push-top"><strong>Ways To Connect:</strong></div>
-          <div class="anywhere-connect">
-            <a href="">Put yourself on the map</a><br />
-            <a href="">Join us on Facebook</a><br />
-            <a href="https://www.youtube.com/user/crdschurch">Check out our YouTube</a>
+          <a href="https://www.crossroads.net/live/" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
+          <div class="site-details">
+            <div><strong>Live Stream Schedule:</strong></div>
+            <p class="flush">Streaming hourly every Sunday from 8am - 10pm (EST)</p>
+            <div class="push-top"><strong>Ways To Connect:</strong></div>
+            <div class="anywhere-connect">
+              <a href="">Put yourself on the map</a><br />
+              <a href="">Join us on Facebook</a><br />
+              <a href="https://www.youtube.com/user/crdschurch">Check out our YouTube</a>
+            </div>
+            <p class="push-half-top">Not your site?{' '}<a class="text-white" href="/profile/personal">{' '}Set your preferred site.</a></p>
           </div>
-          <p class="push-half-top">Not your site?{' '}<a class="text-white" href="/profile/personal">{' '}Set your preferred site.</a></p>
         </div>
       </div>
     );
