@@ -39,6 +39,10 @@ export class CrdsTitheChallenge {
     }
   }
 
+  public componentDidLoad() {
+    Utils.trackInView(this.host, 'TitheChallenge', this.isUserInChallenge.bind(this));
+  }
+
   public componentWillLoad() {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'tithe challenge');
