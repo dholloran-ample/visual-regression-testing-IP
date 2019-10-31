@@ -221,7 +221,7 @@ $arrow-height: 10px;
 .arrow.open::before {
   border: $arrow-height solid transparent;
   border-top: 0;
-  border-bottom-color: $op-black;
+  border-bottom-color: rgba(0, 0, 0, 0.97);
   content: '';
   position: absolute;
   top: $top-padding - $arrow-height;
@@ -235,4 +235,5 @@ $arrow-height: 10px;
 .site-details {
   line-height: 18px;
 }
+
 

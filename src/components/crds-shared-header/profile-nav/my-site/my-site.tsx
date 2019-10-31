@@ -345,6 +345,7 @@ export class MySite {
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
         {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
+        
       </div>
     );
   }
@@ -355,7 +356,6 @@ export class MySite {
       <div class="test">
         
       <div class="popover-content">
-      <div style={{background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%)`, zIndex: `1`, top: `0`, position: `sticky`, height: `38px`, width: `100%`, display: `block`}}></div>
         <h4 class="text-left text-uppercase font-family-base-bold">
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>

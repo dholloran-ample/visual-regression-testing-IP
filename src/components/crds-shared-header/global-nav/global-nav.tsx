@@ -202,7 +202,7 @@ export class GlobalNav {
           </div>
         </header>
         <main-nav isNavShowing={this.openNavName === 'main-nav'} data={this.data.nav} promoData={this.data.promos} />
-
+        <div class={`popper-overlay ${this.isNavOpen() ? 'is-showing' : ''}`}></div>
         <div class={`close-nav ${this.isNavOpen() ? 'is-showing' : ''}`}>
           <div class="close-nav-icon" innerHTML={iconData.close.innerHTML} onClick={this.closeNav.bind(this)} />
         </div>
@@ -210,3 +210,5 @@ export class GlobalNav {
     );
   }
 }
+
+

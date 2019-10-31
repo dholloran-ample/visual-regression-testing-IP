@@ -217,3 +217,19 @@ $has-close-button: (
     width: $size;
   }
 }
+
+.popper-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.97) 0%,rgba(0, 0, 0, 0) 100%);
+  z-index: 3; 
+  top: 0; 
+  position: sticky;
+  height: 38px; 
+  width: 100%; 
+  display: none;
+
+  &.is-showing {
+    @media screen and (max-width: $screen-sm - 1) {
+      display: block;
+    }
+}
+}
