@@ -56,7 +56,6 @@ export class CrdsTitheChallenge {
   public getUser() {
     return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
-      console.log(this.user);
     });
   }
 
