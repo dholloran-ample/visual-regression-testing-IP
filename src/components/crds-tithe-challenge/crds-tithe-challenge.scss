@@ -172,3 +172,22 @@ a label {
     margin: 0;
   }
 }
+
+.user-img-container {
+  text-align: left;
+  transform: translateY(-22px);
+}
+
+.user-img {
+  background-color: #eee;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-left: auto;
+  transform: rotate(180deg) translateX(-1px);
+}
+
+.progress-container {
+  margin-top: 50px;
+}
