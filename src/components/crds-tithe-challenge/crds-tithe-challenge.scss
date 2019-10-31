@@ -115,15 +115,17 @@ a label {
 
 .user-img-container {
   text-align: left;
-  transform: translateY(-20px);
+  transform: translateY(-22px);
 }
 
 .user-img {
-  background-color: black;
+  background-color: #eee;
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  border: 2px solid white;
   margin-left: auto;
+  transform: rotate(180deg) translateX(-1px);
 }
 
 .progress-container {
