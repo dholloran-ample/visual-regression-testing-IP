@@ -352,7 +352,10 @@ export class MySite {
   private renderSiteDetails() {
     if (this.displaySite.id == '15') return this.renderAnywhereSiteContent();
     return (
+      <div class="test">
+        
       <div class="popover-content">
+      <div style={{background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%)`, zIndex: `1`, top: `0`, position: `sticky`, height: `38px`, width: `100%`, display: `block`}}></div>
         <h4 class="text-left text-uppercase font-family-base-bold">
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
@@ -406,6 +409,7 @@ export class MySite {
           </div>
         </div>
       </div>
+      </div>
     );
   }
 
@@ -422,7 +426,7 @@ export class MySite {
           <a href="https://www.crossroads.net/live/" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
           <div class="site-details">
             <div><strong>Live Stream Schedule:</strong></div>
-            <p class="flush">Streaming hourly every Sunday from 8am - 10pm (EST)</p>
+            <p class="flush">Hourly every Sunday<br />8am - 10pm (EST)</p>
             <div class="push-top"><strong>Ways To Connect:</strong></div>
             <div class="anywhere-connect">
               <a href="">Put yourself on the map</a><br />
