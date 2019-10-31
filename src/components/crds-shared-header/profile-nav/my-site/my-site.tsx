@@ -427,11 +427,16 @@ export class MySite {
           <div class="site-details">
             <div><strong>Live Stream Schedule:</strong></div>
             <p class="flush">Hourly every Sunday<br />8am - 10pm (EST)</p>
-            <div class="push-top"><strong>Ways To Connect:</strong></div>
-            <div class="anywhere-connect">
-              <a href="">Put yourself on the map</a><br />
-              <a href="">Join us on Facebook</a><br />
-              <a href="https://www.youtube.com/user/crdschurch">Check out our YouTube</a>
+            <div class="social-icons push-half-top">
+              <a href="https://www.facebook.com/crdsanywhere" target="_blank" class="text-center"> 
+                <img src="//d1tmclqz61gqwd.cloudfront.net/images/facebook.svg" alt="facebook account" title="facebook account" />
+              </a> 
+              <a href="https://www.youtube.com/user/crdschurch" target="_blank" class="text-center"> 
+                <img src="//d1tmclqz61gqwd.cloudfront.net/images/youtube.svg" alt="youtube account" title="youtube account" />
+              </a> 
+              <a href="https://www.instagram.com/crdsanywhere/" target="_blank" class="text-center"> 
+                <img src="//d1tmclqz61gqwd.cloudfront.net/images/instagram.svg" alt="instagram account" title="instagram account" />
+              </a>
             </div>
             <p class="push-half-top">Not your site?{' '}<a class="text-white" href="/profile/personal">{' '}Set your preferred site.</a></p>
           </div>

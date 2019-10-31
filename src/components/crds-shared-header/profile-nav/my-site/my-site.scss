@@ -236,4 +236,22 @@ $arrow-height: 10px;
   line-height: 18px;
 }
 
+div.social-icons a {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-right: 0.75rem;
+  background: #737373;
+  border-radius: 50%;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  padding: 10px;
+
+  & > img{
+    max-width: 100%;
+  }
+}
 
