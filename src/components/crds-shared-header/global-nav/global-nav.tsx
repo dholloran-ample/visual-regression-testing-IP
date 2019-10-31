@@ -46,6 +46,7 @@ export class GlobalNav {
 
   authChangeCallback() {
     this.isAuthenticated = this.auth.authenticated;
+    this.host && this.host.shadowRoot && this.host.shadowRoot.querySelector('my-site').setAttribute('auth-token', this.auth.token && this.auth.token.access_token.accessToken);
     if (!this.isAuthenticated) {
       this.redirectToRoot();
     }
@@ -61,7 +62,22 @@ export class GlobalNav {
     return navNames.includes(this.openNavName);
   }
 
+  injectMySiteComponent() {
+    var mySiteElement = this.host.shadowRoot.querySelector('my-site');
+    if (mySiteElement) {
+      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token'))
+        return;
+      mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
+    } else {
+      this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
+        this.auth.token ? this.auth.token.access_token.accessToken : ''
+      }></my-site>`;
+    }
+  }
+
   toggleNav(event, navName, navRequiresAuth: boolean = false) {
+    const path = event.composedPath && event.composedPath(event.target);
+    if (path && path.find(el => el.className == 'popper open')) return (this.preventClose = true);
     if (this.openNavName === navName) {
       event.preventDefault();
       this.openNavName = '';
@@ -81,10 +97,13 @@ export class GlobalNav {
 
   @Listen('click', { target: 'window' })
   closeNav(event) {
+    const path = event.composedPath && event.composedPath(event.target);
+    if (path && path.find(el => el.className === this.openNavName)) return;
     if (this.preventClose) return (this.preventClose = false);
     if (this.isNavOpen()) {
       event.preventDefault();
     }
+
     this.openNavName = '';
     document.body.setAttribute('style', 'overflow: scroll;');
   }
@@ -99,17 +118,8 @@ export class GlobalNav {
     return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`;
   }
 
-  injectMySiteComponent() {
-    var mySiteElement = this.host.shadowRoot.querySelector('my-site');
-    if (mySiteElement) {
-      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token'))
-        return;
-      mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
-    } else {
-      this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
-        this.auth.token ? this.auth.token.access_token.accessToken : ''
-      }></my-site>`;
-    }
+  giveData() {
+    return (this.data as any).give
   }
 
   /* Render elements */
@@ -157,17 +167,27 @@ export class GlobalNav {
                   class="my-site-container"
                   onClick={event => this.toggleNav(event, 'my-site')}
                   data-automation-id="sh-my-site"
-                />
+                >
+                </a>
 
-                <a
+                {!this.giveData().children && <a
+                  href={this.giveData().href}
+                  class="give-container"
+                  data-label={this.giveData().title}
+                  data-automation-id="sh-give"
+                >
+                  <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
+                </a>}
+
+                {this.giveData().children && <a
                   class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'give-nav')}
-                  data-label="give"
+                  data-label={this.giveData().title}
                   data-automation-id="sh-give"
                 >
                   <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
-                </a>
+                </a>}
 
                 <a
                   class={`profile-container ${this.openNavName === 'profile-nav' ? 'nav-is-showing' : ''}`}
@@ -185,7 +205,7 @@ export class GlobalNav {
               </div>
             </div>
 
-            <give-nav isNavShowing={this.openNavName === 'give-nav'} data={(this.data as any).give} />
+            {this.giveData().children && <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />}
             <profile-nav
               isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
               handleSignOut={this.handleSignOut.bind(this)}

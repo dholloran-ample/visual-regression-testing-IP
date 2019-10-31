@@ -11,8 +11,7 @@ import {
   LOG_USER_RESPONSE
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
-import { promises } from 'fs';
-import { listenerCount } from 'cluster';
+import { Utils } from '../../shared/utils';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -20,10 +19,12 @@ import { listenerCount } from 'cluster';
   shadow: true
 })
 export class CrdsTitheChallenge {
+  private analytics = window['analytics'];
   private apolloClient: ApolloClient<{}> = null;
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
+  private titheImage = "https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png";
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
@@ -36,6 +37,10 @@ export class CrdsTitheChallenge {
       this.apolloClient = CrdsApollo(newValue);
       this.getUser();
     }
+  }
+
+  public componentDidLoad() {
+    Utils.trackInView(this.host, 'TitheChallenge', this.isUserInChallenge.bind(this));
   }
 
   public componentWillLoad() {
@@ -67,6 +72,7 @@ export class CrdsTitheChallenge {
       })
       .then(response => {
         this.user.donations = response.data.user.donations;
+        this.user.recurringGifts = response.data.user.recurringGifts;
       });
   }
 
@@ -96,7 +102,7 @@ export class CrdsTitheChallenge {
   }
 
   private isUserActive() {
-    return this.user.donations.length;
+    return this.user.donations.length || this.user.recurringGifts.length;
   }
 
   private isUserInChallenge() {
@@ -104,7 +110,7 @@ export class CrdsTitheChallenge {
   }
 
   private toggleDropdown() {
-    const dropdownEl = this.host.shadowRoot.getElementById('feelingsDropdown');
+    const dropdownEl = this.host.shadowRoot.getElementById('feelingsDropdownList');
     if (dropdownEl.classList.contains('open')) dropdownEl.classList.remove('open');
     else dropdownEl.classList.add('open');
   }
@@ -129,11 +135,21 @@ export class CrdsTitheChallenge {
   private handleFeelingSelected(feeling) {
     this.selectedFeeling = feeling;
     this.logUserResponse();
+    try {
+      this.analytics.track(`FeelingSelected`, {
+        parent: this.host.tagName,
+        feeling: this.selectedFeeling,
+        user: this.user,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   public render() {
     if (!this.shouldShowComponent()) return null;
-    return <div>{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
+    return <div class="tithe-challenge">{this.isUserActive() ? this.renderStarted() : this.renderNotStarted()}</div>;
   }
 
   public renderNotStarted() {
@@ -142,13 +158,12 @@ export class CrdsTitheChallenge {
         <div class="m-auto text-center">
           <img
             class="tithe-logo"
-            src="https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png"
+            src={this.titheImage}
           />
         </div>
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
-          
         </div>
       </div>
     );
@@ -160,7 +175,7 @@ export class CrdsTitheChallenge {
         <div class="m-auto text-center">
           <img
             class="tithe-logo"
-            src="https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png"
+            src={this.titheImage}
           />
         </div>
         <div class="divider" />
@@ -200,7 +215,7 @@ export class CrdsTitheChallenge {
       <div class="d-flex push-top">
         <div class="mobile-dropdown">
         <p class="text-white push-half-right">I'm feeling</p>
-        <div id="feelingsDropdown" class="dropdown" role="presentation">
+        <div class="dropdown" role="presentation">
           <button
             class="btn btn-cyan dropdown-toggle feeling-dropdown"
             type="button"
@@ -213,10 +228,10 @@ export class CrdsTitheChallenge {
             #Blessed
             {SvgSrc.chevronDown()}
           </button>
-          <ul class="crds-list dropdown-menu">
+          <ul id="feelingsDropdownList" class="crds-list dropdown-menu">
             {this.feelings.map(feeling => (
               <li value={feeling.id} onClick={() => this.handleFeelingSelected(feeling)} data-name={feeling.value}>
-                <a>{feeling.value}</a>
+                <a class="dropdown-item">{feeling.value}</a>
               </li>
             ))}
           </ul>
