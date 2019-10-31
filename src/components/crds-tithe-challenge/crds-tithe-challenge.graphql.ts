@@ -19,12 +19,20 @@ export const GET_USER_GROUPS = gql`
 export const GET_DONATIONS = gql`
   query donations($startDate: Int!) {
     user {
-      donations(startDate: $startDate, statuses: [1,2,4], programs: [3, 146], includeCogiver: true) {
+      donations(
+        filters: {
+          startDate: $startDate
+          statuses: [1, 2, 4]
+          programs: [3, 146]
+          includeCogiver: true
+          includeSoftDonations: true
+        }
+      ) {
         id
         amount
         date
       }
-      recurringGifts (programs: [3, 146], active: true, includeCogiver:true) {
+      recurringGifts(programs: [3, 146], active: true, includeCogiver: true) {
         id
         amount
         active
