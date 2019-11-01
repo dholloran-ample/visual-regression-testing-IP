@@ -4,7 +4,7 @@ export const GET_USER_GROUPS = gql`
   {
     user {
       nickName
-      image
+      imageUrl
       groups(id: 198153) {
         endDate
         id

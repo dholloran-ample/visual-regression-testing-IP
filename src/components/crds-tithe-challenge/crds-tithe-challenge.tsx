@@ -194,7 +194,7 @@ export class CrdsTitheChallenge {
               <span style={{ width: `${this.getProgress()}%` }}></span>
               <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
                 <div class="user-img" style={{
-                  backgroundImage: `url('https://${this.user.image}')
+                  backgroundImage: `url('${this.user.imageUrl}?thumbnail=true')
                                    ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
                   }}>
                 </div> 
