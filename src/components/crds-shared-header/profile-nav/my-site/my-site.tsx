@@ -70,7 +70,7 @@ export class MySite {
     if (this.authToken && !this.user) this.loggedInUser();
     if (this.shouldShowComponent()) {
       this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
-      if(this.displaySite.id === '15') this.displaySite = this.anywhereSite;
+      if (this.displaySite.id === '15') this.displaySite = this.anywhereSite;
       return this.getDirectionsUrl(this.displaySite);
     }
   }
@@ -361,7 +361,7 @@ export class MySite {
 
   private renderSite() {
     return (
-      <div class="test">
+      <div>
         <div class="popover-content">
           <h4 class="text-left text-uppercase font-family-base-bold">
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
@@ -369,7 +369,7 @@ export class MySite {
           <div class="map-container">
             <img
               class="map-image"
-              src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
+              src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format&ar=263:100&fit=crop')}
               onClick={() => {
                 this.openInNewTab(this.displaySite.mapUrl);
               }}
