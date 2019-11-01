@@ -18,7 +18,18 @@ import toastr from 'toastr';
 })
 export class MySite {
   private apolloClient: ApolloClient<{}> = null;
-  private sites: any;
+  private sites: Site[];
+  private anywhereSite: Site = {
+    id: '15',
+    name: 'Anywhere',
+    mapImageUrl: `https://crds-media.imgix.net/1VXQmZC7UPLJNR9QWaN00/d03bcc64b2952059590b5e9e9c7d7030/Screen_Shot_2019-10-29_at_7.24.35_PM.png?auto=format`,
+    mapUrl: 'https://www.crossroads.net/live/',
+    imageUrl: 'https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg',
+    qualifiedUrl: 'https://www.crossroads.net/live/',
+    openHours: null,
+    serviceTimes: null,
+    address: null
+  };
   private nearestSite: Site;
   private arrow: HTMLElement;
   private popper: HTMLElement;
@@ -27,8 +38,6 @@ export class MySite {
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
-  private anywhereImage: string = "https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg";
-  private anywhereURL: string = "https://www.crossroads.net/live/";
 
   @Prop() authToken: string;
   @State() user: MySiteUser = null;
@@ -54,7 +63,6 @@ export class MySite {
       this.contentBlockHandler.getCopy(),
       this.authToken ? this.loggedInUser() : this.loggedOutUser()
     ];
-
     return Promise.all(promises);
   }
 
@@ -227,6 +235,11 @@ export class MySite {
   }
 
   private getSiteContent(id: number): Promise<any> {
+    if (id == 15) {
+      return new Promise(resolve => {
+        resolve((this.nearestSite = this.anywhereSite));
+      });
+    }
     return this.apolloClient
       .query({
         variables: { id: Number(id) },
@@ -336,7 +349,7 @@ export class MySite {
         class="popper"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7), rgb(0, 0, 0, 0.97)), url(${Utils.imgixify(
-            this.displaySite.imageUrl ? this.displaySite.imageUrl + '?auto=format' : this.anywhereImage + '?auto=format'
+            this.displaySite.imageUrl + '?auto=format'
           )}`,
           backgroundSize: `cover`,
           backgroundPosition: `center`
@@ -345,61 +358,34 @@ export class MySite {
         {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
         {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
         {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
-        {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
-        
+        {this.shouldShowSiteContent() ? this.renderSite() : null}
       </div>
     );
   }
 
-  private renderSiteDetails() {
-    if (this.displaySite.id == '15') return this.renderAnywhereSiteContent();
+  private renderSite() {
     return (
       <div class="test">
-        
-      <div class="popover-content">
-        <h4 class="text-left text-uppercase font-family-base-bold">
-          {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
-        </h4>
-        <div class="map-container">
-          <img
-            class="map-image"
-            src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
-            onClick={() => {
-              this.openInNewTab(this.displaySite.mapUrl);
-            }}
-          />
-        </div>
-        <div class="card-block text-left">
-          <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
-            {this.displaySite.name}
-          </a>
-          <div class="site-details">
-            <div
-              class="push-half-bottom"
-              innerHTML={`${this.displaySite.address}`}
+        <div class="popover-content">
+          <h4 class="text-left text-uppercase font-family-base-bold">
+            {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
+          </h4>
+          <div class="map-container">
+            <img
+              class="map-image"
+              src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
               onClick={() => {
                 this.openInNewTab(this.displaySite.mapUrl);
               }}
             />
-            <div>
-              <div>
-                <strong>Service Times:</strong>
-              </div>
-              <div innerHTML={this.displaySite.serviceTimes} />
-              <a
-                class="text-white underline"
-                onClick={() => {
-                  this.openInNewTab(this.directionsUrl);
-                }}
-              >
-                Get Directions
-              </a>
+          </div>
+          <div class="card-block text-left">
+            <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
+              {this.displaySite.name}
+            </a>
+            <div class="site-details">
+              {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
             </div>
-            <div class="push-half-top">
-              <strong>Open Hours:</strong>
-              <div innerHTML={this.displaySite.openHours} />
-            </div>
-
             <p class="push-half-top">
               Not your site?{' '}
               <a class="text-white" href="/profile/personal">
@@ -410,65 +396,56 @@ export class MySite {
           </div>
         </div>
       </div>
-      </div>
     );
   }
 
-  private renderAnywhereSiteContent() {
+  private renderSiteDetails() {
     return (
-      <div class="popover-content">
-        <h4 class="text-left text-uppercase font-family-base-bold">
-          {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
-        </h4>
-        <div class="map-container">
-          <img class="map-image" src={Utils.imgixify(`https://crds-media.imgix.net/1VXQmZC7UPLJNR9QWaN00/d03bcc64b2952059590b5e9e9c7d7030/Screen_Shot_2019-10-29_at_7.24.35_PM.png?auto=format`)} onClick={() => {
-              this.openInNewTab(this.anywhereURL) }} />
-        </div>
-        <div class="card-block text-left">
-          <a href={this.anywhereURL} class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
-          <div class="site-details">
-            <div><strong>Live Stream Schedule:</strong></div>
-            <p class="flush">Hourly every Sunday<br />8am - 10pm (EST)</p>
-            <div class="social-icons push-half-top">
-              <a href="https://www.facebook.com/crdsanywhere" target="_blank" class="text-center"> 
-                <img src="//d1tmclqz61gqwd.cloudfront.net/images/facebook.svg" alt="facebook account" title="facebook account" />
-              </a> 
-              <a href="https://www.youtube.com/user/crdschurch" target="_blank" class="text-center"> 
-                <img src="//d1tmclqz61gqwd.cloudfront.net/images/youtube.svg" alt="youtube account" title="youtube account" />
-              </a> 
-              <a href="https://www.instagram.com/crdsanywhere/" target="_blank" class="text-center"> 
-                <img src="//d1tmclqz61gqwd.cloudfront.net/images/instagram.svg" alt="instagram account" title="instagram account" />
-              </a>
-            </div>
-            <p class="push-half-top">Not your site?{' '}<a class="text-white" href="/profile/personal">{' '}Set your preferred site.</a></p>
+      <div>
+        {' '}
+        <div
+          class="push-half-bottom"
+          innerHTML={`${this.displaySite.address}`}
+          onClick={() => {
+            this.openInNewTab(this.displaySite.mapUrl);
+          }}
+        />
+        <div>
+          <div>
+            <strong>Service Times:</strong>
           </div>
+          <div innerHTML={this.displaySite.serviceTimes} />
+          <a
+            class="text-white underline"
+            onClick={() => {
+              this.openInNewTab(this.directionsUrl);
+            }}
+          >
+            Get Directions
+          </a>
+        </div>
+        <div class="push-half-top">
+          <strong>Open Hours:</strong>
+          <div innerHTML={this.displaySite.openHours} />
         </div>
       </div>
     );
   }
 
-  private renderAnywhereSiteUpdatePrompt() {
-    return (
-      <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteAnywherePrompt', {
-          userSite: this.displaySite.name
-        })}
-        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
-          Update My Site
-        </button>
-        <a onClick={() => this.disablePrompts()}>No, thanks</a>
-      </div>
-    );
+  private renderAnywhereSiteDetails() {
+    return this.contentBlockHandler.getContentBlock('MySiteAnywhereDetails');
   }
 
   private renderUpdateSitePrompt() {
-    if (this.nearestSite.id === '15') return this.renderAnywhereSiteUpdatePrompt();
     return (
       <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteUpdatePrompt', {
-          nearestSite: this.nearestSite.name,
-          userSite: this.user.site.name
-        })}
+        {this.contentBlockHandler.getContentBlock(
+          this.displaySite.id === '15' ? 'MySiteAnywherePrompt' : 'MySiteUpdatePrompt',
+          {
+            nearestSite: this.nearestSite.name,
+            userSite: this.user.site.name
+          }
+        )}
         <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
           Update My Site
         </button>
@@ -480,9 +457,12 @@ export class MySite {
   private renderSetSitePrompt() {
     return (
       <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteSetSitePrompt', {
-          nearestSite: this.nearestSite.name
-        })}
+        {this.contentBlockHandler.getContentBlock(
+          this.displaySite.id === '15' ? 'MySiteAnywhereSetSitePrompt' : 'MySiteSetSitePrompt',
+          {
+            nearestSite: this.nearestSite.name
+          }
+        )}
         <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
           Make it my preferred site
         </button>
@@ -494,7 +474,10 @@ export class MySite {
   private renderSignInPrompt() {
     return (
       <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteSignInPrompt', { nearestSite: this.nearestSite.name })}
+        {this.contentBlockHandler.getContentBlock(
+          this.displaySite.id === '15' ? 'MySiteAnywhereSignInPrompt' : 'MySiteSignInPrompt',
+          { nearestSite: this.nearestSite.name }
+        )}
         <button
           onClick={() => {
             location.href = '/profile';
