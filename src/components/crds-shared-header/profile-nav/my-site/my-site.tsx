@@ -436,7 +436,7 @@ export class MySite {
     return (
       <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock(
-          this.displaySite.id === '15' ? 'MySiteAnywherePrompt' : 'MySiteUpdatePrompt',
+          this.nearestSiteID === 15 ? 'MySiteAnywherePrompt' : 'MySiteUpdatePrompt',
           {
             nearestSite: this.nearestSite.name,
             userSite: this.user.site.name
@@ -454,7 +454,7 @@ export class MySite {
     return (
       <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock(
-          this.displaySite.id === '15' ? 'MySiteAnywhereSetSitePrompt' : 'MySiteSetSitePrompt',
+          this.nearestSiteID === 15 ? 'MySiteAnywhereSetSitePrompt' : 'MySiteSetSitePrompt',
           {
             nearestSite: this.nearestSite.name
           }
@@ -471,7 +471,7 @@ export class MySite {
     return (
       <div class="popover-prompt">
         {this.contentBlockHandler.getContentBlock(
-          this.displaySite.id === '15' ? 'MySiteAnywhereSignInPrompt' : 'MySiteSignInPrompt',
+          this.nearestSiteID === 15 ? 'MySiteAnywhereSignInPrompt' : 'MySiteSignInPrompt',
           { nearestSite: this.nearestSite.name }
         )}
         <button
