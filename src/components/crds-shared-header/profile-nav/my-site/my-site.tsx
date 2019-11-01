@@ -27,7 +27,6 @@ export class MySite {
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
-  private mutationObserver: MutationObserver;
 
   @Prop() authToken: string;
   @State() user: MySiteUser = null;
@@ -72,6 +71,7 @@ export class MySite {
     if (!reference || !this.popper) return;
     this.popperControl = new Popper(reference, this.popper, {
       placement: 'bottom',
+      eventsEnabled: false,
       modifiers: {
         offset: {
           offset: '20px',
