@@ -92,7 +92,7 @@ export class GlobalNav {
     }
     const overflow = Utils.isMobile() ? 'overflow: hidden' : 'overflow: scroll';
     this.preventClose = true;
-    const docStyle = this.isNavOpen() ? `${overflow}; position: absolute; width: 100vw;` : `${overflow}`;
+    const docStyle = this.isNavOpen() ? `${overflow}; position: absolute; width: 100vw;` : `overflow: scroll;`;
     document.body.setAttribute('style', docStyle);
   }
 
