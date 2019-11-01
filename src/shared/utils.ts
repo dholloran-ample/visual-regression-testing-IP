@@ -91,4 +91,8 @@ export class Utils {
 
     observer.observe(host);
   }
+
+  public static isMobile(): boolean {
+    return window.matchMedia(`(max-width: 768px)`).matches
+  }
 }
