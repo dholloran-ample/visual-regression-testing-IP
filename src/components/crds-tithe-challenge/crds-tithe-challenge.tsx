@@ -168,7 +168,6 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
-
         </div>
       </div>
     );
@@ -194,7 +193,8 @@ export class CrdsTitheChallenge {
               })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
-          <div class="push-top">
+
+          <div class="progress-container">
             <div class="meter">
               <span style={{ width: `${this.getProgress()}%` }}></span>
               <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
@@ -205,7 +205,7 @@ export class CrdsTitheChallenge {
                 </div> 
               </div>   
             </div>
-            <div class="d-flex">
+            <div class="d-flex push-half-top">
               <p class="text-white text-uppercase">start</p><p class="text-finished text-uppercase ml-auto">finished</p>
             </div>
            
