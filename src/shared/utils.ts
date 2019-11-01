@@ -36,7 +36,6 @@ export class Utils {
   }
 
   public static setCookie(name, value, days) {
-    console.log(name, value, days)
     var date = new Date();
     date.setTime(date.getTime() + days * 1440 * 60 * 1000);
     var expires = '; expires=' + date.toUTCString();
