@@ -1,8 +1,8 @@
 // @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
 // @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/nav-divider";
 // @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/reset-filter";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "../../shared/shared.scss";
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import '../../shared/shared.scss';
 
 .dropdown {
   position: relative;
@@ -17,20 +17,20 @@
   display: none;
   float: left;
   min-width: 10rem;
-  padding: .5rem 0;
-  margin: .125rem 0 0;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
   font-size: 1rem;
   color: #212529;
   text-align: left;
   list-style: none;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: .25rem;
-  a{
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  a {
     display: block;
     width: 100%;
-    padding: .25rem 1.5rem;
+    padding: 0.25rem 1.5rem;
     clear: both;
     font-weight: 400;
     color: #212529;
@@ -44,7 +44,7 @@
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: .25rem 1.5rem;
+  padding: 0.25rem 1.5rem;
   clear: both;
   font-weight: 400;
   color: #212529;
@@ -53,13 +53,12 @@
   background-color: transparent;
   border: 0;
 
-  &:hover{
+  &:hover {
     color: $dropdown-link-hover-color;
     text-decoration: none;
     background-color: lightgray;
   }
 }
-
 
 .dropdown-menu.open {
   display: block;
@@ -83,7 +82,7 @@
   flex-wrap: wrap;
   background-color: #274254;
   @media screen and (min-width: $screen-sm) {
-      height: 400px;
+    height: 400px;
   }
 }
 .divider {
@@ -91,9 +90,9 @@
   margin: auto;
   width: 85%;
   @media screen and (min-width: $screen-sm) {
-      height: 75%;
-      width: auto;
-      margin: auto 0;
+    height: 75%;
+    width: auto;
+    margin: auto 0;
   }
 }
 .m-auto {
@@ -115,15 +114,15 @@
   padding: 2.5rem 3rem;
   width: 100%;
   @media (min-width: $screen-sm) {
-      width: 55%;
-      text-align: left;
-      padding: 2.5rem 0;
+    width: 55%;
+    text-align: left;
+    padding: 2.5rem 0;
   }
 }
 .schedule-btn {
   padding: 13px 30px;
   @media screen and (min-width: 516px) {
-      margin-right: 12px;
+    margin-right: 12px;
   }
 }
 .tithe-logo {
@@ -131,33 +130,33 @@
   text-align: center;
   padding: 2.5rem 0;
   @media screen and (min-width: $screen-sm) {
-      max-width: 100%;
+    max-width: 100%;
   }
 }
 
 .meter {
-   height: 9px;  /* Can be anything */
-   width: auto;
-   position: relative;
-   background: linear-gradient(270deg, #FFFFFF 0%,#E09E06 15%,  #C05C04 35% ,  #57AFA9 55%, #0095D9 75%, #FFFFFF 100%);
-   transform: rotate(180deg);
+  height: 9px; /* Can be anything */
+  width: auto;
+  position: relative;
+  background: linear-gradient(270deg, #bf9f56 0%, #e09e06 10%, #c05c04 28%, #57afa9 55%, #0095d9 75%, #ffffff 100%);
+  transform: rotate(180deg);
 }
 .meter > span {
   width: 50%;
   display: block;
   height: 100%;
-  background-color: #1B303D;
+  background-color: #1b303d;
   position: absolute;
   overflow: hidden;
 }
 
 a,
 a label {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .text-finished {
-  color: #1B303D;
+  color: #1b303d;
 }
 
 .feeling-dropdown {
@@ -168,7 +167,25 @@ a label {
   display: flex;
   margin: auto;
   @media screen and (min-width: $screen-sm) {
-    
     margin: 0;
   }
+}
+
+.user-img-container {
+  transform: translateY(-22px);
+}
+
+.user-img {
+  background-color: #eee;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-left: auto;
+  transform: rotate(180deg) translateX(-1px);
+  background-size: contain;
+}
+
+.progress-container {
+  margin-top: 50px;
 }
