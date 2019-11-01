@@ -70,6 +70,7 @@ export class MySite {
     if (this.authToken && !this.user) this.loggedInUser();
     if (this.shouldShowComponent()) {
       this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
+      if(this.displaySite.id === '15') this.displaySite = this.anywhereSite;
       return this.getDirectionsUrl(this.displaySite);
     }
   }
@@ -235,11 +236,6 @@ export class MySite {
   }
 
   private getSiteContent(id: number): Promise<any> {
-    if (id == 15) {
-      return new Promise(resolve => {
-        resolve((this.nearestSite = this.anywhereSite));
-      });
-    }
     return this.apolloClient
       .query({
         variables: { id: Number(id) },
