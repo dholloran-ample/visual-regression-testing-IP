@@ -173,16 +173,6 @@ describe('<global-nav>', () => {
       expect(document.body.style.width).toBe('100vw');
     });
 
-    it('Checks expected doc style is set when nav toggled open on mobile', () => {
-      this.component.openNavName = '';
-
-      this.component.toggleNav(this.fakeEvent, 'main-nav');
-
-      expect(document.body.style.overflow).toBe('scroll');
-      expect(document.body.style.position).toBe('absolute');
-      expect(document.body.style.width).toBe('100vw');
-    });
-
     it('Checks expected doc style is set when nav changes', () => {
       this.component.openNavName = 'give-nav';
 
