@@ -24,7 +24,7 @@ export class CrdsTitheChallenge {
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
-  private titheImage = "https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png";
+  private titheImage = "https://crds-media.imgix.net/2kyAbv69Gp1iPwpNMlUcXx/8b4df043d517e714447f96fd43440c24/90DTT.svg";
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
