@@ -10,3 +10,12 @@ export const SET_SITE = gql`
     }
   }
 `;
+
+export const GET_COPY = gql`
+  query contentBlocks($categoryDescription: String) {
+    contentBlocks(filters: { category: $categoryDescription }) {
+      content
+      slug
+    }
+  }
+`;
