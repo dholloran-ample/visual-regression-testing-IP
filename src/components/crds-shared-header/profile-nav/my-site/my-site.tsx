@@ -28,6 +28,7 @@ export class MySite {
   private directionsUrl: string;
   private displaySite: Site;
   private anywhereImage: string = "https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg";
+  private anywhereURL: string = "https://www.crossroads.net/live/";
 
   @Prop() authToken: string;
   @State() user: MySiteUser = null;
@@ -420,10 +421,11 @@ export class MySite {
           {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
         </h4>
         <div class="map-container">
-          <img class="map-image" src={Utils.imgixify(`https://crds-media.imgix.net/1VXQmZC7UPLJNR9QWaN00/d03bcc64b2952059590b5e9e9c7d7030/Screen_Shot_2019-10-29_at_7.24.35_PM.png?auto=format`)} />
+          <img class="map-image" src={Utils.imgixify(`https://crds-media.imgix.net/1VXQmZC7UPLJNR9QWaN00/d03bcc64b2952059590b5e9e9c7d7030/Screen_Shot_2019-10-29_at_7.24.35_PM.png?auto=format`)} onClick={() => {
+              this.openInNewTab(this.anywhereURL) }} />
         </div>
         <div class="card-block text-left">
-          <a href="https://www.crossroads.net/live/" class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
+          <a href={this.anywhereURL} class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</a>
           <div class="site-details">
             <div><strong>Live Stream Schedule:</strong></div>
             <p class="flush">Hourly every Sunday<br />8am - 10pm (EST)</p>
