@@ -54,6 +54,8 @@ export class MySite {
   }
 
   public componentWillLoad() {
+    toastr.options.closeButton = true;
+    toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     toastr.options.escapeHtml = false;
     this.apolloClient = CrdsApollo(this.authToken);
