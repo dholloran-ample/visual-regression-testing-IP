@@ -84,6 +84,7 @@ export class MySite {
     if (!reference || !this.popper) return;
     this.popperControl = new Popper(reference, this.popper, {
       placement: 'bottom',
+      eventsEnabled: false,
       modifiers: {
         offset: {
           offset: '20px',
