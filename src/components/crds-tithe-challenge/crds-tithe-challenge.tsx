@@ -91,6 +91,10 @@ export class CrdsTitheChallenge {
     return 90 - this.getDaysDown();
   }
 
+  private getDayText() {
+    return this.getDaysDown() == 1 ? 'day' : 'days';
+  }
+
   private logUserResponse() {
     return this.apolloClient
       .mutate({
@@ -184,7 +188,8 @@ export class CrdsTitheChallenge {
             ? this.contentBlockHandler.getContentBlock('tithe-started', {
                 name: this.user.nickName,
                 daysDown: this.getDaysDown().toString(),
-                daysToGo: this.getDaysToGo().toString()
+                daysToGo: this.getDaysToGo().toString(),
+                dayText: this.getDayText()
               })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
