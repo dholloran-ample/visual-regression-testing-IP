@@ -3,6 +3,7 @@ import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
 import ApolloClient from 'apollo-client';
+import marked from 'marked';
 
 import Popper from 'popper.js';
 import { CrdsApollo } from '../../../../shared/apollo';
@@ -85,6 +86,7 @@ export class MySite {
     if (!reference || !this.popper) return;
     this.popperControl = new Popper(reference, this.popper, {
       placement: 'bottom',
+      eventsEnabled: false,
       modifiers: {
         offset: {
           offset: '20px',
@@ -437,7 +439,7 @@ export class MySite {
       return (
         <div class="push-half-top">
           <strong>Open Hours:</strong>
-          <div innerHTML={this.displaySite.openHours} />
+          <div innerHTML={marked(this.displaySite.openHours)} />
         </div>
       );
   }

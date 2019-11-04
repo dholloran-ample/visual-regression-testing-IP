@@ -168,7 +168,7 @@ describe('<global-nav>', () => {
 
       this.component.toggleNav(this.fakeEvent, 'main-nav');
 
-      expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('absolute');
       expect(document.body.style.width).toBe('100vw');
     });
@@ -180,7 +180,7 @@ describe('<global-nav>', () => {
 
       expect(this.component.openNavName).toBe('main-nav');
 
-      expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('absolute');
       expect(document.body.style.width).toBe('100vw');
     });
