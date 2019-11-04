@@ -3,6 +3,7 @@ import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
 import ApolloClient from 'apollo-client';
+import marked from 'marked';
 
 import Popper from 'popper.js';
 import { CrdsApollo } from '../../../../shared/apollo';
@@ -436,18 +437,23 @@ export class MySite {
     return (
       <div>
         {' '}
-        <div
-          class="push-half-bottom"
-          innerHTML={`${this.displaySite.address}`}
-          onClick={() => {
-            this.openInNewTab(this.displaySite.mapUrl);
-          }}
-        />
+        <div>
+          <div>
+            <strong>Address:</strong>
+          </div>
+          <div
+            class="push-half-bottom"
+            innerHTML={marked(`${this.displaySite.address}`)}
+            onClick={() => {
+              this.openInNewTab(this.displaySite.mapUrl);
+            }}
+          />
+        </div>
         <div>
           <div>
             <strong>Service Times:</strong>
           </div>
-          <div innerHTML={this.displaySite.serviceTimes} />
+          <div innerHTML={marked(this.displaySite.serviceTimes)} />
           <a
             class="text-white underline"
             onClick={() => {
@@ -459,7 +465,7 @@ export class MySite {
         </div>
         <div class="push-half-top">
           <strong>Open Hours:</strong>
-          <div innerHTML={this.displaySite.openHours} />
+          <div innerHTML={marked(this.displaySite.openHours)} />
         </div>
       </div>
     );
