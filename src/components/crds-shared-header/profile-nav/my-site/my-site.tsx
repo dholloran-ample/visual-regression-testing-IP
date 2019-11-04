@@ -17,6 +17,7 @@ import toastr from 'toastr';
   shadow: true
 })
 export class MySite {
+  private analytics = window['analytics'];
   private apolloClient: ApolloClient<{}> = null;
   private sites: Site[];
   private anywhereSite: Site = {
@@ -102,7 +103,15 @@ export class MySite {
 
     reference.addEventListener('click', () => {
       if (this.popperOpen) this.handlePopperClose();
-      else this.handlePopperOpen();
+      else { 
+          if(this.analytics) {
+            this.analytics.track('MySiteClicked', {
+              user: this.user && this.user.id,
+              siteIDShown: this.displaySite && this.displaySite.id || this.nearestSiteID
+            });
+          }
+        this.handlePopperOpen();
+      }
     });
 
     document.addEventListener('click', (e: any) => {
@@ -253,6 +262,12 @@ export class MySite {
   }
 
   private setClosestSite(id: number): Promise<any> {
+    if(this.analytics) {
+      this.analytics.track('MySiteClosestSiteSet', {
+        user: this.user && this.user.id,
+        closestSiteId: id
+      });
+    }
     return this.apolloClient
       .mutate({
         variables: { closestSiteID: id },
@@ -268,6 +283,12 @@ export class MySite {
 
   private setUserSite(siteId) {
     this.handlePopperClose();
+    if(this.analytics) {
+      this.analytics.track('MySiteSetUserSite', {
+        user: this.user && this.user.id,
+        siteID: siteId
+      });
+    }
     return this.apolloClient
       .mutate({
         variables: { siteId: siteId },
@@ -304,11 +325,24 @@ export class MySite {
 
   private getDirectionsUrl(siteContent: Site): Promise<string> {
     return this.getCurrentPosition().then((position: any) => {
+      if(this.analytics) {
+        this.analytics.track('MySiteGetLocationPermission', {
+          user: this.user && this.user.id,
+          response: 'User allowed Geolocation'
+        });
+      }
       return (this.directionsUrl = siteContent.mapUrl.replace(
         '/place/',
         `/dir/${position.coords.latitude},${position.coords.longitude}/`
       ));
-    });
+    }).catch(err => {
+      if(this.analytics) {
+        this.analytics.track('MySiteGetLocationPermission', {
+          response: err.message
+        });
+      }
+      return null;
+    })
   }
 
   private openInNewTab(url) {
