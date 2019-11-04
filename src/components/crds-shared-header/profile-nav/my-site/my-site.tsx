@@ -107,7 +107,6 @@ export class MySite {
       else {
         if (this.analytics) {
           this.analytics.track('MySiteClicked', {
-            user: this.user && this.user.id,
             siteIDShown: (this.displaySite && this.displaySite.id) || this.nearestSiteID
           });
         }
@@ -208,6 +207,10 @@ export class MySite {
     Utils.setCookie('promptedLocation', 'true', 1);
     return this.getCurrentPosition()
       .then((position: any) => {
+        if (this.analytics)
+          this.analytics.track('MySiteGetLocationPermission', {
+            response: 'User allowed Geolocation'
+          });
         return this.apolloClient
           .query({
             variables: { lat: position.coords.latitude, lng: position.coords.longitude },
@@ -224,6 +227,11 @@ export class MySite {
           });
       })
       .catch(err => {
+        if (this.analytics) {
+          this.analytics.track('MySiteGetLocationPermission', {
+            response: err.message
+          });
+        };
         this.logError(err);
       });
   }
@@ -245,7 +253,6 @@ export class MySite {
   private setClosestSite(id: number): Promise<any> {
     if (this.analytics) {
       this.analytics.track('MySiteClosestSiteSet', {
-        user: this.user && this.user.id,
         closestSiteId: id
       });
     }
@@ -266,7 +273,6 @@ export class MySite {
     this.handlePopperClose();
     if (this.analytics) {
       this.analytics.track('MySiteSetUserSite', {
-        user: this.user && this.user.id,
         siteID: siteId
       });
     }
@@ -305,27 +311,12 @@ export class MySite {
   }
 
   private getDirectionsUrl(siteContent: Site): Promise<string> {
-    return this.getCurrentPosition()
-      .then((position: any) => {
-        if (this.analytics) {
-          this.analytics.track('MySiteGetLocationPermission', {
-            user: this.user && this.user.id,
-            response: 'User allowed Geolocation'
-          });
-        }
-        return (this.directionsUrl = siteContent.mapUrl.replace(
-          '/place/',
-          `/dir/${position.coords.latitude},${position.coords.longitude}/`
-        ));
-      })
-      .catch(err => {
-        if (this.analytics) {
-          this.analytics.track('MySiteGetLocationPermission', {
-            response: err.message
-          });
-        }
-        return null;
-      });
+    return this.getCurrentPosition().then((position: any) => {
+      return (this.directionsUrl = siteContent.mapUrl.replace(
+        '/place/',
+        `/dir/${position.coords.latitude},${position.coords.longitude}/`
+      ));
+    });
   }
 
   private shouldShowUpdateSitePrompt(): boolean {

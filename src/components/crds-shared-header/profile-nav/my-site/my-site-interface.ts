@@ -1,5 +1,4 @@
 export interface MySiteUser {
-  id: String;
   site: Site;
   closestSite: Site;
 }
