@@ -171,10 +171,6 @@ $arrow-height: 10px;
   padding: 1rem;
 }
 
-#service-times p {
-  margin: 0;
-}
-
 .arrow.open::before {
   border: $arrow-height solid transparent;
   border-top: 0;
@@ -191,6 +187,9 @@ $arrow-height: 10px;
 
 .site-details {
   line-height: 18px;
+  & p {
+    margin: 0;
+  }
 }
 
 div.social-icons a {
