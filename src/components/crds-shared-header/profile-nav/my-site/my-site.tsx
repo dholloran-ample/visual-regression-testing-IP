@@ -104,13 +104,13 @@ export class MySite {
 
     reference.addEventListener('click', () => {
       if (this.popperOpen) this.handlePopperClose();
-      else { 
-          if(this.analytics) {
-            this.analytics.track('MySiteClicked', {
-              user: this.user && this.user.id,
-              siteIDShown: this.displaySite && this.displaySite.id || this.nearestSiteID
-            });
-          }
+      else {
+        if (this.analytics) {
+          this.analytics.track('MySiteClicked', {
+            user: this.user && this.user.id,
+            siteIDShown: (this.displaySite && this.displaySite.id) || this.nearestSiteID
+          });
+        }
         this.handlePopperOpen();
       }
     });
@@ -120,13 +120,9 @@ export class MySite {
       if (path && path.find(el => el.className === 'my-site-container')) return;
       this.handlePopperClose();
     });
-
-    window.addEventListener('resize', () => this.addTextCutout());
   }
 
   public componentDidRender() {
-    if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(), 100);
-
     setTimeout(() => {
       this.host.shadowRoot.querySelector('.my-site').classList.add('fade-in');
     }, 0);
@@ -150,28 +146,12 @@ export class MySite {
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
     document.body.style.overflow = 'hidden';
-    this.addTextCutout();
   }
 
   private handlePopperClose() {
     this.popperOpen = false;
     this.popper.classList.remove('open');
     this.arrow.classList.remove('open');
-  }
-
-  private addTextCutout() {
-    if (!this.host) return;
-    const siteNameEl: any = this.host.shadowRoot.querySelector('.site-name-overlap');
-    const mapImageEl: any = this.host.shadowRoot.querySelector('.map-image');
-    if (!siteNameEl || !mapImageEl) return;
-
-    const siteNamePos = siteNameEl.getBoundingClientRect();
-    const mapImagePos = mapImageEl.getBoundingClientRect();
-    const siteNameXPaddingAndMargin = 10;
-    const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin + 1;
-    const cutOutMinX = 16 - siteNameXPaddingAndMargin;
-    const cutOutMaxY = mapImagePos.height - 0.5 * siteNamePos.height;
-    mapImageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
   private logError(err) {
@@ -263,7 +243,7 @@ export class MySite {
   }
 
   private setClosestSite(id: number): Promise<any> {
-    if(this.analytics) {
+    if (this.analytics) {
       this.analytics.track('MySiteClosestSiteSet', {
         user: this.user && this.user.id,
         closestSiteId: id
@@ -284,7 +264,7 @@ export class MySite {
 
   private setUserSite(siteId) {
     this.handlePopperClose();
-    if(this.analytics) {
+    if (this.analytics) {
       this.analytics.track('MySiteSetUserSite', {
         user: this.user && this.user.id,
         siteID: siteId
@@ -325,30 +305,27 @@ export class MySite {
   }
 
   private getDirectionsUrl(siteContent: Site): Promise<string> {
-    return this.getCurrentPosition().then((position: any) => {
-      if(this.analytics) {
-        this.analytics.track('MySiteGetLocationPermission', {
-          user: this.user && this.user.id,
-          response: 'User allowed Geolocation'
-        });
-      }
-      return (this.directionsUrl = siteContent.mapUrl.replace(
-        '/place/',
-        `/dir/${position.coords.latitude},${position.coords.longitude}/`
-      ));
-    }).catch(err => {
-      if(this.analytics) {
-        this.analytics.track('MySiteGetLocationPermission', {
-          response: err.message
-        });
-      }
-      return null;
-    })
-  }
-
-  private openInNewTab(url) {
-    const win = window.open(url, '_blank');
-    win.focus();
+    return this.getCurrentPosition()
+      .then((position: any) => {
+        if (this.analytics) {
+          this.analytics.track('MySiteGetLocationPermission', {
+            user: this.user && this.user.id,
+            response: 'User allowed Geolocation'
+          });
+        }
+        return (this.directionsUrl = siteContent.mapUrl.replace(
+          '/place/',
+          `/dir/${position.coords.latitude},${position.coords.longitude}/`
+        ));
+      })
+      .catch(err => {
+        if (this.analytics) {
+          this.analytics.track('MySiteGetLocationPermission', {
+            response: err.message
+          });
+        }
+        return null;
+      });
   }
 
   private shouldShowUpdateSitePrompt(): boolean {
@@ -404,30 +381,22 @@ export class MySite {
           <h4 class="text-left text-uppercase font-family-base-bold">
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
           </h4>
-          <div class="map-container">
-            <img
-              class="map-image"
-              src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format&ar=263:100&fit=crop')}
-              onClick={() => {
-                this.openInNewTab(this.displaySite.mapUrl);
-              }}
-            />
+          <crds-image-title-cutout
+            imageUrl={this.displaySite.mapImageUrl}
+            imageHref={this.displaySite.mapUrl}
+            title={this.displaySite.name}
+            titleHref={this.displaySite.qualifiedUrl}
+          />
+          <div class="site-details">
+            {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
           </div>
-          <div class="card-block text-left">
-            <a href={this.displaySite.qualifiedUrl} class="text-white text-uppercase site-name-overlap">
-              {this.displaySite.name}
+          <p class="push-half-top">
+            Not your site?{' '}
+            <a class="text-white" href="/profile/personal">
+              {' '}
+              Set your preferred site.
             </a>
-            <div class="site-details">
-              {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
-            </div>
-            <p class="push-half-top">
-              Not your site?{' '}
-              <a class="text-white" href="/profile/personal">
-                {' '}
-                Set your preferred site.
-              </a>
-            </p>
-          </div>
+          </p>
         </div>
       </div>
     );
@@ -437,38 +406,56 @@ export class MySite {
     return (
       <div>
         {' '}
+        <div
+          class="push-half-bottom"
+          innerHTML={`${this.displaySite.address}`}
+          onClick={() => {
+            Utils.openInNewTab(this.displaySite.mapUrl);
+          }}
+        />
         <div>
-          <div>
-            <strong>Address:</strong>
-          </div>
-          <div
-            class="push-half-bottom"
-            innerHTML={marked(`${this.displaySite.address}`)}
-            onClick={() => {
-              this.openInNewTab(this.displaySite.mapUrl);
-            }}
-          />
+          {this.renderServiceHours()}
+          {this.renderOpenHours()}
         </div>
+      </div>
+    );
+  }
+
+  private renderServiceHours() {
+    return (
+      <div>
+        {' '}
         <div>
-          <div>
-            <strong>Service Times:</strong>
-          </div>
-          <div innerHTML={marked(this.displaySite.serviceTimes)} />
-          <a
-            class="text-white underline"
-            onClick={() => {
-              this.openInNewTab(this.directionsUrl);
-            }}
-          >
-            Get Directions
-          </a>
+          <strong>Service Times:</strong>
         </div>
+        <div innerHTML={this.displaySite.serviceTimes} />
+        {this.renderGetDirections()}
+      </div>
+    );
+  }
+
+  private renderOpenHours() {
+    if (this.displaySite.openHours)
+      return (
         <div class="push-half-top">
           <strong>Open Hours:</strong>
           <div innerHTML={marked(this.displaySite.openHours)} />
         </div>
-      </div>
-    );
+      );
+  }
+
+  private renderGetDirections() {
+    if (this.directionsUrl)
+      return (
+        <a
+          class="text-white underline"
+          onClick={() => {
+            Utils.openInNewTab(this.directionsUrl);
+          }}
+        >
+          Get Directions
+        </a>
+      );
   }
 
   private renderAnywhereSiteDetails() {

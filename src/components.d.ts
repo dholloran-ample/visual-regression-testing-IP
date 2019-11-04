@@ -36,6 +36,12 @@ export namespace Components {
     */
     'storageKey': string;
   }
+  interface CrdsImageTitleCutout {
+    'imageHref': string;
+    'imageUrl': string;
+    'title': string;
+    'titleHref': string;
+  }
   interface CrdsModal {
     'isActive': boolean;
     'label': string;
@@ -130,6 +136,12 @@ declare global {
   var HTMLCrdsHeartButtonElement: {
     prototype: HTMLCrdsHeartButtonElement;
     new (): HTMLCrdsHeartButtonElement;
+  };
+
+  interface HTMLCrdsImageTitleCutoutElement extends Components.CrdsImageTitleCutout, HTMLStencilElement {}
+  var HTMLCrdsImageTitleCutoutElement: {
+    prototype: HTMLCrdsImageTitleCutoutElement;
+    new (): HTMLCrdsImageTitleCutoutElement;
   };
 
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
@@ -237,6 +249,7 @@ declare global {
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
+    'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
@@ -282,6 +295,12 @@ declare namespace LocalJSX {
     * Cache key for localStorage
     */
     'storageKey'?: string;
+  }
+  interface CrdsImageTitleCutout extends JSXBase.HTMLAttributes<HTMLCrdsImageTitleCutoutElement> {
+    'imageHref'?: string;
+    'imageUrl'?: string;
+    'title'?: string;
+    'titleHref'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
@@ -361,6 +380,7 @@ declare namespace LocalJSX {
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-heart-button': CrdsHeartButton;
+    'crds-image-title-cutout': CrdsImageTitleCutout;
     'crds-modal': CrdsModal;
     'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
