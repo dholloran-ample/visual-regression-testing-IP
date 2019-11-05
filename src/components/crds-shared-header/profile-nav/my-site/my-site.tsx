@@ -86,7 +86,6 @@ export class MySite {
     if (!reference || !this.popper) return;
     this.popperControl = new Popper(reference, this.popper, {
       placement: 'bottom',
-      eventsEnabled: false,
       modifiers: {
         offset: {
           offset: '20px',
@@ -373,7 +372,7 @@ export class MySite {
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
           </h4>
           <crds-image-title-cutout
-            imageUrl={this.displaySite.mapImageUrl}
+            imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
             imageHref={this.displaySite.mapUrl}
             title={this.displaySite.name}
             titleHref={this.displaySite.qualifiedUrl}
