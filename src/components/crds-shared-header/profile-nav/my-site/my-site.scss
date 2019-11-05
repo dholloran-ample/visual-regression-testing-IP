@@ -4,9 +4,9 @@
 $op-black: rgba(black, 0.8);
 $arrow-height: 10px;
 
-@media screen and (max-width: 374px){
+@media screen and (max-width: 374px) {
   :host {
-  display: none;
+    display: none;
   }
 }
 
@@ -30,7 +30,7 @@ $arrow-height: 10px;
   padding-top: 12px;
   padding-bottom: 12px;
   opacity: 0;
-  transition: opacity .45s .25s ease-in-out;
+  transition: opacity 0.45s 0.25s ease-in-out;
 
   svg {
     fill: $cr-white;
@@ -56,7 +56,6 @@ $arrow-height: 10px;
   }
 
   border: none;
-
 }
 
 .my-site-name {
@@ -164,8 +163,16 @@ div.social-icons a {
   width: 36px;
   padding: 10px;
 
-  & > img{
+  & > img {
     max-width: 100%;
   }
 }
 
+.notification {
+  svg {
+    position: absolute;
+    width: 15px;
+    -webkit-transform: translate(30px, 10px);
+    transform: translate(-7px, -11px);
+  }
+}

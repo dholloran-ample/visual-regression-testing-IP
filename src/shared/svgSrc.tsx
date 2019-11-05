@@ -105,4 +105,24 @@ export class SvgSrc {
       </svg>
     );
   }
+
+  public static notificationRed() {
+    return (
+      <svg version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 510 510" class="">
+        <g>
+          <g>
+            <g id="error">
+              <path
+                d="M255,0C114.75,0,0,114.75,0,255s114.75,255,255,255s255-114.75,255-255S395.25,0,255,0z M280.5,382.5h-51v-51h51V382.5z     M280.5,280.5h-51v-153h51V280.5z"
+                data-original="#000000"
+                class="active-path"
+                data-old_color="#000000"
+                fill="#FF0000"
+              />
+            </g>
+          </g>
+        </g>{' '}
+      </svg>
+    );
+  }
 }
