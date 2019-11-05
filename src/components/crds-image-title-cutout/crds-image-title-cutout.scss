@@ -6,11 +6,9 @@
 
 .image {
   display: block;
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
 }
 
 .title-cutout {
@@ -20,7 +18,6 @@
   margin: -3rem -0.7rem 0;
   padding: 0px 10px;
   position: relative;
-  color: white;
   text-decoration: none;
 }
 
@@ -37,12 +34,12 @@
   margin-left: -10px;
 }
 
-.image-container {
-  height: 0;
-  overflow: hidden;
-  padding-top: 38.5%;
-  position: relative;
-}
+// .image-container {
+//   height: 0;
+//   overflow: hidden;
+//   padding-top: 38.5%;
+//   position: relative;
+// }
 
 .card-block {
   padding: 1rem;

@@ -50,17 +50,15 @@ export class CrdsImageBottomTitleOverlay {
   public render() {
     return (
       <div>
-        <div class="image-container">
-          <img
-            class="image"
-            src={Utils.imgixify(this.imageUrl + '?auto=format&ar=263:100&fit=crop')}
-            onClick={() => {
-              Utils.openInNewTab(this.imageHref);
-            }}
-          />
-        </div>
+        <img
+          class="image"
+          src={this.imageUrl}
+          onClick={() => {
+            Utils.openInNewTab(this.imageHref);
+          }}
+        />
         <div class="card-block text-left">
-          <a href="{this.title}" class="text-white text-uppercase title-cutout">
+          <a href="{this.title}" class="text-uppercase title-cutout text-white">
             {this.title}
           </a>
         </div>
