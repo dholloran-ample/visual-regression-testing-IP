@@ -124,10 +124,6 @@ $arrow-height: 10px;
   margin: 5px;
 }
 
-.card-block {
-  padding: 1rem 1rem 0;
-}
-
 .arrow.open::before {
   border: $arrow-height solid transparent;
   border-top: 0;
