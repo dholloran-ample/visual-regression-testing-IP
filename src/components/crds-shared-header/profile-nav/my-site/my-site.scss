@@ -41,6 +41,7 @@ $arrow-height: 10px;
     & > g{
       transform: translateX(72px);
     }
+    
   }
 
   &.open {
@@ -50,6 +51,7 @@ $arrow-height: 10px;
       fill: $cr-white;
       height: 26px;
       width: 26px;
+      transform: translateX(6px);
     }
   }
 
@@ -137,6 +139,7 @@ $arrow-height: 10px;
   content: '';
   position: absolute;
   top: $top-padding - $arrow-height;
+  transform: translateX(9px);
 }
 
 .anywhere-connect > a {
