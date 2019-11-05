@@ -24,7 +24,7 @@ export class CrdsTitheChallenge {
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
-  private titheImage = "https://crds-media.imgix.net/3dIdKWdPR5u6rpMn0VF8r7/070c06da454b1c178a1605cbc4421d05/90DTT-logo.png";
+  private titheImage = "https://crds-media.imgix.net/2kyAbv69Gp1iPwpNMlUcXx/8b4df043d517e714447f96fd43440c24/90DTT.svg";
 
   @State() user: TitheUser = null;
   @Prop() authToken: string;
@@ -72,6 +72,7 @@ export class CrdsTitheChallenge {
       })
       .then(response => {
         this.user.donations = response.data.user.donations;
+        this.user.recurringGifts = response.data.user.recurringGifts;
       });
   }
 
@@ -91,6 +92,10 @@ export class CrdsTitheChallenge {
     return 90 - this.getDaysDown();
   }
 
+  private getDayText() {
+    return this.getDaysDown() == 1 ? 'day' : 'days';
+  }
+
   private logUserResponse() {
     return this.apolloClient
       .mutate({
@@ -101,7 +106,7 @@ export class CrdsTitheChallenge {
   }
 
   private isUserActive() {
-    return this.user.donations.length;
+    return this.user.donations.length || this.user.recurringGifts.length;
   }
 
   private isUserInChallenge() {
@@ -163,7 +168,6 @@ export class CrdsTitheChallenge {
         <div class="divider" />
         <div class="text-container">
           {this.contentBlockHandler.getContentBlock('tithe-encourage', { userName: this.user.nickName })}
-
         </div>
       </div>
     );
@@ -184,15 +188,24 @@ export class CrdsTitheChallenge {
             ? this.contentBlockHandler.getContentBlock('tithe-started', {
                 name: this.user.nickName,
                 daysDown: this.getDaysDown().toString(),
-                daysToGo: this.getDaysToGo().toString()
+                daysToGo: this.getDaysToGo().toString(),
+                dayText: this.getDayText()
               })
             : ''}
           {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
-          <div class="push-top">
+
+          <div class="progress-container">
             <div class="meter">
-              <span style={{ width: `${this.getProgress()}%` }} />
+              <span style={{ width: `${this.getProgress()}%` }}></span>
+              <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
+                <div class="user-img" style={{
+                  backgroundImage: `url('${this.user.imageUrl}?thumbnail=true')
+                                   ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
+                  }}>
+                </div> 
+              </div>   
             </div>
-            <div class="d-flex">
+            <div class="d-flex push-half-top">
               <p class="text-white text-uppercase">start</p><p class="text-finished text-uppercase ml-auto">finished</p>
             </div>
            
