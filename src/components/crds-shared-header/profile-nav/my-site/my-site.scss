@@ -125,7 +125,7 @@ $arrow-height: 10px;
 }
 
 .card-block {
-  padding: 1rem;
+  padding: 1rem 1rem 0;
 }
 
 .arrow.open::before {
@@ -169,3 +169,15 @@ div.social-icons a {
   }
 }
 
+crds-image-title-cutout:after {
+  color: #979797;
+  content: '\2014';
+  display: block;
+  font-family: 'acumin-pro', helvetica, arial, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 100;
+  line-height: 0;
+  text-align: left;
+  margin-bottom: 12px;
+  margin-left: -10px;
+}
