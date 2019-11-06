@@ -36,7 +36,7 @@ export class MySite {
   private arrow: HTMLElement;
   private popper: HTMLElement;
   private popperControl: any;
-  private openPopperAutomatically: boolean = false;
+  private showNotification: boolean = false;
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
@@ -94,13 +94,6 @@ export class MySite {
       }
     });
 
-    if (this.openPopperAutomatically) {
-      this.handlePopperOpen();
-      const mySiteContainerEl: any = this.host.parentElement;
-      mySiteContainerEl.click();
-      this.openPopperAutomatically = false;
-    }
-
     reference.addEventListener('click', () => {
       if (this.popperOpen) this.handlePopperClose();
       else {
@@ -140,6 +133,7 @@ export class MySite {
 
   private handlePopperOpen() {
     this.popperOpen = true;
+    this.showNotification = false;
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
@@ -218,7 +212,7 @@ export class MySite {
           .then(response => {
             var nearestSiteID = Number(response.data.closestSite.id);
             Utils.setCookie('nearestSiteId', nearestSiteID, 365);
-            this.openPopperAutomatically = true;
+            this.showNotification = true;
             return nearestSiteID;
           })
           .catch(err => {
@@ -230,7 +224,7 @@ export class MySite {
           this.analytics.track('MySiteGetLocationPermission', {
             response: err.message
           });
-        };
+        }
         this.logError(err);
       });
   }
@@ -512,7 +506,8 @@ export class MySite {
     return (
       <div class="arrow">
         <div class={`my-site ${this.popperOpen ? 'open' : ''}`}>
-          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}{' '}
+          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}
+          <div class="notification">{this.showNotification ? SvgSrc.notificationRed() : ''}</div>
           <a class="my-site-name">
             {(this.userHasSite() && this.user.site.name) ||
               this.sites.find(site => Number(site.id) === this.nearestSiteID).name}
