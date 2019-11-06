@@ -36,7 +36,7 @@ export class MySite {
   private arrow: HTMLElement;
   private popper: HTMLElement;
   private popperControl: any;
-  private showNotification: boolean = true;
+  private showNotification: boolean = false;
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
