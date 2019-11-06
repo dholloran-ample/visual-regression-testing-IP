@@ -9,6 +9,7 @@ export declare class CrdsMediaCard {
     body: string;
     thumbnailSrc: string;
     url: string;
+    mediaLabel: string;
     element: HTMLStencilElement;
     isVisible: boolean;
     childProps: {};

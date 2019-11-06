@@ -10,6 +10,7 @@ export declare class CrdsDefaultLayout {
     buttonSrc: string;
     thumbnailSrc: string;
     url: string;
+    mediaLabel: string;
     private icons;
     render(): any;
 }

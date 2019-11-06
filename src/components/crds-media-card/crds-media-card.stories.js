@@ -16,6 +16,7 @@ stories
 
     );
 
+    const mediaLabel = text("MediaLabel", "5 min");
     const meta = text("meta", "10/19/19 - 10/25/19");
     const metaPosition = select('metaPosition', { 'top': 'top', 'bottom': 'bottom' }, 'bottom')
     const body = text(
@@ -35,7 +36,7 @@ stories
     const contentType = select('Content Type', contentTypeOptions, 'article')
 
     return `<div style="width: 500px; height: 500px;" > 
-        <crds-media-card heading='Puerto Rico' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+        <crds-media-card heading='Puerto Rico' media-label='${mediaLabel}' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
             ${body}
         </crds-media-card> 
     </div>

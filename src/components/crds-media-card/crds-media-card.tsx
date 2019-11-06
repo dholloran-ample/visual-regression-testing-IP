@@ -22,13 +22,14 @@ export class CrdsMediaCard {
   @Prop({ reflect: false }) body: string;
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
+  @Prop() mediaLabel: string;
 
   @Element() element!: HTMLStencilElement;
   // state
   @State() isVisible: boolean = false; // Will be used for skeleton blocks/prerendering
   @State() childProps = {};
 
-  private propNames = ['imageSrc', 'heading', 'meta', 'metaPosition', 'body', 'url', 'thumbnailSrc', 'contentType'];
+  private propNames = ['imageSrc', 'heading', 'meta', 'metaPosition', 'body', 'url', 'thumbnailSrc', 'contentType', 'mediaLabel'];
   private contentLayouts = ['default', 'overlay', 'media-object'];
   private contentTypes = ['article', 'video', 'episode', 'message', 'song', 'series', 'album', 'podcast'];
   private metaPositions = ['top', 'bottom'];
