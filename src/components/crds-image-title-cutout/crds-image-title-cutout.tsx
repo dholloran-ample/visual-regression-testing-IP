@@ -58,7 +58,7 @@ export class CrdsImageBottomTitleOverlay {
           }}
         />
         <div class="card-block text-left">
-          <a href="{this.title}" class="text-uppercase title-cutout text-white">
+          <a href={this.titleHref} class="text-uppercase title-cutout text-white">
             {this.title}
           </a>
         </div>
