@@ -392,7 +392,7 @@ export class MySite {
         {' '}
         <div
           class="push-half-bottom"
-          innerHTML={`${this.displaySite.address}`}
+          innerHTML={`${marked(this.displaySite.address)}`}
           onClick={() => {
             Utils.openInNewTab(this.displaySite.mapUrl);
           }}
@@ -406,16 +406,17 @@ export class MySite {
   }
 
   private renderServiceHours() {
-    return (
-      <div>
-        {' '}
+    if(this.displaySite.serviceTimes)
+      return (
         <div>
-          <strong>Service Times:</strong>
+          {' '}
+          <div>
+            <strong>Service Times:</strong>
+          </div>
+          <div innerHTML={marked(this.displaySite.serviceTimes)} />
+          {this.renderGetDirections()}
         </div>
-        <div innerHTML={this.displaySite.serviceTimes} />
-        {this.renderGetDirections()}
-      </div>
-    );
+      );
   }
 
   private renderOpenHours() {
