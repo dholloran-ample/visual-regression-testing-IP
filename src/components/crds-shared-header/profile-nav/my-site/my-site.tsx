@@ -373,14 +373,9 @@ export class MySite {
           />
           <div class="site-details">
             {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
+            <p class="push-half-top">Not your site? <a class="text-white" href="/profile/personal">Set your preferred site.</a></p>
           </div>
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
+          
         </div>
       </div>
     );
