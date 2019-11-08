@@ -7,8 +7,8 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
-  MySiteUser,
-} from './components/crds-shared-header/profile-nav/my-site/my-site-interface';
+  Response,
+} from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
 
 export namespace Components {
   interface CrdsGreeting {
@@ -35,6 +35,12 @@ export namespace Components {
     * Cache key for localStorage
     */
     'storageKey': string;
+  }
+  interface CrdsImageTitleCutout {
+    'imageHref': string;
+    'imageUrl': string;
+    'title': string;
+    'titleHref': string;
   }
   interface CrdsModal {
     'isActive': boolean;
@@ -73,6 +79,10 @@ export namespace Components {
     'label': string;
     'src': string;
   }
+  interface CrdsTitheChallenge {
+    'authToken': string;
+    'selectedFeeling': Response;
+  }
   interface GiveNav {
     'data': any;
     'isNavShowing': boolean;
@@ -88,8 +98,6 @@ export namespace Components {
   }
   interface MySite {
     'authToken': string;
-    'defaultName': string;
-    'user': MySiteUser;
   }
   interface NavCtas {
     'data': string;
@@ -132,6 +140,12 @@ declare global {
   var HTMLCrdsHeartButtonElement: {
     prototype: HTMLCrdsHeartButtonElement;
     new (): HTMLCrdsHeartButtonElement;
+  };
+
+  interface HTMLCrdsImageTitleCutoutElement extends Components.CrdsImageTitleCutout, HTMLStencilElement {}
+  var HTMLCrdsImageTitleCutoutElement: {
+    prototype: HTMLCrdsImageTitleCutoutElement;
+    new (): HTMLCrdsImageTitleCutoutElement;
   };
 
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
@@ -188,6 +202,12 @@ declare global {
     new (): HTMLCrdsSubscribeElement;
   };
 
+  interface HTMLCrdsTitheChallengeElement extends Components.CrdsTitheChallenge, HTMLStencilElement {}
+  var HTMLCrdsTitheChallengeElement: {
+    prototype: HTMLCrdsTitheChallengeElement;
+    new (): HTMLCrdsTitheChallengeElement;
+  };
+
   interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
   var HTMLGiveNavElement: {
     prototype: HTMLGiveNavElement;
@@ -239,6 +259,7 @@ declare global {
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
+    'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
@@ -248,6 +269,7 @@ declare global {
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
+    'crds-tithe-challenge': HTMLCrdsTitheChallengeElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
@@ -284,6 +306,12 @@ declare namespace LocalJSX {
     * Cache key for localStorage
     */
     'storageKey'?: string;
+  }
+  interface CrdsImageTitleCutout extends JSXBase.HTMLAttributes<HTMLCrdsImageTitleCutoutElement> {
+    'imageHref'?: string;
+    'imageUrl'?: string;
+    'title'?: string;
+    'titleHref'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
@@ -323,6 +351,10 @@ declare namespace LocalJSX {
     'label'?: string;
     'src'?: string;
   }
+  interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
+    'authToken'?: string;
+    'selectedFeeling'?: Response;
+  }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
     'isNavShowing'?: boolean;
@@ -338,8 +370,6 @@ declare namespace LocalJSX {
   }
   interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {
     'authToken'?: string;
-    'defaultName'?: string;
-    'user'?: MySiteUser;
   }
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
@@ -366,6 +396,7 @@ declare namespace LocalJSX {
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-heart-button': CrdsHeartButton;
+    'crds-image-title-cutout': CrdsImageTitleCutout;
     'crds-modal': CrdsModal;
     'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
@@ -375,6 +406,7 @@ declare namespace LocalJSX {
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
+    'crds-tithe-challenge': CrdsTitheChallenge;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'main-nav': MainNav;
