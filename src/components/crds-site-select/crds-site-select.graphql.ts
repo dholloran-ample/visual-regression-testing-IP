@@ -5,7 +5,6 @@ export const SET_SITE = gql`
     setSite(siteId: $siteId) {
       site {
         id
-        name
       }
     }
   }
