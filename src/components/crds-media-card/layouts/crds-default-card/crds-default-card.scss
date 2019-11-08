@@ -1,9 +1,17 @@
 @import '../../../../assets/stylesheets/globals/variables';
 
 .card-wrapper {
-  margin-bottom: 2.75rem;
-  max-width: 360px;
   font-family: 'acumin-pro', helvetica, arial, sans-serif;
+}
+
+.overlay {
+  width:100%;
+  height:100%;
+  position:absolute;
+  background-color:#000;
+  opacity:0;
+  z-index: 2;
+  transition: all 150ms ease-in-out;
 }
 
 .card-image-wrapper {
@@ -11,6 +19,13 @@
   overflow: hidden;
   position: relative;
   display: block;
+  
+  &:hover { 
+    .overlay {
+      opacity: 0.1;
+  }
+} 
+
 }
 
 .card-stamp-container {
@@ -88,28 +103,11 @@
   display: none;
 }
 
-.card-button {
-  display: inline-block;
-  background-color: $cyan-dark-b;
-  color: white;
-  border-radius: 4px;
-  margin-top: 1.375rem;
-  text-decoration: none;
-  cursor: pointer;
-  height: 43px;
-  vertical-align: middle;
-  line-height: 43px;
-  padding: 0 1rem;
-  font-size: 0.875rem;
-}
-
 .card-thumbnail {
-  background-color: $black-opaque;
   top: 1rem;
   position: absolute;
   right: 1rem;
   max-width: 65px;
-  max-height: 65px;
 }
 
 ::slotted(p) {
@@ -119,4 +117,5 @@
   line-height: 24px;
   color: $gray-dark;
   margin: 0;
+  width: 85%;
 }

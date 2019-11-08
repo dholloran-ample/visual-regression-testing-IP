@@ -10,12 +10,13 @@
 | Property        | Attribute        | Description | Type     | Default     |
 | --------------- | ---------------- | ----------- | -------- | ----------- |
 | `body`          | `body`           |             | `string` | `undefined` |
+| `category`      | `category`       |             | `string` | `undefined` |
 | `contentLayout` | `content-layout` |             | `string` | `'default'` |
 | `contentType`   | `content-type`   |             | `string` | `undefined` |
 | `heading`       | `heading`        |             | `string` | `undefined` |
 | `imageSrc`      | `image-src`      |             | `string` | `undefined` |
+| `mediaLabel`    | `media-label`    |             | `string` | `undefined` |
 | `meta`          | `meta`           |             | `string` | `undefined` |
-| `metaPosition`  | `meta-position`  |             | `string` | `undefined` |
 | `thumbnailSrc`  | `thumbnail-src`  |             | `string` | `undefined` |
 | `url`           | `url`            |             | `string` | `undefined` |
 

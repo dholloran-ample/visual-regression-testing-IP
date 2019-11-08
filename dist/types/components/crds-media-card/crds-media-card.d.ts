@@ -4,8 +4,8 @@ export declare class CrdsMediaCard {
     contentLayout: string;
     imageSrc: string;
     heading: string;
+    category: string;
     meta: string;
-    metaPosition: string;
     body: string;
     thumbnailSrc: string;
     url: string;
@@ -16,12 +16,9 @@ export declare class CrdsMediaCard {
     private propNames;
     private contentLayouts;
     private contentTypes;
-    private metaPositions;
     private validateContentType;
     private validateContentLayout;
     private validateImage;
-    private validateMeta;
-    private validateMetaPosition;
     componentDidLoad(): void;
     componentWillLoad(): void;
     private runValidations;

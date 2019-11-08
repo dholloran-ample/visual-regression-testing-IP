@@ -16,12 +16,12 @@ export namespace Components {
   interface CrdsDefaultCard {
     'body': string;
     'buttonSrc': string;
+    'category': string;
     'contentType': string;
     'heading': string;
     'imageSrc': string;
     'mediaLabel': string;
     'meta': string;
-    'metaPosition': string;
     'thumbnailSrc': string;
     'url': string;
   }
@@ -61,13 +61,13 @@ export namespace Components {
   }
   interface CrdsMediaCard {
     'body': string;
+    'category': string;
     'contentLayout': string;
     'contentType': string;
     'heading': string;
     'imageSrc': string;
     'mediaLabel': string;
     'meta': string;
-    'metaPosition': string;
     'thumbnailSrc': string;
     'url': string;
   }
@@ -314,12 +314,12 @@ declare namespace LocalJSX {
   interface CrdsDefaultCard extends JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement> {
     'body'?: string;
     'buttonSrc'?: string;
+    'category'?: string;
     'contentType'?: string;
     'heading'?: string;
     'imageSrc'?: string;
     'mediaLabel'?: string;
     'meta'?: string;
-    'metaPosition'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
   }
@@ -359,13 +359,13 @@ declare namespace LocalJSX {
   }
   interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
     'body'?: string;
+    'category'?: string;
     'contentLayout'?: string;
     'contentType'?: string;
     'heading'?: string;
     'imageSrc'?: string;
     'mediaLabel'?: string;
     'meta'?: string;
-    'metaPosition'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
   }

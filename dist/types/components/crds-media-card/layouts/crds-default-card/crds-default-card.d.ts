@@ -4,8 +4,8 @@ export declare class CrdsDefaultLayout {
     contentType: string;
     imageSrc: string;
     heading: string;
+    category: string;
     meta: string;
-    metaPosition: string;
     body: string;
     buttonSrc: string;
     thumbnailSrc: string;

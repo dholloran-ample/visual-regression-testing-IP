@@ -12,8 +12,8 @@ export class CrdsDefaultLayout {
   @Prop() contentType: string;
   @Prop() imageSrc: string;
   @Prop() heading: string;
+  @Prop() category: string;
   @Prop() meta: string;
-  @Prop() metaPosition: string;
   @Prop({ reflect: false }) body: string;
   @Prop() buttonSrc: string;
   @Prop() thumbnailSrc: string;
@@ -30,11 +30,12 @@ export class CrdsDefaultLayout {
   };
 
   public render() {
-    const { imageSrc, heading, meta, metaPosition, thumbnailSrc, url, contentType, icons, mediaLabel} = this;
+    const { imageSrc, heading, category, meta, thumbnailSrc, url, contentType, icons, mediaLabel} = this;
     
     return (
       <div class="card-wrapper">
         <a class="card-image-wrapper" href={url}>
+        { url && <div class="overlay"></div> }
           {imageSrc && <crds-image src={imageSrc} size="card" />}
           {icons[contentType] && (
             <div class="card-stamp-container">
@@ -48,7 +49,7 @@ export class CrdsDefaultLayout {
             </div>
           )}
         </a>
-        {metaPosition == 'top' && <span class="card-meta-top">{meta}</span>}
+        {category && <span class="card-meta-top">{category}</span>}
 
         {heading && (
           <a class={`card-heading`} href={url}>
@@ -56,7 +57,7 @@ export class CrdsDefaultLayout {
           </a>
         )}
 
-        {metaPosition == 'bottom' && <span class="card-meta-bottom">{meta}</span>}
+        {meta  && <span class="card-meta-bottom">{meta}</span>}
 
         <div class="card-content">
           <slot />

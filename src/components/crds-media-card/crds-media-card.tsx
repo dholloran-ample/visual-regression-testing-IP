@@ -4,7 +4,6 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'crds-media-card',
-  styleUrl: 'crds-media-card.scss',
   shadow: true
 })
 export class CrdsMediaCard {
@@ -17,8 +16,8 @@ export class CrdsMediaCard {
   // Default props
   @Prop() imageSrc: string;
   @Prop() heading: string;
+  @Prop() category: string;
   @Prop() meta: string;
-  @Prop() metaPosition: string;
   @Prop({ reflect: false }) body: string;
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
@@ -29,10 +28,9 @@ export class CrdsMediaCard {
   @State() isVisible: boolean = false; // Will be used for skeleton blocks/prerendering
   @State() childProps = {};
 
-  private propNames = ['imageSrc', 'heading', 'meta', 'metaPosition', 'body', 'url', 'thumbnailSrc', 'contentType', 'mediaLabel'];
+  private propNames = ['imageSrc', 'heading', 'category', 'meta', 'body', 'url', 'thumbnailSrc', 'contentType', 'mediaLabel'];
   private contentLayouts = ['default', 'overlay', 'media-object'];
   private contentTypes = ['article', 'video', 'episode', 'message', 'song', 'series', 'album', 'podcast'];
-  private metaPositions = ['top', 'bottom'];
 
   // ----------------------------------------------- | Validations
   private validateContentType() {
@@ -54,20 +52,6 @@ export class CrdsMediaCard {
     }
   }
 
-  private validateMeta() {
-    if (typeof this.meta != 'undefined' && typeof this.metaPosition == 'undefined') {
-      throw new Error(`metaPosition is required if you want to provide a meta`);
-    }
-  }
-
-  private validateMetaPosition() {
-    if (typeof this.metaPosition != 'undefined' && !this.metaPositions.includes(this.metaPosition)) {
-      throw new Error(`${this.metaPosition} is not a valid value for metaPosition`);
-    } else if (typeof this.meta == 'undefined' && typeof this.metaPosition != 'undefined') {
-      throw new Error(`Meta is required if you want to provide a meta posittion`);
-    }
-  }
-
   // ----------------------------------------------- | Methods
 
   componentDidLoad() {
@@ -84,7 +68,7 @@ export class CrdsMediaCard {
   componentWillLoad() {
     /* 
       Validates props passed to component against props assigned/related to children.
-      Stencil doesn't have out of the box support for props.
+      Stencil doesn't have out of the box support for passing props {... this.props }.
     */
 
     this.propNames
@@ -98,8 +82,6 @@ export class CrdsMediaCard {
     this.validateImage();
     this.validateContentLayout();
     this.validateContentType();
-    this.validateMeta();
-    this.validateMetaPosition();
   }
 
   connectedCallback() {
@@ -108,8 +90,7 @@ export class CrdsMediaCard {
 
   public render() {
     return (
-      <div>
-                
+      <div> 
         {this.contentLayout == 'default' && (
           <crds-default-card {...this.childProps}>
             <slot />

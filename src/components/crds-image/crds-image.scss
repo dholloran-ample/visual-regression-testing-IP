@@ -5,16 +5,10 @@
   position: relative;
   overflow: hidden;
 
-  &.card {
-    height: 202px;
-  }
-
-  &.thumbnail {
-    height: 65px;
-  }
-
   .crds-img {
-    height: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
   }
   .crds-img.loaded {
     animation-name: fade-in;

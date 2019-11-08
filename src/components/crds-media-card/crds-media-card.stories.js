@@ -7,7 +7,7 @@ stories
   .add('Single', () => {
     const imageSrc = text(
       'imageSrc',
-      'https://crds-media.imgix.net/5CaAjF9bDkXWOw6YXl92cZ/fccff599d00f378c1aae525bfff94a2b/onsite-groups-header_2x.jpg?format=auto,compress'
+      'https://crds-media.imgix.net/4CWCvxN6iSb0QXDqvaT9Gt/a80cfd9a0b8154874777cbd71da59175/shutterstock_403980601.jpg?auto=format,compress'
     );
 
     const thumbnailSrc = text(
@@ -18,7 +18,7 @@ stories
 
     const mediaLabel = text("MediaLabel", "5 min");
     const meta = text("meta", "10/19/19 - 10/25/19");
-    const metaPosition = select('metaPosition', { 'top': 'top', 'bottom': 'bottom' }, 'bottom')
+    const category = text("category", "Example");
     const body = text(
       'body',
       `<p>
@@ -31,18 +31,42 @@ stories
       </p>
       <crds-button href='#' label='Click me!'><crds-button>`
     );
+
+    const bodyB = text(
+      'body',
+      `<p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+      eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        <a href='#'>
+        Lorem ipsum
+        </a>
+      </p>`
+    );
     const url = text('url', '#');
     const contentTypeOptions = ['article', 'video', 'episode', 'song']
     const contentType = select('Content Type', contentTypeOptions, 'article')
 
-    return `<div style="width: 500px; height: 500px;" > 
-        <crds-media-card heading='Puerto Rico' media-label='${mediaLabel}' meta='${meta}' meta-position='${metaPosition}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
-            ${body}
+    return `
+    <div style="width: 1000px; display: flex;">
+      <div style="flex: 0 0 750px; margin-right: 20px;">
+        <crds-media-card heading='Puerto Rico' media-label='${mediaLabel}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+              ${body}
         </crds-media-card> 
+      </div>
+      <div style="display: flex; flex-direction: column; flex: 0 0 250px;">
+        <div style="margin-bottom: 20px">
+        <crds-media-card heading='Puerto Rico' media-label='${mediaLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+  </crds-media-card> 
+        </div>
+        <div>
+        <crds-media-card heading='Puerto Rico' media-label='${mediaLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+        </crds-media-card> 
+        </div>
+      </div>
     </div>
     `;
   }, {
     knobs: {
       escapeHTML: false
-    }
+    },
   });

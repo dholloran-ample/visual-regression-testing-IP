@@ -1,4 +1,4 @@
-# crds-default-layout
+# crds-default-card
 
 
 
@@ -11,11 +11,12 @@
 | -------------- | --------------- | ----------- | -------- | ----------- |
 | `body`         | `body`          |             | `string` | `undefined` |
 | `buttonSrc`    | `button-src`    |             | `string` | `undefined` |
+| `category`     | `category`      |             | `string` | `undefined` |
 | `contentType`  | `content-type`  |             | `string` | `undefined` |
 | `heading`      | `heading`       |             | `string` | `undefined` |
 | `imageSrc`     | `image-src`     |             | `string` | `undefined` |
+| `mediaLabel`   | `media-label`   |             | `string` | `undefined` |
 | `meta`         | `meta`          |             | `string` | `undefined` |
-| `metaPosition` | `meta-position` |             | `string` | `undefined` |
 | `thumbnailSrc` | `thumbnail-src` |             | `string` | `undefined` |
 | `url`          | `url`           |             | `string` | `undefined` |
 
