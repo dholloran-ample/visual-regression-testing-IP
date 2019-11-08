@@ -66,9 +66,7 @@
       Repudiandae quos reiciendis vitae eum.
     </p>
     <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
-  </div>
-
-  
+  </div>  
 
   <div class="shared-footer-skeleton">
     <crds-shared-footer></crds-shared-footer>
@@ -78,6 +76,11 @@
   // TODO: function for hiding html skeleton
   document.addEventListener('component rendered', function (e) {
     console.log('component rendered', e.detail.tagName);
+  })
+
+  const siteButtons = Array.from(document.getElementsByTagName('crds-site-select'))
+  siteButtons.map(element => {
+    element.addEventListener()
   })
 </script>
 

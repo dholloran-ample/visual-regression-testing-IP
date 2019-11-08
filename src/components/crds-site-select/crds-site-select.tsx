@@ -5,7 +5,6 @@ import { Utils } from '../../shared/utils';
 import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { SiteSelectUser } from './crds-site-select.interface';
 import { Event, EventEmitter, Listen } from '@stencil/core';
 
 @Component({
@@ -18,23 +17,22 @@ export class CrdsSiteSelect {
   private contentBlockHandler: ContentBlockHandler;
 
   @Prop() authToken: string;
-  @Prop() cardSiteId: string;
+  @Prop() cardSiteId: number;
 
   @State() cookieSiteId: string;
-  @State() user: SiteSelectUser;
+  @State() userSite: number;
 
   @Event({
     eventName: 'siteSet',
     composed: true,
     bubbles: true,
-    cancelable: true
+    cancelable: false
   }) siteSetEvent: EventEmitter
 
   @Listen('siteSet', { target: 'document'})
   siteSetHandler(){
-    console.log("listener hit");
     if(this.authToken) this.getUserSite();
-    this.cookieSiteId = Utils.getCookie('nearestSiteId');
+    else this.cookieSiteId = Utils.getCookie('nearestSiteId');
   }
 
   @Watch('authToken')
@@ -54,18 +52,6 @@ export class CrdsSiteSelect {
     return Promise.all(promises);
   }
 
-  private getUserSite(): Promise<any> {
-    return this.apolloClient
-      .query({ query: GET_USER })
-      .then(response => {
-        this.user = response.data.user;
-        return;
-      })
-      .catch(err => {
-        this.logError(err);
-      });
-  }
-
   private setUserSite() {
     if (this.authToken) {
       this.setMpSite();
@@ -73,7 +59,18 @@ export class CrdsSiteSelect {
     else {
       this.setCookieSite();
     }
-    this.siteSetEvent.emit();
+  }
+
+  private getUserSite(): Promise<any> {
+    return this.apolloClient
+      .query({ query: GET_USER })
+      .then(response => {
+        this.userSite = response.data.user.site.id;
+        return;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
   }
 
   private setMpSite() {
@@ -82,7 +79,9 @@ export class CrdsSiteSelect {
         variables: { siteId: this.cardSiteId },
         mutation: SET_SITE
       })
-      .then(() => {
+      .then(response => {
+        this.userSite = parseInt(response.data.setSite.site.id);
+        this.siteSetEvent.emit();
         toastr.success(
           this.contentBlockHandler.getContentBlock('siteSelectConfirmation')
         );
@@ -94,6 +93,7 @@ export class CrdsSiteSelect {
 
   private setCookieSite() {
     Utils.setCookie('nearestSiteId', this.cardSiteId, 365);
+    this.siteSetEvent.emit();
   }
 
   private logError(err) {
@@ -113,11 +113,12 @@ export class CrdsSiteSelect {
   }
 
   public render() {
-    if(this.authToken) {
-      return this.cardSiteId == this.user.site.id ? this.renderUserSiteButton() : this.renderSetSiteButton();
-    } else {
-      return this.cardSiteId == this.cookieSiteId ? this.renderUserSiteButton() : this.renderSetSiteButton();
+    if(this.authToken && this.userSite) {
+      return this.cardSiteId == this.userSite ? this.renderUserSiteButton() : this.renderSetSiteButton();
+    } else if (this.cookieSiteId) {
+      return this.cardSiteId == parseInt(this.cookieSiteId) ? this.renderUserSiteButton() : this.renderSetSiteButton();
     }
+    return this.renderSetSiteButton(); //default in case neither is set
   }
 
 }
