@@ -4,12 +4,11 @@
 $op-black: rgba(black, 0.8);
 $arrow-height: 10px;
 
-@media screen and (max-width: 374px){
+@media screen and (max-width: 374px) {
   :host {
-  display: none;
+    display: none;
   }
 }
-
 
 .my-site,
 .my-site-name {
@@ -30,13 +29,15 @@ $arrow-height: 10px;
   text-decoration: none;
   padding-top: 12px;
   padding-bottom: 12px;
-
+  opacity: 0;
+  transition: opacity 0.45s 0.25s ease-in-out;
 
   svg {
     fill: $cr-white;
     height: 22px;
     width: 22px;
     vertical-align: text-bottom;
+    transform: translateX(4px);
   }
 
   &.open {
@@ -46,11 +47,15 @@ $arrow-height: 10px;
       fill: $cr-white;
       height: 26px;
       width: 26px;
+      transform: translateX(6px);
     }
   }
 
-  border: none;
+  &.fade-in {
+    opacity: 1;
+  }
 
+  border: none;
 }
 
 .my-site-name {
@@ -69,7 +74,7 @@ $arrow-height: 10px;
 
 .popper {
   display: none;
-  padding: 20px;
+  padding: 22px;
 
   @media (max-width: $screen-sm - 1) {
     top: $top-padding !important;
@@ -80,60 +85,18 @@ $arrow-height: 10px;
     color: black;
     height: calc(100% - 50px);
     transform: none !important;
-    // padding-bottom: 125px;
+    padding-bottom: 125px;
     overflow: scroll;
   }
 
   @media (min-width: $screen-sm) {
-    width: 300px;
+    width: 334px;
   }
 
   &.open {
     display: block;
   }
 }
-
-// .close {
-//   $padding: 22px;
-//   bottom: 0;
-//   display: none;
-//   height: $close-container-height;
-//   padding-left: 2px;
-//   position: fixed;
-//   width: 100%;
-//   z-index: 3;
-
-//   @media (max-width: $screen-sm - 1) {
-//     display: block;
-//     position: sticky;
-//   }
-
-//   &-icon {
-//     $circle-size: 64px;
-
-//     background-color: $cr-cyan;
-//     border-radius: 50%;
-//     bottom: $padding;
-//     box-shadow: 0 5px 24px -5px rgba(0, 0, 0, 0.75);
-//     cursor: pointer;
-//     height: $circle-size;
-//     position: absolute;
-//     width: $circle-size;
-//   }
-
-//   svg {
-//     $size: 30px;
-//     fill: $cr-white;
-//     height: $size;
-//     left: 50%;
-//     position: absolute;
-//     top: 50%;
-//     transform: translate(-50%, -50%);
-//     width: $size;
-//   }
-
- 
-// }
 
 .popover-prompt {
   h4 {
@@ -149,15 +112,8 @@ $arrow-height: 10px;
     color: grey;
   }
   color: white;
-  font-size: 14px;
+  font-size: 16px;
 }
-
-.map-image {
-  height: auto;
-  width: 100%;
-  display: block;
-}
-
 
 .btn {
   background-color: transparent;
@@ -167,43 +123,67 @@ $arrow-height: 10px;
   margin: 5px;
 }
 
-.site-name-overlap {
-  display: table;
-  font-family: 'acumin-pro-extra-condensed', sans-serif;
-  font-size: 2.125rem;
-  margin: -3rem -0.7rem 0;
-  padding: 0px 10px;
-  position: relative;
+.arrow.open::before {
+  border: $arrow-height solid transparent;
+  border-top: 0;
+  border-bottom-color: rgba(0, 0, 0, 0.97);
+  content: '';
+  position: absolute;
+  top: $top-padding - $arrow-height;
+  transform: translateX(9px);
+}
+
+.anywhere-connect > a {
+  text-decoration: none;
   color: white;
 }
 
-/* Add back in after svg mask is in place
-.site-name-overlap:after {
+.site-details {
+  line-height: 18px;
+  & p {
+    margin: 0;
+  }
+}
+
+div.social-icons a {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-right: 0.75rem;
+  background: #737373;
+  border-radius: 50%;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  padding: 10px;
+
+  & > img {
+    max-width: 100%;
+  }
+}
+
+
+.notification {
+  svg {
+    position: absolute;
+    width: 15px;
+    -webkit-transform: translate(30px, 10px);
+    transform: translate(-7px, -11px);
+  }
+}
+
+crds-image-title-cutout:after {
   color: #979797;
   content: '\2014';
   display: block;
   font-family: 'acumin-pro', helvetica, arial, sans-serif;
   font-size: 1.25rem;
   font-weight: 100;
-  line-height: 1.5;
+  line-height: 0;
   text-align: left;
-}*/
-
-.card-block {
-  padding: 1rem;
+  margin-bottom: 12px;
+  margin-left: -10px;
 }
-
-#service-times p {
-  margin: 0;
-}
-
-.arrow.open::before {
-  border: $arrow-height solid transparent;
-  border-top: 0;
-  border-bottom-color: $op-black;
-  content: '';
-  position: absolute;
-  top: $top-padding - $arrow-height;
-}
-
 

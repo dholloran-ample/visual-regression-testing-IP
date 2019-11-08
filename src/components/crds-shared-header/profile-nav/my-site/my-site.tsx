@@ -3,6 +3,7 @@ import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
 import ApolloClient from 'apollo-client';
+import marked from 'marked';
 
 import Popper from 'popper.js';
 import { CrdsApollo } from '../../../../shared/apollo';
@@ -17,21 +18,31 @@ import toastr from 'toastr';
   shadow: true
 })
 export class MySite {
+  private analytics = window['analytics'];
   private apolloClient: ApolloClient<{}> = null;
-  private sites: any;
+  private sites: Site[];
+  private anywhereSite: Site = {
+    id: '15',
+    name: 'Anywhere',
+    mapImageUrl: `https://crds-media.imgix.net/1VXQmZC7UPLJNR9QWaN00/d03bcc64b2952059590b5e9e9c7d7030/Screen_Shot_2019-10-29_at_7.24.35_PM.png?auto=format`,
+    mapUrl: 'https://www.crossroads.net/live/',
+    imageUrl: 'https://crds-cms-uploads.imgix.net/Uploads/anywhere-thumbnail.jpg',
+    qualifiedUrl: 'https://www.crossroads.net/live/',
+    openHours: null,
+    serviceTimes: null,
+    address: null
+  };
   private nearestSite: Site;
   private arrow: HTMLElement;
   private popper: HTMLElement;
   private popperControl: any;
-  private openPopperAutomatically: boolean = false;
+  private showNotification: boolean = false;
   private contentBlockHandler: ContentBlockHandler;
   private directionsUrl: string;
   private displaySite: Site;
-  private mutationObserver: MutationObserver;
 
   @Prop() authToken: string;
-  @Prop() defaultName: string;
-  @Prop() user: MySiteUser = null;
+  @State() user: MySiteUser = null;
   @State() nearestSiteID: number;
   @State() promptsDisabled: boolean = false;
   @State() popperOpen: boolean = false;
@@ -45,19 +56,25 @@ export class MySite {
   }
 
   public componentWillLoad() {
-    toastr.options.escapeHtml = false;
+    toastr.options.closeButton = true;
+    toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
+    toastr.options.escapeHtml = false;
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
-    var promises = [this.getSites(), this.contentBlockHandler.getCopy()];
-    if (!this.authToken) promises.push(this.loggedOutUser());
-    else promises.push(this.loggedInUser());
+    var promises = [
+      this.getSites(),
+      this.contentBlockHandler.getCopy(),
+      this.authToken ? this.loggedInUser() : this.loggedOutUser()
+    ];
     return Promise.all(promises);
   }
 
-  public componentWillRender() {
+  public async componentWillRender() {
+    if (this.authToken && !this.user) this.loggedInUser();
     if (this.shouldShowComponent()) {
       this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
+      if (this.displaySite.id === '15') this.displaySite = this.anywhereSite;
       return this.getDirectionsUrl(this.displaySite);
     }
   }
@@ -77,39 +94,29 @@ export class MySite {
       }
     });
 
-    if (this.openPopperAutomatically) {
-      this.handlePopperOpen();
-      this.openPopperAutomatically = false;
-    }
-
     reference.addEventListener('click', () => {
       if (this.popperOpen) this.handlePopperClose();
-      else this.handlePopperOpen();
+      else {
+        if (this.analytics) {
+          this.analytics.track('MySiteClicked', {
+            siteIDShown: (this.displaySite && this.displaySite.id) || this.nearestSiteID
+          });
+        }
+        this.handlePopperOpen();
+      }
     });
 
     document.addEventListener('click', (e: any) => {
-      function composedPath(el) {
-        var path = [];
-        while (el) {
-          path.push(el);
-          if (el.tagName === 'HTML') {
-            path.push(document);
-            path.push(window);
-            return path;
-          }
-          el = el.parentElement;
-        }
-      }
-      var path = e.composedPath(e.target);
+      const path = e.composedPath(e.target);
       if (path && path.find(el => el.className === 'my-site-container')) return;
       this.handlePopperClose();
     });
-
-    window.addEventListener('resize', () => this.addTextCutout());
   }
 
   public componentDidRender() {
-    if (this.shouldShowSiteContent()) setTimeout(() => this.addTextCutout(), 100);
+    setTimeout(() => {
+      this.host.shadowRoot.querySelector('.my-site').classList.add('fade-in');
+    }, 0);
   }
 
   private async loggedOutUser() {
@@ -121,46 +128,16 @@ export class MySite {
     if (!this.user.closestSite) {
       await this.getClosestSite();
       this.setClosestSite(this.nearestSiteID);
-    }
-  }
-
-  private getUserSites(): Promise<any> {
-    return this.apolloClient
-      .query({ query: GET_USER })
-      .then(response => {
-        this.user = response.data.user;
-        if (this.user.closestSite) this.nearestSite = this.user.closestSite;
-        this.nearestSiteID = Number(this.user.closestSite.id);
-        return;
-      })
-      .catch(err => {
-        this.logError(err);
-      });
+    } else this.promptsDisabled = true;
   }
 
   private handlePopperOpen() {
     this.popperOpen = true;
+    this.showNotification = false;
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
     document.body.style.overflow = 'hidden';
-    this.addTextCutout();
-  }
- 
-
-  private addTextCutout() {
-    if (!this.host) return;
-    const siteNameEl: any = this.host.shadowRoot.querySelector('.site-name-overlap');
-    const mapImageEl: any = this.host.shadowRoot.querySelector('.map-image');
-    if (!siteNameEl || !mapImageEl) return;
-
-    const siteNamePos = siteNameEl.getBoundingClientRect();
-    const mapImagePos = mapImageEl.getBoundingClientRect();
-    const siteNameXPaddingAndMargin = 10;
-    const cutOutMaxX = 16 + siteNamePos.width - siteNameXPaddingAndMargin + 1;
-    const cutOutMinX = 16 - siteNameXPaddingAndMargin;
-    const cutOutMaxY = mapImagePos.height - 0.5 * siteNamePos.height;
-    mapImageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
   private handlePopperClose() {
@@ -169,8 +146,6 @@ export class MySite {
     this.arrow.classList.remove('open');
   }
 
-  /** Stencil Personalization Components Defaults **/
-  // This lets unit tests capture and confirm errors rather than listening in on console.error
   private logError(err) {
     console.error(err);
   }
@@ -179,6 +154,22 @@ export class MySite {
     this.handlePopperClose();
     this.promptsDisabled = true;
     Utils.setCookie('disableMySitePrompts', 'true', 365);
+  }
+
+  private getUserSites(): Promise<any> {
+    return this.apolloClient
+      .query({ query: GET_USER })
+      .then(response => {
+        this.user = response.data.user;
+        if (this.user.closestSite) {
+          this.nearestSite = this.user.closestSite;
+        }
+        this.nearestSiteID = Number(this.user.closestSite.id);
+        return;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
   }
 
   private getSites(): Promise<any> {
@@ -194,32 +185,46 @@ export class MySite {
   }
 
   private async getClosestSite(): Promise<any> {
-    this.nearestSiteID = Number(Utils.getCookie('nearestSiteId') || (await this.calculateClosestSite()));
+    this.nearestSiteID = this.getSiteFromCookie() || (await this.calculateClosestSite());
     await this.getSiteContent(this.nearestSiteID);
   }
 
+  private getSiteFromCookie(): number {
+    const siteId = Number(Utils.getCookie('nearestSiteId'));
+    if (siteId) this.promptsDisabled = true;
+    return siteId;
+  }
+
   private calculateClosestSite(): Promise<any> {
-    //uncomment when done testing.
     if (Utils.getCookie('promptedLocation') === 'true') return;
     Utils.setCookie('promptedLocation', 'true', 1);
     return this.getCurrentPosition()
       .then((position: any) => {
+        if (this.analytics)
+          this.analytics.track('MySiteGetLocationPermission', {
+            response: 'User allowed Geolocation'
+          });
         return this.apolloClient
           .query({
             variables: { lat: position.coords.latitude, lng: position.coords.longitude },
             query: GET_CLOSEST_SITE
           })
           .then(response => {
-            this.nearestSiteID = response.data.closestSite.id;
-            Utils.setCookie('nearestSiteId', this.nearestSiteID, 365);
-            this.openPopperAutomatically = true;
-            return this.nearestSiteID;
+            var nearestSiteID = Number(response.data.closestSite.id);
+            Utils.setCookie('nearestSiteId', nearestSiteID, 365);
+            this.showNotification = true;
+            return nearestSiteID;
           })
           .catch(err => {
             this.logError(err);
           });
       })
       .catch(err => {
+        if (this.analytics) {
+          this.analytics.track('MySiteGetLocationPermission', {
+            response: err.message
+          });
+        }
         this.logError(err);
       });
   }
@@ -227,7 +232,7 @@ export class MySite {
   private getSiteContent(id: number): Promise<any> {
     return this.apolloClient
       .query({
-        variables: { id: id },
+        variables: { id: Number(id) },
         query: GET_SITE_CONTENT
       })
       .then(response => {
@@ -239,6 +244,11 @@ export class MySite {
   }
 
   private setClosestSite(id: number): Promise<any> {
+    if (this.analytics) {
+      this.analytics.track('MySiteClosestSiteSet', {
+        closestSiteId: id
+      });
+    }
     return this.apolloClient
       .mutate({
         variables: { closestSiteID: id },
@@ -254,6 +264,11 @@ export class MySite {
 
   private setUserSite(siteId) {
     this.handlePopperClose();
+    if (this.analytics) {
+      this.analytics.track('MySiteSetUserSite', {
+        siteID: siteId
+      });
+    }
     return this.apolloClient
       .mutate({
         variables: { siteId: siteId },
@@ -266,7 +281,7 @@ export class MySite {
             You've set ${this.user.site.name} as the preferred site for you and your household. 
             <a href="/profile/personal">Update your profile</a> to cancel or change your site.
           </div>`
-        ); 
+        );
       })
       .catch(err => {
         this.logError(err);
@@ -297,31 +312,6 @@ export class MySite {
     });
   }
 
-  private openInNewTab(url) {
-    const win = window.open(url, '_blank');
-    win.focus();
-  }
-
-  public renderPopover() {
-    return (
-      <div
-        class="popper"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0.85)), url(${Utils.imgixify(
-            this.displaySite.imageUrl + '?auto=format'
-          )}`,
-          backgroundSize: `cover`,
-          backgroundColor: this.displaySite.imageUrl ? null : `lightgrey`
-        }}
-      >
-        {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
-        {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
-        {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
-        {this.shouldShowSiteContent() ? this.renderSiteDetails() : null}
-      </div>
-    );
-  }
-
   private shouldShowUpdateSitePrompt(): boolean {
     return this.userHasSite() && this.nearestSiteID !== Number(this.user.site.id) && !this.promptsDisabled;
   }
@@ -348,91 +338,120 @@ export class MySite {
     return !!this.nearestSiteID || !!this.user;
   }
 
-  private renderSiteDetails() {
-    if (this.displaySite.id == '15') return this.renderAnywhereSiteContent();
+  public renderPopover() {
     return (
-      <div class="popover-content">
-        <h4 class="text-left text-uppercase">
-          {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
-        </h4>
-        <img
-          class="map-image"
-          src={Utils.imgixify(this.displaySite.mapImageUrl + '?auto=format')}
-          onClick={() => {
-            this.openInNewTab(this.displaySite.mapUrl);
-          }}
-        />
-        <div class="card-block text-left">
-          <h4 class="text-white text-uppercase site-name-overlap">{this.displaySite.name}</h4>
-          <div
-            class="push-half-bottom"
-            innerHTML={`${this.displaySite.address}`}
-            onClick={() => {
-              this.openInNewTab(this.displaySite.mapUrl);
-            }}
-          />
-          <div>
-            <div>
-              <strong>Service Times:</strong>
-            </div>
-            <div innerHTML={this.displaySite.serviceTimes} />
-            <a
-              class="text-white underline"
-              onClick={() => {
-                this.openInNewTab(this.directionsUrl);
-              }}
-            >
-              Get Directions
-            </a>
-          </div>
-          <div class="push-half-top">
-            <strong>Open Hours:</strong>
-            <div innerHTML={this.displaySite.openHours} />
-          </div>
+      <div
+        class="popper"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7), rgb(0, 0, 0, 0.97)), url(${Utils.imgixify(
+            this.displaySite.imageUrl + '?auto=format'
+          )}`,
+          backgroundSize: `cover`,
+          backgroundPosition: `center`
+        }}
+      >
+        {this.shouldShowSignInPrompt() ? this.renderSignInPrompt() : null}
+        {this.shouldShowUpdateSitePrompt() ? this.renderUpdateSitePrompt() : null}
+        {this.shouldShowSetSitePrompt() ? this.renderSetSitePrompt() : null}
+        {this.shouldShowSiteContent() ? this.renderSite() : null}
+      </div>
+    );
+  }
 
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
+  private renderSite() {
+    return (
+      <div>
+        <div class="popover-content">
+          <h4 class="text-left text-uppercase font-family-base-bold">
+            {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
+          </h4>
+          <crds-image-title-cutout
+            imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
+            imageHref={this.displaySite.mapUrl}
+            title={this.displaySite.name}
+            titleHref={this.displaySite.qualifiedUrl}
+          />
+          <div class="site-details">
+            {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
+            <p class="push-half-top">Not your site? <a class="text-white" href="/profile/personal">Set your preferred site.</a></p>
+          </div>
+          
         </div>
       </div>
     );
   }
-  
 
-  private renderAnywhereSiteContent() {
+  private renderSiteDetails() {
     return (
-      <div class="popover-content anywhere">
-        {this.contentBlockHandler.getContentBlock('MySiteAnywhereContent', { nearestSite: this.nearestSite.name })}
+      <div>
+        {' '}
+        <div
+          class="push-half-bottom"
+          innerHTML={`${marked(this.displaySite.address)}`}
+          onClick={() => {
+            Utils.openInNewTab(this.displaySite.mapUrl);
+          }}
+        />
+        <div>
+          {this.renderServiceHours()}
+          {this.renderOpenHours()}
+        </div>
       </div>
     );
   }
 
-  private renderAnywhereSiteUpdatePrompt() {
-    return (
-      <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteAnywherePrompt', {
-          userSite: this.displaySite.name
-        })}
-        <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
-          Update My Site
-        </button>
-        <a onClick={() => this.disablePrompts()}>No, thanks</a>
-      </div>
-    );
+  private renderServiceHours() {
+    if(this.displaySite.serviceTimes)
+      return (
+        <div>
+          {' '}
+          <div>
+            <strong>Service Times:</strong>
+          </div>
+          <div innerHTML={marked(this.displaySite.serviceTimes)} />
+          {this.renderGetDirections()}
+        </div>
+      );
+  }
+
+  private renderOpenHours() {
+    if (this.displaySite.openHours)
+      return (
+        <div class="push-half-top">
+          <strong>Open Hours:</strong>
+          <div innerHTML={marked(this.displaySite.openHours)} />
+        </div>
+      );
+  }
+
+  private renderGetDirections() {
+    if (this.directionsUrl)
+      return (
+        <a
+          class="text-white underline"
+          onClick={() => {
+            Utils.openInNewTab(this.directionsUrl);
+          }}
+        >
+          Get Directions
+        </a>
+      );
+  }
+
+  private renderAnywhereSiteDetails() {
+    return this.contentBlockHandler.getContentBlock('MySiteAnywhereDetails');
   }
 
   private renderUpdateSitePrompt() {
-    if (this.nearestSite.id === '15') return this.renderAnywhereSiteUpdatePrompt();
     return (
       <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteUpdatePrompt', {
-          nearestSite: this.nearestSite.name,
-          userSite: this.user.site.name
-        })}
+        {this.contentBlockHandler.getContentBlock(
+          this.nearestSiteID === 15 ? 'MySiteAnywherePrompt' : 'MySiteUpdatePrompt',
+          {
+            nearestSite: this.nearestSite.name,
+            userSite: this.user.site.name
+          }
+        )}
         <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
           Update My Site
         </button>
@@ -444,9 +463,12 @@ export class MySite {
   private renderSetSitePrompt() {
     return (
       <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteSetSitePrompt', {
-          nearestSite: this.nearestSite.name
-        })}
+        {this.contentBlockHandler.getContentBlock(
+          this.nearestSiteID === 15 ? 'MySiteAnywhereSetSitePrompt' : 'MySiteSetSitePrompt',
+          {
+            nearestSite: this.nearestSite.name
+          }
+        )}
         <button class="btn" onClick={() => this.setUserSite(this.nearestSiteID)}>
           Make it my preferred site
         </button>
@@ -458,10 +480,13 @@ export class MySite {
   private renderSignInPrompt() {
     return (
       <div class="popover-prompt">
-        {this.contentBlockHandler.getContentBlock('MySiteSignInPrompt', { nearestSite: this.nearestSite.name })}
+        {this.contentBlockHandler.getContentBlock(
+          this.nearestSiteID === 15 ? 'MySiteAnywhereSignInPrompt' : 'MySiteSignInPrompt',
+          { nearestSite: this.nearestSite.name }
+        )}
         <button
           onClick={() => {
-            location.href = '/signin';
+            location.href = '/profile';
           }}
           class="btn flush-sides"
         >
@@ -477,7 +502,8 @@ export class MySite {
     return (
       <div class="arrow">
         <div class={`my-site ${this.popperOpen ? 'open' : ''}`}>
-          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}{' '}
+          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}
+          <div class="notification">{this.showNotification ? SvgSrc.notificationRed() : ''}</div>
           <a class="my-site-name">
             {(this.userHasSite() && this.user.site.name) ||
               this.sites.find(site => Number(site.id) === this.nearestSiteID).name}

@@ -12,6 +12,7 @@ export const GET_USER = gql`
         serviceTimes
         mapUrl
         imageUrl
+        qualifiedUrl
       }
       closestSite {
         id
@@ -22,6 +23,7 @@ export const GET_USER = gql`
         serviceTimes
         mapUrl
         imageUrl
+        qualifiedUrl
       }
     }
   }
@@ -59,6 +61,7 @@ export const SET_SITE = gql`
         serviceTimes
         mapUrl
         imageUrl
+        qualifiedUrl
       }
     }
   }
@@ -84,6 +87,7 @@ export const GET_SITE_CONTENT = gql`
       serviceTimes
       mapUrl
       imageUrl
+      qualifiedUrl
     }
   }
 `;

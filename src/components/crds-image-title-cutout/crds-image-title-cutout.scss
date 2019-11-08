@@ -1,0 +1,26 @@
+@import '../../shared/shared.scss';
+
+:host {
+  position: relative;
+}
+
+.image {
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.title-cutout {
+  display: table;
+  font-family: 'acumin-pro-extra-condensed', sans-serif;
+  font-size: 2.125rem;
+  margin: -3rem -0.7rem 0;
+  padding: 0px 10px;
+  position: relative;
+  text-decoration: none;
+}
+
+.card-block {
+  padding: 1rem 1rem 0;
+}

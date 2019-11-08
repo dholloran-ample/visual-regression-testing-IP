@@ -90,4 +90,14 @@ export class Utils {
 
     observer.observe(host);
   }
+  
+  public static openInNewTab(url) {
+    const win = window.open(url, '_blank');
+    win.focus();
+  }
+  
+  public static isMobile(windowSize?): boolean {
+    if (windowSize) return windowSize <= 768;
+    return window.matchMedia(`(max-width: 768px)`).matches
+  }
 }
