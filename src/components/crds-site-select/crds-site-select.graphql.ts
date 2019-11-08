@@ -11,11 +11,23 @@ export const SET_SITE = gql`
   }
 `;
 
-export const GET_COPY = gql`
-  query contentBlocks($categoryDescription: String) {
-    contentBlocks(filters: { category: $categoryDescription }) {
-      content
-      slug
+export const GET_USER = gql`
+  {
+    user {
+      site {
+        id
+        name
+      }
+      closestSite {
+        id
+        name
+        address
+        mapImageUrl
+        openHours
+        serviceTimes
+        mapUrl
+        imageUrl
+      }
     }
   }
 `;

@@ -1,97 +1,123 @@
 import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
-import { SET_SITE, GET_COPY } from './crds-site-select.graphql';
+import { SET_SITE, GET_USER } from './crds-site-select.graphql';
 import { CrdsApollo } from '../../shared/apollo';
 import { Utils } from '../../shared/utils';
 import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
-
+import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
+import { SiteSelectUser } from './crds-site-select.interface';
+import { Event, EventEmitter, Listen } from '@stencil/core';
 
 @Component({
-    tag: 'crds-site-select',
-    styleUrl: 'crds-site-select.scss',
-    shadow: true
+  tag: 'crds-site-select',
+  styleUrl: 'crds-site-select.scss',
+  shadow: true
 })
 export class CrdsSiteSelect {
-    public apolloClient: ApolloClient<{}>;
+  public apolloClient: ApolloClient<{}>;
+  private contentBlockHandler: ContentBlockHandler;
 
-    @Prop() authToken: string;
-    @Prop() siteId: string;
-    @Prop() siteSelectConfirmationCopy: any;
+  @Prop() authToken: string;
+  @Prop() cardSiteId: string;
 
-    @State() cookieSite: string;
+  @State() cookieSiteId: string;
+  @State() user: SiteSelectUser;
 
-    @Watch('authToken')
-    authTokenHandler(newValue: string, oldValue: string) {
-        if (newValue !== oldValue) {
-            this.apolloClient = CrdsApollo(newValue);
-        }
+  @Event({
+    eventName: 'siteSet',
+    composed: true,
+    bubbles: true,
+    cancelable: true
+  }) siteSetEvent: EventEmitter
+
+  @Listen('siteSet', { target: 'document'})
+  siteSetHandler(){
+    console.log("listener hit");
+    if(this.authToken) this.getUserSite();
+    this.cookieSiteId = Utils.getCookie('nearestSiteId');
+  }
+
+  @Watch('authToken')
+  authTokenHandler(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.apolloClient = CrdsApollo(newValue);
+      this.getUserSite();
     }
+  }
 
-    public componentWillLoad() {
-        toastr.options.escapeHtml = false;
-        this.apolloClient = CrdsApollo(this.authToken);
-        this.cookieSite = Utils.getCookie('nearestSiteId');
-        this.getContentBlockContent("site select", "siteSelectConfirmation");
-    }
+  public componentWillLoad() {
+    toastr.options.escapeHtml = false;
+    this.apolloClient = CrdsApollo(this.authToken);
+    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
+    this.cookieSiteId = Utils.getCookie('nearestSiteId');
+    var promises = [this.getUserSite(), this.contentBlockHandler.getCopy()]
+    return Promise.all(promises);
+  }
 
-    private getContentBlockContent(contentBlockCategory, contentBlockSlug) {
-        return this.apolloClient
-            .query({
-                variables: { categoryDescription: contentBlockCategory },
-                query: GET_COPY
-            })
-            .then(response => {
-                let numberOfContentBlocksInCategory = response.data.contentBlocks.length;
-                for (let i = 0; i < numberOfContentBlocksInCategory; i++) {
-                    if (response.data.contentBlocks[i].slug === contentBlockSlug) {
-                        this.siteSelectConfirmationCopy = response.data.contentBlocks[i].content;
-                    }
-                }
-            })
-            .catch(err => {
-                this.logError(err);
-            });
-    }
+  private getUserSite(): Promise<any> {
+    return this.apolloClient
+      .query({ query: GET_USER })
+      .then(response => {
+        this.user = response.data.user;
+        return;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
+  }
 
-    private setUserSite() {
-        if (this.authToken) {
-            this.setMpSite()
-        }
-        else {
-            this.setCookieSite()
-        }
+  private setUserSite() {
+    if (this.authToken) {
+      this.setMpSite();
     }
+    else {
+      this.setCookieSite();
+    }
+    this.siteSetEvent.emit();
+  }
 
-    private setMpSite() {
-        return this.apolloClient
-            .mutate({
-                variables: { siteId: this.siteId },
-                mutation: SET_SITE
-            })
-            .then(() => {
-                toastr.success(
-                    this.siteSelectConfirmationCopy
-                );
-            })
-            .catch(err => {
-                this.logError(err);
-            });
-    }
+  private setMpSite() {
+    return this.apolloClient
+      .mutate({
+        variables: { siteId: this.cardSiteId },
+        mutation: SET_SITE
+      })
+      .then(() => {
+        toastr.success(
+          this.contentBlockHandler.getContentBlock('siteSelectConfirmation')
+        );
+      })
+      .catch(err => {
+        this.logError(err);
+      });
+  }
 
-    private setCookieSite() {
-        console.log('TODO: setCookieSite')
-        // should we save this to Cosmos? (how is it done in MySite?)
-        Utils.setCookie('nearestSiteId', this.siteId, 365);
-    }
+  private setCookieSite() {
+    Utils.setCookie('nearestSiteId', this.cardSiteId, 365);
+  }
 
-    private logError(err) {
-        console.error(err)
-    }
+  private logError(err) {
+    console.error(err)
+  }
 
-    public render() {
-        return (
-            <button onClick={() => this.setUserSite()}>Set as my site</button >
-        )
+  public renderUserSiteButton() {
+    return (
+      <button>{this.contentBlockHandler.getContentBlock('userSiteButtonText')}</button >
+    )
+  }
+
+  public renderSetSiteButton() {
+    return (
+      <button onClick={() => this.setUserSite()}>{this.contentBlockHandler.getContentBlock('setSiteOptionText')}</button >
+    )
+  }
+
+  public render() {
+    if(this.authToken) {
+      return this.cardSiteId == this.user.site.id ? this.renderUserSiteButton() : this.renderSetSiteButton();
+    } else {
+      return this.cardSiteId == this.cookieSiteId ? this.renderUserSiteButton() : this.renderSetSiteButton();
     }
+  }
 
 }

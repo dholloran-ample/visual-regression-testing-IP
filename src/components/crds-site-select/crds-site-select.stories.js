@@ -5,7 +5,7 @@ const stories = storiesOf('Personalization', module);
 stories
   .addDecorator(withKnobs)
   .add('<crds-site-select />', () => {
-    const siteId = text('siteId', '');
+    const cardSiteId = text('cardSiteId', '');
     const token = text('sessionId', '');
-    return `<crds-site-select site-id=${siteId} auth-token=${token} ></crds-site-select>`;
+    return `<crds-site-select card-site-id=${cardSiteId} auth-token=${token} ></crds-site-select>`;
   });
