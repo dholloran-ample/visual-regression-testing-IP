@@ -46,7 +46,7 @@ export class GlobalNav {
 
   authChangeCallback() {
     this.isAuthenticated = this.auth.authenticated;
-    this.host && this.host.shadowRoot && this.host.shadowRoot.querySelector('my-site').setAttribute('auth-token', this.auth.token && this.auth.token.access_token.accessToken);
+    this.host && this.host.shadowRoot //&& this.host.shadowRoot.querySelector('my-site').setAttribute('auth-token', this.auth.token && this.auth.token.access_token.accessToken);
     if (!this.isAuthenticated) {
       this.redirectToRoot();
     }
