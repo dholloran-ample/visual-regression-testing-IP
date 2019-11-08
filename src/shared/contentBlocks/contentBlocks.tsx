@@ -31,6 +31,17 @@ export class ContentBlockHandler {
     });
     return <div innerHTML={contentBlock.content.toString()} />;
   }
+
+  public getContentBlockText(slug: string, replace?: { [key: string]: string }): string {
+    if (!this.copy) return null;
+    var contentBlock = this.copy.find(c => c.slug === slug);
+    if (!contentBlock) return;
+    if (replace)
+    Object.keys(replace).forEach(key => {
+      contentBlock.content = contentBlock.content.replace(`{${key}}`, replace[key]);
+    });
+    return contentBlock.content.toString();
+  }
 }
 
 export interface ContentBlock {

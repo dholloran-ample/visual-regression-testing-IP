@@ -44,7 +44,6 @@ export class CrdsSiteSelect {
   }
 
   public componentWillLoad() {
-    toastr.options.escapeHtml = false;
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
     this.cookieSiteId = Utils.getCookie('nearestSiteId');
@@ -82,9 +81,7 @@ export class CrdsSiteSelect {
       .then(response => {
         this.userSite = parseInt(response.data.setSite.site.id);
         this.siteSetEvent.emit();
-        toastr.success(
-          this.contentBlockHandler.getContentBlock('siteSelectConfirmation')
-        );
+        this.toastSuccess('siteSelectConfirmationLoggedIn');
       })
       .catch(err => {
         this.logError(err);
@@ -93,7 +90,14 @@ export class CrdsSiteSelect {
 
   private setCookieSite() {
     Utils.setCookie('nearestSiteId', this.cardSiteId, 365);
+    this.toastSuccess('siteSelectConfirmationLoggedOut');
     this.siteSetEvent.emit();
+  }
+
+  private toastSuccess(slugName) {
+    toastr.success(
+      this.contentBlockHandler.getContentBlockText(slugName)
+    );
   }
 
   private logError(err) {
