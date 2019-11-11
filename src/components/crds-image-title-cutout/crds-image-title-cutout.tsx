@@ -9,7 +9,7 @@ import { Utils } from '../../shared/utils';
 })
 export class CrdsImageBottomTitleOverlay {
   @Prop() imageUrl: string;
-  @Prop() title: string;
+  @Prop() cardTitle: string;
   @Prop() imageHref: string;
   @Prop() titleHref: string;
   @Element() public host: HTMLStencilElement;
@@ -29,7 +29,7 @@ export class CrdsImageBottomTitleOverlay {
     imageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
-  private componentDidLoad() {
+  public componentWillUpdate() {
     window.addEventListener('resize', () => this.addTextCutout());
     const observer = new IntersectionObserver(
       entries => {
@@ -59,7 +59,7 @@ export class CrdsImageBottomTitleOverlay {
         />
         <div class="card-block text-left">
           <a href={this.titleHref} class="text-uppercase title-cutout text-white">
-            {this.title}
+            {this.cardTitle}
           </a>
         </div>
       </div>

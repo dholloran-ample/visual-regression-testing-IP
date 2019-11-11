@@ -37,9 +37,9 @@ export namespace Components {
     'storageKey': string;
   }
   interface CrdsImageTitleCutout {
+    'cardTitle': string;
     'imageHref': string;
     'imageUrl': string;
-    'title': string;
     'titleHref': string;
   }
   interface CrdsModal {
@@ -297,9 +297,9 @@ declare namespace LocalJSX {
     'storageKey'?: string;
   }
   interface CrdsImageTitleCutout extends JSXBase.HTMLAttributes<HTMLCrdsImageTitleCutoutElement> {
+    'cardTitle'?: string;
     'imageHref'?: string;
     'imageUrl'?: string;
-    'title'?: string;
     'titleHref'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
