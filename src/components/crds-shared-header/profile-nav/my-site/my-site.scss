@@ -128,6 +128,7 @@ $arrow-height: 10px;
   border-top: 0;
   border-bottom-color: rgba(0, 0, 0, 0.97);
   content: '';
+  pointer-events: none;
   position: absolute;
   top: $top-padding - $arrow-height;
   transform: translateX(9px);
