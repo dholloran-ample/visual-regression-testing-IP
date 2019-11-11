@@ -490,7 +490,7 @@ export class MySite {
           }}
           class="btn flush-sides"
         >
-          Login
+          Login or signup
         </button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
