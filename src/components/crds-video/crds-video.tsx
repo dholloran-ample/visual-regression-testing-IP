@@ -24,7 +24,8 @@ export class CrdsVideo {
     this.active = !this.active;
     let el = e.target;
     var content = el.nextElementSibling;
-        content.style.maxHeight = content.style.maxHeight ? null : `${content.scrollHeight}px`;
+      content.classList.toggle('show');
+      content.style.maxHeight = content.style.maxHeight ? null : `250px`;
   }
 
   btnText() {
@@ -34,7 +35,7 @@ export class CrdsVideo {
   renderTranscript() {
     return (
       <div class="transcript">
-        <button type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
+        <button class="transcript-btn" type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
         <div class="transcript-body">
           {this.transcript}
         </div>
@@ -45,7 +46,7 @@ export class CrdsVideo {
   render() {
     return (
       <Fragment>
-        <div class="embed-responsive embed-responsive-16by9 shadow">{this.renderIframe()}</div>
+        <div class="embed-responsive">{this.renderIframe()}</div>
         {this.transcript && this.renderTranscript()}
       </Fragment>
     );
