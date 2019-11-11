@@ -103,7 +103,7 @@ export class CrdsSiteSelect {
   }
 
   public renderUserSiteButton() {
-    return <crds-primary-button color="blue" text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} />;
+    return <span>{this.contentBlockHandler.getContentBlockText('userSiteButtonText')}</span>;
   }
 
   public renderSetSiteButton() {
