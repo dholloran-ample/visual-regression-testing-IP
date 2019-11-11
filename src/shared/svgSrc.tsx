@@ -108,7 +108,7 @@ export class SvgSrc {
 
   public static notificationRed() {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208.57 208.47">
+      <svg class="notification-red" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208.57 208.47">
         <g transform="translate(-580.141 -280.148)">
           <rect class="a" width="30" height="124" transform="translate(670 323)" />
           <path
