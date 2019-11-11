@@ -47,6 +47,12 @@ export namespace Components {
     'label': string;
     'onModalClose': Function;
   }
+  interface CrdsPrimaryButton {
+    'color': string;
+    'href': string;
+    'onClick': (event: MouseEvent) => void;
+    'text': string;
+  }
   interface CrdsRecommendedContent {
     'authToken': string;
   }
@@ -152,6 +158,12 @@ declare global {
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
     new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsPrimaryButtonElement extends Components.CrdsPrimaryButton, HTMLStencilElement {}
+  var HTMLCrdsPrimaryButtonElement: {
+    prototype: HTMLCrdsPrimaryButtonElement;
+    new (): HTMLCrdsPrimaryButtonElement;
   };
 
   interface HTMLCrdsRecommendedContentElement extends Components.CrdsRecommendedContent, HTMLStencilElement {}
@@ -261,6 +273,7 @@ declare global {
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
     'crds-modal': HTMLCrdsModalElement;
+    'crds-primary-button': HTMLCrdsPrimaryButtonElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-shared-header': HTMLCrdsSharedHeaderElement;
@@ -317,6 +330,12 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
     'label'?: string;
     'onModalClose'?: Function;
+  }
+  interface CrdsPrimaryButton extends JSXBase.HTMLAttributes<HTMLCrdsPrimaryButtonElement> {
+    'color'?: string;
+    'href'?: string;
+    'onClick'?: (event: MouseEvent) => void;
+    'text'?: string;
   }
   interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {
     'authToken'?: string;
@@ -398,6 +417,7 @@ declare namespace LocalJSX {
     'crds-heart-button': CrdsHeartButton;
     'crds-image-title-cutout': CrdsImageTitleCutout;
     'crds-modal': CrdsModal;
+    'crds-primary-button': CrdsPrimaryButton;
     'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
     'crds-shared-header': CrdsSharedHeader;

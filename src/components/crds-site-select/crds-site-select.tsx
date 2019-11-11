@@ -27,11 +27,12 @@ export class CrdsSiteSelect {
     composed: true,
     bubbles: true,
     cancelable: false
-  }) siteSetEvent: EventEmitter
+  })
+  siteSetEvent: EventEmitter;
 
-  @Listen('siteSet', { target: 'document'})
-  siteSetHandler(){
-    if(this.authToken) this.getUserSite();
+  @Listen('siteSet', { target: 'document' })
+  siteSetHandler() {
+    if (this.authToken) this.getUserSite();
     else this.cookieSiteId = Utils.getCookie('nearestSiteId');
   }
 
@@ -47,15 +48,14 @@ export class CrdsSiteSelect {
     this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
     this.cookieSiteId = Utils.getCookie('nearestSiteId');
-    var promises = [this.getUserSite(), this.contentBlockHandler.getCopy()]
+    var promises = [this.getUserSite(), this.contentBlockHandler.getCopy()];
     return Promise.all(promises);
   }
 
   private setUserSite() {
     if (this.authToken) {
       this.setMpSite();
-    }
-    else {
+    } else {
       this.setCookieSite();
     }
   }
@@ -95,34 +95,33 @@ export class CrdsSiteSelect {
   }
 
   private toastSuccess(slugName) {
-    toastr.success(
-      this.contentBlockHandler.getContentBlockText(slugName)
-    );
+    toastr.success(this.contentBlockHandler.getContentBlockText(slugName));
   }
 
   private logError(err) {
-    console.error(err)
+    console.error(err);
   }
 
   public renderUserSiteButton() {
-    return (
-      <button>{this.contentBlockHandler.getContentBlock('userSiteButtonText')}</button >
-    )
+    return <crds-primary-button color="blue" text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} />;
   }
 
   public renderSetSiteButton() {
     return (
-      <button onClick={() => this.setUserSite()}>{this.contentBlockHandler.getContentBlock('setSiteOptionText')}</button >
-    )
+      <crds-primary-button
+        color="blue"
+        onClick={() => this.setUserSite()}
+        text={this.contentBlockHandler.getContentBlockText('setSiteOptionText')}
+      />
+    );
   }
 
   public render() {
-    if(this.authToken && this.userSite) {
+    if (this.authToken && this.userSite) {
       return this.cardSiteId == this.userSite ? this.renderUserSiteButton() : this.renderSetSiteButton();
     } else if (this.cookieSiteId) {
       return this.cardSiteId == parseInt(this.cookieSiteId) ? this.renderUserSiteButton() : this.renderSetSiteButton();
     }
     return this.renderSetSiteButton(); //default in case neither is set
   }
-
 }
