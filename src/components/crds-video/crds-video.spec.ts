@@ -1,6 +1,6 @@
 import { CrdsVideo } from "./crds-video";
 
-describe('<crds-shared-header>', () => {
+describe('<crds-video>', () => {
   beforeEach(() => {
     this.component = new CrdsVideo();
   });
