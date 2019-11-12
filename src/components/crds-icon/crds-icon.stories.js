@@ -14,8 +14,7 @@ stories
     const sizeOptions = { '12': '12', '24': '24', '36': '36' }
     const size = select('size(px)', sizeOptions, '24');
 
-    const color = select('color', colors, 'black')
-
+    const color = select('color', Object.keys(colors), 'black')
 
     return `
         <crds-icon name="${name}" size="${size}" color="${color}"></crds-icon>

@@ -15,9 +15,10 @@ export class CrdsIcon {
   @Prop() size: string;
 
   render() {
+    
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(icons, 'text/html');
-    const svg = doc.getElementById(this.name);
+    const svg = doc.getElementById(this.name); 
 
     svg.setAttribute('preserveAspectRatio', `none`);
     svg.setAttribute('height', `${this.size}px`);
