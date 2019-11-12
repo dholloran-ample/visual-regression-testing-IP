@@ -19,8 +19,8 @@ export namespace Components {
     'category': string;
     'contentType': string;
     'heading': string;
+    'iconLabel': string;
     'imageSrc': string;
-    'mediaLabel': string;
     'meta': string;
     'thumbnailSrc': string;
     'url': string;
@@ -65,8 +65,8 @@ export namespace Components {
     'contentLayout': string;
     'contentType': string;
     'heading': string;
+    'iconLabel': string;
     'imageSrc': string;
-    'mediaLabel': string;
     'meta': string;
     'thumbnailSrc': string;
     'url': string;
@@ -317,8 +317,8 @@ declare namespace LocalJSX {
     'category'?: string;
     'contentType'?: string;
     'heading'?: string;
+    'iconLabel'?: string;
     'imageSrc'?: string;
-    'mediaLabel'?: string;
     'meta'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
@@ -363,8 +363,8 @@ declare namespace LocalJSX {
     'contentLayout'?: string;
     'contentType'?: string;
     'heading'?: string;
+    'iconLabel'?: string;
     'imageSrc'?: string;
-    'mediaLabel'?: string;
     'meta'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;

@@ -18,7 +18,7 @@ export class CrdsDefaultLayout {
   @Prop() buttonSrc: string;
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
-  @Prop() mediaLabel: string;
+  @Prop() iconLabel: string;
 
   private icons = {
     article: 'media-article',
@@ -30,7 +30,7 @@ export class CrdsDefaultLayout {
   };
 
   public render() {
-    const { imageSrc, heading, category, meta, thumbnailSrc, url, contentType, icons, mediaLabel} = this;
+    const { imageSrc, heading, category, meta, thumbnailSrc, url, contentType, icons, iconLabel} = this;
     
     return (
       <div class="card-wrapper">
@@ -39,7 +39,7 @@ export class CrdsDefaultLayout {
           {imageSrc && <crds-image src={imageSrc} size="card" />}
           {icons[contentType] && (
             <div class="card-stamp-container">
-              <span class="card-stamp">{mediaLabel}</span>
+              <span class="card-stamp">{iconLabel}</span>
               <crds-icon name={icons[contentType]} size={'15'} color={'white'} />
             </div>
           )}

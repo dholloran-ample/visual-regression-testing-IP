@@ -21,14 +21,14 @@ export class CrdsMediaCard {
   @Prop({ reflect: false }) body: string;
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
-  @Prop() mediaLabel: string;
+  @Prop() iconLabel: string;
 
   @Element() element!: HTMLStencilElement;
   // state
   @State() isVisible: boolean = false; // Will be used for skeleton blocks/prerendering
   @State() childProps = {};
 
-  private propNames = ['imageSrc', 'heading', 'category', 'meta', 'body', 'url', 'thumbnailSrc', 'contentType', 'mediaLabel'];
+  private propNames = ['imageSrc', 'heading', 'category', 'meta', 'body', 'url', 'thumbnailSrc', 'contentType', 'iconLabel'];
   private contentLayouts = ['default', 'overlay', 'media-object'];
   private contentTypes = ['article', 'video', 'episode', 'message', 'song', 'series', 'album', 'podcast'];
 
@@ -67,7 +67,6 @@ export class CrdsMediaCard {
   }
   componentWillLoad() {
     /* 
-      Validates props passed to component against props assigned/related to children.
       Stencil doesn't have out of the box support for passing props {... this.props }.
     */
 
