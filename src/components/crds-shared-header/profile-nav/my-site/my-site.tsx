@@ -142,6 +142,7 @@ export class MySite {
   private handlePopperClose() {
     this.popperOpen = false;
     this.showNotification = false;
+    this.promptsDisabled = true;
     this.popper.classList.remove('open');
     this.arrow.classList.remove('open');
   }
