@@ -1,6 +1,5 @@
 import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
 import { SET_SITE, GET_USER } from './crds-site-select.graphql';
-import { CrdsApollo } from '../../shared/apollo';
 import { Utils } from '../../shared/utils';
 import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
@@ -113,7 +112,7 @@ export class CrdsSiteSelect {
   }
 
   public render() {
-    if (this.authToken && this.userSite) {
+    if (this.userSite) {
       return this.cardSiteId == this.userSite ? this.renderUserSiteButton() : this.renderSetSiteButton();
     } else if (this.cookieSiteId) {
       return this.cardSiteId == parseInt(this.cookieSiteId) ? this.renderUserSiteButton() : this.renderSetSiteButton();
