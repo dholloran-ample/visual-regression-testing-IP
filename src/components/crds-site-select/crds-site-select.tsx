@@ -13,12 +13,10 @@ import { Event, EventEmitter, Listen } from '@stencil/core';
   shadow: true
 })
 export class CrdsSiteSelect {
-  public apolloClient: ApolloClient<{}>;
   private contentBlockHandler: ContentBlockHandler;
 
-  @Prop() authToken: string;
+  @Prop() apolloClient: ApolloClient<{}>;
   @Prop() cardSiteId: number;
-
   @State() cookieSiteId: string;
   @State() userSite: number;
 
@@ -32,20 +30,18 @@ export class CrdsSiteSelect {
 
   @Listen('siteSet', { target: 'document' })
   siteSetHandler() {
-    if (this.authToken) this.getUserSite();
+    if (this.apolloClient) this.getUserSite();
     else this.cookieSiteId = Utils.getCookie('nearestSiteId');
   }
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
+  @Watch('apolloClient')
+  apolloClientHandler(newValue: ApolloClient<{}>, oldValue: ApolloClient<{}>) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
       this.getUserSite();
     }
   }
 
   public componentWillLoad() {
-    this.apolloClient = CrdsApollo(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
     this.cookieSiteId = Utils.getCookie('nearestSiteId');
     var promises = [this.getUserSite(), this.contentBlockHandler.getCopy()];
@@ -53,7 +49,7 @@ export class CrdsSiteSelect {
   }
 
   private setUserSite() {
-    if (this.authToken) {
+    if (this.apolloClient) {
       this.setMpSite();
     } else {
       this.setCookieSite();
