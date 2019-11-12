@@ -13,8 +13,8 @@ export class CrdsPrimaryButton {
 
   public renderATagButton() {
     return (
-      <a class={`btn-primary btn-${this.color}`}>
-        {this.text} href={this.href}
+      <a href={this.href} class={`btn-primary btn-${this.color}`}>
+        {this.text}
       </a>
     );
   }
