@@ -133,7 +133,6 @@ export class MySite {
 
   private handlePopperOpen() {
     this.popperOpen = true;
-    this.showNotification = false;
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
@@ -142,6 +141,8 @@ export class MySite {
 
   private handlePopperClose() {
     this.popperOpen = false;
+    this.showNotification = false;
+    this.promptsDisabled = true;
     this.popper.classList.remove('open');
     this.arrow.classList.remove('open');
   }
