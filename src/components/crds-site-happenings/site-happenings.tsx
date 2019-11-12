@@ -13,7 +13,7 @@ import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
   shadow: true
 })
 export class SiteHappenings {
-  private analytics = window['analytics'] || {};
+  private analytics = window['analytics'];
   private contentfulSites: string[] = [];
   private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
@@ -188,9 +188,11 @@ export class SiteHappenings {
    */
   private handleSiteSelection(event) {
     this.validateSelectedSite(event.target.value);
-    this.analytics.track('HappeningSiteFiltered', {
-      site: this.selectedSite
-    });
+    if(this.analytics) {
+      this.analytics.track('HappeningSiteFiltered', {
+        site: this.selectedSite
+      });
+    }
   }
 
   /**
@@ -231,9 +233,11 @@ export class SiteHappenings {
       selectedSite: this.selectedSite
     };
 
-    this.analytics.track('HappeningCardClicked', {
-      params
-    });
+    if(this.analytics) {
+      this.analytics.track('HappeningCardClicked', {
+        params
+      });
+    }
   }
 
   /**
@@ -254,10 +258,12 @@ export class SiteHappenings {
     this.setUserSite(selectedSiteId);
 
     //Report to analytics
-    this.analytics.track('HappeningSiteUpdated', {
-      id: selectedSiteId,
-      name: this.selectedSite
-    });
+    if(this.analytics) {
+      this.analytics.track('HappeningSiteUpdated', {
+        id: selectedSiteId,
+        name: this.selectedSite
+      });
+    }
   }
 
   /**
@@ -386,7 +392,7 @@ export class SiteHappenings {
 
   public render() {
     return (
-      <div class="container push-top">
+      <div class="container">
         <div class="relative">
           {this.maybeRenderSetSiteModal()}
           <hr class="push-half-bottom" />

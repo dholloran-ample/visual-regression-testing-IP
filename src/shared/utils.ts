@@ -35,6 +35,13 @@ export class Utils {
         .shift();
   }
 
+  public static setCookie(name, value, days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 1440 * 60 * 1000);
+    var expires = '; expires=' + date.toUTCString();
+    document.cookie = name + '=' + value.toString() + expires + '; path=/;';
+  }
+
   /**
    * Returns the appropriate subdomain based on the env
    * @param {String} env
@@ -65,20 +72,32 @@ export class Utils {
    *  @param {function} dataFetch
    */
   public static trackInView(host: HTMLElement, componentName: string, dataFetch: () => {}) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          window['analytics'].track(`${componentName}InView`, {
-            target: entry.target,
-            data: dataFetch()
-          });
-        }
-      });
-    },
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            window['analytics'].track(`${componentName}InView`, {
+              target: entry.target,
+              data: dataFetch()
+            });
+          }
+        });
+      },
       {
         threshold: 1.0
-      });
+      }
+    );
 
     observer.observe(host);
+  }
+  
+  public static openInNewTab(url) {
+    const win = window.open(url, '_blank');
+    win.focus();
+  }
+  
+  public static isMobile(windowSize?): boolean {
+    if (windowSize) return windowSize <= 768;
+    return window.matchMedia(`(max-width: 768px)`).matches
   }
 }

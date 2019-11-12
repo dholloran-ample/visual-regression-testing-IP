@@ -22,6 +22,10 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .d-none {
   display: none;
 }
@@ -32,6 +36,10 @@
 
 .w-100 {
   width: 100%;
+}
+
+.underline {
+  text-decoration: underline;
 }
 
 .img-responsive {
@@ -57,6 +65,11 @@ hr {
   font-weight: 300 !important;
 }
 
+.font-family-base-bold {
+  font-family: "acumin-pro", helvetica, arial, sans-serif !important;
+  font-weight: 600 !important;
+}
+
 .font-family-condensed-extra {
   font-family: 'acumin-pro-extra-condensed', sans-serif !important;
   font-weight: 500 !important;
@@ -80,6 +93,10 @@ hr {
 
 .text-center {
   text-align: center;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-uppercase {
@@ -135,8 +152,17 @@ hr {
   margin-top: 0 !important;
 }
 
+.flush-sides {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
 .push-half-bottom {
   margin-bottom: 12px !important;
+}
+
+.push-half-top {
+  margin-top: 12px !important;
 }
 
 .push-bottom {
@@ -147,12 +173,33 @@ hr {
   margin-top: 24px;
 }
 
+.push-left {
+  margin-left: 24px !important;
+}
+
+.push-half-left {
+  margin-left: 12px !important;
+}
+
+.push-half-right {
+  margin-right: 12px !important;
+}
+
 .push-half-top {
   margin-top: 12px !important;
 }
 
 .soft-quarter-top {
   padding-top: 6px;
+} 
+
+.soft-quarter-right {
+  padding-right: 6px;
+}
+
+.soft-half-ends {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
 }
 
 .component-header {
@@ -166,6 +213,7 @@ hr {
     font-size: 2.125rem; // 34px
   }
 }
+
 
 .list-header {
   font-family: 'acumin-pro-extra-condensed', sans-serif;
@@ -210,6 +258,12 @@ hr {
   }
 }
 
+.icon {
+  fill: #fff;
+  height: 16px;
+  width: 12px;
+}
+
 // Buttons
 .btn {
   @extend .font-family-base;
@@ -245,6 +299,18 @@ hr {
     border-color: #979797;
   }
 
+  &.btn-white {
+    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+  }
+
+  &.btn-cyan {
+    color: #fff;
+    background-color: #0095d9;
+    border-color: #0095d9;
+  }
+
   &.btn.btn-blue,
   &.btn.btn-primary {
     color: #fff;
@@ -265,6 +331,18 @@ hr {
 
     &:hover {
       background-color: #979797;
+      color: #fff;
+    }
+  }
+
+  &.btn-white.btn-outline {
+    background: transparent;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+
+    &:hover {
+      background-color: transparent;
       color: #fff;
     }
   }
@@ -300,4 +378,21 @@ hr {
   &.label-info {
     background-color: #b6dee6;
   }
+}
+
+h1 {
+  font-size: 2.75rem;
+}
+
+@media screen and (min-width: 480px) {
+h1 {
+  font-size: 3.9875rem;
+}
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.1;
+  color: #4d4d4d;
 }

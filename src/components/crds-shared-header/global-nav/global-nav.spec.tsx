@@ -117,12 +117,6 @@ describe('<global-nav>', () => {
   });
 
   describe('Tests toggleNav()', () => {
-    it('Checks event propagation stopped', () =>{
-      this.component.toggleNav(this.fakeEvent, 'fake-nav');
-
-      expect(this.fakeEvent.stopPropagation).toBeCalledTimes(1);
-    });
-
     it('Checks open menu is toggled closed', () => {
       this.component.openNavName = 'give-nav';
 
@@ -174,7 +168,7 @@ describe('<global-nav>', () => {
 
       this.component.toggleNav(this.fakeEvent, 'main-nav');
 
-      expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('absolute');
       expect(document.body.style.width).toBe('100vw');
     });
@@ -186,7 +180,7 @@ describe('<global-nav>', () => {
 
       expect(this.component.openNavName).toBe('main-nav');
 
-      expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.overflow).toBe('scroll');
       expect(document.body.style.position).toBe('absolute');
       expect(document.body.style.width).toBe('100vw');
     });
@@ -245,7 +239,14 @@ describe('<global-nav>', () => {
       expect(rendered[1].$tag$).toBe('main-nav');
     });
 
+    it('Checks element has no give-nav if children not defined', () => {
+      expect(this.component.data.children).toBeUndefined
+      const rendered = this.component.render();
+      expect(rendered[0].$children$[0].$children$[1].$tag$).not.toBe('give-nav');
+    })
+
     it('Checks element returned has give-nav', () => {
+      this.component.data.give = { children: [] }
       const rendered = this.component.render();
 
       expect(rendered[0].$children$[0].$children$[1].$tag$).toBe('give-nav');
@@ -254,7 +255,7 @@ describe('<global-nav>', () => {
     it('Checks element returned has profile-nav', () => {
       const rendered = this.component.render();
 
-      expect(rendered[0].$children$[0].$children$[2].$tag$).toBe('profile-nav');
+      expect(rendered[0].$children$[0].$children$[1].$tag$).toBe('profile-nav');
     });
 
     it('Checks header class if any nav is open', () => {

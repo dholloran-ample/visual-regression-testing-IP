@@ -31,9 +31,17 @@
       Typekit.load({ async: true });
     } catch (e) { }
   </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
   <script type="module" src="/build/crds-components.esm.js"></script>
   <script nomodule src="/build/crds-components.js"></script>
+  <script type="text/javascript">
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("MetaRouter snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.metarouter.io/a/v1/"+t+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+    analytics.load("ANALYTICS_ID"); //replace ANALYTICS_ID with metarouter analytics id
+    }}();
+  </script>
 </head>
 
 <body>
@@ -67,30 +75,51 @@
     <a class="btn btn-lg btn-primary" href="#">Call To Action</a>
   </div>
 
-  <div class="container soft-sides push-ends">
-    <div class="greeting-skeleton">
-      <crds-greeting default-name="friend" auth-token="">
-      </crds-greeting>
-    </div>
-    <p class="lead text-center push-bottom">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-      ullamcorper mauris erat, id auctor quam tempus in. Mauris neque mauris,
-      tempor in cursus vel, consectetur ut lorem. Phasellus tristique mauris a
-      arcu malesuada lacinia. Praesent sodales ultrices tincidunt. Curabitur
-      sollicitudin varius turpis, ac cursus ex euismod quis. Curabitur a
-      lacinia nisi, ac molestie mi. Phasellus malesuada, risus non ornare
-      lacinia, nibh mi posuere lorem, vitae dignissim tellus nibh nec leo.
-    </p>
 
-    <crds-heart-button contentful-id="4D9pCED9eM0GOQCOKyY0mS"></crds-heart-button>
-    <div class="site-happenings-skeleton">
-      <crds-site-happenings auth-token />
+  <div class="container">
+    <div style="padding-bottom: 30px;">
+      <crds-video youtube-id="DP1TOQ2G0Ks" transcript="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eumLorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Repudiandae quos reiciendis vitae eum"></crds-video>
     </div>
-    <div class="life-stages-skeleton">
-      <crds-recommended-content auth-token>
-      </crds-recommended-content>
+    <div class="row push-bottom">
+      <div class="col-sm-6">
+        <crds-video youtube-id="DP1TOQ2G0Ks"></crds-video>
+      </div>
+      <div class="col-sm-6">
+        <crds-video youtube-id="DP1TOQ2G0Ks"></crds-video>
+      </div>
+    </div>
+    <div class="row push-bottom">
+      <div class="col-sm-6">
+        <crds-video youtube-id="DP1TOQ2G0Ks"></crds-video>
+      </div>
+      <div class="col-sm-6">
+        <crds-video youtube-id="DP1TOQ2G0Ks"></crds-video>
+      </div>
     </div>
   </div>
+  
+
+  <crds-tithe-challenge auth-token></crds-tithe-challenge>
 
   <div class="shared-footer-skeleton">
     <crds-shared-footer></crds-shared-footer>
@@ -121,6 +150,7 @@
   document.addEventListener('component rendered', function (e) {
     console.log('component rendered', e.detail.tagName);
   })
+
 </script>
 
 </html>
