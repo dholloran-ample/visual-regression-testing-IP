@@ -49,17 +49,17 @@ stories
     return `
     <div style="width: 1000px; display: flex;">
       <div style="flex: 0 0 750px; margin-right: 20px;">
-        <crds-media-card heading='Puerto Rico' icon-label='${iconLabel}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+        <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
               ${body}
         </crds-media-card> 
       </div>
       <div style="display: flex; flex-direction: column; flex: 0 0 250px;">
         <div style="margin-bottom: 20px">
-        <crds-media-card heading='Puerto Rico' icon-label='${iconLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+        <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
   </crds-media-card> 
         </div>
         <div>
-        <crds-media-card heading='Puerto Rico' icon-label='${iconLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+        <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
         </crds-media-card> 
         </div>
       </div>

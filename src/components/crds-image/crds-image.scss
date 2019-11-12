@@ -1,9 +1,10 @@
 @import '../../assets//stylesheets/globals/variables';
 
 .crds-img-container {
-  display: block;
+  display: flex;
   position: relative;
   overflow: hidden;
+  background-color: rgb(221, 221, 221);
 
   .crds-img {
     width: 100%;
@@ -26,5 +27,15 @@
   }
   100% {
     filter: blur(0.1px);
+  }
+}
+
+.crds-img-container {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: (2 / 3) * 100%;
   }
 }

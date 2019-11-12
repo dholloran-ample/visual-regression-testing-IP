@@ -1,5 +1,6 @@
 import { Component, Prop, State, h } from '@stencil/core';
 
+
 @Component({
   tag: 'crds-image',
   styleUrl: 'crds-image.scss',
@@ -27,14 +28,14 @@ export class CrdsImage {
   }
 
   public addObserver() {
-    // Cache Image
+    // Cache Images
     const img = new Image();
     img.classList.add('crds-img');
 
     img.onload = () => {
-      this.imgDidLoad = true;
-      this.cachedImg = img;
-      img.classList.add('loaded');
+        img.classList.add('loaded');
+        this.imgDidLoad = true;
+        this.cachedImg = img;
     };
 
     // Create observer
@@ -48,20 +49,27 @@ export class CrdsImage {
           img.src = this.src;
         }
       });
-    }, options);
+    });
     observer.observe(this.imgWrapper);
   }
 
   public componentDidLoad() {
-    this.addObserver();
+      this.addObserver();
+  }
+
+  renderInnerHTML(){
+    const { imgDidLoad, cachedImg} = this;
+    if(imgDidLoad){
+      return cachedImg.outerHTML
+    }
   }
 
   render() {
-    const { imgDidLoad, cachedImg, size } = this;
+    const { size } = this;
     return (
       <div
-        class={`crds-img-container ${size}`}
-        innerHTML={imgDidLoad ? cachedImg.outerHTML : ''}
+        class={`crds-img-container ${size? size : '' }`}
+        innerHTML={this.renderInnerHTML()}
         ref={el => (this.imgWrapper = el as HTMLDivElement)}
       />
     );
