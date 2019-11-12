@@ -83,6 +83,11 @@ export namespace Components {
     'authToken': string;
     'selectedFeeling': Response;
   }
+  interface CrdsVideo {
+    'active': boolean;
+    'transcript': string;
+    'youtubeId': string;
+  }
   interface GiveNav {
     'data': any;
     'isNavShowing': boolean;
@@ -208,6 +213,12 @@ declare global {
     new (): HTMLCrdsTitheChallengeElement;
   };
 
+  interface HTMLCrdsVideoElement extends Components.CrdsVideo, HTMLStencilElement {}
+  var HTMLCrdsVideoElement: {
+    prototype: HTMLCrdsVideoElement;
+    new (): HTMLCrdsVideoElement;
+  };
+
   interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
   var HTMLGiveNavElement: {
     prototype: HTMLGiveNavElement;
@@ -270,6 +281,7 @@ declare global {
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
     'crds-tithe-challenge': HTMLCrdsTitheChallengeElement;
+    'crds-video': HTMLCrdsVideoElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
@@ -355,6 +367,11 @@ declare namespace LocalJSX {
     'authToken'?: string;
     'selectedFeeling'?: Response;
   }
+  interface CrdsVideo extends JSXBase.HTMLAttributes<HTMLCrdsVideoElement> {
+    'active'?: boolean;
+    'transcript'?: string;
+    'youtubeId'?: string;
+  }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
     'isNavShowing'?: boolean;
@@ -407,6 +424,7 @@ declare namespace LocalJSX {
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
     'crds-tithe-challenge': CrdsTitheChallenge;
+    'crds-video': CrdsVideo;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'main-nav': MainNav;
