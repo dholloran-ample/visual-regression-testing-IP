@@ -51,8 +51,6 @@ export class CrdsSiteSelect {
   }
 
   private setSite() {
-    var test = isAuthenticated();
-    console.log(test);
     if (isAuthenticated()) {
       this.setUserSite();
     } else {
