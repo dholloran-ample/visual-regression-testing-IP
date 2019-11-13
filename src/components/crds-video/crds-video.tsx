@@ -35,25 +35,12 @@ export class CrdsVideo {
   }
 
   renderTranscript() {
-    if (this.theme == 'light') {
     return (
       <div class="transcript">
-        <button class="transcript-btn-light" type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
-        <div class="transcript-body-light">
-          {this.transcript}
-        </div>
+        <button class={this.theme === 'light' ? 'transcript-btn-light' : 'transcript-btn'} type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
+        <div class={this.theme === 'light' ? 'transcript-body-light' : 'transcript-body'} innerHTML={this.transcript} />
       </div>
     );
-  } else {
-      return (
-        <div class="transcript">
-          <button class="transcript-btn" type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
-          <div class="transcript-body">
-            {this.transcript}
-          </div>
-        </div>
-      );
-    }
   }
 
   render() {
