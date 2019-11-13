@@ -101,7 +101,7 @@ export class CrdsSiteSelect {
   }
 
   public renderUserSiteButton() {
-    return <span>{this.contentBlockHandler.getContentBlockText('userSiteButtonText')}</span>;
+    return <crds-label text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} tint="default"></crds-label>;
   }
 
   public renderSetSiteButton() {
