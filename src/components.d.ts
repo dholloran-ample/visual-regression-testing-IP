@@ -11,6 +11,22 @@ import {
 } from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
 
 export namespace Components {
+  interface CrdsButton {
+    'href': string;
+    'label': string;
+  }
+  interface CrdsDefaultCard {
+    'body': string;
+    'buttonSrc': string;
+    'category': string;
+    'contentType': string;
+    'heading': string;
+    'iconLabel': string;
+    'imageSrc': string;
+    'meta': string;
+    'thumbnailSrc': string;
+    'url': string;
+  }
   interface CrdsGreeting {
     'authToken': string;
     'defaultName': string;
@@ -36,11 +52,32 @@ export namespace Components {
     */
     'storageKey': string;
   }
+  interface CrdsIcon {
+    'color': string;
+    'name': string;
+    'size': string;
+  }
+  interface CrdsImage {
+    'size': string;
+    'src': string;
+  }
   interface CrdsImageTitleCutout {
     'imageHref': string;
     'imageUrl': string;
     'title': string;
     'titleHref': string;
+  }
+  interface CrdsMediaCard {
+    'body': string;
+    'category': string;
+    'contentLayout': string;
+    'contentType': string;
+    'heading': string;
+    'iconLabel': string;
+    'imageSrc': string;
+    'meta': string;
+    'thumbnailSrc': string;
+    'url': string;
   }
   interface CrdsLabel {
     'text': string;
@@ -139,6 +176,18 @@ export namespace Components {
 declare global {
 
 
+  interface HTMLCrdsButtonElement extends Components.CrdsButton, HTMLStencilElement {}
+  var HTMLCrdsButtonElement: {
+    prototype: HTMLCrdsButtonElement;
+    new (): HTMLCrdsButtonElement;
+  };
+
+  interface HTMLCrdsDefaultCardElement extends Components.CrdsDefaultCard, HTMLStencilElement {}
+  var HTMLCrdsDefaultCardElement: {
+    prototype: HTMLCrdsDefaultCardElement;
+    new (): HTMLCrdsDefaultCardElement;
+  };
+
   interface HTMLCrdsGreetingElement extends Components.CrdsGreeting, HTMLStencilElement {}
   var HTMLCrdsGreetingElement: {
     prototype: HTMLCrdsGreetingElement;
@@ -157,12 +206,29 @@ declare global {
     new (): HTMLCrdsHeartButtonElement;
   };
 
+  interface HTMLCrdsIconElement extends Components.CrdsIcon, HTMLStencilElement {}
+  var HTMLCrdsIconElement: {
+    prototype: HTMLCrdsIconElement;
+    new (): HTMLCrdsIconElement;
+  };
+
+  interface HTMLCrdsImageElement extends Components.CrdsImage, HTMLStencilElement {}
+  var HTMLCrdsImageElement: {
+    prototype: HTMLCrdsImageElement;
+    new (): HTMLCrdsImageElement;
+  };
+
   interface HTMLCrdsImageTitleCutoutElement extends Components.CrdsImageTitleCutout, HTMLStencilElement {}
   var HTMLCrdsImageTitleCutoutElement: {
     prototype: HTMLCrdsImageTitleCutoutElement;
     new (): HTMLCrdsImageTitleCutoutElement;
   };
 
+  interface HTMLCrdsMediaCardElement extends Components.CrdsMediaCard, HTMLStencilElement {}
+  var HTMLCrdsMediaCardElement: {
+    prototype: HTMLCrdsMediaCardElement;
+    new (): HTMLCrdsMediaCardElement;
+  }
   interface HTMLCrdsLabelElement extends Components.CrdsLabel, HTMLStencilElement {}
   var HTMLCrdsLabelElement: {
     prototype: HTMLCrdsLabelElement;
@@ -289,10 +355,15 @@ declare global {
     new (): HTMLProfileNavElement;
   };
   interface HTMLElementTagNameMap {
+    'crds-button': HTMLCrdsButtonElement;
+    'crds-default-card': HTMLCrdsDefaultCardElement;
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
+    'crds-icon': HTMLCrdsIconElement;
+    'crds-image': HTMLCrdsImageElement;
     'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
+    'crds-media-card': HTMLCrdsMediaCardElement;
     'crds-label': HTMLCrdsLabelElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-primary-button': HTMLCrdsPrimaryButtonElement;
@@ -318,6 +389,22 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface CrdsButton extends JSXBase.HTMLAttributes<HTMLCrdsButtonElement> {
+    'href'?: string;
+    'label'?: string;
+  }
+  interface CrdsDefaultCard extends JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement> {
+    'body'?: string;
+    'buttonSrc'?: string;
+    'category'?: string;
+    'contentType'?: string;
+    'heading'?: string;
+    'iconLabel'?: string;
+    'imageSrc'?: string;
+    'meta'?: string;
+    'thumbnailSrc'?: string;
+    'url'?: string;
+  }
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
     'authToken'?: string;
     'defaultName'?: string;
@@ -343,11 +430,32 @@ declare namespace LocalJSX {
     */
     'storageKey'?: string;
   }
+  interface CrdsIcon extends JSXBase.HTMLAttributes<HTMLCrdsIconElement> {
+    'color'?: string;
+    'name'?: string;
+    'size'?: string;
+  }
+  interface CrdsImage extends JSXBase.HTMLAttributes<HTMLCrdsImageElement> {
+    'size'?: string;
+    'src'?: string;
+  }
   interface CrdsImageTitleCutout extends JSXBase.HTMLAttributes<HTMLCrdsImageTitleCutoutElement> {
     'imageHref'?: string;
     'imageUrl'?: string;
     'title'?: string;
     'titleHref'?: string;
+  }
+  interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
+    'body'?: string;
+    'category'?: string;
+    'contentLayout'?: string;
+    'contentType'?: string;
+    'heading'?: string;
+    'iconLabel'?: string;
+    'imageSrc'?: string;
+    'meta'?: string;
+    'thumbnailSrc'?: string;
+    'url'?: string;
   }
   interface CrdsLabel extends JSXBase.HTMLAttributes<HTMLCrdsLabelElement> {
     'text'?: string;
@@ -444,10 +552,15 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'crds-button': CrdsButton;
+    'crds-default-card': CrdsDefaultCard;
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-heart-button': CrdsHeartButton;
+    'crds-icon': CrdsIcon;
+    'crds-image': CrdsImage;
     'crds-image-title-cutout': CrdsImageTitleCutout;
+    'crds-media-card': CrdsMediaCard;
     'crds-label': CrdsLabel;
     'crds-modal': CrdsModal;
     'crds-primary-button': CrdsPrimaryButton;
