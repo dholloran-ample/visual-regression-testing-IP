@@ -1,3 +1,11 @@
+.transcript {
+  text-align: center;
+
+  @media (min-width: 768px) {
+    text-align: right;
+  }
+}
+
 .transcript-body {
   background-color: rgba(150, 150, 150, .05);
   border: 1px solid rgba(150, 150, 150, .5);
@@ -7,6 +15,7 @@
   opacity: 0;
   overflow: scroll;
   padding: 0 15px;
+  text-align: left;
   transition: all .5s ease-in-out;
 
   &.show {
@@ -16,6 +25,7 @@
 }
 
 .transcript-btn {
+  background-color: transparent;
   border: none;
   color: #919191;
   margin: 15px 0;
@@ -46,3 +56,31 @@
   top: 0;
   width: 100%;
 }
+
+
+.transcript-btn-light {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  margin: 15px 0;
+}
+
+.transcript-body-light {
+  background-color: rgba(240, 240, 240, .5);
+  border: 1px solid #fff;
+  color: #000;
+  font-size: 16px;
+  line-height: 24px;
+  max-height: 0;
+  opacity: 0;
+  overflow: scroll;
+  padding: 0 15px;
+  text-align: left;
+  transition: all .5s ease-in-out;
+
+  &.show {
+    max-height: 250px;
+    opacity: 1;
+  }
+}
+

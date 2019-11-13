@@ -10,6 +10,8 @@ export class CrdsVideo {
   @Prop() youtubeId: string;
   @Prop() transcript: string;
   @Prop() active: boolean;
+  @Prop() theme: string = '';
+
 
   embedUrl() {
     return `https://youtube.com/embed/${this.youtubeId}`;
@@ -33,14 +35,25 @@ export class CrdsVideo {
   }
 
   renderTranscript() {
+    if (this.theme == 'light') {
     return (
       <div class="transcript">
-        <button class="transcript-btn" type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
-        <div class="transcript-body">
+        <button class="transcript-btn-light" type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
+        <div class="transcript-body-light">
           {this.transcript}
         </div>
       </div>
     );
+  } else {
+      return (
+        <div class="transcript">
+          <button class="transcript-btn" type="button" onClick={this.onClick.bind(this)}>{this.btnText()}</button>
+          <div class="transcript-body">
+            {this.transcript}
+          </div>
+        </div>
+      );
+    }
   }
 
   render() {
