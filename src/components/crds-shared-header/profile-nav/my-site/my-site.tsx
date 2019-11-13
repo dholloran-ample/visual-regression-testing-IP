@@ -133,7 +133,6 @@ export class MySite {
 
   private handlePopperOpen() {
     this.popperOpen = true;
-    this.showNotification = false;
     this.popper.classList.add('open');
     this.arrow.classList.add('open');
     this.popperControl.scheduleUpdate();
@@ -142,6 +141,8 @@ export class MySite {
 
   private handlePopperClose() {
     this.popperOpen = false;
+    this.showNotification = false;
+    this.promptsDisabled = true;
     this.popper.classList.remove('open');
     this.arrow.classList.remove('open');
   }
@@ -373,14 +374,9 @@ export class MySite {
           />
           <div class="site-details">
             {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
+            <p class="push-half-top">Not your site? <a class="text-white" href="/profile/personal">Set your preferred site.</a></p>
           </div>
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
+          
         </div>
       </div>
     );
@@ -392,7 +388,7 @@ export class MySite {
         {' '}
         <div
           class="push-half-bottom"
-          innerHTML={`${this.displaySite.address}`}
+          innerHTML={`${marked(this.displaySite.address)}`}
           onClick={() => {
             Utils.openInNewTab(this.displaySite.mapUrl);
           }}
@@ -406,16 +402,17 @@ export class MySite {
   }
 
   private renderServiceHours() {
-    return (
-      <div>
-        {' '}
+    if(this.displaySite.serviceTimes)
+      return (
         <div>
-          <strong>Service Times:</strong>
+          {' '}
+          <div>
+            <strong>Service Times:</strong>
+          </div>
+          <div innerHTML={marked(this.displaySite.serviceTimes)} />
+          {this.renderGetDirections()}
         </div>
-        <div innerHTML={this.displaySite.serviceTimes} />
-        {this.renderGetDirections()}
-      </div>
-    );
+      );
   }
 
   private renderOpenHours() {
@@ -494,7 +491,7 @@ export class MySite {
           }}
           class="btn flush-sides"
         >
-          Login
+          Login or signup
         </button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>

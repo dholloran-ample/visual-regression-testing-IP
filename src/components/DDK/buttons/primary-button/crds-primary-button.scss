@@ -1,0 +1,24 @@
+$btn-primary-bg: $cr-blue !default;
+$btn-primary-border: $cr-blue !default;
+$btn-primary-color: white;
+
+.btn-cyan {
+  background-color: $cr-cyan !important;
+}
+
+.btn {
+  &.btn-blue,
+  &.btn-primary {
+    background-color: $cr-blue;
+    color: $btn-primary-color;
+
+    &:hover {
+        background: darken($cr-blue, 10)
+      }
+
+    .dark-theme & {
+      @extend .btn-cyan;
+    }
+  }
+}
+

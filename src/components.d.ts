@@ -11,6 +11,22 @@ import {
 } from './components/crds-tithe-challenge/crds-tithe-challenge.interface';
 
 export namespace Components {
+  interface CrdsButton {
+    'href': string;
+    'label': string;
+  }
+  interface CrdsDefaultCard {
+    'body': string;
+    'buttonSrc': string;
+    'category': string;
+    'contentType': string;
+    'heading': string;
+    'iconLabel': string;
+    'imageSrc': string;
+    'meta': string;
+    'thumbnailSrc': string;
+    'url': string;
+  }
   interface CrdsGreeting {
     'authToken': string;
     'defaultName': string;
@@ -36,16 +52,47 @@ export namespace Components {
     */
     'storageKey': string;
   }
+  interface CrdsIcon {
+    'color': string;
+    'name': string;
+    'size': string;
+  }
+  interface CrdsImage {
+    'size': string;
+    'src': string;
+  }
   interface CrdsImageTitleCutout {
     'cardTitle': string;
     'imageHref': string;
     'imageUrl': string;
     'titleHref': string;
   }
+  interface CrdsMediaCard {
+    'body': string;
+    'category': string;
+    'contentLayout': string;
+    'contentType': string;
+    'heading': string;
+    'iconLabel': string;
+    'imageSrc': string;
+    'meta': string;
+    'thumbnailSrc': string;
+    'url': string;
+  }
+  interface CrdsLabel {
+    'text': string;
+    'tint': string;
+  }
   interface CrdsModal {
     'isActive': boolean;
     'label': string;
     'onModalClose': Function;
+  }
+  interface CrdsPrimaryButton {
+    'color': string;
+    'href': string;
+    'onClick': (event: MouseEvent) => void;
+    'text': string;
   }
   interface CrdsRecommendedContent {
     'authToken': string;
@@ -60,6 +107,9 @@ export namespace Components {
   }
   interface CrdsSiteHappenings {
     'authToken': string;
+  }
+  interface CrdsSiteSelect {
+    'cardSiteId': number;
   }
   interface CrdsSnailTrail {
     'env': string;
@@ -78,6 +128,12 @@ export namespace Components {
   interface CrdsTitheChallenge {
     'authToken': string;
     'selectedFeeling': Response;
+  }
+  interface CrdsVideo {
+    'active': boolean;
+    'theme': string;
+    'transcript': string;
+    'youtubeId': string;
   }
   interface GiveNav {
     'data': any;
@@ -120,6 +176,18 @@ export namespace Components {
 declare global {
 
 
+  interface HTMLCrdsButtonElement extends Components.CrdsButton, HTMLStencilElement {}
+  var HTMLCrdsButtonElement: {
+    prototype: HTMLCrdsButtonElement;
+    new (): HTMLCrdsButtonElement;
+  };
+
+  interface HTMLCrdsDefaultCardElement extends Components.CrdsDefaultCard, HTMLStencilElement {}
+  var HTMLCrdsDefaultCardElement: {
+    prototype: HTMLCrdsDefaultCardElement;
+    new (): HTMLCrdsDefaultCardElement;
+  };
+
   interface HTMLCrdsGreetingElement extends Components.CrdsGreeting, HTMLStencilElement {}
   var HTMLCrdsGreetingElement: {
     prototype: HTMLCrdsGreetingElement;
@@ -138,16 +206,45 @@ declare global {
     new (): HTMLCrdsHeartButtonElement;
   };
 
+  interface HTMLCrdsIconElement extends Components.CrdsIcon, HTMLStencilElement {}
+  var HTMLCrdsIconElement: {
+    prototype: HTMLCrdsIconElement;
+    new (): HTMLCrdsIconElement;
+  };
+
+  interface HTMLCrdsImageElement extends Components.CrdsImage, HTMLStencilElement {}
+  var HTMLCrdsImageElement: {
+    prototype: HTMLCrdsImageElement;
+    new (): HTMLCrdsImageElement;
+  };
+
   interface HTMLCrdsImageTitleCutoutElement extends Components.CrdsImageTitleCutout, HTMLStencilElement {}
   var HTMLCrdsImageTitleCutoutElement: {
     prototype: HTMLCrdsImageTitleCutoutElement;
     new (): HTMLCrdsImageTitleCutoutElement;
   };
 
+  interface HTMLCrdsMediaCardElement extends Components.CrdsMediaCard, HTMLStencilElement {}
+  var HTMLCrdsMediaCardElement: {
+    prototype: HTMLCrdsMediaCardElement;
+    new (): HTMLCrdsMediaCardElement;
+  }
+  interface HTMLCrdsLabelElement extends Components.CrdsLabel, HTMLStencilElement {}
+  var HTMLCrdsLabelElement: {
+    prototype: HTMLCrdsLabelElement;
+    new (): HTMLCrdsLabelElement;
+  };
+
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
   var HTMLCrdsModalElement: {
     prototype: HTMLCrdsModalElement;
     new (): HTMLCrdsModalElement;
+  };
+
+  interface HTMLCrdsPrimaryButtonElement extends Components.CrdsPrimaryButton, HTMLStencilElement {}
+  var HTMLCrdsPrimaryButtonElement: {
+    prototype: HTMLCrdsPrimaryButtonElement;
+    new (): HTMLCrdsPrimaryButtonElement;
   };
 
   interface HTMLCrdsRecommendedContentElement extends Components.CrdsRecommendedContent, HTMLStencilElement {}
@@ -174,6 +271,12 @@ declare global {
     new (): HTMLCrdsSiteHappeningsElement;
   };
 
+  interface HTMLCrdsSiteSelectElement extends Components.CrdsSiteSelect, HTMLStencilElement {}
+  var HTMLCrdsSiteSelectElement: {
+    prototype: HTMLCrdsSiteSelectElement;
+    new (): HTMLCrdsSiteSelectElement;
+  };
+
   interface HTMLCrdsSnailTrailElement extends Components.CrdsSnailTrail, HTMLStencilElement {}
   var HTMLCrdsSnailTrailElement: {
     prototype: HTMLCrdsSnailTrailElement;
@@ -196,6 +299,12 @@ declare global {
   var HTMLCrdsTitheChallengeElement: {
     prototype: HTMLCrdsTitheChallengeElement;
     new (): HTMLCrdsTitheChallengeElement;
+  };
+
+  interface HTMLCrdsVideoElement extends Components.CrdsVideo, HTMLStencilElement {}
+  var HTMLCrdsVideoElement: {
+    prototype: HTMLCrdsVideoElement;
+    new (): HTMLCrdsVideoElement;
   };
 
   interface HTMLGiveNavElement extends Components.GiveNav, HTMLStencilElement {}
@@ -246,19 +355,28 @@ declare global {
     new (): HTMLProfileNavElement;
   };
   interface HTMLElementTagNameMap {
+    'crds-button': HTMLCrdsButtonElement;
+    'crds-default-card': HTMLCrdsDefaultCardElement;
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
+    'crds-icon': HTMLCrdsIconElement;
+    'crds-image': HTMLCrdsImageElement;
     'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
+    'crds-media-card': HTMLCrdsMediaCardElement;
+    'crds-label': HTMLCrdsLabelElement;
     'crds-modal': HTMLCrdsModalElement;
+    'crds-primary-button': HTMLCrdsPrimaryButtonElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-shared-header': HTMLCrdsSharedHeaderElement;
     'crds-site-happenings': HTMLCrdsSiteHappeningsElement;
+    'crds-site-select': HTMLCrdsSiteSelectElement;
     'crds-snail-trail': HTMLCrdsSnailTrailElement;
     'crds-snail-trail-link': HTMLCrdsSnailTrailLinkElement;
     'crds-subscribe': HTMLCrdsSubscribeElement;
     'crds-tithe-challenge': HTMLCrdsTitheChallengeElement;
+    'crds-video': HTMLCrdsVideoElement;
     'give-nav': HTMLGiveNavElement;
     'global-nav': HTMLGlobalNavElement;
     'main-nav': HTMLMainNavElement;
@@ -271,6 +389,22 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface CrdsButton extends JSXBase.HTMLAttributes<HTMLCrdsButtonElement> {
+    'href'?: string;
+    'label'?: string;
+  }
+  interface CrdsDefaultCard extends JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement> {
+    'body'?: string;
+    'buttonSrc'?: string;
+    'category'?: string;
+    'contentType'?: string;
+    'heading'?: string;
+    'iconLabel'?: string;
+    'imageSrc'?: string;
+    'meta'?: string;
+    'thumbnailSrc'?: string;
+    'url'?: string;
+  }
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
     'authToken'?: string;
     'defaultName'?: string;
@@ -296,16 +430,47 @@ declare namespace LocalJSX {
     */
     'storageKey'?: string;
   }
+  interface CrdsIcon extends JSXBase.HTMLAttributes<HTMLCrdsIconElement> {
+    'color'?: string;
+    'name'?: string;
+    'size'?: string;
+  }
+  interface CrdsImage extends JSXBase.HTMLAttributes<HTMLCrdsImageElement> {
+    'size'?: string;
+    'src'?: string;
+  }
   interface CrdsImageTitleCutout extends JSXBase.HTMLAttributes<HTMLCrdsImageTitleCutoutElement> {
     'cardTitle'?: string;
     'imageHref'?: string;
     'imageUrl'?: string;
     'titleHref'?: string;
   }
+  interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
+    'body'?: string;
+    'category'?: string;
+    'contentLayout'?: string;
+    'contentType'?: string;
+    'heading'?: string;
+    'iconLabel'?: string;
+    'imageSrc'?: string;
+    'meta'?: string;
+    'thumbnailSrc'?: string;
+    'url'?: string;
+  }
+  interface CrdsLabel extends JSXBase.HTMLAttributes<HTMLCrdsLabelElement> {
+    'text'?: string;
+    'tint'?: string;
+  }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
     'label'?: string;
     'onModalClose'?: Function;
+  }
+  interface CrdsPrimaryButton extends JSXBase.HTMLAttributes<HTMLCrdsPrimaryButtonElement> {
+    'color'?: string;
+    'href'?: string;
+    'onClick'?: (event: MouseEvent) => void;
+    'text'?: string;
   }
   interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {
     'authToken'?: string;
@@ -320,6 +485,10 @@ declare namespace LocalJSX {
   }
   interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {
     'authToken'?: string;
+  }
+  interface CrdsSiteSelect extends JSXBase.HTMLAttributes<HTMLCrdsSiteSelectElement> {
+    'cardSiteId'?: number;
+    'onSiteSet'?: (event: CustomEvent<any>) => void;
   }
   interface CrdsSnailTrail extends JSXBase.HTMLAttributes<HTMLCrdsSnailTrailElement> {
     'env'?: string;
@@ -338,6 +507,12 @@ declare namespace LocalJSX {
   interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
     'authToken'?: string;
     'selectedFeeling'?: Response;
+  }
+  interface CrdsVideo extends JSXBase.HTMLAttributes<HTMLCrdsVideoElement> {
+    'active'?: boolean;
+    'theme'?: string;
+    'transcript'?: string;
+    'youtubeId'?: string;
   }
   interface GiveNav extends JSXBase.HTMLAttributes<HTMLGiveNavElement> {
     'data'?: any;
@@ -377,19 +552,28 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'crds-button': CrdsButton;
+    'crds-default-card': CrdsDefaultCard;
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-heart-button': CrdsHeartButton;
+    'crds-icon': CrdsIcon;
+    'crds-image': CrdsImage;
     'crds-image-title-cutout': CrdsImageTitleCutout;
+    'crds-media-card': CrdsMediaCard;
+    'crds-label': CrdsLabel;
     'crds-modal': CrdsModal;
+    'crds-primary-button': CrdsPrimaryButton;
     'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
     'crds-shared-header': CrdsSharedHeader;
     'crds-site-happenings': CrdsSiteHappenings;
+    'crds-site-select': CrdsSiteSelect;
     'crds-snail-trail': CrdsSnailTrail;
     'crds-snail-trail-link': CrdsSnailTrailLink;
     'crds-subscribe': CrdsSubscribe;
     'crds-tithe-challenge': CrdsTitheChallenge;
+    'crds-video': CrdsVideo;
     'give-nav': GiveNav;
     'global-nav': GlobalNav;
     'main-nav': MainNav;
