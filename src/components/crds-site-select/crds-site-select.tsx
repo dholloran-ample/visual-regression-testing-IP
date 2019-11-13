@@ -50,9 +50,10 @@ export class CrdsSiteSelect {
     return promise;
   }
 
-  private setUserSite() {
+  private setSite() {
+    console.log(isAuthenticated())
     if (isAuthenticated()) {
-      this.setMpSite();
+      this.setUserSite();
     } else {
       this.setCookieSite();
     }
@@ -70,7 +71,7 @@ export class CrdsSiteSelect {
       });
   }
 
-  private setMpSite() {
+  private setUserSite() {
     return this.apolloClient
       .mutate({
         variables: { siteId: this.cardSiteId },
@@ -108,7 +109,7 @@ export class CrdsSiteSelect {
     return (
       <crds-primary-button
         color="blue"
-        onClick={() => this.setUserSite()}
+        onClick={() => this.setSite()}
         text={this.contentBlockHandler.getContentBlockText('setSiteOptionText')}
       />
     );

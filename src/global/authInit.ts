@@ -32,14 +32,15 @@ export function authInit() {
 
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
 
-  window['crds-authenticated'] = false;
+  window['crdsAuthenticated'] = false;
 
   authService.authenticated().subscribe(token => {
-    window['crds-authenticated'] = !!token && !!token.access_token.accessToken;
+    console.log(token);
+    window['crdsAuthenticated'] = !!token;
     InitApollo(token && token.access_token.accessToken);
   });
 }
 
 export function isAuthenticated() {
-  return window['crds-authenticated'];
+  return window['crdsAuthenticated'];
 }
