@@ -1,10 +1,12 @@
-import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
+import { Component, Prop, State, Element, Watch, h, EventEmitter, Event, Listen } from '@stencil/core';
 import { SET_SITE, GET_USER } from './crds-site-select.graphql';
 import { Utils } from '../../shared/utils';
 import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { Event, EventEmitter, Listen } from '@stencil/core';
+import { ApolloClientService } from '../../global/apollo';
+import { isAuthenticated } from '../../global/authInit';
+import { HTMLStencilElement } from '@stencil/core/internal';
 
 @Component({
   tag: 'crds-site-select',
@@ -13,10 +15,11 @@ import { Event, EventEmitter, Listen } from '@stencil/core';
 })
 export class CrdsSiteSelect {
   private contentBlockHandler: ContentBlockHandler;
+  private apolloClient: ApolloClient<{}>;
+  @Element() public host: HTMLStencilElement;
 
-  @Prop() apolloClient: ApolloClient<{}>;
   @Prop() cardSiteId: number;
-  @State() cookieSiteId: string;
+  @State() cookieSiteId: number;
   @State() userSite: number;
 
   @Event({
@@ -28,27 +31,27 @@ export class CrdsSiteSelect {
   siteSetEvent: EventEmitter;
 
   @Listen('siteSet', { target: 'document' })
-  siteSetHandler() {
-    if (this.apolloClient) this.getUserSite();
-    else this.cookieSiteId = Utils.getCookie('nearestSiteId');
+  siteSetHandler(event) {
+    if (isAuthenticated()) this.userSite = event.detail;
+    else this.cookieSiteId = event.detail;
   }
 
-  @Watch('apolloClient')
-  apolloClientHandler(newValue: ApolloClient<{}>, oldValue: ApolloClient<{}>) {
-    if (newValue !== oldValue) {
-      this.getUserSite();
-    }
-  }
+  public async componentWillLoad() {
+    const clientSubject = new ApolloClientService().getClient();
+    var promise = new Promise(resolve => {
+      clientSubject.subscribe(client => {
+        this.apolloClient = client;
+        this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
+        resolve(Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]));
+      });
+    });
 
-  public componentWillLoad() {
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
-    this.cookieSiteId = Utils.getCookie('nearestSiteId');
-    var promises = [this.getUserSite(), this.contentBlockHandler.getCopy()];
-    return Promise.all(promises);
+    this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
+    return promise;
   }
 
   private setUserSite() {
-    if (this.apolloClient) {
+    if (isAuthenticated()) {
       this.setMpSite();
     } else {
       this.setCookieSite();
@@ -75,8 +78,8 @@ export class CrdsSiteSelect {
       })
       .then(response => {
         this.userSite = parseInt(response.data.setSite.site.id);
-        this.siteSetEvent.emit();
         this.toastSuccess('siteSelectConfirmationLoggedIn');
+        this.siteSetEvent.emit(this.cardSiteId);
       })
       .catch(err => {
         this.logError(err);
@@ -86,7 +89,7 @@ export class CrdsSiteSelect {
   private setCookieSite() {
     Utils.setCookie('nearestSiteId', this.cardSiteId, 365);
     this.toastSuccess('siteSelectConfirmationLoggedOut');
-    this.siteSetEvent.emit();
+    this.siteSetEvent.emit(this.cardSiteId);
   }
 
   private toastSuccess(slugName) {
@@ -115,7 +118,7 @@ export class CrdsSiteSelect {
     if (this.userSite) {
       return this.cardSiteId == this.userSite ? this.renderUserSiteButton() : this.renderSetSiteButton();
     } else if (this.cookieSiteId) {
-      return this.cardSiteId == parseInt(this.cookieSiteId) ? this.renderUserSiteButton() : this.renderSetSiteButton();
+      return this.cardSiteId == Number(this.cookieSiteId) ? this.renderUserSiteButton() : this.renderSetSiteButton();
     }
     return this.renderSetSiteButton(); //default in case neither is set
   }

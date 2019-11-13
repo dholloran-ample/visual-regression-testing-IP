@@ -72,7 +72,6 @@ export namespace Components {
     'authToken': string;
   }
   interface CrdsSiteSelect {
-    'authToken': string;
     'cardSiteId': number;
   }
   interface CrdsSnailTrail {
@@ -379,7 +378,6 @@ declare namespace LocalJSX {
     'authToken'?: string;
   }
   interface CrdsSiteSelect extends JSXBase.HTMLAttributes<HTMLCrdsSiteSelectElement> {
-    'authToken'?: string;
     'cardSiteId'?: number;
     'onSiteSet'?: (event: CustomEvent<any>) => void;
   }

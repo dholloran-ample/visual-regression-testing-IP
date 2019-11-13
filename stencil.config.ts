@@ -7,6 +7,7 @@ import replace from 'rollup-plugin-replace';
 
 export const config: Config = {
   namespace: 'crds-components',
+  globalScript: 'src/global/app.ts',
   outputTargets: [
     { type: 'dist' },
     { type: 'docs-readme' },
