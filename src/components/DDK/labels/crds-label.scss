@@ -1,0 +1,43 @@
+@import '../../../assets/stylesheets/globals/variables/colors.scss';
+@import '../../../assets/stylesheets/globals/variables/typeography.scss';
+
+// $border-radius-base: 4px !default;
+.label-default {
+  background-color: $cr-gray-lighter !important;
+}
+
+.label-primary {
+  background-color: $cr-blue-lighter !important;
+}
+
+.label-success {
+  background-color: #b6e6ca !important;
+}
+
+.label-info {
+  background-color: #b6dee6 !important;
+}
+
+.label-warning {
+  background-color: #f1e4c6 !important;
+}
+
+.label-danger {
+  background-color: #edbab4 !important;
+}
+
+.label {
+  border-radius: .25em;
+  color: $cr-gray-dark;
+  display: inline;
+  font-family: $accent-font-face;
+  font-size: $font-size-smaller;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 9px;
+  padding: 5px 6px 4px;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: baseline;
+  white-space: nowrap;
+}

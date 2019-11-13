@@ -79,6 +79,10 @@ export namespace Components {
     'thumbnailSrc': string;
     'url': string;
   }
+  interface CrdsLabel {
+    'text': string;
+    'tint': string;
+  }
   interface CrdsModal {
     'isActive': boolean;
     'label': string;
@@ -224,6 +228,11 @@ declare global {
   var HTMLCrdsMediaCardElement: {
     prototype: HTMLCrdsMediaCardElement;
     new (): HTMLCrdsMediaCardElement;
+  }
+  interface HTMLCrdsLabelElement extends Components.CrdsLabel, HTMLStencilElement {}
+  var HTMLCrdsLabelElement: {
+    prototype: HTMLCrdsLabelElement;
+    new (): HTMLCrdsLabelElement;
   };
 
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
@@ -355,6 +364,7 @@ declare global {
     'crds-image': HTMLCrdsImageElement;
     'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
     'crds-media-card': HTMLCrdsMediaCardElement;
+    'crds-label': HTMLCrdsLabelElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-primary-button': HTMLCrdsPrimaryButtonElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
@@ -446,6 +456,10 @@ declare namespace LocalJSX {
     'meta'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
+  }
+  interface CrdsLabel extends JSXBase.HTMLAttributes<HTMLCrdsLabelElement> {
+    'text'?: string;
+    'tint'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
@@ -547,6 +561,7 @@ declare namespace LocalJSX {
     'crds-image': CrdsImage;
     'crds-image-title-cutout': CrdsImageTitleCutout;
     'crds-media-card': CrdsMediaCard;
+    'crds-label': CrdsLabel;
     'crds-modal': CrdsModal;
     'crds-primary-button': CrdsPrimaryButton;
     'crds-recommended-content': CrdsRecommendedContent;
