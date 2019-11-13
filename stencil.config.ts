@@ -38,7 +38,10 @@ export const config: Config = {
       'process.env.CONTENTFUL_SPACE_ID': JSON.stringify(process.env.CONTENTFUL_SPACE_ID),
       'process.env.CONTENTFUL_ENV': JSON.stringify(process.env.CONTENTFUL_ENV),
       'process.env.CRDS_INTERACTIONS_ENDPOINT': JSON.stringify(process.env.CRDS_INTERACTIONS_ENDPOINT),
-      'process.env.CRDS_GQL_ENDPOINT': JSON.stringify(process.env.CRDS_GQL_ENDPOINT)
+      'process.env.CRDS_GQL_ENDPOINT': JSON.stringify(process.env.CRDS_GQL_ENDPOINT),
+      'process.env.OKTA_CLIENT_ID': JSON.stringify(process.env.OKTA_CLIENT_ID),
+      'process.env.OKTA_OAUTH_BASE_URL': JSON.stringify(process.env.OKTA_OAUTH_BASE_URL),
+      'process.env.CRDS_GATEWAY_SERVER_ENDPOINT': JSON.stringify(process.env.CRDS_GATEWAY_SERVER_ENDPOINT)
     }),
     inlineSvg()
   ]
