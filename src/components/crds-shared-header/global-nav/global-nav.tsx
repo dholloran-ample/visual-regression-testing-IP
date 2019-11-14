@@ -28,7 +28,7 @@ export class GlobalNav {
   componentWillLoad() {
     if (!this.data.config || this.auth.config) return;
     this.auth = new Auth(Object.assign(this.data.config, { env: this.env }));
-    this.auth.listen(this.authChangeCallback.bind(this), this.authAttemptedCallback.bind(this));
+    this.auth.listen(this.authChangeCallback.bind(this));
   }
 
   componentDidLoad() {
@@ -37,11 +37,7 @@ export class GlobalNav {
 
   /* Handle authentication */
   handleSignOut() {
-    this.auth.signOut(this.authChangeCallback.bind(this), this.authAttemptedCallback.bind(this));
-  }
-
-  authAttemptedCallback() {
-    this.injectMySiteComponent();
+    this.auth.signOut(this.authChangeCallback.bind(this));
   }
 
   authChangeCallback() {
@@ -60,19 +56,6 @@ export class GlobalNav {
   isNavOpen() {
     const navNames = ['main-nav', 'my-site', 'give-nav', 'profile-nav'];
     return navNames.includes(this.openNavName);
-  }
-
-  injectMySiteComponent() {
-    var mySiteElement = this.host.shadowRoot.querySelector('my-site');
-    if (mySiteElement) {
-      if (this.auth.token && this.auth.token.access_token.accessToken == mySiteElement.getAttribute('auth-token'))
-        return;
-      mySiteElement.setAttribute('auth-token', (this.auth.token && this.auth.token.access_token.accessToken) || '');
-    } else {
-      this.host.shadowRoot.querySelector('.my-site-container').innerHTML = `<my-site auth-token=${
-        this.auth.token ? this.auth.token.access_token.accessToken : ''
-      }></my-site>`;
-    }
   }
 
   toggleNav(event, navName, navRequiresAuth: boolean = false) {
@@ -169,6 +152,7 @@ export class GlobalNav {
                   onClick={event => this.toggleNav(event, 'my-site')}
                   data-automation-id="sh-my-site"
                 >
+                  <my-site/>
                 </a>
 
                 {!this.giveData().children && <a

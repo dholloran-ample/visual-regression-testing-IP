@@ -6,12 +6,13 @@ import ApolloClient from 'apollo-client';
 import marked from 'marked';
 
 import Popper from 'popper.js';
-import { deprecatedApolloInit } from '../../../../shared/apollo';
 import { Utils } from '../../../../shared/utils';
 import { SvgSrc } from '../../../../shared/svgSrc';
 import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlocks';
 import toastr from 'toastr';
 import { isAuthenticated } from '../../../../global/authInit';
+import { CrdsApolloService } from '../../../../shared/apollo';
+
 
 @Component({
   tag: 'my-site',
@@ -20,7 +21,6 @@ import { isAuthenticated } from '../../../../global/authInit';
 })
 export class MySite {
   private analytics = window['analytics'];
-  private apolloClient: ApolloClient<{}> = null;
   private sites: Site[];
   private anywhereSite: Site = {
     id: '15',
@@ -52,30 +52,21 @@ export class MySite {
   @Listen('siteSet', { target: 'document' })
   siteSetHandler(event) {
     if (isAuthenticated()) return this.getUserSites();
-     this.nearestSiteID = event.detail;
-     this.getSiteContent(this.nearestSiteID);
+    this.nearestSiteID = event.detail;
+    this.getSiteContent(this.nearestSiteID);
   }
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-    }
+  public async componentWillLoad() {
+    await CrdsApolloService.initApolloClient();
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
+    return Promise.all([this.getSites(), this.contentBlockHandler.getCopy(), isAuthenticated() ? this.loggedInUser() : this.loggedOutUser()]);
   }
 
-  public componentWillLoad() {
+  public initToastr() {
     toastr.options.closeButton = true;
     toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     toastr.options.escapeHtml = false;
-    this.apolloClient = deprecatedApolloInit(this.authToken);
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
-    var promises = [
-      this.getSites(),
-      this.contentBlockHandler.getCopy(),
-      this.authToken ? this.loggedInUser() : this.loggedOutUser()
-    ];
-    return Promise.all(promises);
   }
 
   public async componentWillRender() {
@@ -166,7 +157,7 @@ export class MySite {
   }
 
   private getUserSites(): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_USER })
       .then(response => {
         this.user = response.data.user;
@@ -182,7 +173,7 @@ export class MySite {
   }
 
   private getSites(): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_SITES })
       .then(response => {
         this.sites = response.data.sites;
@@ -213,7 +204,7 @@ export class MySite {
           this.analytics.track('MySiteGetLocationPermission', {
             response: 'User allowed Geolocation'
           });
-        return this.apolloClient
+        return CrdsApolloService.apolloClient
           .query({
             variables: { lat: position.coords.latitude, lng: position.coords.longitude },
             query: GET_CLOSEST_SITE
@@ -239,7 +230,7 @@ export class MySite {
   }
 
   private getSiteContent(id: number): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({
         variables: { id: Number(id) },
         query: GET_SITE_CONTENT
@@ -258,7 +249,7 @@ export class MySite {
         closestSiteId: id
       });
     }
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { closestSiteID: id },
         mutation: SET_CLOSEST_SITE
@@ -278,7 +269,7 @@ export class MySite {
         siteID: siteId
       });
     }
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { siteId: siteId },
         mutation: SET_SITE
@@ -384,7 +375,7 @@ export class MySite {
             {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
             <p class="push-half-top">Not your site? <a class="text-white" href="/profile/personal">Set your preferred site.</a></p>
           </div>
-          
+
         </div>
       </div>
     );
@@ -410,7 +401,7 @@ export class MySite {
   }
 
   private renderServiceHours() {
-    if(this.displaySite.serviceTimes)
+    if (this.displaySite.serviceTimes)
       return (
         <div>
           {' '}
