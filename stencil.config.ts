@@ -41,7 +41,8 @@ export const config: Config = {
       'process.env.CRDS_GQL_ENDPOINT': JSON.stringify(process.env.CRDS_GQL_ENDPOINT),
       'process.env.OKTA_CLIENT_ID': JSON.stringify(process.env.OKTA_CLIENT_ID),
       'process.env.OKTA_OAUTH_BASE_URL': JSON.stringify(process.env.OKTA_OAUTH_BASE_URL),
-      'process.env.CRDS_GATEWAY_SERVER_ENDPOINT': JSON.stringify(process.env.CRDS_GATEWAY_SERVER_ENDPOINT)
+      'process.env.CRDS_GATEWAY_SERVER_ENDPOINT': JSON.stringify(process.env.CRDS_GATEWAY_SERVER_ENDPOINT),
+      'process.env.ENV_SUBDOMAIN': JSON.stringify(process.env.ENV_SUBDOMAIN)
     }),
     inlineSvg()
   ]
