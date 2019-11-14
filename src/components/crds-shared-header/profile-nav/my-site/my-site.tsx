@@ -57,7 +57,9 @@ export class MySite {
   }
 
   public async componentWillLoad() {
+    this.initToastr();
     await CrdsApolloService.initApolloClient();
+    this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     return Promise.all([this.getSites(), this.contentBlockHandler.getCopy(), isAuthenticated() ? this.loggedInUser() : this.loggedOutUser()]);
   }
@@ -65,7 +67,6 @@ export class MySite {
   public initToastr() {
     toastr.options.closeButton = true;
     toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
-    this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     toastr.options.escapeHtml = false;
   }
 
