@@ -98,7 +98,8 @@ a {
 
   &.btn-link {
     color: $cr-cyan;
-  
+    background-color: inherit;
+
     &:hover {
       color: darken($cr-cyan, 5);
       text-decoration: underline;
