@@ -1,6 +1,6 @@
 import { CrdsGreeting } from '../crds-greeting';
 import { getSessionID, user_with_nickname } from '../../../shared/test_users_auth';
-import { CrdsApollo } from '../../../shared/apollo';
+import { deprecatedApolloInit } from '../../../shared/apollo';
 
 describe('<greeting-component> GraphQL', () => {
   beforeEach(async () => {
@@ -15,7 +15,7 @@ describe('<greeting-component> GraphQL', () => {
       this.skip = true;
     } else {
       this.greetingComponent.authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
-      this.greetingComponent.apolloClient = CrdsApollo(this.greetingComponent.authToken);
+      this.greetingComponent.apolloClient = deprecatedApolloInit(this.greetingComponent.authToken);
     }
   });
 

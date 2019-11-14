@@ -17,15 +17,15 @@ export function authInit() {
   };
 
   const mpConfig: CrdsMpConfig = {
-    accessTokenCookie: process.env.ENV_SUBDOMAIN + 'sessionId',
-    refreshTokenCookie: process.env.ENV_SUBDOMAIN + 'refreshToken',
+    accessTokenCookie: `${process.env.ENV_SUBDOMAIN}sessionId`,
+    refreshTokenCookie: `${process.env.ENV_SUBDOMAIN}refreshToken`,
     issuer: `${process.env.CRDS_GATEWAY_SERVER_ENDPOINT}api/authenticated`
   };
 
   const authConfig: CrdsAuthConfig = {
     oktaConfig: oktaConfig,
     mpConfig: mpConfig,
-    logging: false,
+    logging: true,
     providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
     env: process.env.ENV_SUBDOMAIN
   };
@@ -33,7 +33,6 @@ export function authInit() {
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
 
   window['crdsAuthenticated'] = false;
-
   authService.authenticated().subscribe(token => {
     window['crdsAuthenticated'] = !!token;
     InitApollo(token && token.access_token.accessToken);

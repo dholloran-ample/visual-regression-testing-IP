@@ -6,11 +6,12 @@ import ApolloClient from 'apollo-client';
 import marked from 'marked';
 
 import Popper from 'popper.js';
-import { CrdsApollo } from '../../../../shared/apollo';
+import { deprecatedApolloInit } from '../../../../shared/apollo';
 import { Utils } from '../../../../shared/utils';
 import { SvgSrc } from '../../../../shared/svgSrc';
 import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlocks';
 import toastr from 'toastr';
+import { isAuthenticated } from '../../../../global/authInit';
 
 @Component({
   tag: 'my-site',
@@ -48,10 +49,17 @@ export class MySite {
   @State() popperOpen: boolean = false;
   @Element() public host: HTMLStencilElement;
 
+  @Listen('siteSet', { target: 'document' })
+  siteSetHandler(event) {
+    if (isAuthenticated()) return this.getUserSites();
+     this.nearestSiteID = event.detail;
+     this.getSiteContent(this.nearestSiteID);
+  }
+
   @Watch('authToken')
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
+      this.apolloClient = deprecatedApolloInit(newValue);
     }
   }
 
@@ -60,7 +68,7 @@ export class MySite {
     toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     toastr.options.escapeHtml = false;
-    this.apolloClient = CrdsApollo(this.authToken);
+    this.apolloClient = deprecatedApolloInit(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
     var promises = [
       this.getSites(),
