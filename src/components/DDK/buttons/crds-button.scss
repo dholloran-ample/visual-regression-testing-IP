@@ -97,6 +97,7 @@ button {
   
     &:hover {
       color: darken($cr-cyan, 5);
+      text-decoration: underline;
     }
   
     &:focus {
