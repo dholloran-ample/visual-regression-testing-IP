@@ -46,18 +46,14 @@ export class Auth {
     this.authService = new CrdsAuthenticationService(authConfig);
   }
 
-  listen(successCallback, alwaysCallback) {
+  listen(successCallback) {
     this.authService.authenticated().subscribe(token => {
-      if (!token) {
-        alwaysCallback(this);
-        return (this.authenticated = false);
-      }
+      if (!token) return (this.authenticated = false);
       this.authenticated = true;
       this.token = token;
       this.isMp = token.provider == CrdsAuthenticationProviders.Mp;
       this.isOkta = token.provider == CrdsAuthenticationProviders.Okta;
       this.updateCurrentUser();
-      alwaysCallback(this);
       successCallback(this);
     });
   }
