@@ -14,8 +14,8 @@
 | `contentLayout` | `content-layout` |             | `string` | `'default'` |
 | `contentType`   | `content-type`   |             | `string` | `undefined` |
 | `heading`       | `heading`        |             | `string` | `undefined` |
+| `iconLabel`     | `icon-label`     |             | `string` | `undefined` |
 | `imageSrc`      | `image-src`      |             | `string` | `undefined` |
-| `mediaLabel`    | `media-label`    |             | `string` | `undefined` |
 | `meta`          | `meta`           |             | `string` | `undefined` |
 | `thumbnailSrc`  | `thumbnail-src`  |             | `string` | `undefined` |
 | `url`           | `url`            |             | `string` | `undefined` |
