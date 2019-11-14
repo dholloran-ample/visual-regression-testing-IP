@@ -1,8 +1,8 @@
 import { Component, Prop, h } from '@stencil/core';
 
 @Component({
-  tag: 'crds-primary-button',
-  styleUrls: ['crds-primary-button.scss', '../crds-buttons.scss'],
+  tag: 'crds-button',
+  styleUrl: 'crds-button.scss',
   shadow: true
 })
 export class CrdsPrimaryButton {
@@ -10,6 +10,7 @@ export class CrdsPrimaryButton {
   @Prop() onClick: (event: MouseEvent) => void;
   @Prop() text: string;
   @Prop() href: string;
+  @Prop() type: string;
 
   public renderATagButton() {
     return (
@@ -20,8 +21,9 @@ export class CrdsPrimaryButton {
   }
 
   public renderButton() {
+    console.log('we are here');
     return (
-      <button class={`btn btn-primary btn-${this.color}`} onClick={this.onClick}>
+      <button class={`btn btn-${this.type} btn-${this.color}`} onClick={this.onClick}>
         {this.text}
       </button>
     );
@@ -29,6 +31,6 @@ export class CrdsPrimaryButton {
 
   public render() {
     if (this.href) return this.renderATagButton();
-    else return this.renderButton();
+    return this.renderButton();
   }
 }
