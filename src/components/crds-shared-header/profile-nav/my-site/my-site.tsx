@@ -365,10 +365,10 @@ export class MySite {
           <h4 class="text-left text-uppercase font-family-base-bold">
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
           </h4>
-          <crds-image-title-cutout
+          <crds-image-title-cutout class="text-white"
             imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
             imageHref={this.displaySite.mapUrl}
-            title={this.displaySite.name}
+            cardTitle={this.displaySite.name}
             titleHref={this.displaySite.qualifiedUrl}
           />
           <div class="site-details">

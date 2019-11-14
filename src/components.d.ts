@@ -65,9 +65,9 @@ export namespace Components {
     'src': string;
   }
   interface CrdsImageTitleCutout {
+    'cardTitle': string;
     'imageHref': string;
     'imageUrl': string;
-    'title': string;
     'titleHref': string;
   }
   interface CrdsLabel {
@@ -434,9 +434,9 @@ declare namespace LocalJSX {
     'src'?: string;
   }
   interface CrdsImageTitleCutout extends JSXBase.HTMLAttributes<HTMLCrdsImageTitleCutoutElement> {
+    'cardTitle'?: string;
     'imageHref'?: string;
     'imageUrl'?: string;
-    'title'?: string;
     'titleHref'?: string;
   }
   interface CrdsLabel extends JSXBase.HTMLAttributes<HTMLCrdsLabelElement> {

@@ -1,6 +1,6 @@
 import { Component, Prop, Element, h } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import { Utils } from '../../shared/utils';
+import { Utils } from '../../../shared/utils';
 
 @Component({
   tag: 'crds-image-title-cutout',
@@ -9,10 +9,10 @@ import { Utils } from '../../shared/utils';
 })
 export class CrdsImageBottomTitleOverlay {
   @Prop() imageUrl: string;
-  @Prop() title: string;
+  @Prop() cardTitle: string;
   @Prop() imageHref: string;
   @Prop() titleHref: string;
-  @Element() public host: HTMLStencilElement;
+  @Element() host: HTMLStencilElement;
 
   private addTextCutout() {
     if (!this.host) return;
@@ -29,9 +29,17 @@ export class CrdsImageBottomTitleOverlay {
     imageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
-  private componentDidLoad() {
+  public componentWillLoad() {
     window.addEventListener('resize', () => this.addTextCutout());
-    const observer = new IntersectionObserver(
+    
+    const mutationObserver = new MutationObserver(() => {
+      console.log('muation observer hit');
+      this.addTextCutout();
+    });
+    const config = { attributes: true, childList: true, subtree: true };
+    mutationObserver.observe(this.host, config);
+
+    const intersectionObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -43,11 +51,12 @@ export class CrdsImageBottomTitleOverlay {
         threshold: 1.0
       }
     );
+    intersectionObserver.observe(this.host);
 
-    observer.observe(this.host);
   }
 
   public render() {
+    console.log(this.imageUrl);
     return (
       <div>
         <img
@@ -58,8 +67,8 @@ export class CrdsImageBottomTitleOverlay {
           }}
         />
         <div class="card-block text-left">
-          <a href={this.titleHref} class="text-uppercase title-cutout text-white">
-            {this.title}
+          <a href={this.titleHref} class="text-uppercase title-cutout">
+            {this.cardTitle}
           </a>
         </div>
       </div>
