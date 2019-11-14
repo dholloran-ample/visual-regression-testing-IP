@@ -33,8 +33,9 @@ export function authInit() {
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
 
   window['crdsAuthenticated'] = false;
-
+  console.log(authConfig);
   authService.authenticated().subscribe(token => {
+    console.log(token);
     window['crdsAuthenticated'] = !!token;
     InitApollo(token && token.access_token.accessToken);
   });
