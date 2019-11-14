@@ -6,6 +6,7 @@ import toastr from 'toastr';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { isAuthenticated } from '../../global/authInit';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { CrdsApolloService } from '../../shared/apollo';
 
 @Component({
   tag: 'crds-site-select',
@@ -34,14 +35,11 @@ export class CrdsSiteSelect {
     else this.cookieSiteId = event.detail;
   }
 
-  private initFunction() {
-    this.contentBlockHandler = new ContentBlockHandler(Utils.apolloClient, 'site select');
-    return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
-  }
-
   public async componentWillLoad() {
+    await CrdsApolloService.initApolloClient();
     this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
-    return Utils.initComponent(this.initFunction.bind(this));
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'site select');
+    return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
   }
 
   private setSite() {
@@ -53,7 +51,7 @@ export class CrdsSiteSelect {
   }
 
   private getUserSite(): Promise<any> {
-    return Utils.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_USER })
       .then(response => {
         this.userSite = response.data.user.site.id;
@@ -65,7 +63,7 @@ export class CrdsSiteSelect {
   }
 
   private setUserSite() {
-    return Utils.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { siteId: this.cardSiteId },
         mutation: SET_SITE
@@ -95,7 +93,7 @@ export class CrdsSiteSelect {
   }
 
   public renderUserSiteButton() {
-    return <crds-label text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} tint="default"></crds-label>;
+    return <crds-label text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} tint="default" />;
   }
 
   public renderSetSiteButton() {

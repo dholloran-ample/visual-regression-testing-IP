@@ -3,7 +3,7 @@ import { GreetingUser } from './crds-greeting-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER } from './crds-greeting.graphql';
 import ApolloClient from 'apollo-client';
-import { CrdsApollo } from '../../shared/apollo';
+import { deprecatedApolloInit } from '../../shared/apollo';
 
 @Component({
   tag: 'crds-greeting',
@@ -23,13 +23,13 @@ export class CrdsGreeting {
   @Watch('authToken')
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
+      this.apolloClient = deprecatedApolloInit(newValue);
       this.getUser();
     }
   }
 
   public componentWillLoad(){ 
-    this.apolloClient = CrdsApollo(this.authToken);
+    this.apolloClient = deprecatedApolloInit(this.authToken);
   }
 
   public componentWillRender() {

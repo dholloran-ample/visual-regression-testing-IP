@@ -2,7 +2,7 @@ import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
 import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
-import { CrdsApollo } from '../../shared/apollo';
+import { deprecatedApolloInit } from '../../shared/apollo';
 import ApolloClient from 'apollo-client';
 import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happenings.graphql';
 import { HTMLStencilElement } from '@stencil/core/internal';
@@ -29,7 +29,7 @@ export class SiteHappenings {
   @Watch('authToken')
   watchHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
+      this.apolloClient = deprecatedApolloInit(newValue);
       this.getUser();
     }
   }
@@ -50,7 +50,7 @@ export class SiteHappenings {
   }
 
   public componentWillLoad() {
-    this.apolloClient = CrdsApollo(this.authToken);
+    this.apolloClient = deprecatedApolloInit(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
     Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
       this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
