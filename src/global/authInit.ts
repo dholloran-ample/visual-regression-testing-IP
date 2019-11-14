@@ -25,7 +25,7 @@ export function authInit() {
   const authConfig: CrdsAuthConfig = {
     oktaConfig: oktaConfig,
     mpConfig: mpConfig,
-    logging: false,
+    logging: true,
     providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
     env: process.env.ENV_SUBDOMAIN
   };
