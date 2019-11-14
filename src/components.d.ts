@@ -67,6 +67,10 @@ export namespace Components {
     'imageUrl': string;
     'titleHref': string;
   }
+  interface CrdsLabel {
+    'text': string;
+    'tint': string;
+  }
   interface CrdsMediaCard {
     'body': string;
     'category': string;
@@ -78,10 +82,6 @@ export namespace Components {
     'meta': string;
     'thumbnailSrc': string;
     'url': string;
-  }
-  interface CrdsLabel {
-    'text': string;
-    'tint': string;
   }
   interface CrdsModal {
     'isActive': boolean;
@@ -224,15 +224,16 @@ declare global {
     new (): HTMLCrdsImageTitleCutoutElement;
   };
 
-  interface HTMLCrdsMediaCardElement extends Components.CrdsMediaCard, HTMLStencilElement {}
-  var HTMLCrdsMediaCardElement: {
-    prototype: HTMLCrdsMediaCardElement;
-    new (): HTMLCrdsMediaCardElement;
-  }
   interface HTMLCrdsLabelElement extends Components.CrdsLabel, HTMLStencilElement {}
   var HTMLCrdsLabelElement: {
     prototype: HTMLCrdsLabelElement;
     new (): HTMLCrdsLabelElement;
+  };
+
+  interface HTMLCrdsMediaCardElement extends Components.CrdsMediaCard, HTMLStencilElement {}
+  var HTMLCrdsMediaCardElement: {
+    prototype: HTMLCrdsMediaCardElement;
+    new (): HTMLCrdsMediaCardElement;
   };
 
   interface HTMLCrdsModalElement extends Components.CrdsModal, HTMLStencilElement {}
@@ -363,8 +364,8 @@ declare global {
     'crds-icon': HTMLCrdsIconElement;
     'crds-image': HTMLCrdsImageElement;
     'crds-image-title-cutout': HTMLCrdsImageTitleCutoutElement;
-    'crds-media-card': HTMLCrdsMediaCardElement;
     'crds-label': HTMLCrdsLabelElement;
+    'crds-media-card': HTMLCrdsMediaCardElement;
     'crds-modal': HTMLCrdsModalElement;
     'crds-primary-button': HTMLCrdsPrimaryButtonElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
@@ -445,6 +446,10 @@ declare namespace LocalJSX {
     'imageUrl'?: string;
     'titleHref'?: string;
   }
+  interface CrdsLabel extends JSXBase.HTMLAttributes<HTMLCrdsLabelElement> {
+    'text'?: string;
+    'tint'?: string;
+  }
   interface CrdsMediaCard extends JSXBase.HTMLAttributes<HTMLCrdsMediaCardElement> {
     'body'?: string;
     'category'?: string;
@@ -456,10 +461,6 @@ declare namespace LocalJSX {
     'meta'?: string;
     'thumbnailSrc'?: string;
     'url'?: string;
-  }
-  interface CrdsLabel extends JSXBase.HTMLAttributes<HTMLCrdsLabelElement> {
-    'text'?: string;
-    'tint'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
     'isActive'?: boolean;
@@ -560,8 +561,8 @@ declare namespace LocalJSX {
     'crds-icon': CrdsIcon;
     'crds-image': CrdsImage;
     'crds-image-title-cutout': CrdsImageTitleCutout;
-    'crds-media-card': CrdsMediaCard;
     'crds-label': CrdsLabel;
+    'crds-media-card': CrdsMediaCard;
     'crds-modal': CrdsModal;
     'crds-primary-button': CrdsPrimaryButton;
     'crds-recommended-content': CrdsRecommendedContent;
