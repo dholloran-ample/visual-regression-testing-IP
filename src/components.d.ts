@@ -12,8 +12,11 @@ import {
 
 export namespace Components {
   interface CrdsButton {
+    'color': string;
     'href': string;
-    'label': string;
+    'onClick': (event: MouseEvent) => void;
+    'text': string;
+    'type': string;
   }
   interface CrdsDefaultCard {
     'body': string;
@@ -87,12 +90,6 @@ export namespace Components {
     'isActive': boolean;
     'label': string;
     'onModalClose': Function;
-  }
-  interface CrdsPrimaryButton {
-    'color': string;
-    'href': string;
-    'onClick': (event: MouseEvent) => void;
-    'text': string;
   }
   interface CrdsRecommendedContent {
     'authToken': string;
@@ -242,12 +239,6 @@ declare global {
     new (): HTMLCrdsModalElement;
   };
 
-  interface HTMLCrdsPrimaryButtonElement extends Components.CrdsPrimaryButton, HTMLStencilElement {}
-  var HTMLCrdsPrimaryButtonElement: {
-    prototype: HTMLCrdsPrimaryButtonElement;
-    new (): HTMLCrdsPrimaryButtonElement;
-  };
-
   interface HTMLCrdsRecommendedContentElement extends Components.CrdsRecommendedContent, HTMLStencilElement {}
   var HTMLCrdsRecommendedContentElement: {
     prototype: HTMLCrdsRecommendedContentElement;
@@ -367,7 +358,6 @@ declare global {
     'crds-label': HTMLCrdsLabelElement;
     'crds-media-card': HTMLCrdsMediaCardElement;
     'crds-modal': HTMLCrdsModalElement;
-    'crds-primary-button': HTMLCrdsPrimaryButtonElement;
     'crds-recommended-content': HTMLCrdsRecommendedContentElement;
     'crds-shared-footer': HTMLCrdsSharedFooterElement;
     'crds-shared-header': HTMLCrdsSharedHeaderElement;
@@ -391,8 +381,11 @@ declare global {
 
 declare namespace LocalJSX {
   interface CrdsButton extends JSXBase.HTMLAttributes<HTMLCrdsButtonElement> {
+    'color'?: string;
     'href'?: string;
-    'label'?: string;
+    'onClick'?: (event: MouseEvent) => void;
+    'text'?: string;
+    'type'?: string;
   }
   interface CrdsDefaultCard extends JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement> {
     'body'?: string;
@@ -466,12 +459,6 @@ declare namespace LocalJSX {
     'isActive'?: boolean;
     'label'?: string;
     'onModalClose'?: Function;
-  }
-  interface CrdsPrimaryButton extends JSXBase.HTMLAttributes<HTMLCrdsPrimaryButtonElement> {
-    'color'?: string;
-    'href'?: string;
-    'onClick'?: (event: MouseEvent) => void;
-    'text'?: string;
   }
   interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {
     'authToken'?: string;
@@ -564,7 +551,6 @@ declare namespace LocalJSX {
     'crds-label': CrdsLabel;
     'crds-media-card': CrdsMediaCard;
     'crds-modal': CrdsModal;
-    'crds-primary-button': CrdsPrimaryButton;
     'crds-recommended-content': CrdsRecommendedContent;
     'crds-shared-footer': CrdsSharedFooter;
     'crds-shared-header': CrdsSharedHeader;

@@ -29,7 +29,7 @@ stories
         Lorem ipsum
         </a>
       </p>
-      <crds-button href='#' label='Click me!'><crds-button>`
+      <crds-button type="primary" color="blue" href='#' text='Click me!'><crds-button>`
     );
 
     const bodyB = text(
