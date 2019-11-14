@@ -17,8 +17,8 @@ export function authInit() {
   };
 
   const mpConfig: CrdsMpConfig = {
-    accessTokenCookie: process.env.ENV_SUBDOMAIN + 'sessionId',
-    refreshTokenCookie: process.env.ENV_SUBDOMAIN + 'refreshToken',
+    accessTokenCookie: `${process.env.ENV_SUBDOMAIN}sessionId`,
+    refreshTokenCookie: `${process.env.ENV_SUBDOMAIN}refreshToken`,
     issuer: `${process.env.CRDS_GATEWAY_SERVER_ENDPOINT}api/authenticated`
   };
 
@@ -33,9 +33,9 @@ export function authInit() {
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
 
   window['crdsAuthenticated'] = false;
-  console.log(authConfig);
+  console.error(authConfig);
   authService.authenticated().subscribe(token => {
-    console.log(token);
+    console.error(token);
     window['crdsAuthenticated'] = !!token;
     InitApollo(token && token.access_token.accessToken);
   });
