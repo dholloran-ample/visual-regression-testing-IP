@@ -128,6 +128,7 @@ export namespace Components {
   }
   interface CrdsVideo {
     'active': boolean;
+    'shadow': boolean;
     'theme': string;
     'transcript': string;
     'youtubeId': string;
@@ -498,6 +499,7 @@ declare namespace LocalJSX {
   }
   interface CrdsVideo extends JSXBase.HTMLAttributes<HTMLCrdsVideoElement> {
     'active'?: boolean;
+    'shadow'?: boolean;
     'theme'?: string;
     'transcript'?: string;
     'youtubeId'?: string;
