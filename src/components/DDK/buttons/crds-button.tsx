@@ -11,26 +11,12 @@ export class CrdsPrimaryButton {
   @Prop() text: string;
   @Prop() href: string;
   @Prop() type: string;
-
-  public renderATagButton() {
-    return (
-      <a href={this.href} class={`btn-primary btn-${this.color}`}>
-        {this.text}
-      </a>
-    );
-  }
-
-  public renderButton() {
-    console.log('we are here');
+  
+  public render() {
     return (
       <button class={`btn btn-${this.type} btn-${this.color}`} onClick={this.onClick}>
         {this.text}
       </button>
     );
-  }
-
-  public render() {
-    if (this.href) return this.renderATagButton();
-    return this.renderButton();
   }
 }
