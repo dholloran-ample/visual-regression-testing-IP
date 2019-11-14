@@ -92,10 +92,6 @@ export class CrdsSiteSelect {
     console.error(err);
   }
 
-  public renderUserSiteButton() {
-    return <crds-label text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} tint="default" />;
-  }
-
   public renderSetSiteButton() {
     return (
       <crds-button
@@ -109,7 +105,7 @@ export class CrdsSiteSelect {
 
   public render() {
     if (this.userSite) {
-      return this.cardSiteId == this.userSite ? this.renderUserSiteButton() : this.renderSetSiteButton();
+      return this.cardSiteId == this.userSite ? this.renderUserSiteButton() : '';
     } else if (this.cookieSiteId) {
       return this.cardSiteId == Number(this.cookieSiteId) ? this.renderUserSiteButton() : this.renderSetSiteButton();
     }
