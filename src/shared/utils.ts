@@ -1,4 +1,9 @@
+import { ApolloClientService } from "../global/apollo";
+import ApolloClient from "apollo-client";
+
 export class Utils {
+  public static apolloClient: ApolloClient<{}>;
+
   /**
    * Returns content metatag who's property matches "prop"
    * @param prop Value of metatags prop attribute
@@ -99,5 +104,18 @@ export class Utils {
   public static isMobile(windowSize?): boolean {
     if (windowSize) return windowSize <= 768;
     return window.matchMedia(`(max-width: 768px)`).matches
+  }
+
+  //gets apollo client and runs init functions for component will load
+  public static initComponent(initFunction: () => {}) {
+    const clientSubject = new ApolloClientService().getClient();
+    var promise = new Promise(resolve => {
+      clientSubject.subscribe(client => {
+        this.apolloClient = client;
+        resolve(initFunction());
+      });
+    });
+
+    return promise;
   }
 }

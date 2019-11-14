@@ -4,7 +4,6 @@ import { Utils } from '../../shared/utils';
 import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { ApolloClientService } from '../../global/apollo';
 import { isAuthenticated } from '../../global/authInit';
 import { HTMLStencilElement } from '@stencil/core/internal';
 
@@ -15,7 +14,6 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 })
 export class CrdsSiteSelect {
   private contentBlockHandler: ContentBlockHandler;
-  private apolloClient: ApolloClient<{}>;
   @Element() public host: HTMLStencilElement;
 
   @Prop() cardSiteId: number;
@@ -36,18 +34,14 @@ export class CrdsSiteSelect {
     else this.cookieSiteId = event.detail;
   }
 
-  public async componentWillLoad() {
-    const clientSubject = new ApolloClientService().getClient();
-    var promise = new Promise(resolve => {
-      clientSubject.subscribe(client => {
-        this.apolloClient = client;
-        this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site select');
-        resolve(Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]));
-      });
-    });
+  private initFunction() {
+    this.contentBlockHandler = new ContentBlockHandler(Utils.apolloClient, 'site select');
+    return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
+  }
 
+  public async componentWillLoad() {
     this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
-    return promise;
+    return Utils.initComponent(this.initFunction.bind(this));
   }
 
   private setSite() {
@@ -59,7 +53,7 @@ export class CrdsSiteSelect {
   }
 
   private getUserSite(): Promise<any> {
-    return this.apolloClient
+    return Utils.apolloClient
       .query({ query: GET_USER })
       .then(response => {
         this.userSite = response.data.user.site.id;
@@ -71,7 +65,7 @@ export class CrdsSiteSelect {
   }
 
   private setUserSite() {
-    return this.apolloClient
+    return Utils.apolloClient
       .mutate({
         variables: { siteId: this.cardSiteId },
         mutation: SET_SITE
