@@ -21,6 +21,7 @@
   &.show {
     max-height: 250px;
     opacity: 1;
+    padding: 16px 18px;
   }
 }
 
@@ -29,6 +30,10 @@
   border: none;
   color: #919191;
   margin: 15px 0;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .embed-responsive {
@@ -57,12 +62,16 @@
   width: 100%;
 }
 
-
 .transcript-btn-light {
   background-color: transparent;
   border: none;
   color: #fff;
+  font-size: 15px;
   margin: 15px 0;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .transcript-body-light {
@@ -81,6 +90,10 @@
   &.show {
     max-height: 250px;
     opacity: 1;
+    padding: 16px 18px;
   }
 }
 
+.shadow {
+  box-shadow: 0 0 3rem rgba(000, 000, 000, .3);
+}
