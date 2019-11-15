@@ -277,12 +277,7 @@ export class MySite {
       })
       .then(response => {
         this.user = { ...this.user, site: response.data.setSite.site };
-        toastr.success(
-          `<div>
-            You've set ${this.user.site.name} as the preferred site for you and your household. 
-            <a href="/profile/personal">Update your profile</a> to cancel or change your site.
-          </div>`
-        );
+        toastr.success(this.contentBlockHandler.getContentBlock('siteSelectConfirmationLoggedIn'));
       })
       .catch(err => {
         this.logError(err);

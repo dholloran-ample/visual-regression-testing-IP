@@ -2,8 +2,8 @@ import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
 import { GreetingUser } from './crds-greeting-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER } from './crds-greeting.graphql';
-import ApolloClient from 'apollo-client';
-import { deprecatedApolloInit } from '../../shared/apollo';
+import { CrdsApolloService } from '../../shared/apollo';
+import { isAuthenticated } from '../../global/authInit';
 
 @Component({
   tag: 'crds-greeting',
@@ -11,30 +11,21 @@ import { deprecatedApolloInit } from '../../shared/apollo';
   shadow: true
 })
 export class CrdsGreeting {
-  private apolloClient: ApolloClient<{}>;
   private user: GreetingUser = null;
   private chunkOfDay: string;
 
   @State() displayName: string = null;
-  @Prop() authToken: string;
   @Prop() defaultName: string;
   @Element() public host: HTMLStencilElement;
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-      this.getUser();
-    }
-  }
 
-  public componentWillLoad(){ 
-    this.apolloClient = deprecatedApolloInit(this.authToken);
+  public async componentWillLoad(){ 
+    return CrdsApolloService.initApolloClient();
   }
 
   public componentWillRender() {
     this.chunkOfDay = this.getChunkOfDay(new Date().getHours());
-    if (this.authToken) return this.getUser();
+    if (isAuthenticated()) return this.getUser();
   }
 
   public componentDidRender() {
@@ -49,7 +40,7 @@ export class CrdsGreeting {
   }
 
   public getUser() {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_USER })
       .then(success => {
         this.user = success.data.user;

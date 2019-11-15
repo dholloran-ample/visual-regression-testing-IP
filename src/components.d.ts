@@ -31,7 +31,6 @@ export namespace Components {
     'url': string;
   }
   interface CrdsGreeting {
-    'authToken': string;
     'defaultName': string;
   }
   interface CrdsGroupList {
@@ -401,7 +400,6 @@ declare namespace LocalJSX {
     'url'?: string;
   }
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
-    'authToken'?: string;
     'defaultName'?: string;
   }
   interface CrdsGroupList extends JSXBase.HTMLAttributes<HTMLCrdsGroupListElement> {

@@ -33,7 +33,6 @@ export class CrdsImageBottomTitleOverlay {
     window.addEventListener('resize', () => this.addTextCutout());
     
     const mutationObserver = new MutationObserver(() => {
-      console.log('muation observer hit');
       this.addTextCutout();
     });
     const config = { attributes: true, childList: true, subtree: true };
@@ -56,7 +55,6 @@ export class CrdsImageBottomTitleOverlay {
   }
 
   public render() {
-    console.log(this.imageUrl);
     return (
       <div>
         <img
