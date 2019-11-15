@@ -1,3 +1,6 @@
+import { ApolloClientService } from "../global/apollo";
+import ApolloClient from "apollo-client";
+
 export class Utils {
   /**
    * Returns content metatag who's property matches "prop"
@@ -36,7 +39,6 @@ export class Utils {
   }
 
   public static setCookie(name, value, days) {
-    console.log(name, value, days)
     var date = new Date();
     date.setTime(date.getTime() + days * 1440 * 60 * 1000);
     var expires = '; expires=' + date.toUTCString();
@@ -90,5 +92,15 @@ export class Utils {
     );
 
     observer.observe(host);
+  }
+  
+  public static openInNewTab(url) {
+    const win = window.open(url, '_blank');
+    win.focus();
+  }
+  
+  public static isMobile(windowSize?): boolean {
+    if (windowSize) return windowSize <= 768;
+    return window.matchMedia(`(max-width: 768px)`).matches
   }
 }

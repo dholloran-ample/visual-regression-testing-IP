@@ -105,4 +105,12 @@ export class SvgSrc {
       </svg>
     );
   }
+
+  public static notificationRed() {
+    return (
+      <svg class="notification-red" viewBox="0 0 200 200">
+        <circle fill="red" cx="100" cy="100" r="75" />
+    </svg>
+    );
+  }
 }

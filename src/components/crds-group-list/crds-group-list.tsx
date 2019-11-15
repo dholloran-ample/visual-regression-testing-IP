@@ -1,6 +1,6 @@
 import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
 import ApolloClient from 'apollo-client';
-import { CrdsApollo } from '../../shared/apollo';
+import { deprecatedApolloInit } from '../../shared/apollo';
 import { GroupUser, Group } from './crds-group-list.interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_GROUPS } from './crds-group-list.graphql';
@@ -24,13 +24,13 @@ export class CrdsGroupList {
   @Watch('authToken')
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
+      this.apolloClient = deprecatedApolloInit(newValue);
       this.getUserGroups();
     }
   }
 
   public componentWillLoad() {
-    this.apolloClient = CrdsApollo(this.authToken);
+    this.apolloClient = deprecatedApolloInit(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'group list');
     this.contentBlockHandler.getCopy().then(() => {
       this.host.forceUpdate();
