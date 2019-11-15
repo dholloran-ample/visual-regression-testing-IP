@@ -478,7 +478,7 @@ export class MySite {
         )}
         <button
           onClick={() => {
-            location.href = encodeURIComponent(`/signin?redirectUrl=locations`);
+            location.href = `/signin?redirectUrl=locations`;
           }}
           class="btn flush-sides"
         >
