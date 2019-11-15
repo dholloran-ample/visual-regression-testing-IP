@@ -145,9 +145,7 @@ export namespace Components {
     'isNavShowing': boolean;
     'promoData': string;
   }
-  interface MySite {
-    'authToken': string;
-  }
+  interface MySite {}
   interface NavCtas {
     'data': string;
   }
@@ -515,9 +513,7 @@ declare namespace LocalJSX {
     'isNavShowing'?: boolean;
     'promoData'?: string;
   }
-  interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {
-    'authToken'?: string;
-  }
+  interface MySite extends JSXBase.HTMLAttributes<HTMLMySiteElement> {}
   interface NavCtas extends JSXBase.HTMLAttributes<HTMLNavCtasElement> {
     'data'?: string;
   }

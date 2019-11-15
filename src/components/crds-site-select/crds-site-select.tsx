@@ -36,10 +36,21 @@ export class CrdsSiteSelect {
   }
 
   public async componentWillLoad() {
+    this.initToastr();
     await CrdsApolloService.initApolloClient();
     this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
+  }
+
+  public componentDidLoad() {
+    console.log(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
+  }
+
+  public initToastr() {
+    toastr.options.closeButton = true;
+    toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
+    toastr.options.escapeHtml = false;
   }
 
   private setSite() {
@@ -70,7 +81,7 @@ export class CrdsSiteSelect {
       })
       .then(response => {
         this.userSite = parseInt(response.data.setSite.site.id);
-        this.toastSuccess('siteSelectConfirmationLoggedIn');
+        toastr.success(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
         this.siteSetEvent.emit(this.cardSiteId);
       })
       .catch(err => {
@@ -80,12 +91,8 @@ export class CrdsSiteSelect {
 
   private setCookieSite() {
     Utils.setCookie('nearestSiteId', this.cardSiteId, 365);
-    this.toastSuccess('siteSelectConfirmationLoggedOut');
+    toastr.success(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedOut'));
     this.siteSetEvent.emit(this.cardSiteId);
-  }
-
-  private toastSuccess(slugName) {
-    toastr.success(this.contentBlockHandler.getContentBlockText(slugName));
   }
 
   private logError(err) {
