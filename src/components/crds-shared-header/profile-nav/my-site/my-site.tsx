@@ -364,7 +364,7 @@ export class MySite {
             {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
             <p class="push-half-top">
               Not your site?{' '}
-              <a class="text-white" href="/profile/personal">
+              <a class="text-white" href="/locations">
                 Set your preferred site.
               </a>
             </p>
@@ -478,7 +478,7 @@ export class MySite {
         )}
         <button
           onClick={() => {
-            location.href = '/profile';
+            location.href = encodeURIComponent(`/signin?redirectUrl=locations`);
           }}
           class="btn flush-sides"
         >
