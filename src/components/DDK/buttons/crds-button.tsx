@@ -11,18 +11,51 @@ export class CrdsPrimaryButton {
   @Prop() text: string;
   @Prop() href: string;
   @Prop() type: string;
+  @Prop() size: string;
+  @Prop() display: string;
+  @Prop() value: string;
+  @Prop() disabled;
 
   private renderButton() {
     return (
-      <button class={`btn btn-${this.type} btn-${this.color}`} onClick={this.onClick}>
+      <button
+        class={
+          `btn btn-${this.type} btn-${this.color}` +
+          (this.size ? ` btn-${this.size}` : '') +
+          (this.display ? ` btn-${this.display}` : '')
+        }
+        {...(this.disabled !== undefined ? { disabled: true } : '')}
+        onClick={this.onClick}
+      >
         {this.text}
       </button>
     );
   }
 
+  private renderInput() {
+    return (
+      <input
+        class={
+          `btn btn-${this.type} btn-${this.color}` +
+          (this.size ? ` btn-${this.size}` : '') +
+          (this.display ? ` btn-${this.display}` : '')
+        }
+        {...(this.disabled !== undefined ? { disabled: true } : '')}
+        onClick={this.onClick}
+        value={this.value}
+      >
+        {this.text}
+      </input>
+    );
+  }
+
   private renderLink() {
     return (
-      <a href={this.href} class={`btn btn-${this.type} btn-${this.color}`}>
+      <a
+        href={this.href}
+        class={`btn btn-${this.type} btn-${this.color}` + (this.size ? ` btn-${this.size}` : '')}
+        {...(this.disabled !== undefined ? { disabled: true } : '')}
+      >
         {this.text}
       </a>
     );
@@ -30,6 +63,7 @@ export class CrdsPrimaryButton {
 
   public render() {
     if (this.href) return this.renderLink();
+    if (this.value) return this.renderInput();
     return this.renderButton();
   }
 }
