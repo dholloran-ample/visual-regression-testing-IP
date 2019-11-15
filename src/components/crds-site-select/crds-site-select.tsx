@@ -43,10 +43,6 @@ export class CrdsSiteSelect {
     return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
   }
 
-  public componentDidLoad() {
-    console.log(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
-  }
-
   public initToastr() {
     toastr.options.closeButton = true;
     toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
