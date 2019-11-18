@@ -3,7 +3,7 @@ import { HTMLStencilElement } from '@stencil/core/internal';
 import ApolloClient from 'apollo-client';
 import { TitheUser, Response } from './crds-tithe-challenge.interface';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { CrdsApollo } from '../../shared/apollo';
+import { deprecatedApolloInit } from '../../shared/apollo';
 import {
   GET_DONATIONS,
   GET_USER_GROUPS,
@@ -34,7 +34,7 @@ export class CrdsTitheChallenge {
   @Watch('authToken')
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
+      this.apolloClient = deprecatedApolloInit(newValue);
       this.getUser();
     }
   }
@@ -44,7 +44,7 @@ export class CrdsTitheChallenge {
   }
 
   public componentWillLoad() {
-    this.apolloClient = CrdsApollo(this.authToken);
+    this.apolloClient = deprecatedApolloInit(this.authToken);
     this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'tithe challenge');
     return Promise.all([
       this.contentBlockHandler.getCopy(),

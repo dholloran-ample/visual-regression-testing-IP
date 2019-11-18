@@ -28,6 +28,11 @@ You need to export the following variables when building or running the project.
 | `CONTENTFUL_ENV`             | Contentful environment (defaults to `master`) |
 | `CRDS_INTERACTIONS_ENDPOINT` | Service endpoint                              |
 | `CRDS_GQL_ENDPOINT`          | GraphQL endpoint                              |
+| `ENV_SUBDOMAIN`              | Subdomain and cookie prefix for mp tokens.    |
+| `CRDS_GQL_ENDPOINT`          | GraphQL Gateway Endpoint                      |
+| `OKTA_CLIENT_ID`             | Okta client id                                |
+| `OKTA_OAUTH_BASE_URL`        | Crds Okta base url                            |
+| `CRDS_GATEWAY_SERVER_ENDPOINT`| Crds old gateway URL until we move to okta   |
 
 You need to export the following variables when running tests on the project...
 

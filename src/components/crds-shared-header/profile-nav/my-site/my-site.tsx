@@ -6,11 +6,12 @@ import ApolloClient from 'apollo-client';
 import marked from 'marked';
 
 import Popper from 'popper.js';
-import { CrdsApollo } from '../../../../shared/apollo';
 import { Utils } from '../../../../shared/utils';
 import { SvgSrc } from '../../../../shared/svgSrc';
 import { ContentBlockHandler } from '../../../../shared/contentBlocks/contentBlocks';
 import toastr from 'toastr';
+import { isAuthenticated } from '../../../../global/authInit';
+import { CrdsApolloService } from '../../../../shared/apollo';
 
 @Component({
   tag: 'my-site',
@@ -19,8 +20,6 @@ import toastr from 'toastr';
 })
 export class MySite {
   private analytics = window['analytics'];
-  private apolloClient: ApolloClient<{}> = null;
-  private sites: Site[];
   private anywhereSite: Site = {
     id: '15',
     name: 'Anywhere',
@@ -32,61 +31,67 @@ export class MySite {
     serviceTimes: null,
     address: null
   };
-  private nearestSite: Site;
+
   private arrow: HTMLElement;
   private popper: HTMLElement;
   private popperControl: any;
-  private openPopperAutomatically: boolean = false;
+  private showNotification: boolean = false;
   private contentBlockHandler: ContentBlockHandler;
-  private directionsUrl: string;
   private displaySite: Site;
+  private hasRendered: boolean = false;
 
-  @Prop() authToken: string;
+  @State() nearestSite: Site;
+  @State() sites: Site[];
   @State() user: MySiteUser = null;
   @State() nearestSiteID: number;
   @State() promptsDisabled: boolean = false;
   @State() popperOpen: boolean = false;
+  @State() contentBlocksLoaded: boolean = false;
   @Element() public host: HTMLStencilElement;
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
-    }
+  @Listen('siteSet', { target: 'document' })
+  siteSetHandler(event) {
+    if (isAuthenticated()) return this.getUserSites();
+    this.nearestSiteID = event.detail;
+    this.getSiteContent(this.nearestSiteID);
   }
 
-  public componentWillLoad() {
+  public async componentWillLoad() {
+    this.initToastr();
+    await CrdsApolloService.initApolloClient();
+    this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
+    this.contentBlockHandler.getCopy().then(() => {
+      console.log(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
+      this.contentBlocksLoaded = true;
+    });
+    this.getSites();
+    isAuthenticated() ? this.loggedInUser() : this.loggedOutUser();
+  }
+
+  public initToastr() {
     toastr.options.closeButton = true;
     toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
-    this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     toastr.options.escapeHtml = false;
-    this.apolloClient = CrdsApollo(this.authToken);
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'my site');
-    var promises = [
-      this.getSites(),
-      this.contentBlockHandler.getCopy(),
-      this.authToken ? this.loggedInUser() : this.loggedOutUser()
-    ];
-    return Promise.all(promises);
   }
 
-  public async componentWillRender() {
-    if (this.authToken && !this.user) this.loggedInUser();
-    if (this.shouldShowComponent()) {
-      this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
-      if (this.displaySite.id === '15') this.displaySite = this.anywhereSite;
-      return this.getDirectionsUrl(this.displaySite);
-    }
+  public componentDidRender() {
+    if (!this.shouldShowComponent()) return;
+    setTimeout(() => {
+      this.host.shadowRoot.querySelector('.my-site').classList.add('fade-in');
+    }, 0);
+    if (this.hasRendered) return;
+    this.createComponentEvent();
+    this.hasRendered = true;
   }
 
-  public componentDidLoad() {
+  private createComponentEvent() {
     var reference = this.host.shadowRoot.querySelector('.my-site');
     this.popper = this.host.shadowRoot.querySelector('.popper');
     this.arrow = this.host.shadowRoot.querySelector('.arrow');
     if (!reference || !this.popper) return;
     this.popperControl = new Popper(reference, this.popper, {
       placement: 'bottom',
-      eventsEnabled: false,
       modifiers: {
         offset: {
           offset: '20px',
@@ -94,13 +99,6 @@ export class MySite {
         }
       }
     });
-
-    if (this.openPopperAutomatically) {
-      this.handlePopperOpen();
-      const mySiteContainerEl: any = this.host.parentElement;
-      mySiteContainerEl.click();
-      this.openPopperAutomatically = false;
-    }
 
     reference.addEventListener('click', () => {
       if (this.popperOpen) this.handlePopperClose();
@@ -119,12 +117,6 @@ export class MySite {
       if (path && path.find(el => el.className === 'my-site-container')) return;
       this.handlePopperClose();
     });
-  }
-
-  public componentDidRender() {
-    setTimeout(() => {
-      this.host.shadowRoot.querySelector('.my-site').classList.add('fade-in');
-    }, 0);
   }
 
   private async loggedOutUser() {
@@ -149,6 +141,8 @@ export class MySite {
 
   private handlePopperClose() {
     this.popperOpen = false;
+    this.showNotification = false;
+    this.promptsDisabled = true;
     this.popper.classList.remove('open');
     this.arrow.classList.remove('open');
   }
@@ -164,14 +158,14 @@ export class MySite {
   }
 
   private getUserSites(): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_USER })
       .then(response => {
         this.user = response.data.user;
         if (this.user.closestSite) {
           this.nearestSite = this.user.closestSite;
+          this.nearestSiteID = Number(this.user.closestSite.id);
         }
-        this.nearestSiteID = Number(this.user.closestSite.id);
         return;
       })
       .catch(err => {
@@ -180,7 +174,7 @@ export class MySite {
   }
 
   private getSites(): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_SITES })
       .then(response => {
         this.sites = response.data.sites;
@@ -211,7 +205,7 @@ export class MySite {
           this.analytics.track('MySiteGetLocationPermission', {
             response: 'User allowed Geolocation'
           });
-        return this.apolloClient
+        return CrdsApolloService.apolloClient
           .query({
             variables: { lat: position.coords.latitude, lng: position.coords.longitude },
             query: GET_CLOSEST_SITE
@@ -219,7 +213,7 @@ export class MySite {
           .then(response => {
             var nearestSiteID = Number(response.data.closestSite.id);
             Utils.setCookie('nearestSiteId', nearestSiteID, 365);
-            this.openPopperAutomatically = true;
+            this.showNotification = true;
             return nearestSiteID;
           })
           .catch(err => {
@@ -231,13 +225,13 @@ export class MySite {
           this.analytics.track('MySiteGetLocationPermission', {
             response: err.message
           });
-        };
+        }
         this.logError(err);
       });
   }
 
   private getSiteContent(id: number): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({
         variables: { id: Number(id) },
         query: GET_SITE_CONTENT
@@ -256,13 +250,10 @@ export class MySite {
         closestSiteId: id
       });
     }
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { closestSiteID: id },
         mutation: SET_CLOSEST_SITE
-      })
-      .then(response => {
-        return response.data.closestSite.id;
       })
       .catch(err => {
         this.logError(err);
@@ -276,19 +267,14 @@ export class MySite {
         siteID: siteId
       });
     }
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { siteId: siteId },
         mutation: SET_SITE
       })
       .then(response => {
         this.user = { ...this.user, site: response.data.setSite.site };
-        toastr.success(
-          `<div>
-            You've set ${this.user.site.name} as the preferred site for you and your household. 
-            <a href="/profile/personal">Update your profile</a> to cancel or change your site.
-          </div>`
-        );
+        toastr.success(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
       })
       .catch(err => {
         this.logError(err);
@@ -310,13 +296,8 @@ export class MySite {
     );
   }
 
-  private getDirectionsUrl(siteContent: Site): Promise<string> {
-    return this.getCurrentPosition().then((position: any) => {
-      return (this.directionsUrl = siteContent.mapUrl.replace(
-        '/place/',
-        `/dir/${position.coords.latitude},${position.coords.longitude}/`
-      ));
-    });
+  private getDirectionsUrl(siteContent: Site): string {
+    return encodeURI(`https://www.google.com/maps/dir/?api=1&parameters&destination=${siteContent.address}`);
   }
 
   private shouldShowUpdateSitePrompt(): boolean {
@@ -328,7 +309,7 @@ export class MySite {
   }
 
   private shouldShowSignInPrompt(): boolean {
-    return this.nearestSiteID && !this.authToken && !this.promptsDisabled;
+    return this.nearestSiteID && !isAuthenticated() && !this.promptsDisabled;
   }
 
   private shouldShowSiteContent(): boolean {
@@ -342,7 +323,7 @@ export class MySite {
   }
 
   private shouldShowComponent(): boolean {
-    return !!this.nearestSiteID || !!this.user;
+    return !!this.sites && this.contentBlocksLoaded && !!this.nearestSite;
   }
 
   public renderPopover() {
@@ -373,21 +354,21 @@ export class MySite {
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
           </h4>
           <crds-image-title-cutout
-            imageUrl={this.displaySite.mapImageUrl}
+            class="text-white"
+            imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
             imageHref={this.displaySite.mapUrl}
-            title={this.displaySite.name}
+            cardTitle={this.displaySite.name}
             titleHref={this.displaySite.qualifiedUrl}
           />
           <div class="site-details">
             {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
+            <p class="push-half-top">
+              Not your site?{' '}
+              <a class="text-white" href="/locations">
+                Set your preferred site.
+              </a>
+            </p>
           </div>
-          <p class="push-half-top">
-            Not your site?{' '}
-            <a class="text-white" href="/profile/personal">
-              {' '}
-              Set your preferred site.
-            </a>
-          </p>
         </div>
       </div>
     );
@@ -399,7 +380,7 @@ export class MySite {
         {' '}
         <div
           class="push-half-bottom"
-          innerHTML={`${this.displaySite.address}`}
+          innerHTML={`${marked(this.displaySite.address)}`}
           onClick={() => {
             Utils.openInNewTab(this.displaySite.mapUrl);
           }}
@@ -413,16 +394,17 @@ export class MySite {
   }
 
   private renderServiceHours() {
-    return (
-      <div>
-        {' '}
+    if (this.displaySite.serviceTimes)
+      return (
         <div>
-          <strong>Service Times:</strong>
+          {' '}
+          <div>
+            <strong>Service Times:</strong>
+          </div>
+          <div innerHTML={marked(this.displaySite.serviceTimes)} />
+          {this.renderGetDirections()}
         </div>
-        <div innerHTML={this.displaySite.serviceTimes} />
-        {this.renderGetDirections()}
-      </div>
-    );
+      );
   }
 
   private renderOpenHours() {
@@ -436,12 +418,11 @@ export class MySite {
   }
 
   private renderGetDirections() {
-    if (this.directionsUrl)
       return (
         <a
           class="text-white underline"
           onClick={() => {
-            Utils.openInNewTab(this.directionsUrl);
+            Utils.openInNewTab(this.getDirectionsUrl(this.displaySite));
           }}
         >
           Get Directions
@@ -497,11 +478,11 @@ export class MySite {
         )}
         <button
           onClick={() => {
-            location.href = '/profile';
+            location.href = `/signin?redirectUrl=locations`;
           }}
           class="btn flush-sides"
         >
-          Login
+          Login or signup
         </button>
         <a onClick={() => this.disablePrompts()}>No, thanks</a>
       </div>
@@ -509,11 +490,15 @@ export class MySite {
   }
 
   public render() {
-    if (!this.shouldShowComponent()) return null;
+    if (this.shouldShowComponent()) {
+      this.displaySite = (this.userHasSite() && this.user.site) || this.nearestSite;
+      if (this.displaySite.id === '15') this.displaySite = this.anywhereSite;
+    } else return null;
     return (
       <div class="arrow">
         <div class={`my-site ${this.popperOpen ? 'open' : ''}`}>
-          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}{' '}
+          {this.popperOpen ? SvgSrc.closeIcon() : SvgSrc.locationPinIcon()}
+          <div class="notification">{this.showNotification ? SvgSrc.notificationRed() : ''}</div>
           <a class="my-site-name">
             {(this.userHasSite() && this.user.site.name) ||
               this.sites.find(site => Number(site.id) === this.nearestSiteID).name}

@@ -1,3 +1,6 @@
+import { ApolloClientService } from "../global/apollo";
+import ApolloClient from "apollo-client";
+
 export class Utils {
   /**
    * Returns content metatag who's property matches "prop"

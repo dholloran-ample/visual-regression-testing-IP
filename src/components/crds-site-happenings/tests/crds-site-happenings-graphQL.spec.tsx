@@ -1,6 +1,6 @@
 import { SiteHappenings } from '../site-happenings';
 import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
-import { CrdsApollo } from '../../../shared/apollo';
+import { deprecatedApolloInit } from '../../../shared/apollo';
 import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
 
 describe('<crds-site-happenings> GraphQL I/O', () => {
@@ -13,7 +13,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       this.lastError.error = err;
     };
     this.happenings.authToken = await getSessionID(user_with_site.email, user_with_site.password);
-    this.happenings.apolloClient = CrdsApollo(this.happenings.authToken);
+    this.happenings.apolloClient = deprecatedApolloInit(this.happenings.authToken);
     this.happenings.contentBlockHandler = new ContentBlockHandler(null, null);
   });
 
@@ -27,7 +27,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.lastError.error).toBeUndefined();
 
       const fakeAuthToken = '';
-      this.happenings.apolloClient = CrdsApollo(fakeAuthToken);
+      this.happenings.apolloClient = deprecatedApolloInit(fakeAuthToken);
       await this.happenings.getSites();
 
       expect(this.happenings.sites.length).toBeGreaterThan(0);
@@ -48,7 +48,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.lastError.error).toBeUndefined();
 
       const authToken = '';
-      this.happenings.apolloClient = CrdsApollo(authToken);
+      this.happenings.apolloClient = deprecatedApolloInit(authToken);
       await this.happenings.getUser();
 
       expect(this.happenings.user).toBeNull();
@@ -81,7 +81,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.lastError.error).toBeUndefined();
 
       const authToken = '';
-      this.happenings.apolloClient = CrdsApollo(authToken);
+      this.happenings.apolloClient = deprecatedApolloInit(authToken);
       await this.happenings.setUserSite(user_with_site.site_id);
       expect(this.lastError.error).not.toBeUndefined();
     });

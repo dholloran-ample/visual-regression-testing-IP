@@ -1,5 +1,5 @@
 import { SiteHappenings } from '../site-happenings';
-import { CrdsApollo } from '../../../shared/apollo';
+import { deprecatedApolloInit } from '../../../shared/apollo';
 import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
 import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
 
