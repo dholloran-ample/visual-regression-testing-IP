@@ -1,6 +1,6 @@
 import { Component, Prop, Element, h } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import { Utils } from '../../shared/utils';
+import { Utils } from '../../../shared/utils';
 
 @Component({
   tag: 'crds-image-title-cutout',
@@ -9,10 +9,10 @@ import { Utils } from '../../shared/utils';
 })
 export class CrdsImageBottomTitleOverlay {
   @Prop() imageUrl: string;
-  @Prop() title: string;
+  @Prop() cardTitle: string;
   @Prop() imageHref: string;
   @Prop() titleHref: string;
-  @Element() public host: HTMLStencilElement;
+  @Element() host: HTMLStencilElement;
 
   private addTextCutout() {
     if (!this.host) return;
@@ -29,9 +29,16 @@ export class CrdsImageBottomTitleOverlay {
     imageEl.style.WebkitClipPath = `polygon(0 0, 100% 0, 100% 100%, ${cutOutMaxX}px 100%, ${cutOutMaxX}px ${cutOutMaxY}px, ${cutOutMinX}px ${cutOutMaxY}px, ${cutOutMinX}px 100%, 0 100%)`;
   }
 
-  private componentDidLoad() {
+  public componentWillLoad() {
     window.addEventListener('resize', () => this.addTextCutout());
-    const observer = new IntersectionObserver(
+    
+    const mutationObserver = new MutationObserver(() => {
+      this.addTextCutout();
+    });
+    const config = { attributes: true, childList: true, subtree: true };
+    mutationObserver.observe(this.host, config);
+
+    const intersectionObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -43,25 +50,23 @@ export class CrdsImageBottomTitleOverlay {
         threshold: 1.0
       }
     );
+    intersectionObserver.observe(this.host);
 
-    observer.observe(this.host);
   }
 
   public render() {
     return (
       <div>
-        <div class="image-container">
-          <img
-            class="image"
-            src={Utils.imgixify(this.imageUrl + '?auto=format&ar=263:100&fit=crop')}
-            onClick={() => {
-              Utils.openInNewTab(this.imageHref);
-            }}
-          />
-        </div>
+        <img
+          class="image"
+          src={this.imageUrl}
+          onClick={() => {
+            Utils.openInNewTab(this.imageHref);
+          }}
+        />
         <div class="card-block text-left">
-          <a href="{this.title}" class="text-white text-uppercase title-cutout">
-            {this.title}
+          <a href={this.titleHref} class="text-uppercase title-cutout">
+            {this.cardTitle}
           </a>
         </div>
       </div>

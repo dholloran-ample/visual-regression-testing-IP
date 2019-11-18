@@ -4,7 +4,7 @@ import { CrdsUser, CrdsLifeStage } from './crds-recommended-content-interface';
 import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
 import ApolloClient from 'apollo-client';
-import { CrdsApollo } from '../../shared/apollo';
+import { deprecatedApolloInit } from '../../shared/apollo';
 import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './crds-recommended-content.graphql';
 
 @Component({
@@ -25,13 +25,13 @@ export class CrdsRecommendedContent {
   @Watch('authToken')
   authTokenHandler(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.apolloClient = CrdsApollo(newValue);
+      this.apolloClient = deprecatedApolloInit(newValue);
       this.getUser();
     }
   }
 
   public componentWillLoad() {
-    this.apolloClient = CrdsApollo(this.authToken);
+    this.apolloClient = deprecatedApolloInit(this.authToken);
     this.getLifeStages();
     this.getUser();
   }

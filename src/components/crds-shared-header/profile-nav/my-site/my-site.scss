@@ -4,9 +4,9 @@
 $op-black: rgba(black, 0.8);
 $arrow-height: 10px;
 
-@media screen and (max-width: 374px){
+@media screen and (max-width: 374px) {
   :host {
-  display: none;
+    display: none;
   }
 }
 
@@ -30,17 +30,14 @@ $arrow-height: 10px;
   padding-top: 12px;
   padding-bottom: 12px;
   opacity: 0;
-  transition: opacity .45s .25s ease-in-out;
+  transition: opacity 0.45s 0.25s ease-in-out;
 
   svg {
     fill: $cr-white;
     height: 22px;
     width: 22px;
     vertical-align: text-bottom;
-
-    & > g{
-      transform: translateX(72px);
-    }
+    transform: translateX(4px);
   }
 
   &.open {
@@ -50,6 +47,7 @@ $arrow-height: 10px;
       fill: $cr-white;
       height: 26px;
       width: 26px;
+      transform: translateX(6px);
     }
   }
 
@@ -58,7 +56,6 @@ $arrow-height: 10px;
   }
 
   border: none;
-
 }
 
 .my-site-name {
@@ -115,7 +112,7 @@ $arrow-height: 10px;
     color: grey;
   }
   color: white;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .btn {
@@ -126,17 +123,15 @@ $arrow-height: 10px;
   margin: 5px;
 }
 
-.card-block {
-  padding: 1rem;
-}
-
 .arrow.open::before {
   border: $arrow-height solid transparent;
   border-top: 0;
   border-bottom-color: rgba(0, 0, 0, 0.97);
   content: '';
+  pointer-events: none;
   position: absolute;
   top: $top-padding - $arrow-height;
+  transform: translateX(9px);
 }
 
 .anywhere-connect > a {
@@ -165,8 +160,30 @@ div.social-icons a {
   width: 36px;
   padding: 10px;
 
-  & > img{
+  & > img {
     max-width: 100%;
   }
 }
 
+
+.notification {
+  svg.notification-red {
+    position: absolute;
+    width: 15px;
+    -webkit-transform: translate(30px, 10px);
+    transform: translate(-7px, -11px);
+  }
+}
+
+crds-image-title-cutout:after {
+  color: #979797;
+  content: '\2014';
+  display: block;
+  font-family: 'acumin-pro', helvetica, arial, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 100;
+  line-height: 0;
+  text-align: left;
+  margin-bottom: 12px;
+  margin-left: -10px;
+}
