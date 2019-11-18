@@ -9,6 +9,7 @@ import { inlineSvg } from 'stencil-inline-svg/src';
 export const config: Config = {
   namespace: 'crds-components',
   globalScript: 'src/global/app.ts',
+  enableCache: true,
   outputTargets: [
     { type: 'dist' },
     { type: 'docs-readme' },
