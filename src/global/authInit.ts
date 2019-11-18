@@ -9,7 +9,7 @@ import {
 import { InitApollo } from './apollo';
 import { ReplaySubject } from 'rxjs';
 
-export function authInit(testAuthToken?: string) {
+export function authInit(testAuthToken?: string, ) {
   if (testAuthToken) {
     window['crdsAuthenticated'] = !!testAuthToken;
     InitApollo(testAuthToken);

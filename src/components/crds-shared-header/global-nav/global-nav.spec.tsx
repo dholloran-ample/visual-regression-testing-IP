@@ -1,53 +1,36 @@
-jest.mock('../../../shared/auth');
 import { GlobalNav } from './global-nav';
+import { getSessionID, user_with_nickname } from '../../../shared/test_users_auth';
+import { ReplaySubject } from 'rxjs';
+import { authInit, getAuthService } from '../../../global/authInit';
+import { CrdsApolloService } from '../../../shared/apollo';
 
 describe('<global-nav>', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     this.component = new GlobalNav();
     this.component.env = 'int';
 
     this.fakeEvent = {
       preventDefault: jest.fn(),
       stopPropagation: jest.fn()
-    }
+    };
+
+    const authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
+    window['apolloClient'] = new ReplaySubject();
+    authInit(authToken);
+    await CrdsApolloService.subscribeToApolloClient();
+    this.component.auth = getAuthService();
+    this.component.CrdsApolloService = CrdsApolloService;
   });
 
   it('should redirect users following sign out', () => {
     this.component.auth = {
       signOut: jest.fn()
     };
+    authInit('123');
+    window['crdsAuthenticated'] = false;
     const redirectToRoot = (this.component.redirectToRoot = jest.fn());
     this.component.authChangeCallback();
     expect(redirectToRoot).toBeCalled();
-  });
-
-  describe('Tests componentWillLoad()', () => {
-    it('Checks auth is not initialized if config is undefined', () => {
-      expect(this.component.auth).toEqual({});
-      expect(this.component.data.config).toBeUndefined();
-
-      this.component.componentWillLoad();
-
-      expect(this.component.auth).toEqual({});
-    });
-
-    it('Checks auth is not initialized again if auth.config is defined', () => {
-      this.component.auth = { config: 'fake config' }
-      expect(this.component.data.config).toBeUndefined();
-
-      this.component.componentWillLoad();
-
-      expect(this.component.auth).toEqual({ config: 'fake config' } );
-    });
-
-    it('Checks auth is initialized', () => {
-      this.component.data.config = {};
-      expect(this.component.auth).toEqual({})
-
-      this.component.componentWillLoad();
-
-      expect(this.component.auth).not.toEqual({})
-    });
   });
 
   describe('Tests componentDidLoad()', () => {
@@ -57,7 +40,11 @@ describe('<global-nav>', () => {
     });
 
     it('Checks offset is set', () => {
-      this.component.element = { getBoundingClientRect(){return {top: 1}}};
+      this.component.element = {
+        getBoundingClientRect() {
+          return { top: 1 };
+        }
+      };
 
       expect(this.component.topOffset).toBeUndefined();
 
@@ -70,17 +57,16 @@ describe('<global-nav>', () => {
   describe('Tests authChangeCallback()', () => {
     it('Checks redirectToRoot called if auth undefined', () => {
       this.component.redirectToRoot = jest.fn();
-      expect(this.component.auth).toEqual({});
-
+      authInit('123');
+      window['crdsAuthenticated'] = false;
       this.component.authChangeCallback();
-
       expect(this.component.redirectToRoot).toBeCalled();
     });
 
-    it('Checks redirectToRoot not called if not authenticated', () => {
+    it('Checks redirectToRoot called if not authenticated', () => {
       this.component.redirectToRoot = jest.fn();
-      this.component.auth = { authenticated: false };
-
+      authInit('123');
+      window['crdsAuthenticated'] = false;
       this.component.authChangeCallback();
 
       expect(this.component.redirectToRoot).toBeCalled();
@@ -88,21 +74,9 @@ describe('<global-nav>', () => {
 
     it('Checks redirectToRoot not called if authenticated', () => {
       this.component.redirectToRoot = jest.fn();
-      this.component.auth = { authenticated: true };
-
       this.component.authChangeCallback();
 
       expect(this.component.redirectToRoot).not.toBeCalled();
-    });
-  });
-
-  describe('Tests handleSignOut()', () => {
-    it('Checks auth.signOut is called', () => {
-      this.component.auth = { signOut: jest.fn() }
-
-      this.component.handleSignOut();
-
-      expect(this.component.auth.signOut).toBeCalled();
     });
   });
 
@@ -146,7 +120,8 @@ describe('<global-nav>', () => {
 
     it('Checks menu requiring auth is not opened if not authenticated', () => {
       this.component.openNavName = 'give-nav';
-
+      authInit('123');
+      window['crdsAuthenticated'] = false;
       this.component.toggleNav(this.fakeEvent, 'profile-nav', true);
 
       expect(this.component.openNavName).toBe('give-nav');
@@ -230,7 +205,7 @@ describe('<global-nav>', () => {
 
   describe('Tests render()', () => {
     beforeEach(() => {
-      this.component.data = {give: {}, profile: {}};
+      this.component.data = { give: {}, profile: {} };
     });
 
     it('Checks element returned has main-nav', () => {
@@ -240,13 +215,13 @@ describe('<global-nav>', () => {
     });
 
     it('Checks element has no give-nav if children not defined', () => {
-      expect(this.component.data.children).toBeUndefined
+      expect(this.component.data.children).toBeUndefined;
       const rendered = this.component.render();
       expect(rendered[0].$children$[0].$children$[1].$tag$).not.toBe('give-nav');
-    })
+    });
 
     it('Checks element returned has give-nav', () => {
-      this.component.data.give = { children: [] }
+      this.component.data.give = { children: [] };
       const rendered = this.component.render();
 
       expect(rendered[0].$children$[0].$children$[1].$tag$).toBe('give-nav');
@@ -307,26 +282,24 @@ describe('<global-nav>', () => {
     const matchUrl = /url\('(.*)'\);/;
 
     it('Checks avatarUrl is included in returend string', () => {
-      this.component.auth = { currentUser: { avatarUrl: 'https://fakeAvatar.com'} };
+      this.component.user = { imageUrl: 'https://fakeAvatar.com' };
 
       const newString = this.component.authProfileIcon();
 
       expect(matchUrl.exec(newString)[1]).toBe('https://fakeAvatar.com');
     });
 
-    it('Checks url is empty string if auth.currentUser is undefined', () => {
-      this.component.auth = { };
-
+    it('Checks url is empty string if auth.user is undefined', async () => {
+      this.component.user = undefined;
+      authInit('123');
+      window['crdsAuthenticated'] = false;
       const newString = this.component.authProfileIcon();
-
       expect(matchUrl.exec(newString)[1]).toBe('');
     });
 
-    it('Checks url is empty string if auth.currentUser.avatarUrl is undefined', () => {
-      this.component.auth = { currentUser: {} };
-
+    it('Checks url is empty string if auth.user.imageUrl is undefined', () => {
+      this.component.user = {};
       const newString = this.component.authProfileIcon();
-
       expect(matchUrl.exec(newString)[1]).toBe('');
     });
   });

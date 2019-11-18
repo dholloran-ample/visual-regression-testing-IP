@@ -31,7 +31,7 @@ export class GlobalNav {
   public async componentWillLoad() {
     this.auth = getAuthService();
     await CrdsApolloService.subscribeToApolloClient();
-    if(isAuthenticated()) this.getUser();
+    if (isAuthenticated()) this.getUser();
     if (!this.data.config) return;
   }
 
@@ -45,11 +45,15 @@ export class GlobalNav {
     });
   }
 
+  private authChangeCallback() {
+    if (!isAuthenticated()) this.redirectToRoot();
+  }
+
   /* Handle authentication */
   private handleSignOut() {
     this.auth.signOut().subscribe(() => {
-      this.redirectToRoot();
-    })
+      this.authChangeCallback();
+    });
   }
 
   private redirectToRoot() {
@@ -107,7 +111,7 @@ export class GlobalNav {
   }
 
   private giveData() {
-    return (this.data as any).give
+    return (this.data as any).give;
   }
 
   /* Render elements */
@@ -156,27 +160,31 @@ export class GlobalNav {
                   onClick={event => this.toggleNav(event, 'my-site')}
                   data-automation-id="sh-my-site"
                 >
-                  <my-site/>
+                  <my-site />
                 </a>
 
-                {!this.giveData().children && <a
-                  href={this.giveData().href}
-                  class="give-container"
-                  data-label={this.giveData().title}
-                  data-automation-id="sh-give"
-                >
-                  <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
-                </a>}
+                {!this.giveData().children && (
+                  <a
+                    href={this.giveData().href}
+                    class="give-container"
+                    data-label={this.giveData().title}
+                    data-automation-id="sh-give"
+                  >
+                    <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
+                  </a>
+                )}
 
-                {this.giveData().children && <a
-                  class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
-                  onClick={event => this.toggleNav(event, 'give-nav')}
-                  data-label={this.giveData().title}
-                  data-automation-id="sh-give"
-                >
-                  <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
-                  <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
-                </a>}
+                {this.giveData().children && (
+                  <a
+                    class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
+                    onClick={event => this.toggleNav(event, 'give-nav')}
+                    data-label={this.giveData().title}
+                    data-automation-id="sh-give"
+                  >
+                    <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
+                    <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
+                  </a>
+                )}
 
                 <a
                   class={`profile-container ${this.openNavName === 'profile-nav' ? 'nav-is-showing' : ''}`}
@@ -194,7 +202,9 @@ export class GlobalNav {
               </div>
             </div>
 
-            {this.giveData().children && <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />}
+            {this.giveData().children && (
+              <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />
+            )}
             <profile-nav
               isNavShowing={this.openNavName === 'profile-nav' && isAuthenticated()}
               handleSignOut={this.handleSignOut.bind(this)}
@@ -203,7 +213,7 @@ export class GlobalNav {
           </div>
         </header>
         <main-nav isNavShowing={this.openNavName === 'main-nav'} data={this.data.nav} promoData={this.data.promos} />
-        <div class={`popper-overlay ${this.isNavOpen() ? 'is-showing' : ''}`}></div>
+        <div class={`popper-overlay ${this.isNavOpen() ? 'is-showing' : ''}`} />
         <div class={`close-nav ${this.isNavOpen() ? 'is-showing' : ''}`}>
           <div class="close-nav-icon" innerHTML={iconData.close.innerHTML} onClick={this.closeNav.bind(this)} />
         </div>
@@ -211,5 +221,3 @@ export class GlobalNav {
     );
   }
 }
-
-
