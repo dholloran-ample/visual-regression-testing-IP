@@ -2,11 +2,11 @@ import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
 import marked from 'marked';
 import { Utils } from '../../shared/utils';
 import { CrdsUser, CrdsHappening, Site } from './site-happenings-interface';
-import { deprecatedApolloInit } from '../../shared/apollo';
-import ApolloClient from 'apollo-client';
+import { CrdsApolloService } from '../../shared/apollo';
 import { GET_SITES, GET_USER, SET_SITE, GET_PROMOS, GET_COPY } from './site-happenings.graphql';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
+import { isAuthenticated } from '../../global/authInit';
 @Component({
   tag: 'crds-site-happenings',
   styleUrl: 'site-happenings.scss',
@@ -17,22 +17,11 @@ export class SiteHappenings {
   private contentfulSites: string[] = [];
   private sites: Site[] = [];
   private happenings: CrdsHappening[] = [];
-  private apolloClient: ApolloClient<{}>;
   private user: CrdsUser = null;
   private contentBlockHandler: ContentBlockHandler;
 
   @State() selectedSite: string;
-  @Prop() authToken: string;
-
   @Element() host: HTMLStencilElement;
-
-  @Watch('authToken')
-  watchHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-      this.getUser();
-    }
-  }
 
   /** Stencil Personalization Components Defaults **/
   // This lets unit tests capture and confirm errors rather than listening in on console.error
@@ -49,9 +38,9 @@ export class SiteHappenings {
     Utils.trackInView(this.host, 'HappeningComponent', this.getInViewDetails.bind(this));
   }
 
-  public componentWillLoad() {
-    this.apolloClient = deprecatedApolloInit(this.authToken);
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'site happenings');
+  public async componentWillLoad() {
+    await CrdsApolloService.subscribeToApolloClient();
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'site happenings');
     Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
       this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');
     });
@@ -66,7 +55,7 @@ export class SiteHappenings {
 
   /** GraphQL I/O **/
   private getSites(): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_SITES })
       .then(response => {
         this.validateSites(response.data.sites);
@@ -78,8 +67,8 @@ export class SiteHappenings {
   }
 
   private getUser(): Promise<any> {
-    if (!this.authToken) return Promise.resolve(this.resetUser());
-    return this.apolloClient
+    if (!isAuthenticated()) return Promise.resolve(this.resetUser());
+    return CrdsApolloService.apolloClient
       .query({ query: GET_USER })
       .then(response => {
         const user = response.data.user;
@@ -95,7 +84,7 @@ export class SiteHappenings {
   }
 
   private getPromos(): Promise<any> {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_PROMOS })
       .then(response => {
         const promoList = response.data.promos;
@@ -108,7 +97,7 @@ export class SiteHappenings {
   }
 
   private setUserSite(siteId) {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { siteId: siteId },
         mutation: SET_SITE
