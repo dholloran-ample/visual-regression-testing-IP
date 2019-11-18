@@ -1,6 +1,12 @@
 import { CrdsAuthenticationService, CrdsAuthenticationProviders } from '@crds_npm/crds-client-auth';
 import { InitApollo } from './apollo';
-export function authInit() {
+import { ReplaySubject } from 'rxjs';
+export function authInit(testAuthToken) {
+    if (testAuthToken) {
+        window['crdsAuthenticated'] = !!testAuthToken;
+        InitApollo(testAuthToken);
+        return;
+    }
     const oktaConfig = {
         clientId: process.env.OKTA_CLIENT_ID,
         issuer: process.env.OKTA_OAUTH_BASE_URL,
@@ -22,11 +28,20 @@ export function authInit() {
     };
     const authService = new CrdsAuthenticationService(authConfig);
     window['crdsAuthenticated'] = false;
+    window['crdsAuthToken'] = new ReplaySubject();
+    window['CrdsAuthenticationService'] = authService;
     authService.authenticated().subscribe(token => {
         window['crdsAuthenticated'] = !!token;
+        window['crdsAuthToken'].next(token);
         InitApollo(token && token.access_token.accessToken);
     });
 }
 export function isAuthenticated() {
     return window['crdsAuthenticated'];
+}
+export function getAuthToken() {
+    return window['crdsAuthToken'];
+}
+export function getAuthService() {
+    return window['CrdsAuthenticationService'];
 }

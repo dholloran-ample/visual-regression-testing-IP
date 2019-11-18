@@ -1,10 +1,12 @@
 import { Component, Prop, State, h, Listen, Element } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
-
-import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
 import * as iconData from './global-nav-icons.json';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { isAuthenticated, getAuthService } from '../../../global/authInit';
+import { CrdsApolloService } from '../../../shared/apollo';
+import { GET_USER } from './global-nav.graphql';
+import { CrdsAuthenticationService } from '@crds_npm/crds-client-auth';
 
 @Component({
   tag: 'global-nav',
@@ -18,33 +20,36 @@ export class GlobalNav {
   @State() openNavName: string = '';
   @State() isAuthenticated: boolean = false;
   @State() topOffset: number;
+  @State() avatarUrl: string;
+  @State() user: any;
   @Element() public host: HTMLStencilElement;
 
   private element: HTMLElement;
+  private auth: CrdsAuthenticationService;
+  private preventClose: boolean;
 
-  auth: any = {};
-  preventClose: boolean;
-
-  componentWillLoad() {
-    if (!this.data.config || this.auth.config) return;
-    this.auth = new Auth(Object.assign(this.data.config, { env: this.env }));
-    this.auth.listen(this.authChangeCallback.bind(this));
+  async componentWillLoad() {
+    this.auth = getAuthService();
+    await CrdsApolloService.initApolloClient();
+    this.getUser();
+    if (!this.data.config) return;
   }
 
   componentDidLoad() {
     this.topOffset = this.element.getBoundingClientRect().top + window.scrollY;
   }
 
-  /* Handle authentication */
-  handleSignOut() {
-    this.auth.signOut(this.authChangeCallback.bind(this));
+  private getUser() {
+    return CrdsApolloService.apolloClient.query({ query: GET_USER }).then(response => {
+      this.user = response.data.user;
+    });
   }
 
-  authChangeCallback() {
-    this.isAuthenticated = this.auth.authenticated;
-    if (!this.isAuthenticated) {
+  /* Handle authentication */
+  handleSignOut() {
+    this.auth.signOut().subscribe(() => {
       this.redirectToRoot();
-    }
+    })
   }
 
   redirectToRoot() {
@@ -64,7 +69,7 @@ export class GlobalNav {
       event.preventDefault();
       this.openNavName = '';
     } else if (navRequiresAuth) {
-      if (this.isAuthenticated) {
+      if (isAuthenticated()) {
         event.preventDefault();
         this.openNavName = navName;
       }
@@ -97,7 +102,7 @@ export class GlobalNav {
   }
 
   authProfileIcon() {
-    const avatarUrl = this.auth.currentUser && this.auth.currentUser.avatarUrl;
+    const avatarUrl = this.user && this.user.imageUrl;
     return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`;
   }
 
@@ -176,13 +181,13 @@ export class GlobalNav {
                 <a
                   class={`profile-container ${this.openNavName === 'profile-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'profile-nav', true)}
-                  data-label={this.isAuthenticated ? 'my account' : 'sign in'}
+                  data-label={isAuthenticated() ? 'my account' : 'sign in'}
                   href={`${this.rootURL()}/signin`}
                   data-automation-id="sh-profile"
                 >
                   <div
                     class={iconData.profile.class}
-                    innerHTML={this.isAuthenticated ? this.authProfileIcon() : iconData.profile.innerHTML}
+                    innerHTML={isAuthenticated() ? this.authProfileIcon() : iconData.profile.innerHTML}
                   />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
                 </a>
@@ -191,9 +196,8 @@ export class GlobalNav {
 
             {this.giveData().children && <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />}
             <profile-nav
-              isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
+              isNavShowing={this.openNavName === 'profile-nav' && isAuthenticated()}
               handleSignOut={this.handleSignOut.bind(this)}
-              currentUser={this.auth.currentUser}
               data={this.data.profile}
             />
           </div>

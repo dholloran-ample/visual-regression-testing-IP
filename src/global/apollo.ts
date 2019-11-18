@@ -39,7 +39,6 @@ export function InitApollo(authToken: string): void {
   window['apolloClient'].next(apolloClient);
 }
 
-export function getApolloClient(): ReplaySubject<ApolloClient<{}>>  {
-   return window['apolloClient'];
-  }
+export function getApolloClient(): ReplaySubject<ApolloClient<{}>> {
+  return window['apolloClient'];
 }

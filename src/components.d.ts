@@ -154,10 +154,10 @@ export namespace Components {
     'subNavName': string;
   }
   interface ProfileNav {
-    'currentUser': any;
     'data': any;
     'handleSignOut': Function;
     'isNavShowing': boolean;
+    'user': any;
   }
 }
 
@@ -515,10 +515,10 @@ declare namespace LocalJSX {
     'subNavName'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
-    'currentUser'?: any;
     'data'?: any;
     'handleSignOut'?: Function;
     'isNavShowing'?: boolean;
+    'user'?: any;
   }
 
   interface IntrinsicElements {

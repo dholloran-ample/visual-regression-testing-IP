@@ -62,7 +62,6 @@ export class MySite {
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     this.contentBlockHandler.getCopy().then(() => {
-      console.log(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
       this.contentBlocksLoaded = true;
     });
     this.getSites();
