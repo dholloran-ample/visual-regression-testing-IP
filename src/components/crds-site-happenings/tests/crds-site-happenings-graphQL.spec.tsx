@@ -18,7 +18,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
     const authToken = await getSessionID(user_with_site.email, user_with_site.password);
     window['apolloClient'] = new ReplaySubject();
     authInit(authToken);
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.happenings.CrdsApolloService = CrdsApolloService; 
     this.happenings.contentBlockHandler = new ContentBlockHandler(null, null);
   });
@@ -32,7 +32,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
     it('Checks MP sites are stored if not authenticated', async () => {
       expect(this.lastError.error).toBeUndefined();
       authInit('123');
-      await CrdsApolloService.initApolloClient();
+      await CrdsApolloService.subscribeToApolloClient();
       this.happenings.CrdsApolloService = CrdsApolloService; 
       await this.happenings.getSites();
       expect(this.happenings.sites.length).toBeGreaterThan(0);
@@ -53,7 +53,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.lastError.error).toBeUndefined();
 
       authInit('123');
-      await CrdsApolloService.initApolloClient();
+      await CrdsApolloService.subscribeToApolloClient();
       this.happenings.CrdsApolloService = CrdsApolloService; 
       await this.happenings.getUser();
 
@@ -87,7 +87,7 @@ describe('<crds-site-happenings> GraphQL I/O', () => {
       expect(this.lastError.error).toBeUndefined();
 
       authInit('123');
-      await CrdsApolloService.initApolloClient();
+      await CrdsApolloService.subscribeToApolloClient();
       this.happenings.CrdsApolloService = CrdsApolloService; 
       await this.happenings.setUserSite(user_with_site.site_id);
       expect(this.lastError.error).not.toBeUndefined();

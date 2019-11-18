@@ -19,7 +19,7 @@ describe('<crds-site-happenings> Render', () => {
 
     it('Checks setSiteModal not returned for authenticated user with site is already selected', async () => {
       authInit('123');
-      await CrdsApolloService.initApolloClient();
+      await CrdsApolloService.subscribeToApolloClient();
       this.happenings.CrdsApolloService = CrdsApolloService;
       this.happenings.user = { site: 'Oakley' };
 
@@ -31,7 +31,7 @@ describe('<crds-site-happenings> Render', () => {
     userSiteNotSelected.forEach(site => {
       it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, async () => {
         authInit('123');
-        await CrdsApolloService.initApolloClient();
+        await CrdsApolloService.subscribeToApolloClient();
         this.happenings.CrdsApolloService = CrdsApolloService;
         this.happenings.user = { site: site };
         const render = this.happenings.maybeRenderSetSiteModal();

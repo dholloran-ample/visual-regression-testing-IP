@@ -30,7 +30,7 @@ export class GlobalNav {
 
   public async componentWillLoad() {
     this.auth = getAuthService();
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     if(isAuthenticated()) this.getUser();
     if (!this.data.config) return;
   }

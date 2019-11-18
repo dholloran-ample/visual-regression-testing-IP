@@ -21,7 +21,7 @@ export class CrdsRecommendedContent {
   @Element() public host: HTMLStencilElement;
 
   public async componentWillLoad() {
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.getLifeStages();
     this.getUser();
   }

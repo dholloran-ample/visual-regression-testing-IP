@@ -4,7 +4,7 @@ import { getApolloClient } from '../global/apollo';
 export class CrdsApolloService {
   public static apolloClient: ApolloClient<{}>;
 
-  public static initApolloClient(): Promise<ApolloClient<{}>> {
+  public static subscribeToApolloClient(): Promise<ApolloClient<{}>> {
     const clientSubject = getApolloClient();
     return new Promise(resolve => {
       clientSubject.subscribe(client => {

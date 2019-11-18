@@ -21,7 +21,7 @@ export class CrdsGroupList {
   private leader: boolean;
 
   public async componentWillLoad() {
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group list');
     this.contentBlockHandler.getCopy().then(() => {
       this.host.forceUpdate();

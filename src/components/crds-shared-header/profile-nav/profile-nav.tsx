@@ -21,7 +21,7 @@ export class ProfileMenu {
   }
 
   public componentWillLoad() {
-    return CrdsApolloService.initApolloClient();
+    return CrdsApolloService.subscribeToApolloClient();
   }
 
   public componentWillRender() {

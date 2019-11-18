@@ -39,7 +39,7 @@ export class SiteHappenings {
   }
 
   public async componentWillLoad() {
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'site happenings');
     Promise.all([this.getSites(), this.getPromos(), this.contentBlockHandler.getCopy(), this.getUser()]).then(() => {
       this.validateSelectedSite((this.user && this.user.site) || 'Churchwide');

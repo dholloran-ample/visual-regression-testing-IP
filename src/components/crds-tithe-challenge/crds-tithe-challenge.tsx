@@ -35,7 +35,7 @@ export class CrdsTitheChallenge {
   }
 
   public async componentWillLoad() {
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'tithe challenge');
     return Promise.all([
       this.contentBlockHandler.getCopy(),

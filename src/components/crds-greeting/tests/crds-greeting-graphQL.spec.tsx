@@ -19,7 +19,7 @@ describe('<greeting-component> GraphQL', () => {
       const authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
       window['apolloClient'] = new ReplaySubject();
       authInit(authToken);
-      await CrdsApolloService.initApolloClient();
+      await CrdsApolloService.subscribeToApolloClient();
       this.greetingComponent.CrdsApolloService = CrdsApolloService;
     }
   });

@@ -20,7 +20,7 @@ export class CrdsGreeting {
 
 
   public async componentWillLoad(){ 
-    return CrdsApolloService.initApolloClient();
+    return CrdsApolloService.subscribeToApolloClient();
   }
 
   public componentWillRender() {
