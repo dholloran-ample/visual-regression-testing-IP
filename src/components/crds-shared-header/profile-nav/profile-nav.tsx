@@ -20,12 +20,12 @@ export class ProfileMenu {
     this.simpleNav = new SimpleNavHelper(this.handleSignOut);
   }
 
-  compnentWillLoad() {
+  public componentWillLoad() {
     return CrdsApolloService.initApolloClient();
   }
 
-  componentWillRender() {
-    if(isAuthenticated()) this.getUser();
+  public componentWillRender() {
+    if (isAuthenticated()) this.getUser();
   }
 
   private getUser() {
@@ -43,7 +43,7 @@ export class ProfileMenu {
     return (this.user && this.user.imageUrl) || '';
   }
 
-  render() {
+  public render() {
     if (!this.isNavShowing || !this.simpleNav.isObjectTruthyNonArray(this.data)) return null;
 
     return (
@@ -51,9 +51,7 @@ export class ProfileMenu {
         <div
           class="profile-nav-img"
           style={{
-            backgroundImage: `linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%),url('${
-              this.backgroundImageURL()
-              }')`
+            backgroundImage: `linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%),url('${this.backgroundImageURL()}')`
           }}
         />
         {this.simpleNav.renderNav(this.data, this.navTitle())}

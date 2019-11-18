@@ -28,14 +28,14 @@ export class GlobalNav {
   private auth: CrdsAuthenticationService;
   private preventClose: boolean;
 
-  async componentWillLoad() {
+  public async componentWillLoad() {
     this.auth = getAuthService();
     await CrdsApolloService.initApolloClient();
     this.getUser();
     if (!this.data.config) return;
   }
 
-  componentDidLoad() {
+  public componentDidLoad() {
     this.topOffset = this.element.getBoundingClientRect().top + window.scrollY;
   }
 
@@ -46,23 +46,23 @@ export class GlobalNav {
   }
 
   /* Handle authentication */
-  handleSignOut() {
+  private handleSignOut() {
     this.auth.signOut().subscribe(() => {
       this.redirectToRoot();
     })
   }
 
-  redirectToRoot() {
+  private redirectToRoot() {
     window.location.replace(this.rootURL());
   }
 
   /* Handle nav open/close */
-  isNavOpen() {
+  private isNavOpen() {
     const navNames = ['main-nav', 'my-site', 'give-nav', 'profile-nav'];
     return navNames.includes(this.openNavName);
   }
 
-  toggleNav(event, navName, navRequiresAuth: boolean = false) {
+  private toggleNav(event, navName, navRequiresAuth: boolean = false) {
     const path = event.composedPath && event.composedPath(event.target);
     if (path && path.find(el => el.className == 'popper open')) return (this.preventClose = true);
     if (this.openNavName === navName) {
@@ -97,21 +97,21 @@ export class GlobalNav {
   }
 
   /* Misc */
-  rootURL() {
+  private rootURL() {
     return `https://${Utils.getSubdomain(this.env)}.crossroads.net`;
   }
 
-  authProfileIcon() {
+  private authProfileIcon() {
     const avatarUrl = this.user && this.user.imageUrl;
     return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`;
   }
 
-  giveData() {
+  private giveData() {
     return (this.data as any).give
   }
 
   /* Render elements */
-  render() {
+  public render() {
     return (
       <Fragment>
         <header
