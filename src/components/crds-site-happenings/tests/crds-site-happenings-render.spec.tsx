@@ -1,12 +1,14 @@
 import { SiteHappenings } from '../site-happenings';
-import { deprecatedApolloInit } from '../../../shared/apollo';
-import { getSessionID, user_with_site } from '../../../shared/test_users_auth';
+import { CrdsApolloService } from '../../../shared/apollo';
 import { ContentBlockHandler } from '../../../shared/contentBlocks/contentBlocks';
+import { authInit } from '../../../global/authInit';
+import { ReplaySubject } from 'rxjs';
 
 describe('<crds-site-happenings> Render', () => {
   beforeEach(() => {
     this.happenings = new SiteHappenings();
     this.happenings.contentBlockHandler = new ContentBlockHandler(null, null);
+    window['apolloClient'] = new ReplaySubject();
   });
 
   describe('Tests maybeRenderSetSiteModal()', () => {
@@ -15,8 +17,10 @@ describe('<crds-site-happenings> Render', () => {
       expect(modal).toBe('');
     });
 
-    it('Checks setSiteModal not returned for authenticated user with site is already selected', () => {
-      this.happenings.authToken = '123';
+    it('Checks setSiteModal not returned for authenticated user with site is already selected', async () => {
+      authInit('123');
+      await CrdsApolloService.initApolloClient();
+      this.happenings.CrdsApolloService = CrdsApolloService;
       this.happenings.user = { site: 'Oakley' };
 
       const modal = this.happenings.maybeRenderSetSiteModal();
@@ -25,8 +29,10 @@ describe('<crds-site-happenings> Render', () => {
 
     const userSiteNotSelected = ['Not site specific', null, ''];
     userSiteNotSelected.forEach(site => {
-      it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, () => {
-        this.happenings.authToken = '123';
+      it(`Checks setSiteModal returned for authenticated user with unselected site, value "${site}"`, async () => {
+        authInit('123');
+        await CrdsApolloService.initApolloClient();
+        this.happenings.CrdsApolloService = CrdsApolloService;
         this.happenings.user = { site: site };
         const render = this.happenings.maybeRenderSetSiteModal();
 

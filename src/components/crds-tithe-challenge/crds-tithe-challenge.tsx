@@ -1,9 +1,8 @@
-import { Component, Element, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, h, Prop, State } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import ApolloClient from 'apollo-client';
 import { TitheUser, Response } from './crds-tithe-challenge.interface';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { deprecatedApolloInit } from '../../shared/apollo';
+import { CrdsApolloService } from '../../shared/apollo';
 import {
   GET_DONATIONS,
   GET_USER_GROUPS,
@@ -12,6 +11,7 @@ import {
 } from './crds-tithe-challenge.graphql';
 import { SvgSrc } from '../../shared/svgSrc';
 import { Utils } from '../../shared/utils';
+import { isAuthenticated } from '../../global/authInit';
 
 @Component({
   tag: 'crds-tithe-challenge',
@@ -20,36 +20,27 @@ import { Utils } from '../../shared/utils';
 })
 export class CrdsTitheChallenge {
   private analytics = window['analytics'];
-  private apolloClient: ApolloClient<{}> = null;
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
   private titheImage = "https://crds-media.imgix.net/2kyAbv69Gp1iPwpNMlUcXx/8b4df043d517e714447f96fd43440c24/90DTT.svg";
 
   @State() user: TitheUser = null;
-  @Prop() authToken: string;
   @Prop() selectedFeeling: Response;
   @Element() public host: HTMLStencilElement;
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-      this.getUser();
-    }
-  }
 
   public componentDidLoad() {
     Utils.trackInView(this.host, 'TitheChallenge', this.isUserInChallenge.bind(this));
   }
 
-  public componentWillLoad() {
-    this.apolloClient = deprecatedApolloInit(this.authToken);
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'tithe challenge');
+  public async componentWillLoad() {
+    await CrdsApolloService.initApolloClient();
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'tithe challenge');
     return Promise.all([
       this.contentBlockHandler.getCopy(),
       this.getFeelingResponses(),
-      this.authToken ? this.getUser() : null
+      isAuthenticated() ? this.getUser() : null
     ]);
   }
 
@@ -59,13 +50,13 @@ export class CrdsTitheChallenge {
   }
 
   public getUser() {
-    return this.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
+    return CrdsApolloService.apolloClient.query({ query: GET_USER_GROUPS }).then(response => {
       this.user = response.data.user;
     });
   }
 
   public getUserDonations() {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({
         variables: { startDate: this.user.groups[0].userStartDate },
         query: GET_DONATIONS
@@ -77,7 +68,7 @@ export class CrdsTitheChallenge {
   }
 
   private getFeelingResponses() {
-    return this.apolloClient.query({ query: GET_FEELING_RESPONSES }).then(response => {
+    return CrdsApolloService.apolloClient.query({ query: GET_FEELING_RESPONSES }).then(response => {
       this.feelings = response.data.feelingResponses.map(response => {
         return { id: response.id, value: response.value };
       });
@@ -97,7 +88,7 @@ export class CrdsTitheChallenge {
   }
 
   private logUserResponse() {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { response: this.selectedFeeling },
         mutation: LOG_USER_RESPONSE

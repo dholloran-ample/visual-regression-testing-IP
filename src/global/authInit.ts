@@ -7,7 +7,13 @@ import {
 } from '@crds_npm/crds-client-auth';
 import { InitApollo } from './apollo';
 
-export function authInit() {
+export function authInit(testAuthToken?: string) {
+  if (testAuthToken) {
+    window['crdsAuthenticated'] = !!testAuthToken;
+    InitApollo(testAuthToken);
+    return;
+  }
+
   const oktaConfig: CrdsOktaConfig = {
     clientId: process.env.OKTA_CLIENT_ID,
     issuer: process.env.OKTA_OAUTH_BASE_URL,
@@ -33,6 +39,7 @@ export function authInit() {
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
 
   window['crdsAuthenticated'] = false;
+
   authService.authenticated().subscribe(token => {
     window['crdsAuthenticated'] = !!token;
     InitApollo(token && token.access_token.accessToken);

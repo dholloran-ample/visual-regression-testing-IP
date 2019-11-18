@@ -1,11 +1,11 @@
-import { Component, Prop, State, Element, h, Watch } from '@stencil/core';
+import { Component, State, Element, h } from '@stencil/core';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { CrdsUser, CrdsLifeStage } from './crds-recommended-content-interface';
 import { Utils } from '../../shared/utils';
 import { SvgSrc } from '../../shared/svgSrc';
-import ApolloClient from 'apollo-client';
-import { deprecatedApolloInit } from '../../shared/apollo';
+import { CrdsApolloService } from '../../shared/apollo';
 import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './crds-recommended-content.graphql';
+import { isAuthenticated } from '../../global/authInit';
 
 @Component({
   tag: 'crds-recommended-content',
@@ -14,24 +14,14 @@ import { GET_USER, GET_LIFESTAGES, SET_LIFESTAGE } from './crds-recommended-cont
 })
 export class CrdsRecommendedContent {
   private analytics = window['analytics'] || {};
-  private apolloClient: ApolloClient<{}>;
   private crdsDefaultImg = 'https://crds-cms-uploads.imgix.net/content/images/cr-social-sharing-still-bg.jpg';
   private recommendedContent: [] = [];
   @State() lifeStages: CrdsLifeStage[] = [];
   @State() user: CrdsUser = { name: '', lifeStage: null };
-  @Prop() public authToken: string;
   @Element() public host: HTMLStencilElement;
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-      this.getUser();
-    }
-  }
-
-  public componentWillLoad() {
-    this.apolloClient = deprecatedApolloInit(this.authToken);
+  public async componentWillLoad() {
+    await CrdsApolloService.initApolloClient();
     this.getLifeStages();
     this.getUser();
   }
@@ -50,8 +40,8 @@ export class CrdsRecommendedContent {
   }
 
   private getUser() {
-    if (!this.authToken) return null;
-    return this.apolloClient.query({ query: GET_USER }).then(success => {
+    if (!isAuthenticated()) return null;
+    return CrdsApolloService.apolloClient.query({ query: GET_USER }).then(success => {
       const name = success.data.user.lifeStage && success.data.user.lifeStage.title;
       const id = success.data.user.lifeStage && success.data.user.lifeStage.id;
       this.user =  { ...this.user,lifeStage: { id: id, title: name } };
@@ -60,7 +50,7 @@ export class CrdsRecommendedContent {
   }
 
   private getLifeStages() {
-    return this.apolloClient.query({ query: GET_LIFESTAGES }).then(success => {
+    return CrdsApolloService.apolloClient.query({ query: GET_LIFESTAGES }).then(success => {
       this.lifeStages = success.data.lifeStages;
       this.host.forceUpdate();
     });
@@ -103,7 +93,7 @@ export class CrdsRecommendedContent {
           title: lifeStageName
         }
       : null;
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .mutate({
         variables: { lifeStage: obj },
         mutation: SET_LIFESTAGE

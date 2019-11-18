@@ -39,10 +39,7 @@ export function InitApollo(authToken: string): void {
   window['apolloClient'].next(apolloClient);
 }
 
-export class ApolloClientService {
-  constructor() {}
-
-  public getClient(): ReplaySubject<ApolloClient<{}>>  {
+export function getApolloClient(): ReplaySubject<ApolloClient<{}>>  {
    return window['apolloClient'];
   }
 }
