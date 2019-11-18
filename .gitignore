@@ -28,3 +28,8 @@ UserInterfaceState.xcuserstate
 .envrc
 /.vs/slnx.sqlite
 /.vs/slnx.sqlite-journal
+
+cypress/fixtures/example.json
+cypress/integration/examples
+cypress/videos
+cypress/screenshots

@@ -1,0 +1,6 @@
+{
+    "baseUrl": "https://int.crossroads.net",
+    "testFiles": "**/*spec.js",
+    "numTestsKeptInMemory": 0,
+    "video": false
+}
