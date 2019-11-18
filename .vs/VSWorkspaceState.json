@@ -2,10 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\.storybook",
+    "\\cypress",
+    "\\cypress\\integration",
+    "\\cypress\\plugins",
     "\\src",
     "\\src\\components",
     "\\src\\components\\crds-tithe-challenge"
   ],
-  "SelectedNode": "\\cypress.json",
+  "SelectedNode": "\\cypress\\plugins",
   "PreviewInSolutionExplorer": false
 }
