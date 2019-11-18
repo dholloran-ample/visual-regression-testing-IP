@@ -28,19 +28,14 @@ export function authInit(testAuthToken) {
     };
     const authService = new CrdsAuthenticationService(authConfig);
     window['crdsAuthenticated'] = false;
-    window['crdsAuthToken'] = new ReplaySubject();
     window['CrdsAuthenticationService'] = authService;
     authService.authenticated().subscribe(token => {
         window['crdsAuthenticated'] = !!token;
-        window['crdsAuthToken'].next(token);
         InitApollo(token && token.access_token.accessToken);
     });
 }
 export function isAuthenticated() {
     return window['crdsAuthenticated'];
-}
-export function getAuthToken() {
-    return window['crdsAuthToken'];
 }
 export function getAuthService() {
     return window['CrdsAuthenticationService'];
