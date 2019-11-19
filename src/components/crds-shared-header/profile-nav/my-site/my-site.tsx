@@ -202,7 +202,8 @@ export class MySite {
       .then((position: any) => {
         if (this.analytics)
           this.analytics.track('MySiteGetLocationPermission', {
-            response: 'User allowed Geolocation'
+            response: 'User allowed Geolocation',
+            position: position
           });
         return CrdsApolloService.apolloClient
           .query({
