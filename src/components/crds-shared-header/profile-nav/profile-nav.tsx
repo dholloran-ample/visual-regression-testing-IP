@@ -25,7 +25,7 @@ export class ProfileMenu {
   }
 
   public componentWillRender() {
-    if (isAuthenticated()) this.getUser();
+    if (isAuthenticated() && !this.user) this.getUser();
   }
 
   private getUser() {
