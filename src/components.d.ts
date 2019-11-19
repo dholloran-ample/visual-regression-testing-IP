@@ -17,6 +17,7 @@ export namespace Components {
     'display': string;
     'href': string;
     'onClick': (event: MouseEvent) => void;
+    'secondary': any;
     'size': string;
     'text': string;
     'type': string;
@@ -390,6 +391,7 @@ declare namespace LocalJSX {
     'display'?: string;
     'href'?: string;
     'onClick'?: (event: MouseEvent) => void;
+    'secondary'?: any;
     'size'?: string;
     'text'?: string;
     'type'?: string;

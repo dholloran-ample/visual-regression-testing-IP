@@ -14,15 +14,19 @@ export class CrdsPrimaryButton {
   @Prop() size: string;
   @Prop() display: string;
   @Prop() value: string;
-  @Prop() disabled;
+  @Prop() disabled: any;
+  @Prop() secondary: any;
 
   private renderButton() {
     return (
       <button
         class={
-          `btn btn-${this.type} btn-${this.color}` +
+          'btn' +
+          (this.color ? ` btn-${this.color}` : '') +
+          (this.type ? ` btn-${this.type}` : '') +
           (this.size ? ` btn-${this.size}` : '') +
-          (this.display ? ` btn-${this.display}` : '')
+          (this.display ? ` btn-${this.display}` : '') +
+          (this.secondary ? ` secondary` : '')
         }
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         onClick={this.onClick}
