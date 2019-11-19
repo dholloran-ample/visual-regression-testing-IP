@@ -11,6 +11,7 @@ export class CrdsVideo {
   @Prop() transcript: string;
   @Prop() active: boolean;
   @Prop() theme: string = '';
+  @Prop() shadow: boolean;
 
 
   embedUrl() {
@@ -46,7 +47,7 @@ export class CrdsVideo {
   render() {
     return (
       <Fragment>
-        <div class="embed-responsive">{this.renderIframe()}</div>
+        <div class={this.shadow === true ? 'shadow embed-responsive' : 'embed-responsive' }>{this.renderIframe()}</div>
         {this.transcript && this.renderTranscript()}
       </Fragment>
     );

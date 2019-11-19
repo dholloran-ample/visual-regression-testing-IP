@@ -1,7 +1,6 @@
-import { Component, Prop, State, Element, Watch, h, EventEmitter, Event, Listen } from '@stencil/core';
+import { Component, Prop, State, Element, h, EventEmitter, Event, Listen } from '@stencil/core';
 import { SET_SITE, GET_USER } from './crds-site-select.graphql';
 import { Utils } from '../../shared/utils';
-import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { isAuthenticated } from '../../global/authInit';
@@ -15,6 +14,7 @@ import { CrdsApolloService } from '../../shared/apollo';
 })
 export class CrdsSiteSelect {
   private contentBlockHandler: ContentBlockHandler;
+  private analytics = window['analytics'];
   @Element() public host: HTMLStencilElement;
 
   @Prop() cardSiteId: number;
@@ -36,18 +36,28 @@ export class CrdsSiteSelect {
   }
 
   public async componentWillLoad() {
-    await CrdsApolloService.initApolloClient();
+    this.initToastr();
+    await CrdsApolloService.subscribeToApolloClient();
     this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
-    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'site select');
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
   }
 
+  public initToastr() {
+    toastr.options.closeButton = true;
+    toastr.options.closeHtml = '<a type="button" class="toast-close-button" role="button">×</a>';
+    toastr.options.escapeHtml = false;
+  }
+
   private setSite() {
-    if (isAuthenticated()) {
-      this.setUserSite();
-    } else {
-      this.setCookieSite();
+    if (this.analytics) {
+      this.analytics.track('SiteSelectUserSetSite', {
+        siteID: this.cardSiteId,
+        destination: isAuthenticated() ? 'profile' : 'cookie'
+      });
     }
+    if (isAuthenticated()) this.setUserSite();
+    else this.setCookieSite();
   }
 
   private getUserSite(): Promise<any> {
@@ -70,7 +80,7 @@ export class CrdsSiteSelect {
       })
       .then(response => {
         this.userSite = parseInt(response.data.setSite.site.id);
-        this.toastSuccess('siteSelectConfirmationLoggedIn');
+        toastr.success(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
         this.siteSetEvent.emit(this.cardSiteId);
       })
       .catch(err => {
@@ -80,20 +90,12 @@ export class CrdsSiteSelect {
 
   private setCookieSite() {
     Utils.setCookie('nearestSiteId', this.cardSiteId, 365);
-    this.toastSuccess('siteSelectConfirmationLoggedOut');
+    toastr.success(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedOut'));
     this.siteSetEvent.emit(this.cardSiteId);
-  }
-
-  private toastSuccess(slugName) {
-    toastr.success(this.contentBlockHandler.getContentBlockText(slugName));
   }
 
   private logError(err) {
     console.error(err);
-  }
-
-  public renderUserSiteButton() {
-    // return <crds-label text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} tint="default" />;
   }
 
   public renderSetSiteButton() {
@@ -108,11 +110,8 @@ export class CrdsSiteSelect {
   }
 
   public render() {
-    if (this.userSite) {
-      return this.cardSiteId == this.userSite ? '' : this.renderSetSiteButton();
-    } else if (this.cookieSiteId) {
-      return this.cardSiteId == Number(this.cookieSiteId) ? '' : this.renderSetSiteButton();
-    }
+    if (this.userSite) return this.cardSiteId == this.userSite ? '' : this.renderSetSiteButton();
+    if (this.cookieSiteId) return this.cardSiteId == Number(this.cookieSiteId) ? '' : this.renderSetSiteButton();
     return this.renderSetSiteButton(); //default in case neither is set
   }
 }

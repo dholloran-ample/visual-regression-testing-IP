@@ -46,6 +46,7 @@
     "jest-cli": "24.8.0",
     "lit-html": "^1.0.0-rc.2",
     "marked": "^0.7.0",
+    "node-sass-magic-importer": "^5.3.2",
     "npm-run-all": "^4.1.5",
     "object-dig": "^0.1.3",
     "polymer-webpack-loader": "^2.0.3",

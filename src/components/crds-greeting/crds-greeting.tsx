@@ -2,8 +2,8 @@ import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
 import { GreetingUser } from './crds-greeting-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER } from './crds-greeting.graphql';
-import ApolloClient from 'apollo-client';
-import { deprecatedApolloInit } from '../../shared/apollo';
+import { CrdsApolloService } from '../../shared/apollo';
+import { isAuthenticated } from '../../global/authInit';
 
 @Component({
   tag: 'crds-greeting',
@@ -11,30 +11,21 @@ import { deprecatedApolloInit } from '../../shared/apollo';
   shadow: true
 })
 export class CrdsGreeting {
-  private apolloClient: ApolloClient<{}>;
   private user: GreetingUser = null;
   private chunkOfDay: string;
 
   @State() displayName: string = null;
-  @Prop() authToken: string;
   @Prop() defaultName: string;
   @Element() public host: HTMLStencilElement;
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-      this.getUser();
-    }
-  }
 
-  public componentWillLoad(){ 
-    this.apolloClient = deprecatedApolloInit(this.authToken);
+  public async componentWillLoad(){ 
+    return CrdsApolloService.subscribeToApolloClient();
   }
 
   public componentWillRender() {
     this.chunkOfDay = this.getChunkOfDay(new Date().getHours());
-    if (this.authToken) return this.getUser();
+    if (isAuthenticated()) return this.getUser();
   }
 
   public componentDidRender() {
@@ -49,7 +40,7 @@ export class CrdsGreeting {
   }
 
   public getUser() {
-    return this.apolloClient
+    return CrdsApolloService.apolloClient
       .query({ query: GET_USER })
       .then(success => {
         this.user = success.data.user;
@@ -101,7 +92,7 @@ export class CrdsGreeting {
         <img class="greeting-image" src={this.renderImage()} />
         <div class="m-auto-ends push-half-left soft-half-ends soft-quarter-right">
           <h3 class="component-header flush text-gray-dark mobile-header">{this.renderGreeting()}<span class={this.renderColor()}>{this.renderName()}</span></h3>
-          <p class="text-gray-dark flush">This place was made for you!</p>
+          <p class="text-gray-dark flush">This place was made for you</p>
         </div> 
       </div>
     );
