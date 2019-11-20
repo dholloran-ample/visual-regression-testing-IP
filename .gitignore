@@ -30,3 +30,4 @@ UserInterfaceState.xcuserstate
 /.vs/crds-components/v15/.suo
 /.vs/config/applicationhost.config
 /.vs/VSWorkspaceState.json
+/loadenv.ps1
