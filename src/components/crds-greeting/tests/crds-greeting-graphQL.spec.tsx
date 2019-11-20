@@ -1,6 +1,8 @@
 import { CrdsGreeting } from '../crds-greeting';
 import { getSessionID, user_with_nickname } from '../../../shared/test_users_auth';
-import { deprecatedApolloInit } from '../../../shared/apollo';
+import { ReplaySubject } from 'rxjs';
+import { authInit } from '../../../global/authInit';
+import { CrdsApolloService } from '../../../shared/apollo';
 
 describe('<greeting-component> GraphQL', () => {
   beforeEach(async () => {
@@ -14,8 +16,11 @@ describe('<greeting-component> GraphQL', () => {
     if(user_with_nickname.password === 'skip'){
       this.skip = true;
     } else {
-      this.greetingComponent.authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
-      this.greetingComponent.apolloClient = deprecatedApolloInit(this.greetingComponent.authToken);
+      const authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
+      window['apolloClient'] = new ReplaySubject();
+      authInit(authToken);
+      await CrdsApolloService.subscribeToApolloClient();
+      this.greetingComponent.CrdsApolloService = CrdsApolloService;
     }
   });
 
