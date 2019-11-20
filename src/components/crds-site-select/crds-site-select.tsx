@@ -37,7 +37,7 @@ export class CrdsSiteSelect {
 
   public async componentWillLoad() {
     this.initToastr();
-    await CrdsApolloService.subscribeToApolloClient();
+    await CrdsApolloService.initApolloClient();
     this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);

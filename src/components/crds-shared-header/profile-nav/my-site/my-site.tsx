@@ -2,7 +2,6 @@ import { Component, Prop, State, Element, Watch, h, Listen } from '@stencil/core
 import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
-import ApolloClient from 'apollo-client';
 import marked from 'marked';
 
 import Popper from 'popper.js';
@@ -58,7 +57,7 @@ export class MySite {
 
   public async componentWillLoad() {
     this.initToastr();
-    await CrdsApolloService.subscribeToApolloClient();
+    await CrdsApolloService.initApolloClient();
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     this.contentBlockHandler.getCopy().then(() => {
