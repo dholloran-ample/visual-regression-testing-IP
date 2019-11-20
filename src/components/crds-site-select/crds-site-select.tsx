@@ -1,7 +1,6 @@
-import { Component, Prop, State, Element, Watch, h, EventEmitter, Event, Listen } from '@stencil/core';
+import { Component, Prop, State, Element, h, EventEmitter, Event, Listen } from '@stencil/core';
 import { SET_SITE, GET_USER } from './crds-site-select.graphql';
 import { Utils } from '../../shared/utils';
-import { ApolloClient } from 'apollo-client';
 import toastr from 'toastr';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { isAuthenticated } from '../../global/authInit';
@@ -15,6 +14,7 @@ import { CrdsApolloService } from '../../shared/apollo';
 })
 export class CrdsSiteSelect {
   private contentBlockHandler: ContentBlockHandler;
+  private analytics = window['analytics'];
   @Element() public host: HTMLStencilElement;
 
   @Prop() cardSiteId: number;
@@ -37,7 +37,7 @@ export class CrdsSiteSelect {
 
   public async componentWillLoad() {
     this.initToastr();
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.cookieSiteId = Number(Utils.getCookie('nearestSiteId'));
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     return Promise.all([isAuthenticated() ? this.getUserSite() : null, this.contentBlockHandler.getCopy()]);
@@ -50,11 +50,14 @@ export class CrdsSiteSelect {
   }
 
   private setSite() {
-    if (isAuthenticated()) {
-      this.setUserSite();
-    } else {
-      this.setCookieSite();
+    if (this.analytics) {
+      this.analytics.track('SiteSelectUserSetSite', {
+        siteID: this.cardSiteId,
+        destination: isAuthenticated() ? 'profile' : 'cookie'
+      });
     }
+    if (isAuthenticated()) this.setUserSite();
+    else this.setCookieSite();
   }
 
   private getUserSite(): Promise<any> {
@@ -95,10 +98,6 @@ export class CrdsSiteSelect {
     console.error(err);
   }
 
-  public renderUserSiteButton() {
-    // return <crds-label text={this.contentBlockHandler.getContentBlockText('userSiteButtonText')} tint="default" />;
-  }
-
   public renderSetSiteButton() {
     return (
       <crds-button
@@ -111,11 +110,8 @@ export class CrdsSiteSelect {
   }
 
   public render() {
-    if (this.userSite) {
-      return this.cardSiteId == this.userSite ? '' : this.renderSetSiteButton();
-    } else if (this.cookieSiteId) {
-      return this.cardSiteId == Number(this.cookieSiteId) ? '' : this.renderSetSiteButton();
-    }
+    if (this.userSite) return this.cardSiteId == this.userSite ? '' : this.renderSetSiteButton();
+    if (this.cookieSiteId) return this.cardSiteId == Number(this.cookieSiteId) ? '' : this.renderSetSiteButton();
     return this.renderSetSiteButton(); //default in case neither is set
   }
 }

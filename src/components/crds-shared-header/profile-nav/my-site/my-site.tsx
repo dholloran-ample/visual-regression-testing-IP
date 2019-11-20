@@ -58,11 +58,10 @@ export class MySite {
 
   public async componentWillLoad() {
     this.initToastr();
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     this.contentBlockHandler.getCopy().then(() => {
-      console.log(this.contentBlockHandler.getContentBlockText('siteSelectConfirmationLoggedIn'));
       this.contentBlocksLoaded = true;
     });
     this.getSites();
@@ -203,7 +202,8 @@ export class MySite {
       .then((position: any) => {
         if (this.analytics)
           this.analytics.track('MySiteGetLocationPermission', {
-            response: 'User allowed Geolocation'
+            response: 'User allowed Geolocation',
+            position: position
           });
         return CrdsApolloService.apolloClient
           .query({
