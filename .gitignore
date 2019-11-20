@@ -33,3 +33,4 @@ cypress/fixtures/example.json
 cypress/integration/examples
 cypress/videos
 cypress/screenshots
+/loadenv.ps1
