@@ -33,10 +33,12 @@ export function authInit(testAuthToken?: string, ) {
   const authConfig: CrdsAuthConfig = {
     oktaConfig: oktaConfig,
     mpConfig: mpConfig,
-    logging: false,
+    logging: true,
     providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
-    env: process.env.ENV_SUBDOMAIN
+    env: process.env.ENV_SUBDOMAIN ? process.env.ENV_SUBDOMAIN : 'www'
   };
+
+  console.log(authConfig);
 
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
 
