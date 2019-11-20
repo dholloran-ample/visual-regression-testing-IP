@@ -14,15 +14,15 @@ import {
 export namespace Components {
   interface CrdsButton {
     'color': string;
-    'disabled': any;
-    'display': string;
-    'href': string;
-    'onClick': (event: MouseEvent) => void;
-    'secondary': any;
-    'size': string;
+    'disabled': boolean;
+    'display'?: string;
+    'href'?: string;
+    'onClick'?: (event: MouseEvent) => void;
+    'secondary': boolean;
+    'size'?: string;
     'text': string;
-    'type': string;
-    'value': string;
+    'type'?: string;
+    'value'?: string;
   }
   interface CrdsDefaultCard {
     'body': string;
@@ -379,11 +379,11 @@ declare global {
 declare namespace LocalJSX {
   interface CrdsButton {
     'color'?: string;
-    'disabled'?: any;
+    'disabled'?: boolean;
     'display'?: string;
     'href'?: string;
     'onClick'?: (event: MouseEvent) => void;
-    'secondary'?: any;
+    'secondary'?: boolean;
     'size'?: string;
     'text'?: string;
     'type'?: string;

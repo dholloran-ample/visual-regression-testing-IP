@@ -63,11 +63,11 @@
     "stylelint-order": "^3.1.1",
     "stylelint-scss": "^3.12.1",
     "unescape": "^1.0.1",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "@types/jest": "^24.0.23"
   },
   "license": "MIT",
   "dependencies": {
-    "@types/jest": "^24.0.23",
     "apollo-boost": "^0.4.4",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
@@ -79,7 +79,6 @@
     "jquery": "^3.4.1",
     "node-fetch": "^2.6.0",
     "popper.js": "^1.16.0",
-    "stylelint-webpack-plugin": "^1.1.0",
     "toastr": "^2.1.4"
   }
 }

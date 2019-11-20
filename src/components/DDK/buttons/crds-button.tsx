@@ -7,15 +7,15 @@ import { Component, Prop, h } from '@stencil/core';
 })
 export class CrdsPrimaryButton {
   @Prop() color: string;
-  @Prop() onClick: (event: MouseEvent) => void;
+  @Prop() onClick?: (event: MouseEvent) => void;
   @Prop() text: string;
-  @Prop() href: string;
-  @Prop() type: string;
-  @Prop() size: string;
-  @Prop() display: string;
-  @Prop() value: string;
-  @Prop() disabled: any;
-  @Prop() secondary: any;
+  @Prop() href?: string;
+  @Prop() type?: string;
+  @Prop() size?: string;
+  @Prop() display?: string;
+  @Prop() value?: string;
+  @Prop() disabled: boolean;
+  @Prop() secondary: boolean;
 
   private renderButton() {
     return (

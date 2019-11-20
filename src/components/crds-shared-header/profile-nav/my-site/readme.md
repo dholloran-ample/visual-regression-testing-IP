@@ -5,14 +5,11 @@
 <!-- Auto Generated Below -->
 
 
-## Properties
-
-| Property    | Attribute    | Description | Type     | Default     |
-| ----------- | ------------ | ----------- | -------- | ----------- |
-| `authToken` | `auth-token` |             | `string` | `undefined` |
-
-
 ## Dependencies
+
+### Used by
+
+ - [global-nav](../../global-nav)
 
 ### Depends on
 
@@ -22,6 +19,7 @@
 ```mermaid
 graph TD;
   my-site --> crds-image-title-cutout
+  global-nav --> my-site
   style my-site fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
