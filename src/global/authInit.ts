@@ -35,7 +35,7 @@ export function authInit(testAuthToken?: string, ) {
     mpConfig: mpConfig,
     logging: false,
     providerPreference: [CrdsAuthenticationProviders.Okta, CrdsAuthenticationProviders.Mp],
-    env: process.env.ENV_SUBDOMAIN
+    env: process.env.ENV_SUBDOMAIN ? process.env.ENV_SUBDOMAIN : 'www'
   };
 
   const authService: CrdsAuthenticationService = new CrdsAuthenticationService(authConfig);
