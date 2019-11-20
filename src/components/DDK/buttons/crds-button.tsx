@@ -30,6 +30,7 @@ export class CrdsPrimaryButton {
         }
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         onClick={this.onClick}
+        type="button"
       >
         {this.text}
       </button>
@@ -47,11 +48,13 @@ export class CrdsPrimaryButton {
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         onClick={this.onClick}
         value={this.value}
+        type={this.type == 'submit' ? 'submit' : 'button'}
       >
         {this.text}
       </input>
     );
   }
+
 
   private renderLink() {
     return (
@@ -59,6 +62,7 @@ export class CrdsPrimaryButton {
         href={this.href}
         class={`btn btn-${this.type} btn-${this.color}` + (this.size ? ` btn-${this.size}` : '')}
         {...(this.disabled !== undefined ? { disabled: true } : '')}
+        role="button"
       >
         {this.text}
       </a>
@@ -66,8 +70,8 @@ export class CrdsPrimaryButton {
   }
 
   public render() {
-    if (this.href) return this.renderLink();
-    if (this.value) return this.renderInput();
+    if (this.type == 'input' || this.type == 'submit') return this.renderInput();
+    if (this.type == 'link') return this.renderLink();
     return this.renderButton();
   }
 }
