@@ -1,10 +1,11 @@
-import { Component, Prop, State, Element, Watch, h } from '@stencil/core';
+import { Component, State, Element, h } from '@stencil/core';
 import ApolloClient from 'apollo-client';
-import { deprecatedApolloInit } from '../../shared/apollo';
+import { CrdsApolloService } from '../../shared/apollo';
 import { GroupUser, Group } from './crds-group-list.interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_GROUPS } from './crds-group-list.graphql';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
+import { isAuthenticated } from '../../global/authInit';
 
 @Component({
   tag: 'crds-group-list',
@@ -12,26 +13,16 @@ import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
   shadow: true
 })
 export class CrdsGroupList {
-  private apolloClient: ApolloClient<{}>;
   private contentBlockHandler: ContentBlockHandler;
 
-  @Prop() authToken: string;
   @State() user: GroupUser;
   @State() expanded: boolean = false;
   @Element() public host: HTMLStencilElement;
   private leader: boolean;
 
-  @Watch('authToken')
-  authTokenHandler(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.apolloClient = deprecatedApolloInit(newValue);
-      this.getUserGroups();
-    }
-  }
-
-  public componentWillLoad() {
-    this.apolloClient = deprecatedApolloInit(this.authToken);
-    this.contentBlockHandler = new ContentBlockHandler(this.apolloClient, 'group list');
+  public async componentWillLoad() {
+    await CrdsApolloService.subscribeToApolloClient();
+    this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group list');
     this.contentBlockHandler.getCopy().then(() => {
       this.host.forceUpdate();
     })
@@ -39,8 +30,8 @@ export class CrdsGroupList {
   }
 
   public getUserGroups() {
-    if (!this.authToken) return null;
-    return this.apolloClient
+    if (!isAuthenticated()) return null;
+    return CrdsApolloService.apolloClient
       .query({ query: GET_GROUPS })
       .then(success => {
         this.user = success.data.user;

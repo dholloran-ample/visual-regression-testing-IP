@@ -33,9 +33,7 @@ export namespace Components {
   interface CrdsGreeting {
     'defaultName': string;
   }
-  interface CrdsGroupList {
-    'authToken': string;
-  }
+  interface CrdsGroupList {}
   interface CrdsHeartButton {
     /**
     * Unique identifier for likeable resource
@@ -90,9 +88,7 @@ export namespace Components {
     'label': string;
     'onModalClose': Function;
   }
-  interface CrdsRecommendedContent {
-    'authToken': string;
-  }
+  interface CrdsRecommendedContent {}
   interface CrdsSharedFooter {
     'env': string;
     'src': string;
@@ -101,9 +97,7 @@ export namespace Components {
     'env': string;
     'src': string;
   }
-  interface CrdsSiteHappenings {
-    'authToken': string;
-  }
+  interface CrdsSiteHappenings {}
   interface CrdsSiteSelect {
     'cardSiteId': number;
   }
@@ -122,7 +116,6 @@ export namespace Components {
     'src': string;
   }
   interface CrdsTitheChallenge {
-    'authToken': string;
     'selectedFeeling': Response;
   }
   interface CrdsVideo {
@@ -161,10 +154,10 @@ export namespace Components {
     'subNavName': string;
   }
   interface ProfileNav {
-    'currentUser': any;
     'data': any;
     'handleSignOut': Function;
     'isNavShowing': boolean;
+    'user': any;
   }
 }
 
@@ -400,9 +393,7 @@ declare namespace LocalJSX {
   interface CrdsGreeting extends JSXBase.HTMLAttributes<HTMLCrdsGreetingElement> {
     'defaultName'?: string;
   }
-  interface CrdsGroupList extends JSXBase.HTMLAttributes<HTMLCrdsGroupListElement> {
-    'authToken'?: string;
-  }
+  interface CrdsGroupList extends JSXBase.HTMLAttributes<HTMLCrdsGroupListElement> {}
   interface CrdsHeartButton extends JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement> {
     /**
     * Unique identifier for likeable resource
@@ -457,9 +448,7 @@ declare namespace LocalJSX {
     'label'?: string;
     'onModalClose'?: Function;
   }
-  interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {
-    'authToken'?: string;
-  }
+  interface CrdsRecommendedContent extends JSXBase.HTMLAttributes<HTMLCrdsRecommendedContentElement> {}
   interface CrdsSharedFooter extends JSXBase.HTMLAttributes<HTMLCrdsSharedFooterElement> {
     'env'?: string;
     'src'?: string;
@@ -468,9 +457,7 @@ declare namespace LocalJSX {
     'env'?: string;
     'src'?: string;
   }
-  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {
-    'authToken'?: string;
-  }
+  interface CrdsSiteHappenings extends JSXBase.HTMLAttributes<HTMLCrdsSiteHappeningsElement> {}
   interface CrdsSiteSelect extends JSXBase.HTMLAttributes<HTMLCrdsSiteSelectElement> {
     'cardSiteId'?: number;
     'onSiteSet'?: (event: CustomEvent<any>) => void;
@@ -490,7 +477,6 @@ declare namespace LocalJSX {
     'src'?: string;
   }
   interface CrdsTitheChallenge extends JSXBase.HTMLAttributes<HTMLCrdsTitheChallengeElement> {
-    'authToken'?: string;
     'selectedFeeling'?: Response;
   }
   interface CrdsVideo extends JSXBase.HTMLAttributes<HTMLCrdsVideoElement> {
@@ -529,10 +515,10 @@ declare namespace LocalJSX {
     'subNavName'?: string;
   }
   interface ProfileNav extends JSXBase.HTMLAttributes<HTMLProfileNavElement> {
-    'currentUser'?: any;
     'data'?: any;
     'handleSignOut'?: Function;
     'isNavShowing'?: boolean;
+    'user'?: any;
   }
 
   interface IntrinsicElements {
