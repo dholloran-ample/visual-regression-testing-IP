@@ -26,11 +26,10 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 .envrc
-/.vs/slnx.sqlite
-/.vs/slnx.sqlite-journal
+.vs/
 
 cypress/fixtures/example.json
 cypress/integration/examples
 cypress/videos
 cypress/screenshots
-/loadenv.ps1
+loadenv.ps1
