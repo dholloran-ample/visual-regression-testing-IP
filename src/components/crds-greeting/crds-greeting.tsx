@@ -92,7 +92,7 @@ export class CrdsGreeting {
         <img class="greeting-image" src={this.renderImage()} />
         <div class="m-auto-ends push-half-left soft-half-ends soft-quarter-right">
           <h3 class="component-header flush text-gray-dark mobile-header">{this.renderGreeting()}<span class={this.renderColor()}>{this.renderName()}</span></h3>
-          <p class="text-gray-dark flush">This place was made for you!</p>
+          <p class="text-gray-dark flush">This place was made for you</p>
         </div> 
       </div>
     );
