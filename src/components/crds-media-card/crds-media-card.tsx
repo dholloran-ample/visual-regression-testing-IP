@@ -55,8 +55,7 @@ export class CrdsMediaCard {
   }
 
   private truncateDesc(){
-    const description = this.element;
-    const sentences = description.textContent.split('\n').join('');
+    const sentences = this.element.textContent.split('\n').join('');
     let truncatedDescription = sentences.replace(/ +(?= )/g,'').trim().split(' ').slice(0,this.truncateLength).join(' ');
     truncatedDescription += '...';
     this.element.children[0].textContent = truncatedDescription;
