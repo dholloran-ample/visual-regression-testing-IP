@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/polymer';
-import { withKnobs, text, select } from '@storybook/addon-knobs';
+import { withKnobs, text, select, boolean} from '@storybook/addon-knobs';
 
 const stories = storiesOf('Media Card', module);
 stories
@@ -17,6 +17,8 @@ stories
     );
 
     const iconLabel = text("iconLabel", "5 min");
+    const truncateDescription = boolean("Truncate Description", true); 
+    const truncateLength = text("Truncate Length", "18"); 
     const meta = text("meta", "10/19/19 - 10/25/19");
     const category = text("category", "Example");
     const body = text(
@@ -32,16 +34,6 @@ stories
       <crds-button type="primary" color="blue" href='#' text='Click me!'><crds-button>`
     );
 
-    const bodyB = text(
-      'body',
-      `<p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-      eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        <a href='#'>
-        Lorem ipsum
-        </a>
-      </p>`
-    );
     const url = text('url', '#');
     const contentTypeOptions = ['article', 'video', 'episode', 'song']
     const contentType = select('Content Type', contentTypeOptions, 'article')
@@ -49,7 +41,7 @@ stories
     return `
     <div style="width: 1000px; display: flex;">
       <div style="flex: 0 0 750px; margin-right: 20px;">
-        <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
+        <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' truncate-description='${truncateDescription}' truncate-length='${truncateLength}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
               ${body}
         </crds-media-card> 
       </div>
