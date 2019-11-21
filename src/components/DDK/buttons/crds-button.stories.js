@@ -12,15 +12,19 @@ stories.addDecorator(withKnobs).add('crds-button', () => {
   const display = select('display', displays, '');
   const disabled = boolean('disabled', false);
   const secondary = boolean('secondary', false);
+  const block = boolean('block', false);
+
+  document.getElementById('root').style.backgroundColor = color === 'white' ? 'black' : '';
 
   return `<crds-button 
               ${color && type !== 'link' ? 'color=' + color : ''}
-              ${buttonText ? 'text=' + buttonText : ''} 
+              ${buttonText ? 'text=' + buttonText.replace(' ', '&nbsp;') : ''} 
               ${href ? 'href=' + href : ''} 
               ${type ? 'type=' + type : ''} 
               ${size ? 'size=' + size : ''}  
               ${display ? 'display=' + display : ''} 
               ${disabled ? 'disabled=' + disabled : ''} 
               ${secondary ? 'secondary=' + secondary : ''} 
+              ${block ? 'block=' + block : ''}
               ></crds-button>`;
 });
