@@ -9,10 +9,10 @@
 
 | Property        | Attribute        | Description | Type       | Default     |
 | --------------- | ---------------- | ----------- | ---------- | ----------- |
-| `currentUser`   | `current-user`   |             | `any`      | `undefined` |
 | `data`          | `data`           |             | `any`      | `{}`        |
 | `handleSignOut` | --               |             | `Function` | `undefined` |
 | `isNavShowing`  | `is-nav-showing` |             | `boolean`  | `true`      |
+| `user`          | `user`           |             | `any`      | `undefined` |
 
 
 ## Dependencies
