@@ -23,9 +23,11 @@
 ```mermaid
 graph TD;
   crds-shared-header --> global-nav
+  global-nav --> my-site
   global-nav --> give-nav
   global-nav --> profile-nav
   global-nav --> main-nav
+  my-site --> crds-image-title-cutout
   main-nav --> nav-section
   main-nav --> nav-ctas
   main-nav --> nav-section-subnav
