@@ -55,7 +55,6 @@ export class CrdsPrimaryButton {
     );
   }
 
-
   private renderLink() {
     return (
       <a
@@ -71,7 +70,7 @@ export class CrdsPrimaryButton {
 
   public render() {
     if (this.type == 'input' || this.type == 'submit') return this.renderInput();
-    if (this.type == 'link') return this.renderLink();
+    if (this.href) return this.renderLink();
     return this.renderButton();
   }
 }
