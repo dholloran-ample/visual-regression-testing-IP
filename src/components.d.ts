@@ -13,6 +13,7 @@ import {
 
 export namespace Components {
   interface CrdsButton {
+    'block': boolean;
     'color': string;
     'disabled': boolean;
     'display'?: string;
@@ -40,6 +41,10 @@ export namespace Components {
     'defaultName': string;
   }
   interface CrdsGroupList {}
+  interface CrdsGroupRenew {
+    'daysToExpiration': number;
+    'groupId': number;
+  }
   interface CrdsHeartButton {
     /**
     * Unique identifier for likeable resource
@@ -192,6 +197,12 @@ declare global {
   var HTMLCrdsGroupListElement: {
     prototype: HTMLCrdsGroupListElement;
     new (): HTMLCrdsGroupListElement;
+  };
+
+  interface HTMLCrdsGroupRenewElement extends Components.CrdsGroupRenew, HTMLStencilElement {}
+  var HTMLCrdsGroupRenewElement: {
+    prototype: HTMLCrdsGroupRenewElement;
+    new (): HTMLCrdsGroupRenewElement;
   };
 
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
@@ -348,6 +359,7 @@ declare global {
     'crds-default-card': HTMLCrdsDefaultCardElement;
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
+    'crds-group-renew': HTMLCrdsGroupRenewElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-icon': HTMLCrdsIconElement;
     'crds-image': HTMLCrdsImageElement;
@@ -378,6 +390,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface CrdsButton {
+    'block'?: boolean;
     'color'?: string;
     'disabled'?: boolean;
     'display'?: string;
@@ -405,6 +418,10 @@ declare namespace LocalJSX {
     'defaultName'?: string;
   }
   interface CrdsGroupList {}
+  interface CrdsGroupRenew {
+    'daysToExpiration'?: number;
+    'groupId'?: number;
+  }
   interface CrdsHeartButton {
     /**
     * Unique identifier for likeable resource
@@ -537,6 +554,7 @@ declare namespace LocalJSX {
     'crds-default-card': CrdsDefaultCard;
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
+    'crds-group-renew': CrdsGroupRenew;
     'crds-heart-button': CrdsHeartButton;
     'crds-icon': CrdsIcon;
     'crds-image': CrdsImage;
@@ -575,6 +593,7 @@ declare module "@stencil/core" {
       'crds-default-card': LocalJSX.CrdsDefaultCard & JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement>;
       'crds-greeting': LocalJSX.CrdsGreeting & JSXBase.HTMLAttributes<HTMLCrdsGreetingElement>;
       'crds-group-list': LocalJSX.CrdsGroupList & JSXBase.HTMLAttributes<HTMLCrdsGroupListElement>;
+      'crds-group-renew': LocalJSX.CrdsGroupRenew & JSXBase.HTMLAttributes<HTMLCrdsGroupRenewElement>;
       'crds-heart-button': LocalJSX.CrdsHeartButton & JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement>;
       'crds-icon': LocalJSX.CrdsIcon & JSXBase.HTMLAttributes<HTMLCrdsIconElement>;
       'crds-image': LocalJSX.CrdsImage & JSXBase.HTMLAttributes<HTMLCrdsImageElement>;
