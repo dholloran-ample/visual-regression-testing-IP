@@ -22,8 +22,7 @@ export class CrdsMediaCard {
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
   @Prop() iconLabel: string;
-  @Prop() truncateDescription: boolean = false;
-  @Prop() truncateLength: number = 15; 
+  @Prop() truncateLength: number = 250; 
 
   @Element() element!: HTMLStencilElement;
   // state
@@ -98,7 +97,7 @@ export class CrdsMediaCard {
 
   public render() {
 
-    if(this.truncateDescription && this.element.children.length){
+    if(this.element.children.length){
       this.truncateDesc();
     }
 
