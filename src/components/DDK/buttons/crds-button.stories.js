@@ -7,20 +7,26 @@ stories.addDecorator(withKnobs).add('crds-button', () => {
   const type = select('type', types, '');
   const color = select('color', colors, type == 'link' ? '' : 'blue');
   const buttonText = text('text', 'Button');
+  const value = text('value', '');
   const href = text('href', '');
   const size = select('size', sizes, '');
   const display = select('display', displays, '');
   const disabled = boolean('disabled', false);
   const secondary = boolean('secondary', false);
+  const block = boolean('block', false);
+
+  document.getElementById('root').parentElement.parentElement.style.backgroundColor = color === 'white' ? 'black' : '';
 
   return `<crds-button 
               ${color && type !== 'link' ? 'color=' + color : ''}
-              ${buttonText ? 'text=' + buttonText : ''} 
-              ${href ? 'href=' + href : ''} 
+              ${buttonText ? 'text=' + buttonText.replace(' ', '&nbsp;') : ''} 
+              ${href ? 'href=' + href : ''}
+              ${value ? 'value=' + value : ''}
               ${type ? 'type=' + type : ''} 
               ${size ? 'size=' + size : ''}  
               ${display ? 'display=' + display : ''} 
               ${disabled ? 'disabled=' + disabled : ''} 
               ${secondary ? 'secondary=' + secondary : ''} 
+              ${block ? 'block=' + block : ''}
               ></crds-button>`;
 });

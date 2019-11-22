@@ -16,6 +16,7 @@ export class CrdsPrimaryButton {
   @Prop() value?: string;
   @Prop() disabled: boolean;
   @Prop() secondary: boolean;
+  @Prop() block: boolean;
 
   private renderButton() {
     return (
@@ -26,7 +27,8 @@ export class CrdsPrimaryButton {
           (this.type ? ` btn-${this.type}` : '') +
           (this.size ? ` btn-${this.size}` : '') +
           (this.display ? ` btn-${this.display}` : '') +
-          (this.secondary ? ` secondary` : '')
+          (this.secondary ? ` secondary` : '') + 
+          (this.block ? ` btn-block` : '')
         }
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         onClick={this.onClick}
@@ -43,7 +45,8 @@ export class CrdsPrimaryButton {
         class={
           `btn btn-${this.type} btn-${this.color}` +
           (this.size ? ` btn-${this.size}` : '') +
-          (this.display ? ` btn-${this.display}` : '')
+          (this.display ? ` btn-${this.display}` : '') + 
+          (this.block ? ` btn-block` : '')
         }
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         onClick={this.onClick}
@@ -55,12 +58,17 @@ export class CrdsPrimaryButton {
     );
   }
 
-
   private renderLink() {
     return (
       <a
         href={this.href}
-        class={`btn btn-${this.type} btn-${this.color}` + (this.size ? ` btn-${this.size}` : '')}
+        class={
+          `btn ` +
+          `btn-${this.type} ` +
+          `btn-${this.color}` + 
+          (this.size ? ` btn-${this.size}` : '') + 
+          (this.block ? ` btn-block` : '')
+        }
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         role="button"
       >
@@ -71,7 +79,7 @@ export class CrdsPrimaryButton {
 
   public render() {
     if (this.type == 'input' || this.type == 'submit') return this.renderInput();
-    if (this.type == 'link') return this.renderLink();
+    if (this.href) return this.renderLink();
     return this.renderButton();
   }
 }
