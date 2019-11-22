@@ -43,8 +43,8 @@ stories
       </p>`
     );
     const url = text('url', '#');
-    const contentTypeOptions = ['article', 'video', 'episode', 'song']
-    const contentType = select('Content Type', contentTypeOptions, 'article')
+    const contentTypeOptions = ['article', 'video', 'episode', 'song', null];
+    const contentType = select('Content Type', contentTypeOptions, 'article');
 
     return `
     <div style="width: 1000px; display: flex;">
