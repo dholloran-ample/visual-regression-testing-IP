@@ -4,3 +4,9 @@
 input {
   -webkit-appearance: none;
 }
+
+a {
+  &.btn {
+    text-decoration: none;
+  }
+}
