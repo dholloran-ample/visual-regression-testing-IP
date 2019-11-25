@@ -57,7 +57,7 @@ export class MySite {
 
   public async componentWillLoad() {
     this.initToastr();
-    await CrdsApolloService.initApolloClient();
+    await CrdsApolloService.subscribeToApolloClient();
     this.promptsDisabled = Utils.getCookie('disableMySitePrompts') === 'true';
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'my site');
     this.contentBlockHandler.getCopy().then(() => {

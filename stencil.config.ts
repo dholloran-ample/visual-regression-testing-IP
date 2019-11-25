@@ -9,6 +9,7 @@ import { inlineSvg } from 'stencil-inline-svg/src';
 export const config: Config = {
   namespace: 'crds-components',
   globalScript: 'src/global/app.ts',
+  enableCache: true,
   outputTargets: [
     { type: 'dist' },
     { type: 'docs-readme' },
@@ -25,11 +26,13 @@ export const config: Config = {
     env(),
     sass({
       injectGlobalPaths: [
-        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables',
         'node_modules/crds-styles/assets/stylesheets/variables',
         'node_modules/crds-styles/assets/stylesheets/overrides',
+        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables',
+        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins',
+        'node_modules/crds-styles/assets/stylesheets/mixins',
         'src/assets/stylesheets/globals/all'
-      ]
+      ],
     }),
     builtins(),
     globals(),

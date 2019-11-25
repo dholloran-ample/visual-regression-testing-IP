@@ -26,9 +26,6 @@ export function InitApollo(authToken) {
     });
     window['apolloClient'].next(apolloClient);
 }
-export class ApolloClientService {
-    constructor() { }
-    getClient() {
-        return window['apolloClient'];
-    }
+export function getApolloClient() {
+    return window['apolloClient'];
 }

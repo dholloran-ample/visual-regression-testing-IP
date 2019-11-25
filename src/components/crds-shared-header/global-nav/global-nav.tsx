@@ -1,10 +1,12 @@
 import { Component, Prop, State, h, Listen, Element } from '@stencil/core';
 import Fragment from '../../../shared/fragment';
-
-import { Auth } from '../../../shared/auth';
 import { Utils } from '../../../shared/utils';
 import * as iconData from './global-nav-icons.json';
 import { HTMLStencilElement } from '@stencil/core/internal';
+import { isAuthenticated, getAuthService } from '../../../global/authInit';
+import { CrdsApolloService } from '../../../shared/apollo';
+import { GET_USER } from './global-nav.graphql';
+import { CrdsAuthenticationService } from '@crds_npm/crds-client-auth';
 
 @Component({
   tag: 'global-nav',
@@ -18,53 +20,60 @@ export class GlobalNav {
   @State() openNavName: string = '';
   @State() isAuthenticated: boolean = false;
   @State() topOffset: number;
+  @State() avatarUrl: string;
+  @State() user: any;
   @Element() public host: HTMLStencilElement;
 
   private element: HTMLElement;
+  private auth: CrdsAuthenticationService;
+  private preventClose: boolean;
 
-  auth: any = {};
-  preventClose: boolean;
-
-  componentWillLoad() {
-    if (!this.data.config || this.auth.config) return;
-    this.auth = new Auth(Object.assign(this.data.config, { env: this.env }));
-    this.auth.listen(this.authChangeCallback.bind(this));
+  public async componentWillLoad() {
+    this.auth = getAuthService();
+    await CrdsApolloService.subscribeToApolloClient();
+    if (isAuthenticated()) this.getUser();
+    if (!this.data.config) return;
   }
 
-  componentDidLoad() {
+  public componentDidLoad() {
     this.topOffset = this.element.getBoundingClientRect().top + window.scrollY;
   }
 
+  private getUser() {
+    return CrdsApolloService.apolloClient.query({ query: GET_USER }).then(response => {
+      this.user = response.data.user;
+    });
+  }
+
+  private authChangeCallback() {
+    if (!isAuthenticated()) this.redirectToRoot();
+  }
+
   /* Handle authentication */
-  handleSignOut() {
-    this.auth.signOut(this.authChangeCallback.bind(this));
+  private handleSignOut() {
+    this.auth.signOut().subscribe(() => {
+      this.authChangeCallback();
+    });
   }
 
-  authChangeCallback() {
-    this.isAuthenticated = this.auth.authenticated;
-    if (!this.isAuthenticated) {
-      this.redirectToRoot();
-    }
-  }
-
-  redirectToRoot() {
+  private redirectToRoot() {
     window.location.replace(this.rootURL());
   }
 
   /* Handle nav open/close */
-  isNavOpen() {
+  private isNavOpen() {
     const navNames = ['main-nav', 'my-site', 'give-nav', 'profile-nav'];
     return navNames.includes(this.openNavName);
   }
 
-  toggleNav(event, navName, navRequiresAuth: boolean = false) {
+  private toggleNav(event, navName, navRequiresAuth: boolean = false) {
     const path = event.composedPath && event.composedPath(event.target);
     if (path && path.find(el => el.className == 'popper open')) return (this.preventClose = true);
     if (this.openNavName === navName) {
       event.preventDefault();
       this.openNavName = '';
     } else if (navRequiresAuth) {
-      if (this.isAuthenticated) {
+      if (isAuthenticated()) {
         event.preventDefault();
         this.openNavName = navName;
       }
@@ -92,21 +101,21 @@ export class GlobalNav {
   }
 
   /* Misc */
-  rootURL() {
+  private rootURL() {
     return `https://${Utils.getSubdomain(this.env)}.crossroads.net`;
   }
 
-  authProfileIcon() {
-    const avatarUrl = this.auth.currentUser && this.auth.currentUser.avatarUrl;
+  private authProfileIcon() {
+    const avatarUrl = this.user && this.user.imageUrl;
     return `<div class="account-authenticated" style="background-image: url('${avatarUrl || ''}');"/>`;
   }
 
-  giveData() {
-    return (this.data as any).give
+  private giveData() {
+    return (this.data as any).give;
   }
 
   /* Render elements */
-  render() {
+  public render() {
     return (
       <Fragment>
         <header
@@ -151,55 +160,60 @@ export class GlobalNav {
                   onClick={event => this.toggleNav(event, 'my-site')}
                   data-automation-id="sh-my-site"
                 >
-                  <my-site/>
+                  <my-site />
                 </a>
 
-                {!this.giveData().children && <a
-                  href={this.giveData().href}
-                  class="give-container"
-                  data-label={this.giveData().title}
-                  data-automation-id="sh-give"
-                >
-                  <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
-                </a>}
+                {!this.giveData().children && (
+                  <a
+                    href={this.giveData().href}
+                    class="give-container"
+                    data-label={this.giveData().title}
+                    data-automation-id="sh-give"
+                  >
+                    <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
+                  </a>
+                )}
 
-                {this.giveData().children && <a
-                  class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
-                  onClick={event => this.toggleNav(event, 'give-nav')}
-                  data-label={this.giveData().title}
-                  data-automation-id="sh-give"
-                >
-                  <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
-                  <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
-                </a>}
+                {this.giveData().children && (
+                  <a
+                    class={`give-container ${this.openNavName === 'give-nav' ? 'nav-is-showing' : ''}`}
+                    onClick={event => this.toggleNav(event, 'give-nav')}
+                    data-label={this.giveData().title}
+                    data-automation-id="sh-give"
+                  >
+                    <div class={iconData.give.class} innerHTML={iconData.give.innerHTML} />
+                    <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
+                  </a>
+                )}
 
                 <a
                   class={`profile-container ${this.openNavName === 'profile-nav' ? 'nav-is-showing' : ''}`}
                   onClick={event => this.toggleNav(event, 'profile-nav', true)}
-                  data-label={this.isAuthenticated ? 'my account' : 'sign in'}
+                  data-label={isAuthenticated() ? 'my account' : 'sign in'}
                   href={`${this.rootURL()}/signin`}
                   data-automation-id="sh-profile"
                 >
                   <div
                     class={iconData.profile.class}
-                    innerHTML={this.isAuthenticated ? this.authProfileIcon() : iconData.profile.innerHTML}
+                    innerHTML={isAuthenticated() ? this.authProfileIcon() : iconData.profile.innerHTML}
                   />
                   <div class={iconData.close.class} innerHTML={iconData.close.innerHTML} />
                 </a>
               </div>
             </div>
 
-            {this.giveData().children && <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />}
+            {this.giveData().children && (
+              <give-nav isNavShowing={this.openNavName === 'give-nav'} data={this.giveData()} />
+            )}
             <profile-nav
-              isNavShowing={this.openNavName === 'profile-nav' && this.isAuthenticated}
+              isNavShowing={this.openNavName === 'profile-nav' && isAuthenticated()}
               handleSignOut={this.handleSignOut.bind(this)}
-              currentUser={this.auth.currentUser}
               data={this.data.profile}
             />
           </div>
         </header>
         <main-nav isNavShowing={this.openNavName === 'main-nav'} data={this.data.nav} promoData={this.data.promos} />
-        <div class={`popper-overlay ${this.isNavOpen() ? 'is-showing' : ''}`}></div>
+        <div class={`popper-overlay ${this.isNavOpen() ? 'is-showing' : ''}`} />
         <div class={`close-nav ${this.isNavOpen() ? 'is-showing' : ''}`}>
           <div class="close-nav-icon" innerHTML={iconData.close.innerHTML} onClick={this.closeNav.bind(this)} />
         </div>
@@ -207,5 +221,3 @@ export class GlobalNav {
     );
   }
 }
-
-

@@ -1,4 +1,8 @@
 import { ProfileMenu } from "./profile-nav";
+import { getSessionID, user_with_nickname } from '../../../shared/test_users_auth';
+import { ReplaySubject } from "rxjs";
+import { authInit } from "../../../global/authInit";
+import { CrdsApolloService } from "../../../shared/apollo";
 
 const profileNav = {
   title: "Hello %user_name%",
@@ -25,14 +29,20 @@ const profileNav = {
 }
 
 describe('<profile-nav>', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     this.component = new ProfileMenu();
+    const authToken = await getSessionID(user_with_nickname.email, user_with_nickname.password);
+    window['apolloClient'] = new ReplaySubject();
+    authInit(authToken);
+    await CrdsApolloService.subscribeToApolloClient();
+    await this.component.getUser();
+    this.component.CrdsApolloService = CrdsApolloService;
   });
 
   describe('Tests navTitle()', () => {
     it("Checks the user's name is included in the menu title if the user's name is defined", () => {
       this.component.data = profileNav;
-      this.component.currentUser = { name: 'Benjamin'}
+      this.component.user = { nickName: 'Benjamin'}
 
       const title = this.component.navTitle();
 
@@ -41,7 +51,7 @@ describe('<profile-nav>', () => {
 
     it("Checks the menu title does not include the user's name if undefined", () => {
       this.component.data = profileNav;
-      this.component.currentUser = {};
+      this.component.user = {};
 
       const title = this.component.navTitle();
 
@@ -54,7 +64,7 @@ describe('<profile-nav>', () => {
           "Get Involved"
         ]
       }
-      this.component.currentUser = {name: 'Benjamin'};
+      this.component.user = {nickName: 'Benjamin'};
 
       const title = this.component.navTitle();
 
@@ -63,24 +73,24 @@ describe('<profile-nav>', () => {
   });
 
   describe('Tests backgroundImageURL()', () => {
-    it("Checks empty string is returned by backgroundImageURL if currentUser is undefined", () => {
-      this.component.currentUser = undefined;
+    it("Checks empty string is returned by backgroundImageURL if user is undefined", () => {
+      this.component.user = undefined;
 
       const image = this.component.backgroundImageURL();
 
       expect(image).toBe('');
     });
 
-    it("Checks empty string is returned by backgroundImageURL if currentUser.avatarUrl is undefined", () => {
-      this.component.currentUser = {};
+    it("Checks empty string is returned by backgroundImageURL if user.imageUrl is undefined", () => {
+      this.component.user = {};
 
       const image = this.component.backgroundImageURL();
 
       expect(image).toBe('');
     });
 
-    it("Checks avatarUrl is returned by backgroundImageURL if currentUser.avatarUrl is defined", () => {
-      this.component.currentUser = { avatarUrl: 'int.crossroads.com/profile'};
+    it("Checks avatarUrl is returned by backgroundImageURL if user.imageUrl is defined", () => {
+      this.component.user = { imageUrl: 'int.crossroads.com/profile'};
 
       const image = this.component.backgroundImageURL();
 
@@ -111,7 +121,7 @@ describe('<profile-nav>', () => {
 
     it('Checks profile nav element is returned', () => {
       this.component.isNavShowing = true;
-      this.component.currentUser = { avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
+      this.component.user = { imageUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
       this.component.data = profileNav;
 
       const rendered = this.component.render();
@@ -121,7 +131,7 @@ describe('<profile-nav>', () => {
 
     it('Checks profile nav contains user avatar', () => {
       this.component.isNavShowing = true;
-      this.component.currentUser = { avatarUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
+      this.component.user = { imageUrl: 'https://int.crossroads.net/proxy/gateway/api/image/profile/7772248' };
       this.component.data = profileNav;
 
       const rendered = this.component.render();
@@ -133,7 +143,7 @@ describe('<profile-nav>', () => {
 
     it('Checks profile nav contains expected child elements in order', () => {
       this.component.isNavShowing = true;
-      this.component.currentUser = { name: 'Ben', avatarUrl: 'fakeUrl' };
+      this.component.user = { nickName: 'Ben', imageUrl: 'fakeUrl' };
       this.component.data = profileNav;
 
       const rendered = this.component.render();

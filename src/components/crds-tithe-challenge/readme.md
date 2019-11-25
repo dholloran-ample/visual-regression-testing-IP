@@ -7,10 +7,9 @@
 
 ## Properties
 
-| Property          | Attribute    | Description | Type       | Default     |
-| ----------------- | ------------ | ----------- | ---------- | ----------- |
-| `authToken`       | `auth-token` |             | `string`   | `undefined` |
-| `selectedFeeling` | --           |             | `Response` | `undefined` |
+| Property          | Attribute | Description | Type       | Default     |
+| ----------------- | --------- | ----------- | ---------- | ----------- |
+| `selectedFeeling` | --        |             | `Response` | `undefined` |
 
 
 ----------------------------------------------
