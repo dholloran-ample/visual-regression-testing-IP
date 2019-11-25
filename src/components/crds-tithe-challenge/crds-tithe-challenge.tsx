@@ -23,12 +23,11 @@ export class CrdsTitheChallenge {
   private contentBlockHandler: ContentBlockHandler;
   private feelings: Response[] = [];
   private lengthOfChallenge: number = 90;
-  private titheImage = "https://crds-media.imgix.net/2kyAbv69Gp1iPwpNMlUcXx/8b4df043d517e714447f96fd43440c24/90DTT.svg";
+  private titheImage = 'https://crds-media.imgix.net/2kyAbv69Gp1iPwpNMlUcXx/8b4df043d517e714447f96fd43440c24/90DTT.svg';
 
   @State() user: TitheUser = null;
   @Prop() selectedFeeling: Response;
   @Element() public host: HTMLStencilElement;
-
 
   public componentDidLoad() {
     Utils.trackInView(this.host, 'TitheChallenge', this.isUserInChallenge.bind(this));
@@ -127,6 +126,16 @@ export class CrdsTitheChallenge {
     return Math.ceil(time / (1000 * 60 * 60 * 24));
   }
 
+  private organizeFeelingsOrder(feelings) {
+    let blessedFeeling = feelings.find(feeling => feeling.value === '#Blessed');
+    let indexOfBlessedFeeling = feelings.indexOf(blessedFeeling);
+    let feelingsMinuseBlessed = feelings
+      .slice(0, indexOfBlessedFeeling)
+      .concat(feelings.slice(indexOfBlessedFeeling + 1));
+    feelingsMinuseBlessed.push(feelings[indexOfBlessedFeeling]);
+    return feelingsMinuseBlessed;
+  }
+
   private handleFeelingSelected(feeling) {
     this.selectedFeeling = feeling;
     this.logUserResponse();
@@ -134,12 +143,11 @@ export class CrdsTitheChallenge {
       this.analytics.track(`FeelingSelected`, {
         parent: this.host.tagName,
         feeling: this.selectedFeeling,
-        user: this.user,
+        user: this.user
       });
     } catch (error) {
       console.error(error);
     }
-    
   }
 
   public render() {
@@ -151,10 +159,7 @@ export class CrdsTitheChallenge {
     return (
       <div class="tithe-container d-flex">
         <div class="m-auto text-center">
-          <img
-            class="tithe-logo"
-            src={this.titheImage}
-          />
+          <img class="tithe-logo" src={this.titheImage} />
         </div>
         <div class="divider" />
         <div class="text-container">
@@ -168,10 +173,7 @@ export class CrdsTitheChallenge {
     return (
       <div class="tithe-container d-flex">
         <div class="m-auto text-center">
-          <img
-            class="tithe-logo"
-            src={this.titheImage}
-          />
+          <img class="tithe-logo" src={this.titheImage} />
         </div>
         <div class="divider" />
         <div class="text-container">
@@ -183,55 +185,56 @@ export class CrdsTitheChallenge {
                 dayText: this.getDayText()
               })
             : ''}
-          {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
 
           <div class="progress-container">
-            <div class="meter">
-              <span style={{ width: `${this.getProgress()}%` }}></span>
-              <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
-                <div class="user-img" style={{
-                  backgroundImage: `url('${this.user.imageUrl}?thumbnail=true')
+                    
+            <div class="meter">
+                        
+              <span style={{ width: `${this.getProgress()}%` }} />
+              <div class="user-img-container" style={{ width: `${this.getProgress()}%` }}>
+                <div
+                  class="user-img"
+                  style={{
+                    backgroundImage: `url('${this.user.imageUrl}?thumbnail=true')
                                    ,url('https://crossroads-media.imgix.net/images/avatar.svg')`
-                  }}>
-                </div> 
-              </div>   
-            </div>
-            <div class="d-flex push-half-top">
-              <p class="text-white text-uppercase">start</p><p class="text-finished text-uppercase ml-auto">finished</p>
+                  }}
+                />
+              </div>
+                      
             </div>
-           
+            <div class="d-flex push-half-top">
+              <p class="text-white text-uppercase">start</p>
+              <p class="text-finished text-uppercase ml-auto">finished</p>
+            </div>
           </div>
+
+          {this.selectedFeeling ? this.renderFeelingResponse() : this.renderFeelingSelection()}
+          {!this.selectedFeeling ? this.renderFeelingsExplanation() : null}
         </div>
       </div>
     );
   }
 
+  public renderFeelingsExplanation() {
+    return <div>{this.contentBlockHandler.getContentBlock('tithe-feelings-explanation')}</div>;
+  }
+
   public renderFeelingSelection() {
     return (
-      <div class="d-flex push-top">
-        <div class="mobile-dropdown">
-        <p class="text-white push-half-right">I'm feeling</p>
-        <div class="dropdown" role="presentation">
-          <button
-            class="btn btn-cyan dropdown-toggle feeling-dropdown"
-            type="button"
-            onClick={() => {
-              this.toggleDropdown();
-            }}
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            #Blessed
-            {SvgSrc.chevronDown()}
-          </button>
-          <ul id="feelingsDropdownList" class="crds-list dropdown-menu">
-            {this.feelings.map(feeling => (
+      <div class="flush-top">
+        <h3 class="text-white text-center font-family-condensed-extra text-uppercase flush-top flush-bottom">
+          I'm feeling:
+        </h3>
+        <div class="push-top">
+          <ul id="feelingsButtonsList" class="feelings-list">
+            {this.organizeFeelingsOrder(this.feelings).map(feeling => (
               <li value={feeling.id} onClick={() => this.handleFeelingSelected(feeling)} data-name={feeling.value}>
-                <a class="dropdown-item">{feeling.value}</a>
+                <a class="pill-button font-family-condensed-extra font-size-base" id={'feeling-' + feeling.id}>
+                  {feeling.value}
+                </a>
               </li>
             ))}
           </ul>
-        </div>
         </div>
       </div>
     );

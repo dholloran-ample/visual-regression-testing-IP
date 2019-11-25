@@ -39,8 +39,8 @@ export class CrdsDefaultLayout {
           {imageSrc && <crds-image src={imageSrc} size="card" />}
           {icons[contentType] && (
             <div class="card-stamp-container">
-              <span class="card-stamp">{iconLabel}</span>
-              <crds-icon name={icons[contentType]} size={'15'} color={'white'} />
+              {iconLabel && <span class="card-stamp">{iconLabel}</span>}
+              <crds-icon style={{ paddingLeft: '0.25rem' }} name={icons[contentType]} size={'15'} color={'white'} />
             </div>
           )}
           {thumbnailSrc && (
