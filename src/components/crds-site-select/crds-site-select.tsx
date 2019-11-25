@@ -101,7 +101,6 @@ export class CrdsSiteSelect {
   public renderSetSiteButton() {
     return (
       <crds-button
-        color="blue"
         onClick={() => this.setSite()}
         type="link"
         text={this.contentBlockHandler.getContentBlockText('setSiteOptionText')}
