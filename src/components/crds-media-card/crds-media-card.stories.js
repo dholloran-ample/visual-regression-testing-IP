@@ -17,15 +17,14 @@ stories
     );
 
     const iconLabel = text("iconLabel", "5 min");
-    const truncateLength = text("Truncate Length", "18"); 
     const meta = text("meta", "10/19/19 - 10/25/19");
     const category = text("category", "Example");
     const body = text(
       'body',
       `<p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
       eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco
         <a href='#'>
         Lorem ipsum
         </a>
@@ -41,7 +40,7 @@ stories
     <div style="width: 350px;">
         <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
               ${body}
-        </crds-media-card> 
+        </crds-media-card>
     </div>
     `;
   }, {
@@ -66,9 +65,9 @@ stories
     const body = text(
       'body',
       `<p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
       eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco
         <a href='#'>
         Lorem ipsum
         </a>
@@ -79,22 +78,23 @@ stories
     const url = text('url', '#');
     const contentTypeOptions = ['article', 'video', 'episode', 'song', null];
     const contentType = select('Content Type', contentTypeOptions, 'article');
+    const truncateLength = text("Truncate Length", "18");
 
     return `
     <div style="width: 1000px; display: flex;">
       <div style="flex: 0 0 750px; margin-right: 20px;">
         <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' truncate-length='${truncateLength}' meta='${meta}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
               ${body}
-        </crds-media-card> 
+        </crds-media-card>
       </div>
       <div style="display: flex; flex-direction: column; flex: 0 0 250px;">
         <div style="margin-bottom: 20px">
         <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
-  </crds-media-card> 
+  </crds-media-card>
         </div>
         <div>
         <crds-media-card heading='Game of thrones' icon-label='${iconLabel}' category='${category}' thumbnail-src='${thumbnailSrc}' image-src='${imageSrc}' url='${url}' content-type='${contentType}'>
-        </crds-media-card> 
+        </crds-media-card>
         </div>
       </div>
     </div>
