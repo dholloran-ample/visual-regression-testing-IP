@@ -56,7 +56,7 @@ export class CrdsGroupRenew {
     if (this.newEndDate && this.groupName)
       return this.contentBlockHandler.getContentBlock('group-end-date-renew-success', {
         groupName: this.groupName,
-        endDate: this.newEndDate.toString()
+        endDate: this.newEndDate.toLocaleDateString()
       });
     return this.contentBlockHandler.getContentBlock('group-end-date-renew-failure');
   }
