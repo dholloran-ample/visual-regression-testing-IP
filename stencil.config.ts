@@ -5,7 +5,6 @@ import builtins from 'rollup-plugin-node-builtins';
 import globals from 'rollup-plugin-node-globals';
 import replace from 'rollup-plugin-replace';
 import { inlineSvg } from 'stencil-inline-svg/src';
-import magicImporter from 'node-sass-magic-importer';
 
 export const config: Config = {
   namespace: 'crds-components',
@@ -27,12 +26,13 @@ export const config: Config = {
     env(),
     sass({
       injectGlobalPaths: [
-        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables',
         'node_modules/crds-styles/assets/stylesheets/variables',
         'node_modules/crds-styles/assets/stylesheets/overrides',
+        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables',
+        'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins',
+        'node_modules/crds-styles/assets/stylesheets/mixins',
         'src/assets/stylesheets/globals/all'
       ],
-      importer: magicImporter()
     }),
     builtins(),
     globals(),
