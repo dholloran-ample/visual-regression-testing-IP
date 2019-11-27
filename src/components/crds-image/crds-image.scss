@@ -7,9 +7,10 @@
   background-color: rgb(221, 221, 221);
 
   .crds-img {
-    width: 100%;
-    height: auto;
     display: block;
+    height: 100%;
+    position: absolutez;
+    width: 100%;
   }
   .crds-img.loaded {
     animation-name: fade-in;
