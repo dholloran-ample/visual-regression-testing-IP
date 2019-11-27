@@ -19,7 +19,7 @@ stories.addDecorator(withKnobs).add('crds-button', () => {
 
   return `<crds-button 
               ${color && type !== 'link' ? 'color=' + color : ''}
-              ${buttonText ? 'text=' + buttonText.replace(' ', '&nbsp;') : ''} 
+              ${buttonText ? 'text=' + buttonText.replace(/\s/g, '&nbsp;') : ''}
               ${href ? 'href=' + href : ''}
               ${value ? 'value=' + value : ''}
               ${type ? 'type=' + type : ''} 
