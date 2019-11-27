@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const SET_GROUP_END_DATE = gql`
-  mutation setGroupEndDate($id: ID!, $endDate: Int!) {
-    setGroupEndDate(id: $id, endDate: $endDate) {
+  mutation setGroupsEndDate($ids: [ID!], $endDate: Int!) {
+    setGroupsEndDate(ids: $ids, endDate: $endDate) {
       id
       endDate
       name
