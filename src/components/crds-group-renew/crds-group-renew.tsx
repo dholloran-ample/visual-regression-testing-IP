@@ -24,6 +24,7 @@ export class CrdsGroupRenew {
     await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group renew');
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
+    this.groupId = Number(new URLSearchParams(document.location.search).get("groupId"));
     if (isAuthenticated() && this.groupId && this.daysToExpiration) promises.push(this.setGroupEndDate());
     return Promise.all(promises);
   }
@@ -31,14 +32,14 @@ export class CrdsGroupRenew {
   private setGroupEndDate() {
     return CrdsApolloService.apolloClient
       .mutate({
-        variables: { id: this.groupId, endDate: this.getExpirationDate(this.daysToExpiration) },
+        variables: { ids: [this.groupId], endDate: this.getExpirationDate(this.daysToExpiration) },
         mutation: SET_GROUP_END_DATE
       })
       .then(response => {
         var date = new Date(0);
-        date.setTime(response.data.setGroupEndDate.endDate * 1000);
+        date.setTime(response.data.setGroupsEndDate[0].endDate * 1000);
         this.newEndDate = date;
-        this.groupName = response.data.setGroupEndDate.name;
+        this.groupName = response.data.setGroupsEndDate[0].name;
       })
       .catch(err => {
         this.logError(err);
