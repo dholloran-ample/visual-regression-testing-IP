@@ -37,7 +37,7 @@ export class CrdsGroupRenew {
       })
       .then(response => {
         var date = new Date(0);
-        date.setTime(response.data.setGroupsEndDate[0].endDate * 1000);
+        date.setTime((response.data.setGroupsEndDate[0].endDate + date.getTimezoneOffset() * 60) * 1000);
         this.newEndDate = date;
         this.groupName = response.data.setGroupsEndDate[0].name;
       })
