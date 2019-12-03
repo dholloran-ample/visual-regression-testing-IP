@@ -11,9 +11,9 @@ import { isAuthenticated } from '../../global/authInit';
 export class CrdsGroupRenew {
   private contentBlockHandler: ContentBlockHandler;
   private newEndDate: Date;
-  private groupName: string;
+  private groupNames: string[];
 
-  @Prop() groupId: number;
+  @Prop() groupIds: number[];
   @Prop() daysToExpiration: number;
 
   private logError(err) {
@@ -24,22 +24,27 @@ export class CrdsGroupRenew {
     await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group renew');
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
-    this.groupId = Number(new URLSearchParams(document.location.search).get("groupId"));
-    if (isAuthenticated() && this.groupId && this.daysToExpiration) promises.push(this.setGroupEndDate());
+    this.groupIds = new URLSearchParams(document.location.search)
+      .get('groupId')
+      .split(',')
+      .map(groupId => {
+        return Number(groupId);
+      });
+    if (isAuthenticated() && this.groupIds && this.daysToExpiration) promises.push(this.setGroupEndDate());
     return Promise.all(promises);
   }
 
   private setGroupEndDate() {
     return CrdsApolloService.apolloClient
       .mutate({
-        variables: { ids: [this.groupId], endDate: this.getExpirationDate(this.daysToExpiration) },
+        variables: { ids: this.groupIds, endDate: this.getExpirationDate(this.daysToExpiration) },
         mutation: SET_GROUP_END_DATE
       })
       .then(response => {
         var date = new Date(0);
         date.setTime((response.data.setGroupsEndDate[0].endDate + date.getTimezoneOffset() * 60) * 1000);
         this.newEndDate = date;
-        this.groupName = response.data.setGroupsEndDate[0].name;
+        this.groupNames = response.data.setGroupsEndDate.map(group => group.name);
       })
       .catch(err => {
         this.logError(err);
@@ -54,9 +59,9 @@ export class CrdsGroupRenew {
 
   public render() {
     if (!isAuthenticated()) return '';
-    if (this.newEndDate && this.groupName)
+    if (this.newEndDate && this.groupNames)
       return this.contentBlockHandler.getContentBlock('group-end-date-renew-success', {
-        groupName: this.groupName,
+        groupNames: this.groupNames.join(', '),
         endDate: this.newEndDate.toLocaleDateString()
       });
     return this.contentBlockHandler.getContentBlock('group-end-date-renew-failure');

@@ -17,16 +17,14 @@ export class CrdsPrimaryButton {
   @Prop() block: boolean;
 
   private getClasses() {
-    if (this.display === 'link') {
-      return 'btn btn-link' +
-        (this.secondary ? ` secondary` : '')
-    } else {
-      return 'btn' +
-        (this.color ? ` btn-${this.color}` : '') +
-        (this.size ? ` btn-${this.size}` : '') +
-        (this.display ? ` btn-${this.display}` : '') +
-        (this.block ? ` btn-block` : '')
-    }
+    if (this.display === 'link') return 'btn btn-link' + (this.secondary ? ` secondary` : '');
+    return (
+      'btn' +
+      (this.color ? ` btn-${this.color}` : '') +
+      (this.size ? ` btn-${this.size}` : '') +
+      (this.display ? ` btn-${this.display}` : '') +
+      (this.block ? ` btn-block` : '')
+    );
   }
 
   private renderButton() {
@@ -44,11 +42,7 @@ export class CrdsPrimaryButton {
 
   private renderLink() {
     return (
-      <a
-        href={this.href}
-        class={this.getClasses()}
-        {...(this.disabled !== undefined ? { disabled: true } : '')}
-      >
+      <a href={this.href} class={this.getClasses()} {...(this.disabled !== undefined ? { disabled: true } : '')}>
         {this.text}
       </a>
     );
