@@ -22,8 +22,6 @@ export namespace Components {
     'secondary': boolean;
     'size'?: string;
     'text': string;
-    'type'?: string;
-    'value'?: string;
   }
   interface CrdsDefaultCard {
     'body': string;
@@ -400,8 +398,6 @@ declare namespace LocalJSX {
     'secondary'?: boolean;
     'size'?: string;
     'text'?: string;
-    'type'?: string;
-    'value'?: string;
   }
   interface CrdsDefaultCard {
     'body'?: string;

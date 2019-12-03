@@ -10,26 +10,29 @@ export class CrdsPrimaryButton {
   @Prop() onClick?: (event: MouseEvent) => void;
   @Prop() text: string;
   @Prop() href?: string;
-  @Prop() type?: string;
   @Prop() size?: string;
   @Prop() display?: string;
-  @Prop() value?: string;
   @Prop() disabled: boolean;
   @Prop() secondary: boolean;
   @Prop() block: boolean;
 
+  private getClasses() {
+    if (this.display === 'link') {
+      return 'btn btn-link' +
+        (this.secondary ? ` secondary` : '')
+    } else {
+      return 'btn' +
+        (this.color ? ` btn-${this.color}` : '') +
+        (this.size ? ` btn-${this.size}` : '') +
+        (this.display ? ` btn-${this.display}` : '') +
+        (this.block ? ` btn-block` : '')
+    }
+  }
+
   private renderButton() {
     return (
       <button
-        class={
-          'btn' +
-          (this.color ? ` btn-${this.color}` : '') +
-          (this.type ? ` btn-${this.type}` : '') +
-          (this.size ? ` btn-${this.size}` : '') +
-          (this.display ? ` btn-${this.display}` : '') +
-          (this.secondary ? ` secondary` : '') + 
-          (this.block ? ` btn-block` : '')
-        }
+        class={this.getClasses()}
         {...(this.disabled !== undefined ? { disabled: true } : '')}
         onClick={this.onClick}
         type="button"
@@ -39,38 +42,12 @@ export class CrdsPrimaryButton {
     );
   }
 
-  private renderInput() {
-    return (
-      <input
-        class={
-          `btn btn-${this.type} btn-${this.color}` +
-          (this.size ? ` btn-${this.size}` : '') +
-          (this.display ? ` btn-${this.display}` : '') + 
-          (this.block ? ` btn-block` : '')
-        }
-        {...(this.disabled !== undefined ? { disabled: true } : '')}
-        onClick={this.onClick}
-        value={this.value}
-        type={this.type == 'submit' ? 'submit' : 'button'}
-      >
-        {this.text}
-      </input>
-    );
-  }
-
   private renderLink() {
     return (
       <a
         href={this.href}
-        class={
-          `btn ` +
-          `btn-${this.type} ` +
-          `btn-${this.color}` + 
-          (this.size ? ` btn-${this.size}` : '') + 
-          (this.block ? ` btn-block` : '')
-        }
+        class={this.getClasses()}
         {...(this.disabled !== undefined ? { disabled: true } : '')}
-        role="button"
       >
         {this.text}
       </a>
@@ -78,7 +55,6 @@ export class CrdsPrimaryButton {
   }
 
   public render() {
-    if (this.type == 'input' || this.type == 'submit') return this.renderInput();
     if (this.href) return this.renderLink();
     return this.renderButton();
   }

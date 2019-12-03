@@ -1,12 +1,9 @@
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/buttons';
 @import '../../../../node_modules/crds-styles/assets/stylesheets/components/buttons';
 
-input {
-  -webkit-appearance: none;
-}
-
 a {
   &.btn {
     text-decoration: none;
   }
+  font-family: system-ui;
 }
