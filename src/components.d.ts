@@ -21,8 +21,6 @@ export namespace Components {
     'secondary': boolean;
     'size'?: string;
     'text': string;
-    'type'?: string;
-    'value'?: string;
   }
   interface CrdsDefaultCard {
     'body': string;
@@ -41,6 +39,10 @@ export namespace Components {
   }
   interface CrdsGroupList {}
   interface CrdsGroupRenew {
+    'daysToExpiration': number;
+    'groupIds': number[];
+  }
+  interface CrdsGroupRenewButton {
     'daysToExpiration': number;
     'groupId': number;
   }
@@ -91,6 +93,7 @@ export namespace Components {
     'imageSrc': string;
     'meta': string;
     'thumbnailSrc': string;
+    'truncateLength': number;
     'url': string;
   }
   interface CrdsModal {
@@ -202,6 +205,12 @@ declare global {
   var HTMLCrdsGroupRenewElement: {
     prototype: HTMLCrdsGroupRenewElement;
     new (): HTMLCrdsGroupRenewElement;
+  };
+
+  interface HTMLCrdsGroupRenewButtonElement extends Components.CrdsGroupRenewButton, HTMLStencilElement {}
+  var HTMLCrdsGroupRenewButtonElement: {
+    prototype: HTMLCrdsGroupRenewButtonElement;
+    new (): HTMLCrdsGroupRenewButtonElement;
   };
 
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
@@ -359,6 +368,7 @@ declare global {
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-group-renew': HTMLCrdsGroupRenewElement;
+    'crds-group-renew-button': HTMLCrdsGroupRenewButtonElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-icon': HTMLCrdsIconElement;
     'crds-image': HTMLCrdsImageElement;
@@ -398,8 +408,6 @@ declare namespace LocalJSX {
     'secondary'?: boolean;
     'size'?: string;
     'text'?: string;
-    'type'?: string;
-    'value'?: string;
   }
   interface CrdsDefaultCard extends JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement> {
     'body'?: string;
@@ -418,6 +426,10 @@ declare namespace LocalJSX {
   }
   interface CrdsGroupList extends JSXBase.HTMLAttributes<HTMLCrdsGroupListElement> {}
   interface CrdsGroupRenew extends JSXBase.HTMLAttributes<HTMLCrdsGroupRenewElement> {
+    'daysToExpiration'?: number;
+    'groupIds'?: number[];
+  }
+  interface CrdsGroupRenewButton {
     'daysToExpiration'?: number;
     'groupId'?: number;
   }
@@ -468,6 +480,7 @@ declare namespace LocalJSX {
     'imageSrc'?: string;
     'meta'?: string;
     'thumbnailSrc'?: string;
+    'truncateLength'?: number;
     'url'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
@@ -554,6 +567,7 @@ declare namespace LocalJSX {
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-group-renew': CrdsGroupRenew;
+    'crds-group-renew-button': CrdsGroupRenewButton;
     'crds-heart-button': CrdsHeartButton;
     'crds-icon': CrdsIcon;
     'crds-image': CrdsImage;
