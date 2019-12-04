@@ -5,58 +5,59 @@
 @import '../../shared/shared.scss';
 
 .dropdown {
-  position: relative;
   display: inline-block;
+  position: relative;
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
+  background-clip: padding-box;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: .25rem;
+  color: #212529;
   display: none;
   float: left;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
   font-size: 1rem;
-  color: #212529;
-  text-align: left;
+  left: 0;
   list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
+  margin: .125rem 0 0;
+  min-width: 10rem;
+  padding: .5rem 0;
+  position: absolute;
+  text-align: left;
+  top: 100%;
+  z-index: 1000;
+
   a {
-    display: block;
-    width: 100%;
-    padding: 0.25rem 1.5rem;
-    clear: both;
-    font-weight: 400;
-    color: #212529;
-    text-align: inherit;
-    white-space: nowrap;
     background-color: transparent;
     border: 0;
+    clear: both;
+    color: #212529;
+    display: block;
+    font-weight: 400;
+    padding: .25rem 1.5rem;
+    text-align: inherit;
+    white-space: nowrap;
+    width: 100%;
   }
 }
 
 .dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 0.25rem 1.5rem;
-  clear: both;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  white-space: nowrap;
   background-color: transparent;
   border: 0;
+  clear: both;
+  color: #212529;
+  display: block;
+  font-weight: 400;
+  padding: .25rem 1.5rem;
+  text-align: inherit;
+  white-space: nowrap;
+  width: 100%;
 
   &:hover {
+    background-color: lightgray;
     color: $dropdown-link-hover-color;
     text-decoration: none;
-    background-color: lightgray;
   }
 }
 
@@ -70,7 +71,7 @@
 
 .progress {
   box-shadow: none;
-  height: 0.5rem;
+  height: .5rem;
 }
 
 .progress-bar {
@@ -78,23 +79,27 @@
 }
 
 .tithe-container {
-  height: auto;
-  flex-wrap: wrap;
   background-color: #274254;
+  flex-wrap: wrap;
+  height: auto;
+
   @media screen and (min-width: $screen-sm) {
-    height: 400px;
+    height: 550px;
   }
 }
+
 .divider {
   border: 1px solid $cr-gray-light;
   margin: auto;
   width: 85%;
+
   @media screen and (min-width: $screen-sm) {
     height: 75%;
-    width: auto;
     margin: auto 0;
+    width: auto;
   }
 }
+
 .m-auto {
   margin: auto;
 }
@@ -104,50 +109,56 @@
 }
 
 .m-ends-auto {
-  margin-top: auto;
   margin-bottom: auto;
+  margin-top: auto;
 }
 
 .text-container {
   margin: auto;
-  text-align: center;
   padding: 2.5rem 3rem;
+  text-align: center;
   width: 100%;
+
   @media (min-width: $screen-sm) {
-    width: 55%;
-    text-align: left;
     padding: 2.5rem 0;
+    text-align: left;
+    width: 55%;
   }
 }
+
 .schedule-btn {
   padding: 13px 30px;
+
   @media screen and (min-width: 516px) {
     margin-right: 12px;
   }
 }
+
 .tithe-logo {
   height: 230px;
-  text-align: center;
   padding: 2.5rem 0;
+  text-align: center;
+
   @media screen and (min-width: $screen-sm) {
     max-width: 100%;
   }
 }
 
 .meter {
-  height: 9px; /* Can be anything */
-  width: auto;
-  position: relative;
   background: linear-gradient(270deg, #bf9f56 0%, #e09e06 10%, #c05c04 28%, #57afa9 55%, #0095d9 75%, #ffffff 100%);
+  height: 9px; /* Can be anything */
+  position: relative;
   transform: rotate(180deg);
+  width: auto;
 }
+
 .meter > span {
-  width: 50%;
+  background-color: #1b303d;
   display: block;
   height: 100%;
-  background-color: #1b303d;
-  position: absolute;
   overflow: hidden;
+  position: absolute;
+  width: 50%;
 }
 
 a,
@@ -166,6 +177,7 @@ a label {
 .mobile-dropdown {
   display: flex;
   margin: auto;
+
   @media screen and (min-width: $screen-sm) {
     margin: 0;
   }
@@ -177,15 +189,89 @@ a label {
 
 .user-img {
   background-color: #eee;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  background-size: contain;
   border: 2px solid white;
+  border-radius: 50%;
+  height: 56px;
   margin-left: auto;
   transform: rotate(180deg) translateX(-1px);
-  background-size: contain;
+  width: 56px;
 }
 
 .progress-container {
   margin-top: 50px;
+}
+
+.feelings-list {
+  flex-wrap: wrap;
+  justify-content: center;
+  line-height: 2.5;
+  list-style: none;
+  padding: 0;
+}
+
+@media screen and (min-width: 640px) {
+  .feelings-list {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .feelings-list {
+    display: block;
+  }
+}
+
+.pill-button {
+  background: transparent;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  margin: 0 20px;
+  padding: 2px 10px;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $cr-teal-light;
+    border-color: $cr-cyan-dark !important;
+    color: $cr-cyan-dark !important;
+  }
+
+  &:focus,
+  &:active {
+    background: $cr-teal !important;
+    border-color: $cr-blue-dark !important;
+    color: $cr-blue-dark !important;
+  }
+
+  &#feeling-0 {
+    border-color: lighten($cr-cyan, 30);
+    color: lighten($cr-cyan, 30);
+  }
+
+  &#feeling-1 {
+    border-color: darken($cr-cyan, 2);
+    color: darken($cr-cyan, 2);
+  }
+
+  &#feeling-2 {
+    border-color: $cr-cyan;
+    color: $cr-cyan;
+  }
+
+  &#feeling-3 {
+    border-color: lighten($cr-cyan, 5);
+    color: lighten($cr-cyan, 5);
+  }
+
+  &#feeling-4 {
+    border-color: lighten($cr-cyan, 10);
+    color: lighten($cr-cyan, 10);
+  }
+
+  &#feeling-5 {
+    border-color: lighten($cr-cyan, 20);
+    color: lighten($cr-cyan, 20);
+  }
 }

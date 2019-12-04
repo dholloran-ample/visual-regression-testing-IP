@@ -1,6 +1,7 @@
 www/
 storybook-static/
 dist/
+
 *~
 *.sw[mnpcod]
 *.log
@@ -25,3 +26,11 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 .envrc
+.vs/
+
+cypress/fixtures/example.json
+cypress/integration/examples
+cypress/videos
+cypress/screenshots
+loadenv.ps1
+.vs/crds-components/v15/.suo

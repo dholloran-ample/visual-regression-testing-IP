@@ -17,7 +17,6 @@
     .site-happenings-skeleton {
       min-height: 500px;
     }
-
     .greeting-skeleton {
       margin-bottom: 1rem;
       min-height: 60px;
@@ -67,56 +66,6 @@
       <crds-label tint="warning" text="Label"></crds-label>
       <br />
 
-      <crds-button type="link" text="some text"  ></crds-button>
-      <crds-button type="link" secondary="true" text="some text"></crds-button>
-      <br />
-      <crds-button color="blue" text="some text" size="lg" ></crds-button>
-      <crds-button color="blue" text="some text"></crds-button>
-      <crds-button color="blue" text="some text" size="sm"></crds-button>
-
-      <br />
-      <crds-button color="cyan" text="some text" size="lg"></crds-button>
-      <crds-button color="cyan" text="some text"></crds-button>
-      <crds-button color="cyan" text="some text" size="sm"></crds-button>
-      <br />
-      <crds-button color="gray" text="some text" size="lg"></crds-button>
-      <crds-button color="gray" text="some text"></crds-button>
-      <crds-button color="gray" text="some text" size="sm"></crds-button>
-      <br />
-      <crds-button color="gray-light" text="some text" size="lg"></crds-button>
-      <crds-button color="gray-light" text="some text"></crds-button>
-      <crds-button color="gray-light" text="some text" size="sm"></crds-button>
-      <p style="background: black; padding: 10px;">
-
-        <crds-button color="white" text="some text" size="lg" ></crds-button>
-        <crds-button color="white" text="some text"></crds-button>
-        <crds-button color="white" text="some text" size="sm"></crds-button>
-      </p>
-      <crds-button type="outline" color="blue" text="some text" size="lg"></crds-button>
-      <crds-button type="outline" color="blue" text="some text"></crds-button>
-      <crds-button type="outline" color="blue" text="some text" size="sm"></crds-button>
-      <br />
-      <crds-button type="outline" color="cyan" text="some text" size="lg"></crds-button>
-      <crds-button type="outline" color="cyan" text="some text"></crds-button>
-      <crds-button type="outline" color="cyan" text="some text" size="sm"></crds-button>
-      <br />
-      <crds-button type="outline" color="gray" text="some text" size="lg"></crds-button>
-      <crds-button type="outline" color="gray" text="some text"></crds-button>
-      <crds-button type="outline" color="gray" text="some text" size="sm"></crds-button>
-      <br />
-      <crds-button type="outline" color="gray-light" text="some text" size="lg"></crds-button>
-      <crds-button type="outline" color="gray-light" text="some text"></crds-button>
-      <crds-button type="outline" color="gray-light" text="some text" size="sm"></crds-button>
-      <br />
-      <p style="background: black; padding: 10px;">
-
-      <crds-button type="outline" color="white" text="some text" size="lg"></crds-button>
-      <crds-button type="outline" color="white" text="some text"></crds-button>
-      <crds-button type="outline" color="white" text="some text" size="sm"></crds-button>
-      </p>
-      <crds-button color="blue"  text="some text" display="block"></crds-button>
-      <crds-button color="blue" text="some text" display="block" type="outline"></crds-button>
-      <br/>
   </div>
 
   <div class="jumbotron jumbotron-xl"
@@ -208,22 +157,22 @@
     <crds-shared-footer></crds-shared-footer>
   </div>
 
-  <div>
-    <crds-media-card
-    heading='Puerto Rico'
-    meta="10/19/19 - 10/25/19"
-    thumbnail-src="https://crossroads-media.imgix.net/images/crds-music/jumbotron/music-laying-it-all-down-bg.jpg?format=auto,compress"
-    image-src="https://crds-media.imgix.net/5CaAjF9bDkXWOw6YXl92cZ/fccff599d00f378c1aae525bfff94a2b/onsite-groups-header_2x.jpg?format=auto,compress"
-    button-src="#"
-    content-type="article">
-    <p>
-      LAUNCH 2019 is a great way to make the
-      connections that will help you thrive as
-      you start your journey post high school.
-      We’ll have dinner, live worship, and a chance
-      to meet some college students and hear their stories.
-      <a href='#'> RSVP here. <a/> </p>
-    </crds-media-card>
+  <div class="container" style="width: 350px; display: flex; align-content: center; justify-content: center;">
+          <crds-media-card
+          heading='Puerto Rico'
+          meta="10/19/19 - 10/25/19"
+          thumbnail-src="https://crossroads-media.imgix.net/images/crds-music/jumbotron/music-laying-it-all-down-bg.jpg?format=auto,compress"
+          image-src="https://crds-media.imgix.net/5CaAjF9bDkXWOw6YXl92cZ/fccff599d00f378c1aae525bfff94a2b/onsite-groups-header_2x.jpg?format=auto,compress"
+          button-src="#"
+          content-type="article">
+          <p>
+            LAUNCH 2019 is a great way to make the
+            connections that will help you thrive as
+            you start your journey post high school.
+            We’ll have dinner, live worship, and a chance
+            to meet some college students and hear their stories.
+            <a href='#'> RSVP here. <a/> </p>
+          </crds-media-card>
   </div>
 
 
@@ -233,7 +182,6 @@
   document.addEventListener('component rendered', function (e) {
     console.log('component rendered', e.detail.tagName);
   })
-
 </script>
 
 </html>

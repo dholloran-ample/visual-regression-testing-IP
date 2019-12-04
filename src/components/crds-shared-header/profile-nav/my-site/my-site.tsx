@@ -2,7 +2,6 @@ import { Component, Prop, State, Element, Watch, h, Listen } from '@stencil/core
 import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
-import ApolloClient from 'apollo-client';
 import marked from 'marked';
 
 import Popper from 'popper.js';
@@ -350,9 +349,9 @@ export class MySite {
     return (
       <div>
         <div class="popover-content">
-          <h4 class="text-left text-uppercase font-family-base-bold">
+          <p class="site-header text-left text-uppercase font-family-base-bold">
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
-          </h4>
+          </p>
           <crds-image-title-cutout
             class="text-white"
             imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
