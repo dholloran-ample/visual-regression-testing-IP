@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/polymer';
 import { withKnobs, text } from '@storybook/addon-knobs';
 
-const stories = storiesOf('Personalization', module);
+const stories = storiesOf('Groups', module);
 stories
   .addDecorator(withKnobs)
   .add('crds-group-privacy-toggle', () => {
