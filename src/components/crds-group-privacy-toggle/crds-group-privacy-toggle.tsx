@@ -1,7 +1,7 @@
 import { CrdsApolloService } from '../../shared/apollo';
 import { HTMLStencilElement } from '@stencil/core/internal';
-import { Component, Element, h, Prop } from '@stencil/core';
-import { GET_GROUP_PRIVACY, SET_GROUP_PRIVACY } from './crds-group-privacy-toggle.graphql';
+import { Component, Element, h, Prop, State } from '@stencil/core';
+import { GET_GROUP_PRIVACY, SET_GROUP_PRIVACY, GET_USER_GROUPS } from './crds-group-privacy-toggle.graphql';
 
 @Component({
   tag: 'crds-group-privacy-toggle',
@@ -12,10 +12,12 @@ export class CrdsGroupList {
   @Element() public host: HTMLStencilElement;
   @Prop() groupId: number;
   @Prop() isPublic: boolean;
+  @State() userLedGroups: any[];
 
   public async componentWillLoad() {
     await CrdsApolloService.subscribeToApolloClient();
     await this.getGroupPrivacy();
+    await this.getUserGroups();
   }
 
   private logError(err) {
@@ -29,10 +31,8 @@ export class CrdsGroupList {
         query: GET_GROUP_PRIVACY
       })
       .then(response => {
-        const selectedGroupData = response.data.groups.filter(group => group.id == this.groupId)[0];
-        if (selectedGroupData) {
-          this.isPublic = selectedGroupData.availableOnline;
-        }
+        const selectedGroupData = response.data.groups.find(group => group.id == this.groupId);
+        this.setIsPublicValue(selectedGroupData);
       })
       .catch(err => {
         this.logError(err);
@@ -46,8 +46,26 @@ export class CrdsGroupList {
         mutation: SET_GROUP_PRIVACY
       })
       .then(response => {
-        console.log('response', response);
-        this.getGroupPrivacy();
+        const selectedGroupData = response.data.setGroupPrivacy;
+        this.setIsPublicValue(selectedGroupData);
+      })
+      .catch(err => {
+        this.logError(err);
+      });
+  }
+
+  private setIsPublicValue(selectedGroupData) {
+    if (selectedGroupData) {
+      this.isPublic = selectedGroupData.availableOnline;
+    }
+  }
+
+  private getUserGroups() {
+    return CrdsApolloService.apolloClient
+      .query({ query: GET_USER_GROUPS })
+      .then(success => {
+        this.userLedGroups = success.data.user.groups;
+        return;
       })
       .catch(err => {
         this.logError(err);
@@ -78,6 +96,8 @@ export class CrdsGroupList {
   }
 
   public render() {
-    if (this.groupId) return this.renderToggle();
+    if ((!this.userLedGroups.find(group => Number(group.id) == this.groupId)) || !this.groupId)
+      return '';
+    return this.renderToggle();
   }
 }
