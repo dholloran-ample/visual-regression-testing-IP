@@ -85,7 +85,8 @@ export class CrdsGroupRenew {
   }
 
   public render() {
-    if (!isAuthenticated() && !this.userLedGroups.find(group => Number(group.id) == this.groupId) || !this.groupId) return '';
+    if ((!isAuthenticated() && !this.userLedGroups.find(group => Number(group.id) == this.groupId)) || !this.groupId)
+      return '';
     return (
       <crds-button color="white" text="Renew group" display="outline" onClick={() => this.handleButtonClicked()} />
     );
