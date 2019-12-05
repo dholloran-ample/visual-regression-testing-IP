@@ -6,5 +6,6 @@ stories
   .addDecorator(withKnobs)
   .add('crds-group-privacy-toggle', () => {
     const groupId = text('groupId', '');
+    document.getElementById('root').parentElement.parentElement.style.backgroundColor = '#3b6e8f';
     return `<crds-group-privacy-toggle group-id=${groupId}></crds-group-privacy-toggle>`;
 });
