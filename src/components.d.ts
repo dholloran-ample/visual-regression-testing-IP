@@ -41,7 +41,7 @@ export namespace Components {
   interface CrdsGroupList {}
   interface CrdsGroupRenew {
     'daysToExpiration': number;
-    'groupIds': number[];
+    'groupIdsString': string;
   }
   interface CrdsGroupRenewButton {
     'daysToExpiration': number;
@@ -428,7 +428,7 @@ declare namespace LocalJSX {
   interface CrdsGroupList {}
   interface CrdsGroupRenew {
     'daysToExpiration'?: number;
-    'groupIds'?: number[];
+    'groupIdsString'?: string;
   }
   interface CrdsGroupRenewButton {
     'daysToExpiration'?: number;
