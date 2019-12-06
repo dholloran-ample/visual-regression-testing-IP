@@ -43,6 +43,10 @@ export namespace Components {
   interface CrdsGroupList {}
   interface CrdsGroupRenew {
     'daysToExpiration': number;
+    'groupIds': number[];
+  }
+  interface CrdsGroupRenewButton {
+    'daysToExpiration': number;
     'groupId': number;
   }
   interface CrdsHeartButton {
@@ -205,6 +209,12 @@ declare global {
     new (): HTMLCrdsGroupRenewElement;
   };
 
+  interface HTMLCrdsGroupRenewButtonElement extends Components.CrdsGroupRenewButton, HTMLStencilElement {}
+  var HTMLCrdsGroupRenewButtonElement: {
+    prototype: HTMLCrdsGroupRenewButtonElement;
+    new (): HTMLCrdsGroupRenewButtonElement;
+  };
+
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
   var HTMLCrdsHeartButtonElement: {
     prototype: HTMLCrdsHeartButtonElement;
@@ -360,6 +370,7 @@ declare global {
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
     'crds-group-renew': HTMLCrdsGroupRenewElement;
+    'crds-group-renew-button': HTMLCrdsGroupRenewButtonElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-icon': HTMLCrdsIconElement;
     'crds-image': HTMLCrdsImageElement;
@@ -419,6 +430,10 @@ declare namespace LocalJSX {
   }
   interface CrdsGroupList {}
   interface CrdsGroupRenew {
+    'daysToExpiration'?: number;
+    'groupIds'?: number[];
+  }
+  interface CrdsGroupRenewButton {
     'daysToExpiration'?: number;
     'groupId'?: number;
   }
@@ -555,6 +570,7 @@ declare namespace LocalJSX {
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
     'crds-group-renew': CrdsGroupRenew;
+    'crds-group-renew-button': CrdsGroupRenewButton;
     'crds-heart-button': CrdsHeartButton;
     'crds-icon': CrdsIcon;
     'crds-image': CrdsImage;
@@ -594,6 +610,7 @@ declare module "@stencil/core" {
       'crds-greeting': LocalJSX.CrdsGreeting & JSXBase.HTMLAttributes<HTMLCrdsGreetingElement>;
       'crds-group-list': LocalJSX.CrdsGroupList & JSXBase.HTMLAttributes<HTMLCrdsGroupListElement>;
       'crds-group-renew': LocalJSX.CrdsGroupRenew & JSXBase.HTMLAttributes<HTMLCrdsGroupRenewElement>;
+      'crds-group-renew-button': LocalJSX.CrdsGroupRenewButton & JSXBase.HTMLAttributes<HTMLCrdsGroupRenewButtonElement>;
       'crds-heart-button': LocalJSX.CrdsHeartButton & JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement>;
       'crds-icon': LocalJSX.CrdsIcon & JSXBase.HTMLAttributes<HTMLCrdsIconElement>;
       'crds-image': LocalJSX.CrdsImage & JSXBase.HTMLAttributes<HTMLCrdsImageElement>;
