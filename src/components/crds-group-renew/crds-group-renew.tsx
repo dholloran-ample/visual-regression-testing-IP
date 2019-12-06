@@ -27,7 +27,7 @@ export class CrdsGroupRenew {
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
     if (!this.groupIdsString)
       this.groupIds = new URLSearchParams(document.location.search)
-        .get('groupId')
+        .get('groupIds')
         .split(',')
         .map(groupId => {
           return Number(groupId);
@@ -47,7 +47,6 @@ export class CrdsGroupRenew {
         var date = new Date(0);
         date.setTime((response.data.setGroupsEndDate[0].endDate + date.getTimezoneOffset() * 60) * 1000);
         this.newEndDate = date;
-        console.log(response.data.setGroupsEndDate)
         this.groupNames = response.data.setGroupsEndDate.map(group => group.name);
         return;
       })
