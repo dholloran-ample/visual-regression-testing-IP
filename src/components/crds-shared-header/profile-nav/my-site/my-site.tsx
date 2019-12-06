@@ -349,9 +349,9 @@ export class MySite {
     return (
       <div>
         <div class="popover-content">
-          <h4 class="text-left text-uppercase font-family-base-bold">
+          <p class="site-header text-left text-uppercase font-family-base-bold">
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
-          </h4>
+          </p>
           <crds-image-title-cutout
             class="text-white cursor-pointer"
             imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
