@@ -15,7 +15,14 @@
   position: absolute;
 }
 
-.btn-group > .btn:not(:active).btn-white{
-  color: #ffffff;
-  background: none;
+.btn-group {
+  > .btn {
+    font-size: 17px;
+    padding: 7px 10px;
+
+    &:not(:active).btn-white {
+      background: none;
+      color: #ffffff;
+    }
+  }
 }
