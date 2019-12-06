@@ -22,7 +22,6 @@ export class CrdsGroupRenew {
   }
 
   public async componentWillLoad() {
-    console.log(this.groupIds);
     await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group renew');
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
@@ -48,7 +47,6 @@ export class CrdsGroupRenew {
         var date = new Date(0);
         date.setTime((response.data.setGroupsEndDate[0].endDate + date.getTimezoneOffset() * 60) * 1000);
         this.newEndDate = date;
-        console.log(response.data.setGroupsEndDate)
         this.groupNames = response.data.setGroupsEndDate.map(group => group.name);
         return;
       })
