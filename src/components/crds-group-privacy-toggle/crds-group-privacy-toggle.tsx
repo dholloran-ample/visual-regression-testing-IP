@@ -76,11 +76,11 @@ export class CrdsGroupList {
     return (
       <div class="form-group">
         <div class="btn-group btn-group-bar" role="group" data-toggle="buttons">
-          <label class={'btn btn-white btn-sm' + (this.isPublic === true ? ' active' : ' text-white')}>
+          <label class={'btn btn-white btn-sm font-family-condensed-extra' + (this.isPublic === true ? ' active' : ' text-white')}>
             <input type="radio" checked={this.isPublic} autocomplete="off" onClick={() => this.setGroupPrivacy(true)} />
             Public
           </label>
-          <label class={'btn btn-white btn-sm' + (this.isPublic === false ? ' active' : ' text-white')}>
+          <label class={'btn btn-white btn-sm font-family-condensed-extra' + (this.isPublic === false ? ' active' : ' text-white')}>
             <input
               type="radio"
               checked={!this.isPublic}
