@@ -56,7 +56,7 @@ export class SharedFooter {
   private renderColumns() {
     return this.data.map(column => (
       <div class={column.class}>
-        <h5>{this.renderElement(column)}</h5>
+        <p>{this.renderElement(column)}</p>
         {this.renderGroups(column.children)}
       </div>
     ));

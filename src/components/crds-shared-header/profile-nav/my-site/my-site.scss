@@ -99,7 +99,7 @@ $arrow-height: 10px;
 }
 
 .popover-prompt {
-  h4 {
+  .site-header {
     color: grey;
   }
   text-align: center;
@@ -108,11 +108,15 @@ $arrow-height: 10px;
 }
 
 .popover-content {
-  h4 {
+  .site-header {
     color: grey;
   }
   color: white;
   font-size: 16px;
+}
+
+.site-header {
+  font-size: 14px;
 }
 
 .btn {
@@ -186,4 +190,12 @@ crds-image-title-cutout:after {
   text-align: left;
   margin-bottom: 12px;
   margin-left: -10px;
+}
+
+.cursor-auto {
+  cursor: auto;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
