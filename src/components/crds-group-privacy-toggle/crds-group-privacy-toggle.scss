@@ -14,3 +14,8 @@
   pointer-events: none;
   position: absolute;
 }
+
+.btn-group > .btn:not(:active).btn-white{
+  color: #ffffff;
+  background: none;
+}

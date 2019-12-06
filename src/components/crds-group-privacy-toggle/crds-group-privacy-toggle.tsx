@@ -75,13 +75,12 @@ export class CrdsGroupList {
   public renderToggle() {
     return (
       <div class="form-group">
-        <label class="control-label block"> Set your group to be public or private</label>
         <div class="btn-group btn-group-bar" role="group" data-toggle="buttons">
-          <label class={'btn btn-default' + (this.isPublic === true ? ' active' : '')}>
+          <label class={'btn btn-white btn-sm' + (this.isPublic === true ? ' active' : ' text-white')}>
             <input type="radio" checked={this.isPublic} autocomplete="off" onClick={() => this.setGroupPrivacy(true)} />
             Public
           </label>
-          <label class={'btn btn-default' + (this.isPublic === false ? ' active' : '')}>
+          <label class={'btn btn-white btn-sm' + (this.isPublic === false ? ' active' : ' text-white')}>
             <input
               type="radio"
               checked={!this.isPublic}
@@ -96,8 +95,7 @@ export class CrdsGroupList {
   }
 
   public render() {
-    if ((!this.userLedGroups.find(group => Number(group.id) == this.groupId)) || !this.groupId)
-      return '';
+    if (!this.userLedGroups.find(group => Number(group.id) == this.groupId) || !this.groupId) return '';
     return this.renderToggle();
   }
 }
