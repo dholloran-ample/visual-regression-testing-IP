@@ -8,8 +8,9 @@ js.src = '../dist/collection/global/app.js';
 const stories = storiesOf('Groups', module);
 stories
   .addDecorator(withKnobs, js)
-  .add('crds-group-renew', () => {
-    const groupIds = text('Group IDs', '');
+  .add('crds-group-renew-button', () => {
+    const groupId = text('Group ID', '');
     const daystoExpire = text('Days To Expiration', '');
-    return `<crds-group-renew group-ids-string=${groupIds} days-to-expiration=${daystoExpire}></crds-group-renew>`;
+    document.getElementById('root').parentElement.parentElement.style.backgroundColor = '#3b6e8f';
+    return `<crds-group-renew-button group-id=${groupId} days-to-expiration=${daystoExpire}/>`;
   });

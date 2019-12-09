@@ -2,7 +2,6 @@ import { Component, Prop, State, Element, Watch, h, Listen } from '@stencil/core
 import { MySiteUser, Site } from './my-site-interface';
 import { HTMLStencilElement } from '@stencil/core/internal';
 import { GET_USER, GET_CLOSEST_SITE, SET_CLOSEST_SITE, SET_SITE, GET_SITES, GET_SITE_CONTENT } from './my-site.graphql';
-import ApolloClient from 'apollo-client';
 import marked from 'marked';
 
 import Popper from 'popper.js';
@@ -329,7 +328,7 @@ export class MySite {
   public renderPopover() {
     return (
       <div
-        class="popper"
+        class="popper cursor-auto"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7), rgb(0, 0, 0, 0.97)), url(${Utils.imgixify(
             this.displaySite.imageUrl + '?auto=format'
@@ -350,11 +349,11 @@ export class MySite {
     return (
       <div>
         <div class="popover-content">
-          <h4 class="text-left text-uppercase font-family-base-bold">
+          <p class="site-header text-left text-uppercase font-family-base-bold">
             {(this.userHasSite() && this.user.site.id) === this.displaySite.id.toString() ? 'My Site' : 'Closest Site'}
-          </h4>
+          </p>
           <crds-image-title-cutout
-            class="text-white"
+            class="text-white cursor-pointer"
             imageUrl={`${Utils.imgixify(this.displaySite.mapImageUrl)}?auto=format&ar=2.63&fit=crop`}
             imageHref={this.displaySite.mapUrl}
             cardTitle={this.displaySite.name}
@@ -362,12 +361,7 @@ export class MySite {
           />
           <div class="site-details">
             {this.displaySite.id === '15' ? this.renderAnywhereSiteDetails() : this.renderSiteDetails()}
-            <p class="push-half-top">
-              Not your site?{' '}
-              <a class="text-white" href="/locations">
-                Set your preferred site.
-              </a>
-            </p>
+            <p class="push-half-top">Not your site? <a class="text-white" href="/locations">Set your preferred site.</a></p>
           </div>
         </div>
       </div>
@@ -377,9 +371,8 @@ export class MySite {
   private renderSiteDetails() {
     return (
       <div>
-        {' '}
         <div
-          class="push-half-bottom"
+          class="push-half-bottom cursor-pointer"
           innerHTML={`${marked(this.displaySite.address)}`}
           onClick={() => {
             Utils.openInNewTab(this.displaySite.mapUrl);
@@ -397,7 +390,6 @@ export class MySite {
     if (this.displaySite.serviceTimes)
       return (
         <div>
-          {' '}
           <div>
             <strong>Service Times:</strong>
           </div>
@@ -420,7 +412,7 @@ export class MySite {
   private renderGetDirections() {
       return (
         <a
-          class="text-white underline"
+          class="text-white underline cursor-pointer"
           onClick={() => {
             Utils.openInNewTab(this.getDirectionsUrl(this.displaySite));
           }}

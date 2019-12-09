@@ -22,8 +22,6 @@ export namespace Components {
     'secondary': boolean;
     'size'?: string;
     'text': string;
-    'type'?: string;
-    'value'?: string;
   }
   interface CrdsDefaultCard {
     'body': string;
@@ -41,7 +39,15 @@ export namespace Components {
     'defaultName': string;
   }
   interface CrdsGroupList {}
+  interface CrdsGroupPrivacyToggle {
+    'groupId': number;
+    'isPublic': boolean;
+  }
   interface CrdsGroupRenew {
+    'daysToExpiration': number;
+    'groupIdsString': string;
+  }
+  interface CrdsGroupRenewButton {
     'daysToExpiration': number;
     'groupId': number;
   }
@@ -200,10 +206,22 @@ declare global {
     new (): HTMLCrdsGroupListElement;
   };
 
+  interface HTMLCrdsGroupPrivacyToggleElement extends Components.CrdsGroupPrivacyToggle, HTMLStencilElement {}
+  var HTMLCrdsGroupPrivacyToggleElement: {
+    prototype: HTMLCrdsGroupPrivacyToggleElement;
+    new (): HTMLCrdsGroupPrivacyToggleElement;
+  };
+
   interface HTMLCrdsGroupRenewElement extends Components.CrdsGroupRenew, HTMLStencilElement {}
   var HTMLCrdsGroupRenewElement: {
     prototype: HTMLCrdsGroupRenewElement;
     new (): HTMLCrdsGroupRenewElement;
+  };
+
+  interface HTMLCrdsGroupRenewButtonElement extends Components.CrdsGroupRenewButton, HTMLStencilElement {}
+  var HTMLCrdsGroupRenewButtonElement: {
+    prototype: HTMLCrdsGroupRenewButtonElement;
+    new (): HTMLCrdsGroupRenewButtonElement;
   };
 
   interface HTMLCrdsHeartButtonElement extends Components.CrdsHeartButton, HTMLStencilElement {}
@@ -360,7 +378,9 @@ declare global {
     'crds-default-card': HTMLCrdsDefaultCardElement;
     'crds-greeting': HTMLCrdsGreetingElement;
     'crds-group-list': HTMLCrdsGroupListElement;
+    'crds-group-privacy-toggle': HTMLCrdsGroupPrivacyToggleElement;
     'crds-group-renew': HTMLCrdsGroupRenewElement;
+    'crds-group-renew-button': HTMLCrdsGroupRenewButtonElement;
     'crds-heart-button': HTMLCrdsHeartButtonElement;
     'crds-icon': HTMLCrdsIconElement;
     'crds-image': HTMLCrdsImageElement;
@@ -400,8 +420,6 @@ declare namespace LocalJSX {
     'secondary'?: boolean;
     'size'?: string;
     'text'?: string;
-    'type'?: string;
-    'value'?: string;
   }
   interface CrdsDefaultCard {
     'body'?: string;
@@ -419,7 +437,15 @@ declare namespace LocalJSX {
     'defaultName'?: string;
   }
   interface CrdsGroupList {}
+  interface CrdsGroupPrivacyToggle {
+    'groupId'?: number;
+    'isPublic'?: boolean;
+  }
   interface CrdsGroupRenew {
+    'daysToExpiration'?: number;
+    'groupIdsString'?: string;
+  }
+  interface CrdsGroupRenewButton {
     'daysToExpiration'?: number;
     'groupId'?: number;
   }
@@ -556,7 +582,9 @@ declare namespace LocalJSX {
     'crds-default-card': CrdsDefaultCard;
     'crds-greeting': CrdsGreeting;
     'crds-group-list': CrdsGroupList;
+    'crds-group-privacy-toggle': CrdsGroupPrivacyToggle;
     'crds-group-renew': CrdsGroupRenew;
+    'crds-group-renew-button': CrdsGroupRenewButton;
     'crds-heart-button': CrdsHeartButton;
     'crds-icon': CrdsIcon;
     'crds-image': CrdsImage;
@@ -595,7 +623,9 @@ declare module "@stencil/core" {
       'crds-default-card': LocalJSX.CrdsDefaultCard & JSXBase.HTMLAttributes<HTMLCrdsDefaultCardElement>;
       'crds-greeting': LocalJSX.CrdsGreeting & JSXBase.HTMLAttributes<HTMLCrdsGreetingElement>;
       'crds-group-list': LocalJSX.CrdsGroupList & JSXBase.HTMLAttributes<HTMLCrdsGroupListElement>;
+      'crds-group-privacy-toggle': LocalJSX.CrdsGroupPrivacyToggle & JSXBase.HTMLAttributes<HTMLCrdsGroupPrivacyToggleElement>;
       'crds-group-renew': LocalJSX.CrdsGroupRenew & JSXBase.HTMLAttributes<HTMLCrdsGroupRenewElement>;
+      'crds-group-renew-button': LocalJSX.CrdsGroupRenewButton & JSXBase.HTMLAttributes<HTMLCrdsGroupRenewButtonElement>;
       'crds-heart-button': LocalJSX.CrdsHeartButton & JSXBase.HTMLAttributes<HTMLCrdsHeartButtonElement>;
       'crds-icon': LocalJSX.CrdsIcon & JSXBase.HTMLAttributes<HTMLCrdsIconElement>;
       'crds-image': LocalJSX.CrdsImage & JSXBase.HTMLAttributes<HTMLCrdsImageElement>;

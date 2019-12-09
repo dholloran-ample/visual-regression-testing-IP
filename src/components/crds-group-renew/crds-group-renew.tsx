@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Prop, h, State } from '@stencil/core';
 import { CrdsApolloService } from '../../shared/apollo';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
 import { SET_GROUP_END_DATE } from './crds-group-renew.graphql';
@@ -11,9 +11,10 @@ import { isAuthenticated } from '../../global/authInit';
 export class CrdsGroupRenew {
   private contentBlockHandler: ContentBlockHandler;
   private newEndDate: Date;
-  private groupName: string;
+  private groupNames: string[];
 
-  @Prop() groupId: number;
+  @State() groupIds: number[];
+  @Prop() groupIdsString: string;
   @Prop() daysToExpiration: number;
 
   private logError(err) {
@@ -24,21 +25,30 @@ export class CrdsGroupRenew {
     await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group renew');
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
-    if (isAuthenticated() && this.groupId && this.daysToExpiration) promises.push(this.setGroupEndDate());
+    if (!this.groupIdsString)
+      this.groupIds = new URLSearchParams(document.location.search)
+        .get('groupIds')
+        .split(',')
+        .map(groupId => {
+          return Number(groupId);
+        });
+    else this.groupIds = this.groupIdsString.split(',').map(id => Number(id));
+    if (isAuthenticated() && this.groupIds && this.daysToExpiration) promises.push(this.setGroupEndDate());
     return Promise.all(promises);
   }
 
   private setGroupEndDate() {
     return CrdsApolloService.apolloClient
       .mutate({
-        variables: { id: this.groupId, endDate: this.getExpirationDate(this.daysToExpiration) },
+        variables: { ids: this.groupIds, endDate: this.getExpirationDate(this.daysToExpiration) },
         mutation: SET_GROUP_END_DATE
       })
       .then(response => {
         var date = new Date(0);
-        date.setTime(response.data.setGroupEndDate.endDate * 1000);
+        date.setTime((response.data.setGroupsEndDate[0].endDate + date.getTimezoneOffset() * 60) * 1000);
         this.newEndDate = date;
-        this.groupName = response.data.setGroupEndDate.name;
+        this.groupNames = response.data.setGroupsEndDate.map(group => group.name);
+        return;
       })
       .catch(err => {
         this.logError(err);
@@ -53,9 +63,9 @@ export class CrdsGroupRenew {
 
   public render() {
     if (!isAuthenticated()) return '';
-    if (this.newEndDate && this.groupName)
+    if (this.newEndDate && this.groupNames)
       return this.contentBlockHandler.getContentBlock('group-end-date-renew-success', {
-        groupName: this.groupName,
+        groupNames: this.groupNames.join(', '),
         endDate: this.newEndDate.toLocaleDateString()
       });
     return this.contentBlockHandler.getContentBlock('group-end-date-renew-failure');
