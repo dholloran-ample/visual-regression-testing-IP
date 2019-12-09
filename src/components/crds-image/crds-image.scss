@@ -17,6 +17,12 @@
     animation-duration: 1s;
     animation-name: fade-in;
   }
+
+  &.thumbnail {
+    .crds-img {
+      position: relative;
+    }
+  }
 }
 
 @keyframes fade-in {
