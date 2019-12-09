@@ -22,6 +22,7 @@ export class CrdsMediaCard {
   @Prop() thumbnailSrc: string;
   @Prop() url: string;
   @Prop() iconLabel: string;
+  @Prop() truncateLength: number = 250; 
 
   @Element() element!: HTMLStencilElement;
   // state
@@ -50,6 +51,13 @@ export class CrdsMediaCard {
     if (isEmpty) {
       throw new Error('imageSrc property is required on all media cards');
     }
+  }
+
+  private truncateDesc(){
+    const sentences = this.element.textContent.split('\n').join('');
+    let truncatedDescription = sentences.replace(/ +(?= )/g,'').trim().split(' ').slice(0,this.truncateLength).join(' ');
+    truncatedDescription += '...';
+    this.element.children[0].textContent = truncatedDescription;
   }
 
   // ----------------------------------------------- | Methods
@@ -88,6 +96,11 @@ export class CrdsMediaCard {
   }
 
   public render() {
+
+    if(this.element.children.length){
+      this.truncateDesc();
+    }
+
     return (
       <div> 
         {this.contentLayout == 'default' && (

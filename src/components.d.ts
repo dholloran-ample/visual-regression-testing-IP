@@ -95,6 +95,7 @@ export namespace Components {
     'imageSrc': string;
     'meta': string;
     'thumbnailSrc': string;
+    'truncateLength': number;
     'url': string;
   }
   interface CrdsModal {
@@ -483,6 +484,7 @@ declare namespace LocalJSX {
     'imageSrc'?: string;
     'meta'?: string;
     'thumbnailSrc'?: string;
+    'truncateLength'?: number;
     'url'?: string;
   }
   interface CrdsModal extends JSXBase.HTMLAttributes<HTMLCrdsModalElement> {
