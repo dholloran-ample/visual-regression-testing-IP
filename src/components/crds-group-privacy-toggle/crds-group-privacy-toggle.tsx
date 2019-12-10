@@ -31,8 +31,8 @@ export class CrdsGroupList {
         query: GET_GROUP_PRIVACY
       })
       .then(response => {
-        const selectedGroupData = response.data.groups.find(group => group.id == this.groupId);
-        this.setIsPublicValue(selectedGroupData);
+        const isAvailableOnline = response.data.groups.find(group => group.id == this.groupId).availableOnline;
+        this.setIsPublicValue(isAvailableOnline);
       })
       .catch(err => {
         this.logError(err);
@@ -40,24 +40,23 @@ export class CrdsGroupList {
   }
 
   private setGroupPrivacy(Privacy): Promise<any> {
+    this.setIsPublicValue(!this.isPublic);
     return CrdsApolloService.apolloClient
       .mutate({
         variables: { id: this.groupId, isPublic: Privacy },
         mutation: SET_GROUP_PRIVACY
       })
       .then(response => {
-        const selectedGroupData = response.data.setGroupPrivacy;
-        this.setIsPublicValue(selectedGroupData);
+        const isAvailableOnline = response.data.setGroupPrivacy.availableOnline;
+        this.setIsPublicValue(isAvailableOnline);
       })
       .catch(err => {
         this.logError(err);
       });
   }
 
-  private setIsPublicValue(selectedGroupData) {
-    if (selectedGroupData) {
-      this.isPublic = selectedGroupData.availableOnline;
-    }
+  private setIsPublicValue(isPublicValue) {
+    this.isPublic = isPublicValue;
   }
 
   private getUserGroups() {
@@ -76,11 +75,11 @@ export class CrdsGroupList {
     return (
       <div class="form-group">
         <div class="btn-group btn-group-bar" role="group" data-toggle="buttons">
-          <label class={'btn btn-white btn-sm font-family-condensed-extra' + (this.isPublic === true ? ' active' : ' text-white')}>
+          <label class={'btn btn-white btn-sm font-family-base' + (this.isPublic ? ' active' : '')}>
             <input type="radio" checked={this.isPublic} autocomplete="off" onClick={() => this.setGroupPrivacy(true)} />
             Public
           </label>
-          <label class={'btn btn-white btn-sm font-family-condensed-extra' + (this.isPublic === false ? ' active' : ' text-white')}>
+          <label class={'btn btn-white btn-sm font-family-base' + (!this.isPublic ? ' active' : '')}>
             <input
               type="radio"
               checked={!this.isPublic}

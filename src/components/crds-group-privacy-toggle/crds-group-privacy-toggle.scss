@@ -17,12 +17,24 @@
 
 .btn-group {
   > .btn {
-    font-size: 17px;
     padding: 7px 10px;
 
     &:not(:active).btn-white {
       background: none;
       color: #ffffff;
+    }
+
+    &:not(:active).btn-white:hover {
+      color: #ffffff;
+    }
+
+    &.btn-white:first-child,
+    &.btn-white.active:first-child,
+    &.btn-white:last-child,
+    .active.btn-white.active,
+    .active.btn-white.active:hover,
+    &:not(:active).btn-white:hover {
+      border-color: #ffffff;
     }
   }
 }
