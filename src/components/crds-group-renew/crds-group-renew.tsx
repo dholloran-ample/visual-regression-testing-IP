@@ -1,7 +1,7 @@
 import { Component, Prop, h, State } from '@stencil/core';
 import { CrdsApolloService } from '../../shared/apollo';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { SET_GROUP_END_DATE } from './crds-group-renew.graphql';
+import { SET_GROUP_END_DATE, GET_USER_GROUPS } from './crds-group-renew.graphql';
 import { isAuthenticated } from '../../global/authInit';
 
 @Component({
@@ -13,8 +13,7 @@ export class CrdsGroupRenew {
   private newEndDate: Date;
   private groupNames: string[];
 
-  @State() groupIds: number[];
-  @Prop() groupIdsString: string;
+  @Prop() groupIds: string;
   @Prop() daysToExpiration: number;
 
   private logError(err) {
@@ -25,14 +24,7 @@ export class CrdsGroupRenew {
     await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group renew');
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
-    if (!this.groupIdsString)
-      this.groupIds = new URLSearchParams(document.location.search)
-        .get('groupIds')
-        .split(',')
-        .map(groupId => {
-          return Number(groupId);
-        });
-    else this.groupIds = this.groupIdsString.split(',').map(id => Number(id));
+    await this.getUserGroups()
     if (isAuthenticated() && this.groupIds && this.daysToExpiration) promises.push(this.setGroupEndDate());
     return Promise.all(promises);
   }
@@ -48,6 +40,18 @@ export class CrdsGroupRenew {
         date.setTime((response.data.setGroupsEndDate[0].endDate + date.getTimezoneOffset() * 60) * 1000);
         this.newEndDate = date;
         this.groupNames = response.data.setGroupsEndDate.map(group => group.name);
+        return;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
+  }
+
+  private getUserGroups() {
+    return CrdsApolloService.apolloClient
+      .query({ query: GET_USER_GROUPS })
+      .then(success => {
+        this.groupIds = success.data.user.groups.map(group => group.id);
         return;
       })
       .catch(err => {
