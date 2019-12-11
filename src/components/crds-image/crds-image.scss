@@ -1,46 +1,41 @@
 @import '../../assets//stylesheets/globals/variables';
 
 .crds-img-container {
-  background-color: rgb(221, 221, 221);
   display: flex;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+  background-color: rgb(221, 221, 221);
 
   .crds-img {
-    display: block;
-    height: 100%;
-    position: absolute;
     width: 100%;
+    height: auto;
+    display: block;
   }
-
   .crds-img.loaded {
-    animation-duration: 1s;
     animation-name: fade-in;
+    animation-duration: 1s;
   }
 }
 
 @keyframes fade-in {
   0% {
-    filter: blur(20px);
     visibility: hidden;
+    filter: blur(20px);
   }
-
   50% {
     filter: blur(20px);
   }
-
   100% {
-    filter: blur(.1px);
+    filter: blur(0.1px);
   }
 }
 
 .crds-img-container {
   position: relative;
-
   &:before {
-    content: '';
     display: block;
-    padding-top: (2 / 3) * 100%;
+    content: "";
     width: 100%;
+    padding-top: (2 / 3) * 100%;
   }
 }
