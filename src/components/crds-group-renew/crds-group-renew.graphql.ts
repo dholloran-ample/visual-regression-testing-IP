@@ -9,3 +9,12 @@ export const SET_GROUP_END_DATE = gql`
     }
   }
 `;
+
+export const GET_USER_GROUPS = gql `
+  {
+    user {
+      groups (types: ["Small Group"], expired: false, roleTypes: [1]) {
+        id
+      }
+    }
+  }`
