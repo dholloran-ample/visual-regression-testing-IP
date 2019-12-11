@@ -68,17 +68,7 @@ export class GlobalNav {
 
   private toggleNav(event, navName, navRequiresAuth: boolean = false) {
     const path = event.composedPath && event.composedPath(event.target);
-    console.log(path);
-    if (
-      path &&
-      path.find(
-        el =>
-          el.classList &&
-          Object.keys(el.classList).find(cl => el.classList[cl] == 'popper') &&
-          path.find(el => Object.keys(el.classList).find(cl => el.classList[cl] == 'open'))
-      )
-    )
-      return (this.preventClose = true);
+    if (path && path.find(el => el.className == 'popper open')) return (this.preventClose = true);
     if (this.openNavName === navName) {
       event.preventDefault();
       this.openNavName = '';

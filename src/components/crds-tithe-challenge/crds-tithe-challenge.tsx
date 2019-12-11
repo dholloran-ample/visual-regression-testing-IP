@@ -75,7 +75,7 @@ export class CrdsTitheChallenge {
   }
 
   private getDaysDown() {
-    return this.convertTimeToDays(this.getDaysDownTime(new Date().getTime(), this.user.groups[0].userStartDate));
+    return this.convertTimeToDays(this.getDaysDownTime());
   }
 
   private getDaysToGo() {
@@ -103,15 +103,22 @@ export class CrdsTitheChallenge {
     return this.user && this.user.groups.length;
   }
 
+  private toggleDropdown() {
+    const dropdownEl = this.host.shadowRoot.getElementById('feelingsDropdownList');
+    if (dropdownEl.classList.contains('open')) dropdownEl.classList.remove('open');
+    else dropdownEl.classList.add('open');
+  }
+
   private getProgress() {
-    const diffTime = this.getDaysDownTime(new Date().getTime(), this.user.groups[0].userStartDate);
+    const diffTime = this.getDaysDownTime();
     return 100 - Math.floor((this.convertTimeToDays(diffTime) / this.lengthOfChallenge) * 100);
   }
 
-  private getDaysDownTime(now: number, userStartDate: number): number {
+  private getDaysDownTime(): number {
+    var today = new Date();
     var startDate = new Date(0);
-    startDate.setTime(userStartDate * 1000);
-    const diffTime = Math.abs(now - startDate.getTime());
+    startDate.setTime(this.user.groups[0].userStartDate * 1000);
+    const diffTime = Math.abs(today.getTime() - startDate.getTime());
     return diffTime;
   }
 

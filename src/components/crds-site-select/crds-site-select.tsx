@@ -102,7 +102,7 @@ export class CrdsSiteSelect {
     return (
       <crds-button
         onClick={() => this.setSite()}
-        display="link"
+        type="link"
         text={this.contentBlockHandler.getContentBlockText('setSiteOptionText')}
       />
     );

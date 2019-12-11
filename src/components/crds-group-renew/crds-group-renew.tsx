@@ -27,7 +27,7 @@ export class CrdsGroupRenew {
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
     if (!this.groupIdsString)
       this.groupIds = new URLSearchParams(document.location.search)
-        .get('groupIds')
+        .get('groupId')
         .split(',')
         .map(groupId => {
           return Number(groupId);
