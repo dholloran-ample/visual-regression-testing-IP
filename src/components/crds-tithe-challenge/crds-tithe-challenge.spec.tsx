@@ -1,5 +1,4 @@
 import { CrdsTitheChallenge } from './crds-tithe-challenge';
-
 describe('<greeting-component> Render', () => {
   beforeAll(() => {
     this.titheChallenge = new CrdsTitheChallenge();
