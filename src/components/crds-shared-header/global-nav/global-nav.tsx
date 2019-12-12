@@ -68,7 +68,6 @@ export class GlobalNav {
 
   private toggleNav(event, navName, navRequiresAuth: boolean = false) {
     const path = event.composedPath && event.composedPath(event.target);
-    console.log(path);
     if (
       path &&
       path.find(
