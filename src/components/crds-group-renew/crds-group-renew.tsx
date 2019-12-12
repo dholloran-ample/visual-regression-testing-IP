@@ -1,7 +1,7 @@
 import { Component, Prop, h, State } from '@stencil/core';
 import { CrdsApolloService } from '../../shared/apollo';
 import { ContentBlockHandler } from '../../shared/contentBlocks/contentBlocks';
-import { SET_GROUP_END_DATE, GET_USER_GROUPS } from './crds-group-renew.graphql';
+import { SET_GROUP_END_DATE, GET_USER_GROUPS, GET_RECENTLY_EXPIRED_GROUPS } from './crds-group-renew.graphql';
 import { isAuthenticated } from '../../global/authInit';
 
 @Component({
@@ -13,7 +13,7 @@ export class CrdsGroupRenew {
   private newEndDate: Date;
   private groupNames: string[];
 
-  @Prop() groupIds: string;
+  @State() groupIds: number[] = [];
   @Prop() daysToExpiration: number;
 
   private logError(err) {
@@ -24,7 +24,7 @@ export class CrdsGroupRenew {
     await CrdsApolloService.subscribeToApolloClient();
     this.contentBlockHandler = new ContentBlockHandler(CrdsApolloService.apolloClient, 'group renew');
     var promises: Promise<any>[] = [this.contentBlockHandler.getCopy()];
-    await this.getUserGroups()
+    await Promise.all([this.getUserGroups(), this.getRecentlyExpiredGroups()]);
     if (isAuthenticated() && this.groupIds && this.daysToExpiration) promises.push(this.setGroupEndDate());
     return Promise.all(promises);
   }
@@ -32,7 +32,7 @@ export class CrdsGroupRenew {
   private setGroupEndDate() {
     return CrdsApolloService.apolloClient
       .mutate({
-        variables: { ids: this.groupIds, endDate: this.getExpirationDate(this.daysToExpiration) },
+        variables: { ids: this.groupIds.map(id=> Number(id)), endDate: this.getExpirationDate(this.daysToExpiration) },
         mutation: SET_GROUP_END_DATE
       })
       .then(response => {
@@ -51,7 +51,19 @@ export class CrdsGroupRenew {
     return CrdsApolloService.apolloClient
       .query({ query: GET_USER_GROUPS })
       .then(success => {
-        this.groupIds = success.data.user.groups.map(group => group.id);
+        this.groupIds = [...this.groupIds, ...success.data.user.groups.map(group => group.id)];
+        return;
+      })
+      .catch(err => {
+        this.logError(err);
+      });
+  }
+
+  private getRecentlyExpiredGroups() {
+    return CrdsApolloService.apolloClient
+      .query({ query: GET_RECENTLY_EXPIRED_GROUPS, variables: { endDate: this.getExpirationDate(-1) } })
+      .then(success => {
+        this.groupIds = [...this.groupIds, ...success.data.user.groups.map(group => group.id)];
         return;
       })
       .catch(err => {
