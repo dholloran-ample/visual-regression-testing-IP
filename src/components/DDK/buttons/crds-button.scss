@@ -7,3 +7,16 @@ a {
   }
   font-family: system-ui;
 }
+
+span{
+  display: flex;
+  align-items: center;
+}
+
+button.btn.btn-blue.icon-align-left crds-icon {
+    margin-right: 7px;
+}
+
+button.btn.btn-blue.icon-align-right crds-icon {
+    margin-left: 7px;
+}
