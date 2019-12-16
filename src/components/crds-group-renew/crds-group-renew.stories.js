@@ -9,6 +9,7 @@ const stories = storiesOf('Groups', module);
 stories
   .addDecorator(withKnobs, js)
   .add('crds-group-renew', () => {
+    const groupIds = text('Group IDs', '');
     const daystoExpire = text('Days To Expiration', '');
-    return `<crds-group-renew days-to-expiration=${daystoExpire}></crds-group-renew>`;
+    return `<crds-group-renew group-ids-string=${groupIds} days-to-expiration=${daystoExpire}></crds-group-renew>`;
   });
