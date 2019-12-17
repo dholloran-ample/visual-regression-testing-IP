@@ -21,14 +21,14 @@ export class CrdsPrimaryButton {
   @Prop() iconAlign: string;
 
   private getClasses() {
-    if (this.display === 'link') return 'btn btn-link' + (this.secondary ? ` secondary` : '');
+    if (this.display === 'link') return 'btn btn-link' + (this.secondary ? ` secondary` : '') + (this.iconAlign ? ` icon-align-${this.iconAlign}` : '');
     return (
       'btn' +
       (this.color ? ` btn-${this.color}` : '') +
       (this.size ? ` btn-${this.size}` : '')  +
       (this.display ? ` btn-${this.display}` : '') +
       (this.block ? ` btn-block` : '') +
-      (this.iconAlign === 'left' ? ` icon-align-${this.iconAlign}` : '')
+      (this.iconAlign ? ` icon-align-${this.iconAlign}` : '')
     );
   }
 
@@ -44,7 +44,6 @@ export class CrdsPrimaryButton {
           {this.icon && this.iconAlign === 'left' ? this.renderIcon(this.icon, this.iconSize, this.iconColor) : ''}
           {this.text}
           {this.icon && this.iconAlign !== 'left' ? this.renderIcon(this.icon, this.iconSize, this.iconColor) : ''}
-
         </span>
       </button>
     );
