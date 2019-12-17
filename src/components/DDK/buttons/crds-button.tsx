@@ -25,10 +25,10 @@ export class CrdsPrimaryButton {
     return (
       'btn' +
       (this.color ? ` btn-${this.color}` : '') +
-      (this.size ? ` btn-${this.size}` : '') +
-      (this.iconAlign ? ` icon-align-${this.iconAlign}` : '') +
+      (this.size ? ` btn-${this.size}` : '')  +
       (this.display ? ` btn-${this.display}` : '') +
-      (this.block ? ` btn-block` : '')
+      (this.block ? ` btn-block` : '') +
+      (this.iconAlign === 'left' ? ` icon-align-${this.iconAlign}` : '')
     );
   }
 
@@ -43,7 +43,7 @@ export class CrdsPrimaryButton {
         <span>
           {this.icon && this.iconAlign === 'left' ? this.renderIcon(this.icon, this.iconSize, this.iconColor) : ''}
           {this.text}
-          {this.icon && this.iconAlign === 'right' ? this.renderIcon(this.icon, this.iconSize, this.iconColor) : ''}
+          {this.icon && this.iconAlign !== 'left' ? this.renderIcon(this.icon, this.iconSize, this.iconColor) : ''}
 
         </span>
       </button>

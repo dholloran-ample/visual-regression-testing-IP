@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/polymer';
 import { withKnobs, select, boolean, text } from '@storybook/addon-knobs';
 import { colors, sizes, displays } from './crds-button-options';
-import icons from '../../crds-icon/crds-icon-names'
+import {icons, iconSizeOptions, iconAlignOptions}  from './button-icon-options';
 import iconColors from '../../../shared/crds-icon-colors'
 
 
@@ -16,13 +16,10 @@ stories.addDecorator(withKnobs).add('crds-button', () => {
   const secondary = boolean('secondary', false);
   const block = boolean('block', false);
   const onClick = text('onClick', 'alert(\'Button Pressed\')');
-  const icon = select('icon', icons, 'camera');
-  const iconSizeOptions = { '12': '12', '24': '24', '36': '36' };
-  const iconSize = select('size(px)', iconSizeOptions, '12');
-  const iconColor = select('iconColor', Object.keys(iconColors), 'black')
-
-  const iconAlignOptions = ['left', 'right'];
-  const iconAlign = select('iconAlign', iconAlignOptions, 'left');
+  const icon = select('icon', icons, '');
+  const iconSize = select('size(px)', iconSizeOptions, '14');
+  const iconColor = select('iconColor', Object.keys(iconColors), 'white')
+  const iconAlign = select('iconAlign', iconAlignOptions, '');
 
 
 

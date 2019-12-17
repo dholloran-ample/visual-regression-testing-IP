@@ -1,4 +1,5 @@
-const names = [
+export const icons = [
+  'default',
   'account-thin',
   'calendar',
   'camera',
@@ -55,4 +56,6 @@ const names = [
   'youtube',
 ];
 
-export default names;
+export const iconSizeOptions = { '12': '12', '14': '14','16': '16', '20': '20','24': '24', '36': '36' };
+
+export const iconAlignOptions = ['default', 'left'];
