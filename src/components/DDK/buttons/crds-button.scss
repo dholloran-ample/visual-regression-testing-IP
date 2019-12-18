@@ -7,3 +7,17 @@ a {
   }
   font-family: system-ui;
 }
+
+span{
+  display: flex;
+  align-items: center;
+}
+
+.btn crds-icon {
+    margin-left: 7px;
+}
+
+.btn.icon-align-left crds-icon {
+    margin-left: 0px;
+    margin-right: 7px;
+}
