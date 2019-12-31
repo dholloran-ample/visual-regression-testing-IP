@@ -18,6 +18,10 @@ export namespace Components {
     'disabled': boolean;
     'display'?: string;
     'href'?: string;
+    'icon': string;
+    'iconAlign': string;
+    'iconColor': string;
+    'iconSize': string;
     'onClick'?: (event: MouseEvent) => void;
     'secondary': boolean;
     'size'?: string;
@@ -45,7 +49,6 @@ export namespace Components {
   }
   interface CrdsGroupRenew {
     'daysToExpiration': number;
-    'groupIdsString': string;
   }
   interface CrdsGroupRenewButton {
     'daysToExpiration': number;
@@ -416,6 +419,10 @@ declare namespace LocalJSX {
     'disabled'?: boolean;
     'display'?: string;
     'href'?: string;
+    'icon'?: string;
+    'iconAlign'?: string;
+    'iconColor'?: string;
+    'iconSize'?: string;
     'onClick'?: (event: MouseEvent) => void;
     'secondary'?: boolean;
     'size'?: string;
@@ -443,7 +450,6 @@ declare namespace LocalJSX {
   }
   interface CrdsGroupRenew {
     'daysToExpiration'?: number;
-    'groupIdsString'?: string;
   }
   interface CrdsGroupRenewButton {
     'daysToExpiration'?: number;
