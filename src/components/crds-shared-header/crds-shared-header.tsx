@@ -16,7 +16,7 @@ export class SharedHeader {
   @Element() element: HTMLElement;
 
   public componentWillLoad() {
-    const url = this.src || `https://crds-data.netlify.com/shared-header/${this.env}.json`;
+    const url = this.src || `https://crds-data.crossroads.net/shared-header/${this.env}.json`;
     return axios
       .get(url)
       .then(response => {

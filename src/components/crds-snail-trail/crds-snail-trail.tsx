@@ -18,7 +18,7 @@ export class SnailTrail {
 
   componentWillLoad() {
     if (this.src || (this.name && this.env)) {
-      const url = this.src || `https://crds-data.netlify.com/snail-trails/${this.name}/${this.env}.json`;
+      const url = this.src || `https://crds-data.crossroads.net/snail-trails/${this.name}/${this.env}.json`;
       axios.get(url).then(response => (this.data = response.data));
     }
   }

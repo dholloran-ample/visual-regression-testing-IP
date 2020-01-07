@@ -16,7 +16,7 @@ export class SharedFooter {
   @Element() element: HTMLElement;
 
   componentWillLoad() {
-    const url = this.src || `https://crds-data.netlify.com/shared-footer/${this.env}.json`;
+    const url = this.src || `https://crds-data.crossroads.net/shared-footer/${this.env}.json`;
     axios.get(url).then(response => (this.data = response.data));
   }
 
