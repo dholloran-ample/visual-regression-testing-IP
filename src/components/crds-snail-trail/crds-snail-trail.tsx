@@ -21,7 +21,6 @@ export class SnailTrail {
       const url = this.src || `https://crds-data.crossroads.net/snail-trails/${this.name}/${this.env}.json`;
       axios.get(url).then(response => (this.data = response.data));
     }
-    console.log(this.name)
   }
 
   listItem(item) {
