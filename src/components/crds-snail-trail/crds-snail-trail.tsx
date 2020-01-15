@@ -21,6 +21,7 @@ export class SnailTrail {
       const url = this.src || `https://crds-data.crossroads.net/snail-trails/${this.name}/${this.env}.json`;
       axios.get(url).then(response => (this.data = response.data));
     }
+    console.log(this.name)
   }
 
   listItem(item) {
@@ -44,8 +45,17 @@ export class SnailTrail {
     return this.data.nav.map(section => <ul>{this.list(section)}</ul>);
   }
 
+  handleNameDisabled(){
+    const parent = this.element.parentElement;
+    parent.parentElement.removeChild(parent)
+  }
+
   render() {
-    if (!this.data.nav && this.element.childElementCount == 0) return;
+    if(this.name == 'disabled') {
+      this.handleNameDisabled();
+      return
+    }
+    if (!this.data.nav && this.element.childElementCount == 0 ) return;
     return (
       <Fragment>
         <nav>
