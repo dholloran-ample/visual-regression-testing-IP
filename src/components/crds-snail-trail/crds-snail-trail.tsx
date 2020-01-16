@@ -44,17 +44,8 @@ export class SnailTrail {
     return this.data.nav.map(section => <ul>{this.list(section)}</ul>);
   }
 
-  handleNameDisabled(){
-    const parent = this.element.parentElement;
-    parent.parentElement.removeChild(parent)
-  }
-
   render() {
-    if(this.name == 'disabled') {
-      this.handleNameDisabled();
-      return
-    }
-    if (!this.data.nav && this.element.childElementCount == 0 ) return;
+    if (!this.data.nav && this.element.childElementCount == 0) return;
     return (
       <Fragment>
         <nav>
