@@ -1,5 +1,5 @@
-const { percySnapshot } = require('@percy/puppeteer');
-const { newE2EPage } = require("@stencil/core/testing");
+import { launch } from 'puppeteer'
+import { percySnapshot } from '@percy/puppeteer'
 
 describe('crds-image-title-cutout', () => {
 
@@ -21,23 +21,17 @@ describe('crds-image-title-cutout', () => {
     </div>
   `
 
-  const createPage = async () => {
-    // Create puppeteer page instance
-    const page = await newE2EPage();
-
-    // Inject crds-image-title-cutout into page
-    (await page).setContent(component)
-
-    return page
-  }
-
   it('Renders', async () => {
     
-    // Create page
-    const page = await createPage();
+    // Create puppeteer page instance
+    const browser = await launch()
+    const page = await browser.newPage()
+
+    // Inject crds-image-title-cutout into page
+    await page.setContent(component)
 
     // Find component on DOM
-    const el = await page.find('crds-image-title-cutout');
+    const el = await page.waitForSelector('crds-image-title-cutout');
     expect(el).not.toBeNull();
     await percySnapshot(page, 'Component render' )
   })

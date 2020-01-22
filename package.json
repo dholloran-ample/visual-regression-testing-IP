@@ -19,6 +19,7 @@
     "storybook:build": "build-storybook",
     "storybook:watch": "run-p start storybook",
     "test": "stencil test --spec --e2e",
+    "test:puppeteer": "stencil test --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "graphql-codegen"
   },
@@ -68,6 +69,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@percy/puppeteer": "^1.0.8",
     "apollo-boost": "^0.4.4",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
