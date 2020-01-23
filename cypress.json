@@ -1,6 +1,7 @@
 {
-    "baseUrl": "https://int.crossroads.net",
-    "testFiles": "**/*c.js",
-    "numTestsKeptInMemory": 0,
-    "video": false
+  "baseUrl": "https://int.crossroads.net",
+  "testFiles": "**/*c.js",
+  "numTestsKeptInMemory": 0,
+  "video": false,
+  "projectId": "wyjqi7"
 }
