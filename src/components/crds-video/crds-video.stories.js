@@ -4,6 +4,7 @@ import { withKnobs, text } from '@storybook/addon-knobs';
 const stories = storiesOf('Video', module);
 stories
   .addDecorator(withKnobs)
+  .addParameters({ percy: { skip: true } })
   .add('<crds-video />', () => {
     const id = text('Youtube ID', 'DP1TOQ2G0Ks');
     const transcript = text('Transcript', 'Morbi leo risus, porta ac consectetur ac, vestibulum at eros...');

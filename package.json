@@ -11,7 +11,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --docs",
+    "build": "npm run crds-ip:test && stencil build --docs",
     "clean": "rimraf dist www",
     "deploy": "echo 'deploy'",
     "start": "stencil build --dev --watch --serve",
@@ -22,11 +22,12 @@
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "graphql-codegen",
     "snapshot": "build-storybook && percy-storybook --widths=320,1280",
-    "cypress:local:open": "stencil build && concurrently 'npm run storybook:run' 'npm run cypress:test:open' -k -s first",
-    "cypress:local:run": "stencil build && concurrently 'npm run storybook:run' 'npm run cypress:test:run' -k -s first",
+    "cypress:open": "stencil build && concurrently 'npm run storybook:run' 'npm run cypress:test:open' -k -s first",
+    "cypress:run": "stencil build && concurrently 'npm run storybook:run' 'npm run cypress:test:run' -k -s first",
     "storybook:run": "start-storybook -p 9009",
     "cypress:test:open": "wait-on http://localhost:9009 && cypress open",
-    "cypress:test:run": "wait-on http://localhost:9009 && cypress run"
+    "cypress:test:run": "wait-on http://localhost:9009 && cypress run",
+    "crds-ip:test": "npm run cypress:run && npm run snapshot"
   },
   "devDependencies": {
     "@alepop/stencil-env": "^0.2.0",
