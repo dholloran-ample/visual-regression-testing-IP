@@ -26,7 +26,7 @@
     "cypress:run": "stencil build && concurrently 'npm run storybook:run' 'npm run cypress:test:run' -k -s first",
     "storybook:run": "start-storybook -p 9009",
     "cypress:test:open": "wait-on http://localhost:9009 && cypress open",
-    "cypress:test:run": "wait-on http://localhost:9009 && cypress run",
+    "cypress:test:run": "wait-on http://localhost:9009 && cypress run --record --key 9633b215-c00d-413f-801d-2e57d7459da6",
     "crds-ip:test": "npm run cypress:run && npm run snapshot"
   },
   "devDependencies": {
