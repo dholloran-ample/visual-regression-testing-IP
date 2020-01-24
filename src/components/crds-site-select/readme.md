@@ -29,6 +29,7 @@
 ```mermaid
 graph TD;
   crds-site-select --> crds-button
+  crds-button --> crds-icon
   style crds-site-select fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
