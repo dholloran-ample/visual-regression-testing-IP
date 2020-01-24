@@ -25,7 +25,6 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import 'cypress-shadow-dom';
 import { addCommandLogin } from 'crds-cypress-login';
-import '@percy/cypress';
 
 //OR if CRDS_ENV is not set:
 //OR to set the login domain if baseUrl should not be used or is not set:
