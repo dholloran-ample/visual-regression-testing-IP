@@ -60,7 +60,7 @@ export default function() {
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       margin-left: 0.75rem;
-      background: ##999;
+      background: #737373;
       border-radius: 50%;
       display: -ms-inline-flexbox;
       display: inline-flex;
