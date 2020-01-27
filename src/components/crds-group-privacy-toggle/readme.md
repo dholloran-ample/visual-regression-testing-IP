@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type     | Default     |
-| ----------- | ------------ | ----------- | -------- | ----------- |
-| `authToken` | `auth-token` |             | `string` | `undefined` |
+| Property   | Attribute   | Description | Type      | Default     |
+| ---------- | ----------- | ----------- | --------- | ----------- |
+| `groupId`  | `group-id`  |             | `number`  | `undefined` |
+| `isPublic` | `is-public` |             | `boolean` | `undefined` |
 
 
 ----------------------------------------------

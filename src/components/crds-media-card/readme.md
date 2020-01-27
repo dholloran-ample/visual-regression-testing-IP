@@ -7,18 +7,19 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type     | Default     |
-| --------------- | ---------------- | ----------- | -------- | ----------- |
-| `body`          | `body`           |             | `string` | `undefined` |
-| `category`      | `category`       |             | `string` | `undefined` |
-| `contentLayout` | `content-layout` |             | `string` | `'default'` |
-| `contentType`   | `content-type`   |             | `string` | `undefined` |
-| `heading`       | `heading`        |             | `string` | `undefined` |
-| `iconLabel`     | `icon-label`     |             | `string` | `undefined` |
-| `imageSrc`      | `image-src`      |             | `string` | `undefined` |
-| `meta`          | `meta`           |             | `string` | `undefined` |
-| `thumbnailSrc`  | `thumbnail-src`  |             | `string` | `undefined` |
-| `url`           | `url`            |             | `string` | `undefined` |
+| Property         | Attribute         | Description | Type     | Default     |
+| ---------------- | ----------------- | ----------- | -------- | ----------- |
+| `body`           | `body`            |             | `string` | `undefined` |
+| `category`       | `category`        |             | `string` | `undefined` |
+| `contentLayout`  | `content-layout`  |             | `string` | `'default'` |
+| `contentType`    | `content-type`    |             | `string` | `undefined` |
+| `heading`        | `heading`         |             | `string` | `undefined` |
+| `iconLabel`      | `icon-label`      |             | `string` | `undefined` |
+| `imageSrc`       | `image-src`       |             | `string` | `undefined` |
+| `meta`           | `meta`            |             | `string` | `undefined` |
+| `thumbnailSrc`   | `thumbnail-src`   |             | `string` | `undefined` |
+| `truncateLength` | `truncate-length` |             | `number` | `250`       |
+| `url`            | `url`             |             | `string` | `undefined` |
 
 
 ## Dependencies
